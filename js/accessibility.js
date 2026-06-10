@@ -9,6 +9,7 @@ const Accessibility = {
     lineHeightScale: 1.6,
     activeVoice: null, // 'male', 'female', or null
     lastSpokenElement: null,
+    activeUtterance: null, // Keeps speech in scope to prevent garbage collection bugs
     
     // List of body class toggles
     toggles: {
@@ -134,10 +135,10 @@ const Accessibility = {
                     this.savePreference('contrast', 'light');
                     break;
                 case 'voice-male':
-                    this.toggleVoice('male', btn);
+                    this.toggleVoice('male', btn, true);
                     break;
                 case 'voice-female':
-                    this.toggleVoice('female', btn);
+                    this.toggleVoice('female', btn, true);
                     break;
                 case 'text-increase':
                     this.adjustFontScale(0.15);
@@ -178,7 +179,7 @@ const Accessibility = {
         this.savePreference('contrast', 'default');
     },
 
-    toggleVoice(gender, btn) {
+    toggleVoice(gender, btn, shouldSpeak = true) {
         const maleBtn = this.panel.querySelector('[data-action="voice-male"]');
         const femaleBtn = this.panel.querySelector('[data-action="voice-female"]');
         
@@ -202,57 +203,68 @@ const Accessibility = {
             
             this.savePreference('voice', gender);
             
-            // Speak confirmation
-            const confirmMsg = gender === 'male' ? "Male Screen Reader Enabled" : "Female Screen Reader Enabled";
-            this.speakText(confirmMsg);
+            if (shouldSpeak) {
+                // Speak confirmation
+                const confirmMsg = gender === 'male' ? "Male Screen Reader Enabled" : "Female Screen Reader Enabled";
+                this.speakText(confirmMsg);
+            }
         }
     },
 
     speakText(text) {
         if (!('speechSynthesis' in window)) return;
         
+        // Cancel active speech to clear the queue
         window.speechSynthesis.cancel();
         
         if (!this.activeVoice) return;
         
-        const utterance = new SpeechSynthesisUtterance(text);
-        const voices = window.speechSynthesis.getVoices();
-        
-        const isFemale = this.activeVoice === 'female';
-        const searchTerms = isFemale 
-            ? ['zira', 'hazel', 'samantha', 'susan', 'karen', 'female', 'google us english', 'heather', 'serena', 'samantha']
-            : ['david', 'george', 'mark', 'male', 'ravi', 'microsoft david', 'google uk english male'];
-        
-        // Look for English vocal gender matches
-        let matchVoice = voices.find(v => {
-            const name = v.name.toLowerCase();
-            const lang = v.lang.toLowerCase();
-            return lang.startsWith('en') && searchTerms.some(term => name.includes(term));
-        });
-        
-        // Fallback to any language match
-        if (!matchVoice) {
-            matchVoice = voices.find(v => {
+        // Wrap speak in a 100ms timeout to allow the asynchronous cancel to complete in Chromium
+        setTimeout(() => {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-US'; // Force English vocalization coordinates
+            
+            const voices = window.speechSynthesis.getVoices();
+            const isFemale = this.activeVoice === 'female';
+            const searchTerms = isFemale 
+                ? ['zira', 'hazel', 'samantha', 'susan', 'karen', 'female', 'google us english', 'heather', 'serena', 'samantha']
+                : ['david', 'george', 'mark', 'male', 'ravi', 'microsoft david', 'google uk english male'];
+            
+            // Look for English vocal gender matches
+            let matchVoice = voices.find(v => {
                 const name = v.name.toLowerCase();
-                return searchTerms.some(term => name.includes(term));
+                const lang = v.lang.toLowerCase();
+                return lang.startsWith('en') && searchTerms.some(term => name.includes(term));
             });
-        }
-        
-        if (matchVoice) {
-            utterance.voice = matchVoice;
-        } else {
-            // Pitch modifications if specific genders aren't built in
-            utterance.pitch = isFemale ? 1.35 : 0.82;
-        }
-        
-        utterance.rate = 1.05;
-        window.speechSynthesis.speak(utterance);
+            
+            // Fallback to any language match
+            if (!matchVoice) {
+                matchVoice = voices.find(v => {
+                    const name = v.name.toLowerCase();
+                    return searchTerms.some(term => name.includes(term));
+                });
+            }
+            
+            if (matchVoice) {
+                utterance.voice = matchVoice;
+            } else {
+                // Pitch fallback adjustments if gender voices aren't resolved in local OS
+                utterance.pitch = isFemale ? 1.35 : 0.82;
+            }
+            
+            utterance.rate = 1.05;
+            
+            // Prevent garbage collection mid-speech bug
+            this.activeUtterance = utterance;
+            
+            window.speechSynthesis.speak(utterance);
+        }, 100);
     },
 
     handleScreenReader(e, eventType) {
         if (!this.activeVoice) return;
         
-        // Findclosest read-worthy interactive elements or semantic structures
+        // Find closest read-worthy interactive elements or semantic structures
         const target = e.target.closest('a, button, h1, h2, h3, h4, p, [role="button"], .brain-node');
         if (!target) return;
         
@@ -324,11 +336,11 @@ const Accessibility = {
             if (btn) this.handleAction(`contrast-${savedContrast}`, btn);
         }
 
-        // Load voice state
+        // Load voice state (suppressing autoplay warning/block speech on load)
         const savedVoice = localStorage.getItem('ms-access-voice');
         if (savedVoice && savedVoice !== 'none') {
             const btn = this.panel.querySelector(`[data-action="voice-${savedVoice}"]`);
-            if (btn) this.toggleVoice(savedVoice, btn);
+            if (btn) this.toggleVoice(savedVoice, btn, false);
         }
 
         // Load scale properties
@@ -370,6 +382,7 @@ const Accessibility = {
         this.lineHeightScale = 1.6;
         this.activeVoice = null;
         this.lastSpokenElement = null;
+        this.activeUtterance = null;
         
         document.documentElement.style.setProperty('--font-scale', 1.0);
         document.documentElement.style.setProperty('--letter-spacing', 'normal');
