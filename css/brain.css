@@ -1,0 +1,180 @@
+/* ==========================================================================
+   Brain Interactive SVG Layout
+   ========================================================================== */
+.brain-map-wrapper {
+    background: var(--color-navy-dark);
+    padding: var(--spacing-lg) var(--spacing-md);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-gray-border);
+    margin-bottom: var(--spacing-lg);
+    position: relative;
+    overflow: hidden;
+}
+
+.brain-map-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    height: 500px;
+}
+
+.brain-svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* SVG Nodes Styling */
+.brain-node {
+    cursor: pointer;
+    outline: none;
+}
+
+.brain-node circle {
+    fill: var(--color-navy);
+    stroke: var(--color-gray-steel);
+    stroke-width: 2px;
+    transition: var(--transition-smooth);
+}
+
+.brain-node text {
+    fill: var(--color-gray-steel);
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 13px;
+    text-anchor: middle;
+    transition: var(--transition-smooth);
+    pointer-events: none;
+    letter-spacing: 0.05em;
+}
+
+/* Connection Lines */
+.brain-connection {
+    stroke: var(--color-navy-light);
+    stroke-width: 1.5px;
+    stroke-dasharray: 4 4;
+    transition: var(--transition-smooth);
+    animation: dashPulse 20s linear infinite;
+}
+
+@keyframes dashPulse {
+    to { stroke-dashoffset: -200px; }
+}
+
+/* Hover and Active states */
+.brain-node:hover circle, 
+.brain-node:focus circle {
+    fill: rgba(0, 209, 193, 0.15);
+    stroke: var(--color-teal);
+    stroke-width: 3px;
+    filter: drop-shadow(0 0 8px rgba(0, 209, 193, 0.6));
+}
+
+.brain-node:hover text, 
+.brain-node:focus text {
+    fill: var(--color-white);
+    font-size: 14px;
+}
+
+.brain-node.center-node circle {
+    stroke: var(--color-gold);
+    stroke-width: 3px;
+}
+
+.brain-node.center-node:hover circle,
+.brain-node.center-node:focus circle {
+    stroke: var(--color-gold);
+    filter: drop-shadow(0 0 8px rgba(246, 184, 75, 0.6));
+}
+
+.brain-node.center-node text {
+    fill: var(--color-gold);
+    font-size: 15px;
+    font-weight: 700;
+}
+
+/* ==========================================================================
+   Screen-Reader & Keyboard Accessible List Equivalent
+   ========================================================================== */
+.brain-accessibility-list {
+    background: var(--color-navy-light);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    margin-top: var(--spacing-md);
+    border: 1px solid var(--color-gray-border);
+}
+
+.brain-accessibility-list h4 {
+    color: var(--color-white);
+    margin-bottom: var(--spacing-sm);
+    font-size: 1.1rem;
+}
+
+.brain-list-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+}
+
+.brain-list-btn {
+    background: var(--color-navy-dark);
+    color: var(--color-white);
+    border: 1px solid var(--color-gray-border);
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: var(--transition-fast);
+    text-align: center;
+}
+
+.brain-list-btn:hover, .brain-list-btn:focus {
+    background: var(--color-teal);
+    color: var(--color-navy);
+    border-color: var(--color-teal);
+    outline: none;
+}
+
+/* ==========================================================================
+   Detail Dialog Styling
+   ========================================================================== */
+.detail-tag {
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    display: inline-block;
+    margin-bottom: var(--spacing-xs);
+}
+
+.detail-title {
+    font-size: 2rem;
+    color: var(--color-navy);
+    margin-bottom: var(--spacing-sm);
+}
+
+.detail-divider {
+    height: 3px;
+    background: var(--gradient-cinematic);
+    width: 60px;
+    margin-bottom: var(--spacing-md);
+    border-radius: var(--radius-sm);
+}
+
+.detail-body-text p {
+    font-size: 1.1rem;
+    margin-bottom: var(--spacing-md);
+    color: var(--color-gray-steel);
+}
+
+.detail-body-text blockquote {
+    border-left: 4px solid var(--color-gold);
+    padding-left: var(--spacing-md);
+    margin: var(--spacing-md) 0;
+    font-style: italic;
+    color: var(--color-navy-light);
+}

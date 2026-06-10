@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marchello Sciortino | Official Digital Hub</title>
+    <meta name="description" content="Official digital hub of Marchello Sciortino: keynote speaker, ClickFunnels certified builder, creator, and disability advocate turning limitations into creative agency through AI.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/accessibility.css">
+    <link rel="stylesheet" href="css/brain.css">
+    <link rel="stylesheet" href="css/chat.css">
+    <link rel="stylesheet" href="css/music.css">
+</head>
+<body>
+    <!-- Skip to Content link for keyboard accessibility -->
+    <a href="#main-focus" class="skip-link">Skip to Main Content</a>
+
+    <!-- Top Navigation Header -->
+    <header class="main-header">
+        <div class="header-container">
+            <a href="#/home" class="brand-logo" aria-label="Marchello Sciortino Home">
+                <span class="logo-text">Marchello<span class="text-teal">.</span></span>
+            </a>
+            
+            <button class="menu-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Toggle Navigation Menu">
+                <span class="hamburger"></span>
+            </button>
+            
+            <nav id="main-nav" class="nav-menu">
+                <ul class="nav-list">
+                    <li><a href="#/home" class="nav-link active">Home</a></li>
+                    <li><a href="#/story" class="nav-link">Story</a></li>
+                    <li><a href="#/speaking" class="nav-link">Speaking</a></li>
+                    <li><a href="#/book" class="nav-link">Book</a></li>
+                    <li><a href="#/hub" class="nav-link">Hub</a></li>
+                    <li><a href="#/contact" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Focus Target -->
+    <span id="main-focus" tabindex="-1"></span>
+    
+    <!-- Dynamic SPA View Render Target -->
+    <main id="app" aria-live="polite">
+        <!-- Client-side router dynamically injects active page content here -->
+    </main>
+
+    <!-- Unified Footer -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <a href="#/home" class="footer-logo">Marchello<span class="text-teal">.</span></a>
+                <p class="footer-mission">Turning limitations into creative agency, adaptation into strength, and AI into a bridge for possibility.</p>
+            </div>
+            
+            <div class="footer-nav-grid">
+                <div class="footer-nav-col">
+                    <h3 class="footer-heading">Explore</h3>
+                    <ul>
+                        <li><a href="#/mission">Mission</a></li>
+                        <li><a href="#/brain">The Brain Map</a></li>
+                        <li><a href="#/impact">Impact & Reviews</a></li>
+                        <li><a href="#/resources">Downloads & Kit</a></li>
+                    </ul>
+                </div>
+                <div class="footer-nav-col">
+                    <h3 class="footer-heading">Initiatives</h3>
+                    <ul>
+                        <li><a href="#/aim">Accessible AIM</a></li>
+                        <li><a href="#/chelloai">ChelloAI Companion</a></li>
+                        <li><a href="#/music">AI Music Jingles</a></li>
+                        <li><a href="#/media">Media Assets</a></li>
+                    </ul>
+                </div>
+                <div class="footer-nav-col">
+                    <h3 class="footer-heading">Legal</h3>
+                    <ul>
+                        <li><a href="#/accessibility-statement">Accessibility Info</a></li>
+                        <li><a href="#/privacy">Privacy Policy</a></li>
+                        <li><a href="#/terms">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Marchello Sciortino. All Rights Reserved. Crafted with AI Amplification.</p>
+        </div>
+    </footer>
+
+    <!-- ADA Compliance Accessibility Panel -->
+    <div id="accessibility-widget" class="accessibility-widget">
+        <button id="accessibility-toggle-btn" class="accessibility-toggle-btn" aria-haspopup="true" aria-expanded="false" aria-label="Open Accessibility Options Panel">
+            <!-- Accessible SVG Widget Icon -->
+            <svg class="widget-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M12 8v8M9 11h6"></path>
+            </svg>
+        </button>
+        
+        <div id="accessibility-panel" class="accessibility-panel" aria-hidden="true">
+            <div class="panel-header">
+                <h3>Accessibility Profiles</h3>
+                <button id="close-panel-btn" class="close-panel-btn" aria-label="Close Accessibility Panel">&times;</button>
+            </div>
+            <div class="panel-body">
+                <div class="panel-section">
+                    <h4 class="section-title">Contrast Settings</h4>
+                    <div class="widget-grid">
+                        <button class="widget-btn" data-action="contrast-default" aria-pressed="true">Midnight (Default)</button>
+                        <button class="widget-btn" data-action="contrast-high" aria-pressed="false">High Contrast (Yellow/Black)</button>
+                        <button class="widget-btn" data-action="contrast-light" aria-pressed="false">Light Mode</button>
+                    </div>
+                </div>
+                
+                <div class="panel-section">
+                    <h4 class="section-title">Screen Reader</h4>
+                    <div class="widget-grid">
+                        <button class="widget-btn" data-action="voice-male" aria-pressed="false">Male Voice</button>
+                        <button class="widget-btn" data-action="voice-female" aria-pressed="false">Female Voice</button>
+                    </div>
+                </div>
+                
+                <div class="panel-section">
+                    <h4 class="section-title">Typography & Layout</h4>
+                    <div class="widget-grid">
+                        <button class="widget-btn" data-action="text-increase" aria-label="Increase text size">Text Size +</button>
+                        <button class="widget-btn" data-action="text-decrease" aria-label="Decrease text size">Text Size -</button>
+                        <button class="widget-btn" data-action="font-dyslexic" aria-pressed="false">Dyslexic Font</button>
+                        <button class="widget-btn" data-action="font-readable" aria-pressed="false">Readable Font</button>
+                        <button class="widget-btn" data-action="spacing-increase" aria-pressed="false">Increase Spacing</button>
+                        <button class="widget-btn" data-action="lineheight-increase" aria-pressed="false">Line Height +</button>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h4 class="section-title">Interaction Aids</h4>
+                    <div class="widget-grid">
+                        <button class="widget-btn" data-action="pause-animations" aria-pressed="false">Pause Animations</button>
+                        <button class="widget-btn" data-action="highlight-links" aria-pressed="false">Highlight Links</button>
+                        <button class="widget-btn" data-action="highlight-headings" aria-pressed="false">Highlight Headings</button>
+                        <button class="widget-btn" data-action="large-cursor" aria-pressed="false">Large Cursor</button>
+                    </div>
+                </div>
+                
+                <button id="reset-accessibility" class="reset-accessibility-btn">Reset All Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Global Success Modal for Form Submissions -->
+    <div id="success-modal" class="modal-overlay" aria-hidden="true" role="dialog">
+        <div class="modal-content">
+            <button class="modal-close-btn" aria-label="Close Success Message">&times;</button>
+            <div class="modal-body text-center">
+                <div class="success-icon-wrapper">
+                    <!-- Success Check SVG -->
+                    <svg class="success-check-svg" viewBox="0 0 24 24" fill="none" stroke="#00D1C1" stroke-width="3">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </div>
+                <h3 id="modal-title" class="modal-title">Submission Successful</h3>
+                <p id="modal-message" class="modal-message">Thank you. Your message has been received.</p>
+                <button class="btn btn-teal modal-ok-btn">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Global Detail Modal for Brain Map Nodes -->
+    <div id="detail-modal" class="modal-overlay" aria-hidden="true" role="dialog">
+        <div class="modal-content content-large">
+            <button class="modal-close-btn" aria-label="Close details">&times;</button>
+            <div class="modal-body">
+                <span class="detail-tag text-teal" id="detail-node-tag">Resilience</span>
+                <h3 id="detail-node-title" class="detail-title">Adaptive Mindset</h3>
+                <div class="detail-divider"></div>
+                <div id="detail-node-body" class="detail-body-text">
+                    <!-- Dynamic text loads here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core App Scripts -->
+    <script src="js/accessibility.js"></script>
+    <script src="js/router.js"></script>
+    <script src="js/brain.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/music.js"></script>
+    <script src="js/hub.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

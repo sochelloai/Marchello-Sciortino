@@ -1,0 +1,166 @@
+/* ==========================================================================
+   AI Music Player Custom Styles
+   ========================================================================== */
+.music-player-card {
+    background: var(--color-navy-light);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    border: 1px solid var(--color-gray-border);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    color: var(--color-white);
+}
+
+.music-track-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.music-track-title {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-white);
+    margin: 0;
+}
+
+.music-track-genre {
+    font-size: 0.8rem;
+    color: var(--color-teal);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 2px;
+}
+
+.music-track-duration {
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    color: var(--color-gray-steel);
+    font-weight: 500;
+}
+
+/* Audio Waveform Animation */
+.waveform-container {
+    height: 40px;
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.waveform-bar {
+    flex: 1;
+    height: 10%;
+    background-color: var(--color-navy-dark);
+    border-radius: 2px;
+    transition: height 0.15s ease;
+}
+
+.music-player-card.playing .waveform-bar {
+    background-color: var(--color-teal);
+    animation: waveAnim 1.2s ease infinite alternate;
+}
+
+/* Delay for wave bar animations */
+.waveform-bar:nth-child(2n) { animation-delay: 0.1s; }
+.waveform-bar:nth-child(3n) { animation-delay: 0.2s; }
+.waveform-bar:nth-child(4n) { animation-delay: 0.3s; }
+.waveform-bar:nth-child(5n) { animation-delay: 0.15s; }
+
+@keyframes waveAnim {
+    0% { height: 10%; }
+    100% { height: 85%; }
+}
+
+/* Controls Alignment */
+.player-controls-row {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.play-toggle-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--color-teal);
+    color: var(--color-navy);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-fast);
+}
+
+.play-toggle-btn:hover {
+    transform: scale(1.08);
+    background: var(--color-teal-hover);
+}
+
+.play-toggle-btn svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+/* Progress Slider Customization */
+.player-slider-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.player-progress-bar {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--color-navy-dark);
+    outline: none;
+    cursor: pointer;
+}
+
+.player-progress-bar::-webkit-slider-value-raw {
+    background: var(--color-teal);
+}
+
+.player-progress-bar::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 6px;
+    cursor: pointer;
+    background: var(--color-navy-dark);
+    border-radius: 3px;
+}
+
+.player-progress-bar::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--color-teal);
+    cursor: pointer;
+    margin-top: -4px;
+    transition: var(--transition-fast);
+}
+
+.player-progress-bar::-webkit-slider-thumb:hover {
+    transform: scale(1.25);
+    background: var(--color-teal-hover);
+    box-shadow: 0 0 10px rgba(0, 209, 193, 0.5);
+}
+
+.time-display {
+    font-size: 0.85rem;
+    font-family: monospace;
+    color: var(--color-gray-steel);
+    min-width: 35px;
+}

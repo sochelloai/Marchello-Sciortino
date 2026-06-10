@@ -1,0 +1,980 @@
+/**
+ * Router Module - Handles client-side hash routing for the SPA.
+ */
+const Router = {
+    routes: {},
+    currentPage: null,
+
+    init() {
+        // Register window hash change listener
+        window.addEventListener('hashchange', () => this.handleRouting());
+        
+        // Handle initial page load
+        window.addEventListener('load', () => {
+            if (!window.location.hash) {
+                window.location.hash = '#/home';
+            } else {
+                this.handleRouting();
+            }
+        });
+    },
+
+    register(route, templateFn) {
+        this.routes[route] = templateFn;
+    },
+
+    handleRouting() {
+        const hash = window.location.hash || '#/home';
+        const route = this.parseRoute(hash);
+        
+        // Match route or redirect to home
+        const templateFn = this.routes[route] || this.routes['/home'];
+        
+        if (templateFn) {
+            // Update current page
+            this.currentPage = route.substring(1); // strip leading slash
+            
+            // Execute template builder
+            const html = templateFn();
+            
+            // Ingest to app container
+            const app = document.getElementById('app');
+            app.innerHTML = html;
+            
+            // Post-rendering actions
+            this.updateNavLinks(hash);
+            this.resetFocus();
+            
+            // Dispatch page load event for submodules
+            const event = new CustomEvent('page-loaded', { detail: { page: this.currentPage } });
+            document.dispatchEvent(event);
+        }
+    },
+
+    parseRoute(hash) {
+        // Simple router logic: hash like '#/story' -> '/story'
+        let route = hash.replace('#', '');
+        if (route === '') route = '/home';
+        return route;
+    },
+
+    updateNavLinks(hash) {
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            if (link.getAttribute('href') === hash) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    },
+
+    resetFocus() {
+        // Reset scroll position to top
+        window.scrollTo({ top: 0, behavior: 'auto' });
+        
+        // Shift screen-reader focus to the main focus helper
+        const mainFocus = document.getElementById('main-focus');
+        if (mainFocus) {
+            mainFocus.focus();
+        }
+    }
+};
+
+// ==========================================================================
+// Page Templates Definitions (Using authentic voice guidelines)
+// ==========================================================================
+
+// 1. Home Page Template
+Router.register('/home', () => `
+    <!-- Cinematic Hero -->
+    <section class="hero-sec">
+        <div class="container">
+            <span class="hero-sub">MARCHELLO SCIORTINO</span>
+            <h1 class="section-title-large">Limitations Do Not Define Possibility.</h1>
+            <p class="hero-tagline">
+                I help people reframe daily constraints, adapt through changes, and use AI as an accessibility bridge to build creative outcomes and professional momentum.
+            </p>
+            <div class="hero-ctas">
+                <a href="#/story" class="btn btn-teal">Watch My Story</a>
+                <a href="#/speaking" class="btn btn-gold">Book Me To Speak</a>
+                <a href="#/aim" class="btn btn-outline-white">Explore Accessible AIM</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Reality Section -->
+    <section class="section bg-white">
+        <div class="container text-center">
+            <span class="section-tag">The Daily Framework</span>
+            <h2>Working Within Reality</h2>
+            <p class="section-desc">
+                Living with Friedrich’s ataxia (a progressive neuromuscular condition) means my physical boundaries change often. My response is simple: adapt, construct, and show up.
+            </p>
+            
+            <div class="timeline-list">
+                <div class="timeline-item">
+                    <div class="timeline-year">Losing Mobility</div>
+                    <div class="timeline-card">
+                        <p>When coordinates in gym class became difficult and balance disappeared, I plateaued at a confusing level before accepting my progression. It meant learning to live without walking, relying on assistance, and planning daily energy blocks carefully.</p>
+                    </div>
+                </div>
+                <div class="timeline-item gold-marker">
+                    <div class="timeline-year">Refusing Defeat</div>
+                    <div class="timeline-card">
+                        <p>Being a warrior in my vocabulary isn't about being a superhero. It's deciding that physical limitations don't define creative output. I shifted my career to digital marketing, designing websites, funnels, and systems online.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Shift Section -->
+    <section class="section bg-navy">
+        <div class="container">
+            <div class="split-shift">
+                <div class="shift-left">
+                    <span class="section-tag text-teal">Perspective</span>
+                    <h3>The Turning Point</h3>
+                    <p class="text-teal" style="font-size: 1.35rem; font-weight:600; margin: 15px 0;">
+                        "Acceptance is not quitting. It is looking at the hand you are dealt and deciding what to build next."
+                    </p>
+                    <p style="color: var(--color-gray-steel);">
+                        The heavy cramps, exhausted muscles, and fatigue are real design constraints. They are not limitations on legacy, faith, or impact.
+                    </p>
+                </div>
+                <div class="shift-right">
+                    <div class="shift-words">From Constraints to Craft</div>
+                    <p style="margin-bottom: 20px;">
+                        With fine motor skills fading, standard workflows stopped working. That is where AI entered the picture. It became my typing hands, my coding logic, and my voice amplifier.
+                    </p>
+                    <a href="#/brain" class="btn btn-teal">Explore the Mind Map</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key previews grid -->
+    <section class="section bg-white">
+        <div class="container">
+            <h2 class="text-center" style="margin-bottom: var(--spacing-lg);">The Brand Ecosystem</h2>
+            <div class="grid-3">
+                <div class="card">
+                    <span class="section-tag">Keynotes</span>
+                    <h3 class="card-title">Keynote Speaking</h3>
+                    <p>Delivering practical, no-fluff perspectives on resilience and adaptation for corporate, educational, and faith-driven events.</p>
+                    <a href="#/speaking" class="text-teal">Book Speaking Details &rarr;</a>
+                </div>
+                <div class="card">
+                    <span class="section-tag">Literature</span>
+                    <h3 class="card-title">Limitations to Liberation</h3>
+                    <p>My upcoming book about the practical tools, mental models, and spiritual principles that build freedom from limitation.</p>
+                    <a href="#/book" class="text-teal">Read Book Mockups &rarr;</a>
+                </div>
+                <div class="card">
+                    <span class="section-tag">Technology</span>
+                    <h3 class="card-title">Accessible AIM</h3>
+                    <p>A mission to help individuals with physical challenges discover how AI can act as a bridge for creation and communication.</p>
+                    <a href="#/aim" class="text-teal">Join AIM Waitlist &rarr;</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Legacy Wall Promo -->
+    <section class="section bg-navy text-center">
+        <div class="container">
+            <h2 style="color: white; margin-bottom: 10px;">The Story Is Still Being Written.</h2>
+            <p class="section-desc" style="color: var(--color-gray-steel); margin-bottom: 25px;">
+                Whether skydiving taped to a tandem master or building applications from my bed, the goal is always to serve first.
+            </p>
+            <div style="display: flex; justify-content: center; gap: 15px;">
+                <a href="#/music" class="btn btn-outline-teal">Hear My AI Music</a>
+                <a href="#/impact" class="btn btn-gold">Read Audience Stories</a>
+            </div>
+        </div>
+    </section>
+`);
+
+// 2. Story Page Template
+Router.register('/story', () => `
+    <div class="page-intro">
+        <div class="container text-center">
+            <span class="section-tag text-teal">Timeline</span>
+            <h1 style="color: white;">My Journey</h1>
+            <p class="section-desc" style="color: var(--color-gray-light);">
+                No hero-worship. No pity. Just an honest timeline of progressive challenges and the choices made to keep building.
+            </p>
+        </div>
+    </div>
+    
+    <section class="section bg-white">
+        <div class="container">
+            <div class="timeline-list">
+                <div class="timeline-item">
+                    <div class="timeline-year">1996 - Childhood & Early Years</div>
+                    <div class="timeline-card">
+                        <p>Born in St. Louis, Missouri. I had a fantastic childhood filled with comfort and stability provided by my loving parents, David and Alicia. Early on, I was a quiet, shy kid who stayed clear of sports after choking up at a t-ball game, preferring to play and observe.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">Around 3rd & 4th Grade</div>
+                    <div class="timeline-card">
+                        <p>I began noticing shortness of breath and a rapid heartbeat after normal activity in gym class. Soon, balance blocks appeared. I couldn't run as fast, walk in a straight line, or balance across parking blocks. Other kids started asking, "Why do you walk like that?" and I had no answers.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">The Diagnosis at 14</div>
+                    <div class="timeline-card">
+                        <p>After years of medical uncertainty, muscle tests, and spinal checks, we received a laboratory diagnosis: Friedrich's ataxia. It's a progressive, neuromuscular condition that disrupts neural pathways, affecting fine motor skills, gait, energy, and hearing. It was a clear confirmation that my physical state would slowly decline over time.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">Progression & Independence Shift</div>
+                    <div class="timeline-card">
+                        <p>High school and college years required constant adjustments. I eventually transitioned to a wheelchair. Simple things—sitting up, opening a soda, getting in or out of bed—required parent assistance. The hardest challenge was the mental fatigue: resisting feeling like a "nuisance" or "disabled mooch" and choosing to focus on what coordinates I still controlled.</p>
+                    </div>
+                </div>
+                <div class="timeline-item gold-marker">
+                    <div class="timeline-year">Discovering Digital Marketing & AI</div>
+                    <div class="timeline-card">
+                        <p>With physical labor impossible, I focused on digital skillsets. I trained, became ClickFunnels certified, and began building websites and marketing campaigns for business partners. As typing became a nightmare, AI became my typing speed. It bridged the physical gap, acting as an amplifier for my ideas, voice, and designs.</p>
+                    </div>
+                </div>
+                <div class="timeline-item gold-marker">
+                    <div class="timeline-year">Today - Writing the Legacy</div>
+                    <div class="timeline-card">
+                        <p>The challenges changed, but the mission did not. I continue to build systems, write books, create AI-powered songs, and deliver keynotes to show that limits are parameters to create around, not blockades to accept.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+`);
+
+// 3. Mission Page Template
+Router.register('/mission', () => `
+    <div class="page-intro">
+        <div class="container text-center">
+            <span class="section-tag text-teal">Purpose</span>
+            <h1 style="color: white;">The Mission</h1>
+            <p class="section-desc" style="color: var(--color-gray-light);">
+                Why this hub exists, what I believe, and how we change our relationship with limitation.
+            </p>
+        </div>
+    </div>
+    
+    <section class="section bg-white">
+        <div class="container">
+            <div class="grid-2" style="margin-bottom: var(--spacing-lg);">
+                <div>
+                    <h2>Rejecting the Default Limit</h2>
+                    <p>
+                        A lot of the language around disability is either rooted in pity ("your life is so hard") or hero-worship ("you are such a hero"). Both frame the person solely by their limitation, putting them in a box.
+                    </p>
+                    <p>
+                        My mission is to demonstrate that <strong>purpose and contribution do not require physical perfection</strong>. You do not need a perfect body to create a world-class website, direct a business strategy, or offer value to others.
+                    </p>
+                </div>
+                <div class="card bg-navy" style="padding: var(--spacing-lg);">
+                    <h3 class="text-teal" style="margin-bottom: 15px;">The W.I.N. Framework</h3>
+                    <ul style="list-style: none; display: flex; flex-direction: column; gap: 15px; color: var(--color-white);">
+                        <li><strong class="text-gold">W - Warrior Story:</strong> Refusing to defend limitation, choosing not to accept the ordinary.</li>
+                        <li><strong class="text-gold">I - Inspiring Impact:</strong> Building visible outcomes that prove capacity to others struggling.</li>
+                        <li><strong class="text-gold">N - Nurturing Outcomes:</strong> Guiding people to adapt step-by-step to their own parameters.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="grid-3">
+                <div class="card">
+                    <h3>Constraint-Based Thinking</h3>
+                    <p>In web design, constraints (screen sizes, load limits) force better solutions. The same is true in life. Limitations force us to filter out the noise and focus on what can still be created.</p>
+                </div>
+                <div class="card">
+                    <h3>AI as a Human Bridge</h3>
+                    <p>Artificial Intelligence isn't about replacing humanity; it is about expanding capability. For those of us with motor blocks, AI operates as the ultimate accessibility tool, turning thoughts into execution.</p>
+                </div>
+                <div class="card">
+                    <h3>Serve First, Sell Last</h3>
+                    <p>Relationships come first. Contribution is second. Selling is last. This hub is built to serve as a library of what is possible, helping others see a blueprint they can apply to their own lives.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+`);
+
+// 4. The Brain Page Template
+Router.register('/brain', () => `
+    <div class="page-intro">
+        <div class="container text-center">
+            <span class="section-tag text-teal">Interactive Map</span>
+            <h1 style="color: white;">The Brain Map</h1>
+            <p class="section-desc" style="color: var(--color-gray-light);">
+                The most powerful resource I have left is how I think. Click the nodes below to explore the mental models, lessons, and milestones that drive my daily life.
+            </p>
+        </div>
+    </div>
+    
+    <section class="section bg-white">
+        <div class="container">
+            <div class="brain-map-wrapper">
+                <div class="brain-map-container" id="brain-map-container">
+                    <!-- JavaScript will dynamically inject the SVG neural map here -->
+                </div>
+            </div>
+            
+            <!-- Screen-Reader & Keyboard backup list -->
+            <div class="brain-accessibility-list">
+                <h4>Screen Reader & Keyboard Directory</h4>
+                <p style="color: var(--color-gray-light); font-size: 0.9rem; margin-bottom: var(--spacing-sm);">
+                    Select any of the topics below to view Marchello's notes, rules, and reflections.
+                </p>
+                <div class="brain-list-grid" id="brain-list-grid">
+                    <!-- JavaScript will dynamically render buttons here -->
+                </div>
+            </div>
+        </div>
+    </section>
+`);
+
+// 5. Speaking Page Template
+Router.register('/speaking', () => `
+    <div class="page-intro">
+        <div class="container text-center">
+            <span class="section-tag text-teal">Keynotes</span>
+            <h1 style="color: white;">Speaking & Keynotes</h1>
+            <p class="section-desc" style="color: var(--color-gray-light);">
+                A straight-forward, no-fluff, highly motivating message for leadership groups, disability advocacy conferences, and faith-driven events.
+            </p>
+        </div>
+    </div>
+    
+    <section class="section bg-white">
+        <div class="container">
+            <div class="grid-2" style="margin-bottom: var(--spacing-lg);">
+                <div>
+                    <span class="section-tag">Signature Message</span>
+                    <h2>Winning Despite The Odds: Reframing Resilience</h2>
+                    <p>
+                        Most motivational talks outline a temporary setback that was magically solved. My message is different: I live with a progressive condition that gets harder every day. Resilience isn't a one-time event; it is a daily adjustment.
+                    </p>
+                    <p style="margin-bottom: 20px;">
+                        In this signature keynote, I share the W.I.N. framework to show how organizations, individuals, and teams can look at their changing parameters, reframe their focus, and build practical success.
+                    </p>
+                    <div style="background: var(--color-white); border-left: 4px solid var(--color-teal); padding: var(--spacing-sm); margin-bottom: 20px;">
+                        <strong>Key Audience Takeaways:</strong>
+                        <ul style="margin-top: 10px; padding-left: 20px; color: var(--color-gray-steel);">
+                            <li>Shift perspective from limitations to creative constraints.</li>
+                            <li>Develop a can-do execution model when traditional resources shift.</li>
+                            <li>Leverage emerging AI technologies to multiply team output.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Book Speaking Booking Inquiry</h3>
+                    <p style="font-size: 0.9rem; margin-bottom: 15px;">Fill out this form to inquire about booking Marchello for an upcoming virtual or in-person event.</p>
+                    <form id="speaking-inquiry-form" class="speaking-form">
+                        <div class="form-group">
+                            <label for="event-name">Event Name</label>
+                            <input type="text" id="event-name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="event-org">Organization</label>
+                            <input type="text" id="event-org" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="event-date">Proposed Date</label>
+                            <input type="date" id="event-date" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="event-location">Location / Virtual</label>
+                            <input type="text" id="event-location" placeholder="e.g. St. Louis, MO or Zoom" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="event-audience">Expected Audience size / Type</label>
+                            <input type="text" id="event-audience" placeholder="e.g. 200 Corporate Managers" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-teal" style="width: 100%;">Submit Speaking Inquiry</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div>
+                <h3 class="text-center" style="margin-bottom: var(--spacing-md);">Speaking Topics</h3>
+                <div class="grid-3">
+                    <div class="card">
+                        <h4 class="text-teal">Perspective & The Hand You are Dealt</h4>
+                        <p>How to accept real limitations without accepting defeat. A tactical guide to shifting perspective to discover what abilities remain.</p>
+                    </div>
+                    <div class="card">
+                        <h4 class="text-teal">AI as a Creative Catalyst</h4>
+                        <p>How technology can act as an equalizer. Practical insights into how businesses and individuals can amplify their productivity using modern AI tools.</p>
+                    </div>
+                    <div class="card">
+                        <h4 class="text-teal">Faith, Family & Daily Adaptation</h4>
+                        <p>Reflections on the support structures, faith foundations, and community ties that keep a warrior story moving forward under pressure.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+`);
+
+// 6. Book Page Template
+Router.register('/book', () => `
+    <div class="page-intro">
+        <div class="container text-center">
+            <span class="section-tag text-teal">Literature</span>
+            <h1 style="color: white;">The Book</h1>
+            <p class="section-desc" style="color: var(--color-gray-light);">
+                My upcoming release: a guide to converting structural limits into emotional and creative freedom.
+            </p>
+        </div>
+    </div>
+    
+    <section class="section bg-white">
+        <div class="container">
+            <div class="grid-2">
+                <div style="display: flex; justify-content: center;">
+                    <img src="assets/book_cover_mockup.png" alt="Limitations to Liberation Book Mockup" style="max-width: 350px; box-shadow: var(--shadow-lg); border-radius: var(--radius-md);">
+                </div>
+                <div>
+                    <span class="section-tag">Limitations to Liberation</span>
+                    <h2>A Blueprint for Thriving</h2>
+                    <p class="text-teal" style="font-size: 1.2rem; font-weight:600; margin: 10px 0;">
+                        "This book is not about pretending limitations do not hurt. It is about learning how to build possibility anyway."
+                    </p>
+                    <p>
+                        In this book, I share my raw experiences living with Friedrich's ataxia, the slow decline of my physical coordinates, and how that forced a complete overhaul of how I think, communicate, and construct value.
+                    </p>
+                    <p style="margin-bottom: 20px;">
+                        It breaks down standard clichés, offers honest reflections on dependency, and provides actionable guides to setting up digital work, adopting AI, and nurturing faith.
+                    </p>
+                    
+                    <div class="card" style="background: var(--color-white); margin-bottom: 20px;">
+                        <h4>What is inside:</h4>
+                        <ul style="padding-left: 20px; margin-top: 10px; color: var(--color-gray-steel);">
+                            <li>The transition from athletic dreams to physical assistance.</li>
+                            <li>The design parameters model: reframing boundaries as inputs.</li>
+                            <li>A practical breakdown of the W.I.N. warrior framework.</li>
+                        </ul>
+                    </div>
+                    
+                    <form id="book-notify-form" style="display: flex; gap: 10px;">
+                        <input type="email" placeholder="Enter your email" class="form-control" required style="flex: 1;">
+                        <button type="submit" class="btn btn-teal">Notify Me on Release</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+`);
+
+// 7. Accessible AIM Page Template
+Router.register('/aim', () => `
+    <div class="page-intro">
+        <div class="container text-center">
+            <span class="section-tag text-teal">Community Initiative</span>
+            <h1 style="color: white;">Accessible AIM</h1>
+            <p class="section-desc" style="color: var(--color-gray-light);">
+                Helping people with physical limitations discover how AI can act as a voice amplifier, text simulator, and creative partner.
+            </p>
+        </div>
+    </div>
+    
+    <section class="section bg-white">
+        <div class="container">
+            <div class="grid-2" style="margin-bottom: var(--spacing-lg);">
+                <div>
+                    <h2>Amplifying Ability</h2>
+                    <p>
+                        When physical coordinates become hard to reach, simple things like typing, writing emails, organizing thoughts, or drafting templates can become a nightmare. 
+                    </p>
+                    <p>
+                        <strong>Accessible AIM</strong> is a program and platform designed to teach constraint-based AI use. We train individuals with disabilities, neuromuscular conditions, and physical constraints on how to configure AI tools to act as their physical extensions.
+                    </p>
+                    <p style="margin-bottom: 20px;">
+                        By learning how to prompt, structure data, and automate layouts, members can build online careers, handle personal admin tasks, and write their own stories with less friction.
+                    </p>
+                </div>
+                <div class="card">
+                    <h3>Join the Early Access Waitlist</h3>
+                    <p style="font-size: 0.9rem; margin-bottom: 15px;">We are currently building the first training tracks. Join the list to receive initial guides and early entry notifications.</p>
+                    <form id="aim-waitlist-form">
+                        <div class="form-group">
+                            <label for="aim-name">Full Name</label>
+                            <input type="text" id="aim-name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="aim-email">Email Address</label>
+                            <input type="email" id="aim-email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="aim-role">Why are you interested in Accessible AIM?</label>
+                            <select id="aim-role" class="form-control" required>
+                                <option value="">Select an option</option>
+                                <option value="disabled">I have physical limitations and want to learn</option>
+                                <option value="caregiver">I am a caregiver/family member</option>
+                                <option value="professional">I am an educator or professional</option>
+                                <option value="other">General supporter</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-teal" style="width: 100%;">Join Waitlist</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="grid-3 text-center">
+                <div class="card">
+                    <h4 class="text-teal">1. AI Configuration</h4>
+                    <p>Setting up voice-to-text assistants, keyboard shortcuts, and visual layouts to reduce fine motor strain.</p>
+                </div>
+                <div class="card">
+                    <h4 class="text-teal">2. Creative Execution</h4>
+                    <p>Using AI to write, code, design graphics, and build websites using prompts and constraint-based directives.</p>
+                </div>
+                <div class="card">
+                    <h4 class="text-teal">3. Community Workspace</h4>
+                    <p>A friendly, no-pity environment where members share custom workflows, support, and professional projects.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+`);
+
+// 8. ChelloAI Page Template
+Router.register('/chelloai', () => `
+    <div class="page-intro">
+        <div class="container text-center">
+            <span class="section-tag text-teal">Digital Companion</span>
+            <h1 style="color: white;">ChelloAI Partner</h1>
+            <p class="section-desc" style="color: var(--color-gray-light);">
+                Technology did not replace my voice. It amplified it. Interact with ChelloAI, my custom conversational companion.
+            </p>
+        </div>
+    </div>
+    
+    <section class="section bg-white">
+        <div class="container">
+            <div class="grid-2">
+                <div>
+                    <h2>A Bridge for Connection</h2>
+                    <p>
+                        Because typing can take me hours and my physical speech has changed, I developed ChelloAI. This partner is trained directly on my personal rules, writings, memories, and voice settings.
+                    </p>
+                    <p>
+                        It does not speak for me, but it represents me in conversations, answering standard questions, providing resources, and helping visitors understand my perspective without delay.
+                    </p>
+                    <p style="margin-bottom: 20px;">
+                        Select a preset topic on the simulator to see how ChelloAI acts as a typing hand and narrative companion.
+                    </p>
+                    <div style="display: flex; gap: 10px;">
+                        <a href="#/aim" class="btn btn-teal">Build Your Own Companion</a>
+                    </div>
+                </div>
+                
+                <!-- Chat Window Simulator Container -->
+                <div class="chat-window">
+                    <div class="chat-header">
+                        <div class="chat-avatar-wrapper">
+                            <img src="assets/chello_ai_avatar.png" alt="ChelloAI Avatar" class="chat-avatar">
+                            <div class="avatar-status-dot"></div>
+                        </div>
+                        <div class="chat-header-info">
+                            <h4>ChelloAI</h4>
+                            <p>Voice & Concept Amplifier</p>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-messages" id="chat-messages">
+                        <!-- Initial message -->
+                        <div class="message-bubble incoming">
+                            Hello! I am ChelloAI, Marchello's digital companion. Select any question below to explore his stories and tools.
+                        </div>
+                    </div>
+                    
+                    <div class="chat-suggestions">
+                        <p class="chat-suggestions-title">Select a topic to ask:</p>
+                        <div class="suggestions-grid" id="chat-suggestions-grid">
+                            <!-- Pre-baked buttons dynamically load here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+`);
+
+// 9. AI Music and Jingles Page Template
+Router.register('/music', () => `
+    <div class="page-intro">
+        <div class="container text-center">
+            <span class="section-tag text-teal">Soundscapes</span>
+            <h1 style="color: white;">AI Music & Brand Jingles</h1>
+            <p class="section-desc" style="color: var(--color-gray-light);">
+                A song can make your story easier to remember, easier to feel, and easier to share.
+            </p>
+        </div>
+    </div>
+    
+    <section class="section bg-white">
+        <div class="container">
+            <div class="grid-2" style="margin-bottom: var(--spacing-lg);">
+                <div>
+                    <h2>Melodies of Progression</h2>
+                    <p>
+                        Even though my hands cannot play the piano keys and my voice cannot maintain a singing energy block, I use AI generator models to compose, write lyrics, and build brand jingles.
+                    </p>
+                    <p style="margin-bottom: 20px;">
+                        These tracks combine real stories (like early Lyme diagnosis or skydiving) with cinematic melodies to capture the emotion of the journey. Play the custom tracks on the right to hear the results.
+                    </p>
+                    
+                    <div class="card">
+                        <h3>Request a Brand Jingle Quote</h3>
+                        <p style="font-size: 0.9rem; margin-bottom: 15px;">I help brands tell their story through custom melodies and acoustic patterns. Inquire for pricing.</p>
+                        <form id="music-quote-form">
+                            <div class="form-group">
+                                <label for="music-name">Name</label>
+                                <input type="text" id="music-name" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="music-email">Email</label>
+                                <input type="email" id="music-email" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="music-details">Describe the style/message of the song you want</label>
+                                <textarea id="music-details" class="form-control" placeholder="e.g. A country acoustic ballad about perseverance for our local team" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-teal" style="width:100%;">Request Quote</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div id="audio-players-container">
+                    <!-- Javascript will dynamically inject the audio player list here -->
+                </div>
+            </div>
+        </div>
+    </section>
+`);
+
+// 10. Media Page Template
+Router.register('/media', () => `
+    <div class="page-intro">
+        <div class="container text-center">
+            <span class="section-tag text-teal">Press Kit</span>
+            <h1 style="color: white;">Media & Resources</h1>
+            <p class="section-desc" style="color: var(--color-gray-light);">
+                Approved assets, speaker bios, and media kit downloads for hosts, journalists, and planners.
+            </p>
+        </div>
+    </div>
+    
+    <section class="section bg-white">
+        <div class="container">
+            <div class="grid-2" style="margin-bottom: var(--spacing-lg);">
+                <div>
+                    <h2>Speaker Bios</h2>
+                    <div style="margin-bottom: 20px;">
+                        <span class="section-tag">Short Bio (100 words)</span>
+                        <p style="background: var(--color-white); padding: 15px; border-left: 3px solid var(--color-teal); font-size: 0.95rem;">
+                            Marchello Sciortino is a ClickFunnels certified builder, digital creator, and keynote speaker living with Friedrich's ataxia, a progressive neuromuscular condition. Rejecting traditional limits, Marchello uses emerging AI tools to amplify his voice and creative agency. Driven by his W.I.N. framework, he coaches individuals and brands on how to turn physical and strategic limitations into practical, high-performance outcomes.
+                        </p>
+                    </div>
+                    <div>
+                        <span class="section-tag">Long Bio</span>
+                        <p style="font-size: 0.95rem; line-height: 1.6;">
+                            Marchello Sciortino is a St. Louis native, digital creator, and keynote speaker. Diagnosed at age 14 with Friedrich’s ataxia, a progressive neuromuscular condition that impacts mobility, energy, and speech, Marchello learned early to reframe boundaries. Rather than accepting defeat, he built a career in online marketing, creating brand websites, funnels, and applications. Today, he leverages AI as an accessibility bridge and shares his W.I.N. (Warrior story, Inspiring impact, Nurturing outcomes) framework with audiences worldwide, helping them turn daily limits into creative assets.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Download Media Kit</h3>
+                    <p style="font-size: 0.95rem; margin-bottom: 20px;">Select files to download for event programs, promotional flyers, or articles.</p>
+                    <ul style="list-style: none; display: flex; flex-direction: column; gap: 15px;">
+                        <li style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid var(--color-gray-border); padding-bottom: 10px;">
+                            <div>
+                                <strong style="display:block;">Speaker One-Sheet</strong>
+                                <span style="font-size:0.8rem; color:var(--color-gray-steel);">PDF (1.2 MB)</span>
+                            </div>
+                            <a href="#/media" class="btn btn-teal btn-sm" onclick="alert('Downloading placeholder: Speaker One-Sheet.pdf'); return false;">Download</a>
+                        </li>
+                        <li style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid var(--color-gray-border); padding-bottom: 10px;">
+                            <div>
+                                <strong style="display:block;">Headshot Gallery</strong>
+                                <span style="font-size:0.8rem; color:var(--color-gray-steel);">ZIP (12 MB)</span>
+                            </div>
+                            <a href="#/media" class="btn btn-teal btn-sm" onclick="alert('Downloading placeholder: Headshots.zip'); return false;">Download</a>
+                        </li>
+                        <li style="display:flex; justify-content:space-between; align-items:center;">
+                            <div>
+                                <strong style="display:block;">W.I.N. Framework Logo Assets</strong>
+                                <span style="font-size:0.8rem; color:var(--color-gray-steel);">PNG/SVG (3 MB)</span>
+                            </div>
+                            <a href="#/media" class="btn btn-teal btn-sm" onclick="alert('Downloading placeholder: Brand_Assets.zip'); return false;">Download</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+`);
+
+// 11. Impact Page Template
+Router.register('/impact', () => `
+    <div class="page-intro">
+        <div class="container text-center">
+            <span class="section-tag text-teal">Audience Feedback</span>
+            <h1 style="color: white;">Impact & Reviews</h1>
+            <p class="section-desc" style="color: var(--color-gray-light);">
+                The message is bigger than one stage. How audiences, brands, and readers respond to the mission.
+            </p>
+        </div>
+    </div>
+    
+    <section class="section bg-white">
+        <div class="container">
+            <div class="grid-3" style="margin-bottom: var(--spacing-lg);">
+                <div class="card">
+                    <span class="text-gold" style="font-size: 1.5rem;">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                    <h4 style="margin-top: 10px;">"A Shift in Paradigm"</h4>
+                    <p style="font-style: italic; font-size: 0.95rem;">
+                        "Marchello's keynote stripped away all the usual corny slogans we hear at sales rallies. His honest details about progression and practical AI execution changed how our management team views challenges."
+                    </p>
+                    <strong style="display:block; font-size: 0.85rem; margin-top: 10px;">— Event Planner, Leadership Forum</strong>
+                </div>
+                <div class="card">
+                    <span class="text-gold" style="font-size: 1.5rem;">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                    <h4 style="margin-top: 10px;">"Zero Fluff, Real Proof"</h4>
+                    <p style="font-style: italic; font-size: 0.95rem;">
+                        "We hired Marchello to build our ClickFunnels logic. His technical design system was flawless, and knowing the coordination coordinates he works with just proved to us that his capacity is second to none."
+                    </p>
+                    <strong style="display:block; font-size: 0.85rem; margin-top: 10px;">— Founder, Tech Accelerator</strong>
+                </div>
+                <div class="card">
+                    <span class="text-gold" style="font-size: 1.5rem;">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                    <h4 style="margin-top: 10px;">"Inspiring and Practical"</h4>
+                    <p style="font-style: italic; font-size: 0.95rem;">
+                        "As a parent of a disabled child, hearing Marchello speak gave me a realistic, non-pity roadmap. He shows that adaptation isn't giving up; it is just a smarter execution strategy."
+                    </p>
+                    <strong style="display:block; font-size: 0.85rem; margin-top: 10px;">— Attendee, Advocacy Summit</strong>
+                </div>
+            </div>
+            
+            <div class="card bg-navy" style="padding: var(--spacing-lg); text-align: center; color: white;">
+                <h3 style="color: white; margin-bottom: 10px;">Want to share your story?</h3>
+                <p style="color: var(--color-gray-steel); margin-bottom: 20px;">If you have heard Marchello speak or read his articles, let us know how the W.I.N. model helped you.</p>
+                <a href="#/contact" class="btn btn-teal">Write to Marchello</a>
+            </div>
+        </div>
+    </section>
+`);
+
+// 12. Hub (Blog) Page Template
+Router.register('/hub', () => `
+    <div class="page-intro">
+        <div class="container text-center">
+            <span class="section-tag text-teal">Story Notes & AI</span>
+            <h1 style="color: white;">The Hub</h1>
+            <p class="section-desc" style="color: var(--color-gray-light);">
+                Explore the mind behind the mission. Reflections on adaptation, prompt guides, personal notes, and framework worksheets.
+            </p>
+        </div>
+    </div>
+    
+    <section class="section bg-white">
+        <div class="container">
+            <!-- Filter & Search Controls -->
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 20px; margin-bottom: var(--spacing-lg); flex-wrap: wrap;">
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;" id="hub-tag-filters">
+                    <!-- JS will load buttons here -->
+                </div>
+                <div style="flex: 1; max-width: 300px; min-width: 200px;">
+                    <input type="text" id="hub-search" class="form-control" placeholder="Search articles...">
+                </div>
+            </div>
+            
+            <!-- Article Cards Container -->
+            <div class="grid-3" id="hub-articles-grid">
+                <!-- Javascript will load posts here -->
+            </div>
+        </div>
+    </section>
+`);
+
+// 13. Contact Page Template
+Router.register('/contact', () => `
+    <div class="page-intro">
+        <div class="container text-center">
+            <span class="section-tag text-teal">Connect</span>
+            <h1 style="color: white;">Start a Conversation</h1>
+            <p class="section-desc" style="color: var(--color-gray-light);">
+                Have a question, want to collaborate, or want to share your own story? I am here.
+            </p>
+        </div>
+    </div>
+    
+    <section class="section bg-white">
+        <div class="container" style="max-width: 600px;">
+            <div class="card">
+                <form id="contact-page-form">
+                    <div class="form-group">
+                        <label for="contact-name">Your Name</label>
+                        <input type="text" id="contact-name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-email">Email Address</label>
+                        <input type="email" id="contact-email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-reason">Reason for Reaching Out</label>
+                        <select id="contact-reason" class="form-control" required>
+                            <option value="">Select an option</option>
+                            <option value="general">General Connection / Encouragement</option>
+                            <option value="speaking">Keynote Speaking Opportunity</option>
+                            <option value="book">Book Question or Interview</option>
+                            <option value="music">AI Music Jingle Inquiry</option>
+                            <option value="aim">Accessible AIM Platform Inquiry</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-message">Your Message</label>
+                        <textarea id="contact-message" class="form-control" placeholder="Tell me what is on your mind..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-teal" style="width: 100%;">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+`);
+
+// 14. Resources Page Template
+Router.register('/resources', () => `
+    <div class="page-intro">
+        <div class="container text-center">
+            <span class="section-tag text-teal">Tools</span>
+            <h1 style="color: white;">Free Resources</h1>
+            <p class="section-desc" style="color: var(--color-gray-light);">
+                Worksheets, prompt templates, and PDF guides to help you reframe obstacles and scale output.
+            </p>
+        </div>
+    </div>
+    
+    <section class="section bg-white">
+        <div class="container">
+            <div class="grid-3">
+                <div class="card">
+                    <span class="section-tag">PDF Worksheet</span>
+                    <h3>W.I.N. Reframe Matrix</h3>
+                    <p>A step-by-step reflection grid to list your active constraints and construct a custom action plan.</p>
+                    <a href="#/resources" class="btn btn-outline-teal" onclick="alert('Downloading W.I.N. Reframe Matrix PDF'); return false;" style="margin-top: 15px;">Download PDF</a>
+                </div>
+                <div class="card">
+                    <span class="section-tag">Prompt Cheat Sheet</span>
+                    <h3>AI Accessibility Commands</h3>
+                    <p>My core templates for configuring AI writing assistants to act as efficient transcription guides.</p>
+                    <a href="#/resources" class="btn btn-outline-teal" onclick="alert('Downloading AI Accessibility Commands Prompt Guide'); return false;" style="margin-top: 15px;">Download Guide</a>
+                </div>
+                <div class="card">
+                    <span class="section-tag">Checklist</span>
+                    <h3>Digital Flow Audit</h3>
+                    <p>A simple check sheet to audit your landing pages for ADA accessibility and speed friction blocks.</p>
+                    <a href="#/resources" class="btn btn-outline-teal" onclick="alert('Downloading Digital Flow Audit Checklist'); return false;" style="margin-top: 15px;">Download Checklist</a>
+                </div>
+            </div>
+        </div>
+    </section>
+`);
+
+// 15. Privacy Page Template
+Router.register('/privacy', () => `
+    <div class="page-intro">
+        <div class="container text-center">
+            <h1 style="color: white;">Privacy Policy</h1>
+            <p style="color: var(--color-gray-light);">Last updated: June 2026</p>
+        </div>
+    </div>
+    <section class="section bg-white">
+        <div class="container" style="max-width: 800px;">
+            <h2>Information Collection</h2>
+            <p>We respect your privacy. This site collects only the data you submit through our inquiry forms (name, email, organization, messages) and uses standard anonymous cookies to preserve accessibility choices locally on your browser.</p>
+            
+            <h2 style="margin-top: 25px;">Use of Data</h2>
+            <p>Your details are used solely to reply to speaking inquiries, send waitlist notifications, or arrange book releases. We never sell or share your contact records with external marketers.</p>
+            
+            <h2 style="margin-top: 25px;">Consent</h2>
+            <p>By entering data on our submission fields, you consent to our security policies. You can ask to have your data erased at any time by messaging us through our contact forms.</p>
+        </div>
+    </section>
+`);
+
+// 16. Terms Page Template
+Router.register('/terms', () => `
+    <div class="page-intro">
+        <div class="container text-center">
+            <h1 style="color: white;">Terms & Conditions</h1>
+            <p style="color: var(--color-gray-light);">Last updated: June 2026</p>
+        </div>
+    </div>
+    <section class="section bg-white">
+        <div class="container" style="max-width: 800px;">
+            <h2>Website Usage</h2>
+            <p>Welcome to Marchello Sciortino's official brand hub. By browsing this site, you agree to comply with standard usage policies. The materials, articles, SVG brain maps, and custom voice models featured on this domain are the intellectual assets of the brand.</p>
+            
+            <h2 style="margin-top: 25px;">No-Guarantees Disclaimer</h2>
+            <p>The advice, strategies, and lessons presented in the Hub or Speaking keynotes reflect Marchello's personal journey and digital experience. They do not constitute official medical advice or secure financial growth promises.</p>
+            
+            <h2 style="margin-top: 25px;">Limitation of Liability</h2>
+            <p>We are not liable for external links, user browser settings adjustments, or third-party implementations based on resources downloaded from this hub.</p>
+        </div>
+    </section>
+`);
+
+// 17. Accessibility Statement Template
+Router.register('/accessibility-statement', () => `
+    <div class="page-intro">
+        <div class="container text-center">
+            <span class="section-tag text-teal">Compliance</span>
+            <h1 style="color: white;">Accessibility Statement</h1>
+            <p class="section-desc" style="color: var(--color-gray-light);">
+                Accessibility is not an add-on to this mission. It is part of the mission.
+            </p>
+        </div>
+    </div>
+    <section class="section bg-white">
+        <div class="container" style="max-width: 800px;">
+            <h2>Commitment to Digital Inclusion</h2>
+            <p>
+                Marchello Sciortino is committed to making this digital hub accessible and navigable for as many people as possible. We actively develop this platform using WCAG 2.2 Level AA guidelines as our technical standard.
+            </p>
+            
+            <h2 style="margin-top: 25px;">Built-in Accessibility Widget</h2>
+            <p>
+                We provide a custom accessibility widget (accessible by clicking the icon in the lower corner of the screen). It allows you to toggle high-contrast profiles, swap readable or dyslexia-friendly fonts, increase size scales, highlight links and headings, and pause motion or scroll animations.
+            </p>
+            
+            <h2 style="margin-top: 25px;">Keyboard & Screen-Reader Optimization</h2>
+            <p>
+                This Single Page Application includes semantic HTML tags, skip-to-content links, active focus management when transitioning routes, and keyboard-tab equivalent listings for all interactive visual modules (such as the SVG neural Brain Map).
+            </p>
+            
+            <div class="card" style="margin-top: 30px;">
+                <h3>Accessibility Feedback</h3>
+                <p style="font-size: 0.95rem; margin-bottom: 15px;">If you experience any barriers while navigating this hub, please let us know so we can adjust the layout constraints.</p>
+                <form id="access-feedback-form">
+                    <div class="form-group">
+                        <label for="access-email">Your Email</label>
+                        <input type="email" id="access-email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="access-desc">Describe the barrier you encountered</label>
+                        <textarea id="access-desc" class="form-control" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-teal">Submit Accessibility Feedback</button>
+                </form>
+            </div>
+        </div>
+    </section>
+`);

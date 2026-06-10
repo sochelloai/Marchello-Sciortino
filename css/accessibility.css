@@ -1,0 +1,256 @@
+/* ==========================================================================
+   Accessibility Widget Panel Styles
+   ========================================================================== */
+.accessibility-widget {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    z-index: 9999;
+    font-family: var(--font-body);
+}
+
+.accessibility-toggle-btn {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: var(--color-teal);
+    color: var(--color-navy);
+    border: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-fast);
+}
+
+.accessibility-toggle-btn:hover {
+    transform: scale(1.08);
+    background-color: var(--color-teal-hover);
+}
+
+.accessibility-toggle-btn svg {
+    width: 28px;
+    height: 28px;
+}
+
+.accessibility-panel {
+    position: absolute;
+    bottom: 70px;
+    right: 0;
+    width: 350px;
+    max-height: 80vh;
+    background: var(--color-navy-light);
+    border: 2px solid var(--color-teal);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    color: var(--color-white);
+}
+
+.accessibility-panel.active {
+    display: flex;
+    animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.panel-header {
+    background: var(--color-navy-dark);
+    padding: var(--spacing-sm) var(--spacing-md);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--color-gray-border);
+}
+
+.panel-header h3 {
+    color: var(--color-white);
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.close-panel-btn {
+    background: none;
+    border: none;
+    color: var(--color-white);
+    font-size: 1.8rem;
+    cursor: pointer;
+}
+
+.close-panel-btn:hover {
+    color: var(--color-teal);
+}
+
+.panel-body {
+    padding: var(--spacing-md);
+    overflow-y: auto;
+}
+
+.panel-section {
+    margin-bottom: var(--spacing-md);
+}
+
+.section-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--color-gray-steel);
+    margin-bottom: var(--spacing-xs);
+    border-bottom: 1px solid var(--color-gray-border);
+    padding-bottom: 4px;
+}
+
+.widget-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+.widget-btn {
+    background: var(--color-navy-dark);
+    color: var(--color-white);
+    border: 1px solid var(--color-gray-border);
+    padding: 10px 8px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: var(--transition-fast);
+    text-align: center;
+}
+
+.widget-btn:hover {
+    border-color: var(--color-teal);
+    background: var(--color-navy);
+}
+
+.widget-btn[aria-pressed="true"] {
+    background-color: var(--color-teal);
+    color: var(--color-navy);
+    border-color: var(--color-teal);
+    font-weight: 700;
+}
+
+.reset-accessibility-btn {
+    width: 100%;
+    background: #E53E3E;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: var(--spacing-sm);
+    transition: var(--transition-fast);
+}
+
+.reset-accessibility-btn:hover {
+    background: #C53030;
+}
+
+/* ==========================================================================
+   State Overrides (Applied to body)
+   ========================================================================== */
+
+/* 1. Contrast Profiles */
+body.accessibility-contrast-high {
+    background-color: #000000 !important;
+    color: #FFFF00 !important;
+}
+
+body.accessibility-contrast-high * {
+    background-color: transparent !important;
+    color: #FFFF00 !important;
+    border-color: #FFFF00 !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+}
+
+body.accessibility-contrast-high a, 
+body.accessibility-contrast-high button, 
+body.accessibility-contrast-high .widget-btn[aria-pressed="true"] {
+    background-color: #FFFF00 !important;
+    color: #000000 !important;
+    border: 2px solid #FFFF00 !important;
+    font-weight: 900 !important;
+}
+
+body.accessibility-contrast-high a:hover, 
+body.accessibility-contrast-high button:hover {
+    background-color: #000000 !important;
+    color: #FFFF00 !important;
+}
+
+body.accessibility-contrast-light {
+    filter: invert(1) hue-rotate(180deg) !important;
+    background-color: #FFFFFF !important;
+}
+
+body.accessibility-contrast-light img,
+body.accessibility-contrast-light video,
+body.accessibility-contrast-light iframe,
+body.accessibility-contrast-light .chat-avatar,
+body.accessibility-contrast-light .success-check-svg,
+body.accessibility-contrast-light .widget-icon,
+body.accessibility-contrast-light svg:not(.brain-svg) {
+    filter: invert(1) hue-rotate(180deg) !important;
+}
+
+/* 2. Dyslexia Layout Font Settings */
+body.accessibility-dyslexic-font {
+    font-family: 'Comic Sans MS', 'OpenDyslexic', 'Segoe UI', cursive, sans-serif !important;
+}
+
+body.accessibility-dyslexic-font h1, 
+body.accessibility-dyslexic-font h2, 
+body.accessibility-dyslexic-font h3, 
+body.accessibility-dyslexic-font h4, 
+body.accessibility-dyslexic-font h5, 
+body.accessibility-dyslexic-font h6 {
+    font-family: 'Comic Sans MS', 'OpenDyslexic', 'Segoe UI', cursive, sans-serif !important;
+}
+
+/* 3. Highly Legible Font Settings */
+body.accessibility-readable-font {
+    font-family: Arial, Helvetica, sans-serif !important;
+}
+
+body.accessibility-readable-font h1,
+body.accessibility-readable-font h2,
+body.accessibility-readable-font h3 {
+    font-family: Arial, Helvetica, sans-serif !important;
+}
+
+/* 4. Accessibility Highlights */
+body.accessibility-highlight-links a {
+    text-decoration: underline !important;
+    background-color: rgba(0, 209, 193, 0.15) !important;
+    outline: 2px dashed #00D1C1 !important;
+}
+
+body.accessibility-highlight-headings h1,
+body.accessibility-highlight-headings h2,
+body.accessibility-highlight-headings h3 {
+    border: 2px solid var(--color-teal) !important;
+    padding: var(--spacing-xs) !important;
+    background-color: rgba(7, 24, 39, 0.05) !important;
+}
+
+/* 5. Motion Block Controller */
+body.accessibility-paused-animations * {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+}
+
+/* 6. Large Mouse Pointer */
+body.accessibility-large-cursor, 
+body.accessibility-large-cursor * {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M0,0 L0,24 L6,18 L13,32 L17,30 L10,16 L18,16 Z' fill='%23071827' stroke='%2300D1C1' stroke-width='2'/%3E%3C/svg%3E"), auto !important;
+}
