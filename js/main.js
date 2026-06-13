@@ -14,13 +14,18 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('page-loaded', (e) => {
         const page = e.detail.page;
         
-        if (page === 'brain') {
+        // Clean up parallax listener when page transitions
+        cleanupHeroParallax();
+        
+        if (page === 'home') {
+            initHeroParallax();
+        } else if (page === 'brain') {
             Brain.init();
         } else if (page === 'chelloai') {
             Chat.init();
         } else if (page === 'music') {
             Music.init();
-        } else if (page === 'hub') {
+        } else if (page === 'hub' || page === 'marchellos-blog') {
             Hub.init();
         }
         
@@ -226,3 +231,62 @@ function showSuccessModal(title, message) {
         if (okBtn) okBtn.focus();
     }
 }
+
+// Global references for hero parallax scroll listeners to allow clean removal
+let heroScrollListener = null;
+let heroResizeListener = null;
+
+/**
+ * Initializes a parallax scroll effect on the hero background image.
+ * Active only when the screen width crops the 16:9 aspect ratio image.
+ */
+function initHeroParallax() {
+    cleanupHeroParallax();
+
+    const hero = document.querySelector('.hero-sec');
+    if (!hero) return;
+
+    const handleScroll = () => {
+        const rect = hero.getBoundingClientRect();
+        // Skip computations if hero is out of viewport
+        if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+
+        // Check if the container aspect ratio crops the 16:9 image horizontally (ratio < 16/9)
+        const aspectRatio = window.innerWidth / window.innerHeight;
+        const isCropped = aspectRatio < (16 / 9);
+
+        if (isCropped) {
+            const scrollY = window.scrollY;
+            const yOffset = scrollY * 0.45; // Smooth 0.45 scroll speed coefficient
+            const isMobile = window.innerWidth <= 768;
+            const xPos = isMobile ? '65%' : 'center';
+            hero.style.backgroundPosition = `${xPos} calc(50% + ${yOffset}px)`;
+        } else {
+            hero.style.backgroundPosition = '';
+        }
+    };
+
+    heroScrollListener = handleScroll;
+    heroResizeListener = handleScroll;
+
+    window.addEventListener('scroll', heroScrollListener, { passive: true });
+    window.addEventListener('resize', heroResizeListener);
+    
+    // Run initial frame
+    handleScroll();
+}
+
+/**
+ * Cleans up active parallax event listeners to prevent leaks during page navigation.
+ */
+function cleanupHeroParallax() {
+    if (heroScrollListener) {
+        window.removeEventListener('scroll', heroScrollListener);
+        heroScrollListener = null;
+    }
+    if (heroResizeListener) {
+        window.removeEventListener('resize', heroResizeListener);
+        heroResizeListener = null;
+    }
+}
+

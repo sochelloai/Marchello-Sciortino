@@ -24,7 +24,19 @@ const Router = {
     },
 
     handleRouting() {
-        const hash = window.location.hash || '#/home';
+        const hash = window.location.hash;
+        
+        // If hash is empty or just #, set to #/home
+        if (!hash || hash === '#') {
+            window.location.hash = '#/home';
+            return;
+        }
+        
+        // If it's a page anchor or skip-link (doesn't start with #/), let browser handle it
+        if (!hash.startsWith('#/')) {
+            return;
+        }
+        
         const route = this.parseRoute(hash);
         
         // Match route or redirect to home
@@ -40,6 +52,30 @@ const Router = {
             // Ingest to app container
             const app = document.getElementById('app');
             app.innerHTML = html;
+            
+            // Update document title dynamically for SEO
+            const titles = {
+                '/home': "Marchello Sciortino | Official Digital Hub",
+                '/story': "My Story | Marchello Sciortino",
+                '/services': "Services | Marchello Sciortino",
+                '/mission': "The Mission | Marchello Sciortino",
+                '/brain': "The Brain Map | Marchello Sciortino",
+                '/speaking': "Speaking | Marchello Sciortino",
+                '/book': "The Book | Marchello Sciortino",
+                '/aim': "Accessible AIM | Marchello Sciortino",
+                '/chelloai': "ChelloAI Companion | Marchello Sciortino",
+                '/music': "AI Music Jingles | Marchello Sciortino",
+                '/media': "Media Assets | Marchello Sciortino",
+                '/impact': "Impact & Reviews | Marchello Sciortino",
+                '/marchellos-blog': "Marchello's Blog | Marchello Sciortino",
+                '/hub': "Marchello's Blog | Marchello Sciortino",
+                '/contact': "Contact | Marchello Sciortino",
+                '/resources': "Downloads & Kit | Marchello Sciortino",
+                '/privacy': "Privacy Policy | Marchello Sciortino",
+                '/terms': "Terms of Service | Marchello Sciortino",
+                '/accessibility-statement': "Accessibility Statement | Marchello Sciortino"
+            };
+            document.title = titles[route] || "Marchello Sciortino";
             
             // Post-rendering actions
             this.updateNavLinks(hash);
@@ -89,16 +125,30 @@ const Router = {
 Router.register('/home', () => `
     <!-- Cinematic Hero -->
     <section class="hero-sec">
+        <!-- Animated Grain Overlay -->
+        <svg class="hero-grain" xmlns="http://www.w3.org/2000/svg">
+            <filter id="grain-noise">
+                <feTurbulence type="fractalNoise" baseFrequency="1.5" numOctaves="2" stitchTiles="stitch" />
+            </filter>
+            <rect width="100%" height="100%" filter="url(#grain-noise)" />
+        </svg>
+
         <div class="container">
-            <span class="hero-sub">MARCHELLO SCIORTINO</span>
-            <h1 class="section-title-large">Limitations Do Not Define Possibility.</h1>
+            <h1 class="hero-title">
+                <span class="hero-title-line-1">LIMITATIONS DO NOT</span>
+                <span class="hero-title-line-2">
+                    <span class="text-teal-italic">DEFINE </span>
+                    <span class="text-orange-brush">POSSIBILITY.
+                        <span class="brush-underline"></span>
+                    </span>
+                </span>
+            </h1>
             <p class="hero-tagline">
                 I help people reframe daily constraints, adapt through changes, and use AI as an accessibility bridge to build creative outcomes and professional momentum.
             </p>
             <div class="hero-ctas">
-                <a href="#/story" class="btn btn-teal">Watch My Story</a>
-                <a href="#/speaking" class="btn btn-gold">Book Me To Speak</a>
-                <a href="#/aim" class="btn btn-outline-white">Explore Accessible AIM</a>
+                <a href="#/story" class="btn btn-teal">WATCH MY STORY</a>
+                <a href="#/aim" class="btn btn-outline-white">EXPLORE ACCESSIBLE AIM</a>
             </div>
         </div>
     </section>
@@ -112,17 +162,42 @@ Router.register('/home', () => `
                 Living with Friedrich’s ataxia (a progressive neuromuscular condition) means my physical boundaries change often. My response is simple: adapt, construct, and show up.
             </p>
             
-            <div class="timeline-list">
-                <div class="timeline-item">
-                    <div class="timeline-year">Losing Mobility</div>
-                    <div class="timeline-card">
-                        <p>When coordinates in gym class became difficult and balance disappeared, I plateaued at a confusing level before accepting my progression. It meant learning to live without walking, relying on assistance, and planning daily energy blocks carefully.</p>
+            <div class="alternating-timeline">
+                <!-- Row 1: Card on Left, Line/Bullet in Center, Image on Right -->
+                <div class="timeline-row">
+                    <div class="timeline-col timeline-content-left">
+                        <div class="timeline-year">Losing Mobility</div>
+                        <div class="timeline-card">
+                            <p>When coordinates in gym class became difficult and balance disappeared, I plateaued at a confusing level before accepting my progression. It meant learning to live without walking, relying on assistance, and planning daily energy blocks carefully.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-col timeline-center">
+                        <div class="timeline-bar-line"></div>
+                        <div class="timeline-bullet bullet-teal"></div>
+                    </div>
+                    <div class="timeline-col timeline-content-right">
+                        <div class="timeline-image-placeholder">
+                            <img src="assets/timeline-1.png" alt="Losing Mobility and adapting" class="timeline-img">
+                        </div>
                     </div>
                 </div>
-                <div class="timeline-item gold-marker">
-                    <div class="timeline-year">Refusing Defeat</div>
-                    <div class="timeline-card">
-                        <p>Being a warrior in my vocabulary isn't about being a superhero. It's deciding that physical limitations don't define creative output. I shifted my career to digital marketing, designing websites, funnels, and systems online.</p>
+                
+                <!-- Row 2: Image on Left, Line/Bullet in Center, Card on Right -->
+                <div class="timeline-row">
+                    <div class="timeline-col timeline-content-left">
+                        <div class="timeline-image-placeholder">
+                            <img src="assets/timeline-2.png" alt="Refusing Defeat and digital creation" class="timeline-img">
+                        </div>
+                    </div>
+                    <div class="timeline-col timeline-center">
+                        <div class="timeline-bar-line"></div>
+                        <div class="timeline-bullet bullet-gold"></div>
+                    </div>
+                    <div class="timeline-col timeline-content-right">
+                        <div class="timeline-year">Refusing Defeat</div>
+                        <div class="timeline-card">
+                            <p>Being a warrior in my vocabulary isn't about being a superhero. It's deciding that physical limitations don't define creative output. I shifted my career to digital marketing, designing websites, funnels, and systems online.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -247,6 +322,371 @@ Router.register('/story', () => `
                         <p>The challenges changed, but the mission did not. I continue to build systems, write books, create AI-powered songs, and deliver keynotes to show that limits are parameters to create around, not blockades to accept.</p>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+`);
+
+// 2b. Services Page Template
+Router.register('/services', () => `
+    <div class="page-intro">
+        <div class="container text-center">
+            <span class="section-tag text-teal">WHAT I DO</span>
+            <h1 style="color: white;">Services</h1>
+            <p class="section-desc" style="color: var(--color-gray-light);">
+                Where AI, Creativity, and Human Potential Meet
+            </p>
+        </div>
+    </div>
+    
+    <!-- Hero / Main Section -->
+    <section class="section bg-white">
+        <div class="container">
+            <div class="grid-2">
+                <div>
+                    <span class="section-tag">Overview</span>
+                    <h2>Where AI, Creativity, and Human Potential Meet</h2>
+                    <p class="text-teal" style="font-size: 1.25rem; font-weight: 600; margin-bottom: 20px; line-height: 1.4;">
+                        Marchello helps individuals, businesses, and organizations leverage artificial intelligence, digital strategy, and resilience-based thinking to create meaningful results.
+                    </p>
+                    <p style="color: var(--color-gray-steel); margin-bottom: 20px; font-weight: 500; font-style: italic;">
+                        Technology changes quickly. Human potential does not.
+                    </p>
+                    <p style="color: var(--color-gray-steel); margin-bottom: 30px;">
+                        Marchello combines AI innovation, digital creation, and lived experience to help people build businesses, amplify ideas, and overcome obstacles. His work sits at the intersection of creativity, technology, and possibility.
+                    </p>
+                    <div class="hero-ctas">
+                        <a href="#/contact" class="btn btn-teal">WORK WITH MARCHELLO</a>
+                        <a href="#services-list" class="btn btn-outline-teal">EXPLORE SERVICES</a>
+                    </div>
+                </div>
+                <div>
+                    <div class="card bg-navy text-white" style="border: 1px solid var(--color-gray-border); padding: var(--spacing-lg); max-width: 480px; margin: 0 auto; box-shadow: var(--shadow-lg);">
+                        <div class="success-icon-wrapper" style="background: rgba(0, 209, 193, 0.1); margin-bottom: 20px;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="2" style="width: 40px; height: 40px;">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </div>
+                        <h3 class="text-white text-center" style="font-size: 1.5rem; margin-bottom: 15px;">Three Ways Marchello Helps People Win</h3>
+                        <p style="color: var(--color-gray-light); font-size: 0.95rem; line-height: 1.6; text-align: center;">
+                            Rather than offering dozens of disconnected services, Marchello focuses on three core areas that bring together his experience as a creator, builder, speaker, AI explorer, and advocate.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Introduction Section -->
+    <section class="section bg-white" id="services-list" style="border-top: 1px solid var(--color-gray-border);">
+        <div class="container text-center" style="max-width: 800px;">
+            <span class="section-tag">How I Serve</span>
+            <h2>Three Ways Marchello Helps People Win Despite The Odds</h2>
+            <p class="section-desc">
+                Rather than offering dozens of disconnected services, Marchello focuses on three core areas that bring together his experience as a creator, builder, speaker, AI explorer, and advocate.
+            </p>
+            <p style="color: var(--color-gray-steel); margin-top: -15px; margin-bottom: 40px;">
+                These categories represent the primary ways clients, organizations, and individuals work with him.
+            </p>
+        </div>
+    </section>
+
+    <!-- Services Detail Section -->
+    
+    <!-- Service 01 -->
+    <section class="section bg-navy-light text-white" style="border-top: 1px solid var(--color-gray-border); border-bottom: 1px solid var(--color-gray-border);">
+        <div class="container">
+            <div class="grid-2">
+                <div>
+                    <span class="section-tag text-teal">Service 01</span>
+                    <h2 class="text-white">Digital Experiences & Funnel Engineering</h2>
+                    <p class="text-gold" style="font-size: 1.25rem; font-weight: 600; margin-bottom: 20px;">
+                        Build systems that attract, engage, and convert.
+                    </p>
+                    <p style="color: var(--color-gray-light); margin-bottom: 30px; line-height: 1.6;">
+                        Marchello designs digital experiences that help businesses communicate clearly and guide visitors toward action. Whether it is a sales funnel, landing page, website, membership area, or custom application, every project is built around creating a seamless user experience and meaningful outcomes.
+                    </p>
+                    
+                    <div style="background: rgba(7, 24, 39, 0.4); border-radius: var(--radius-md); border: 1px solid rgba(0, 209, 193, 0.2); padding: var(--spacing-md); margin-bottom: 20px;">
+                        <h4 class="text-white" style="margin-bottom: 15px; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.05em;">Ideal For:</h4>
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                            <span class="btn btn-outline-teal" style="padding: 6px 12px; font-size: 0.75rem; pointer-events: none; text-transform: none;">Entrepreneurs</span>
+                            <span class="btn btn-outline-teal" style="padding: 6px 12px; font-size: 0.75rem; pointer-events: none; text-transform: none;">Small Businesses</span>
+                            <span class="btn btn-outline-teal" style="padding: 6px 12px; font-size: 0.75rem; pointer-events: none; text-transform: none;">Coaches</span>
+                            <span class="btn btn-outline-teal" style="padding: 6px 12px; font-size: 0.75rem; pointer-events: none; text-transform: none;">Speakers</span>
+                            <span class="btn btn-outline-teal" style="padding: 6px 12px; font-size: 0.75rem; pointer-events: none; text-transform: none;">Course Creators</span>
+                            <span class="btn btn-outline-teal" style="padding: 6px 12px; font-size: 0.75rem; pointer-events: none; text-transform: none;">Organizations</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="card bg-navy" style="border: 1px solid rgba(0, 209, 193, 0.2); padding: var(--spacing-lg);">
+                        <h3 class="text-white" style="margin-bottom: 20px; font-size: 1.35rem; border-bottom: 1px solid rgba(0, 209, 193, 0.2); padding-bottom: 10px; font-family: var(--font-heading);">What's Included</h3>
+                        <ul style="list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; color: var(--color-gray-light); padding-left: 0;">
+                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                Funnel building
+                            </li>
+                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                Website design
+                            </li>
+                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                Sales page engineering
+                            </li>
+                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                Landing pages
+                            </li>
+                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                Membership platforms
+                            </li>
+                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                Course portals
+                            </li>
+                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                Lead generation systems
+                            </li>
+                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                Customer journey optimization
+                            </li>
+                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                App development
+                            </li>
+                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                AI-powered experiences
+                            </li>
+                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                ClickFunnels implementation
+                            </li>
+                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                Conversion strategy
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Service 02 -->
+    <section class="section bg-white">
+        <div class="container">
+            <div class="grid-2">
+                <div style="order: 2;">
+                    <span class="section-tag">Service 02</span>
+                    <h2>AI-Powered Content Creation</h2>
+                    <p class="text-teal" style="font-size: 1.25rem; font-weight: 600; margin-bottom: 20px;">
+                        Transform ideas into content, media, and stories.
+                    </p>
+                    <p style="color: var(--color-gray-steel); margin-bottom: 30px; line-height: 1.6;">
+                        Marchello actively explores emerging AI tools and creative technologies to help people create content faster and more effectively. From visual assets and videos to books, music, copywriting, and storytelling, AI becomes a creative amplifier rather than a replacement for human imagination.
+                    </p>
+                    
+                    <div style="background: var(--color-white); border-radius: var(--radius-md); border: 1px solid var(--color-gray-border); padding: var(--spacing-md); margin-bottom: 20px;">
+                        <h4 style="margin-bottom: 15px; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-navy);">Ideal For:</h4>
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                            <span class="btn btn-outline-teal" style="padding: 6px 12px; font-size: 0.75rem; pointer-events: none; text-transform: none;">Personal Brands</span>
+                            <span class="btn btn-outline-teal" style="padding: 6px 12px; font-size: 0.75rem; pointer-events: none; text-transform: none;">Content Creators</span>
+                            <span class="btn btn-outline-teal" style="padding: 6px 12px; font-size: 0.75rem; pointer-events: none; text-transform: none;">Businesses</span>
+                            <span class="btn btn-outline-teal" style="padding: 6px 12px; font-size: 0.75rem; pointer-events: none; text-transform: none;">Authors</span>
+                            <span class="btn btn-outline-teal" style="padding: 6px 12px; font-size: 0.75rem; pointer-events: none; text-transform: none;">Speakers</span>
+                            <span class="btn btn-outline-teal" style="padding: 6px 12px; font-size: 0.75rem; pointer-events: none; text-transform: none;">Marketing Teams</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="order: 1;">
+                    <div class="card bg-navy-light text-white" style="border: 1px solid rgba(0, 209, 193, 0.2); padding: var(--spacing-lg);">
+                        <h3 class="text-white" style="margin-bottom: 20px; font-size: 1.35rem; border-bottom: 1px solid rgba(0, 209, 193, 0.2); padding-bottom: 10px; font-family: var(--font-heading);">What's Included</h3>
+                        <ul style="list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; color: var(--color-gray-light); padding-left: 0;">
+                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                AI-assisted copywriting
+                            </li>
+                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                AI image generation
+                            </li>
+                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                AI video generation
+                            </li>
+                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                AI music & song creation
+                            </li>
+                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                AI book development
+                            </li>
+                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                AI storytelling
+                            </li>
+                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                Brand messaging
+                            </li>
+                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                Content systems
+                            </li>
+                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                Marketing assets
+                            </li>
+                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                Creative campaigns
+                            </li>
+                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                Educational content
+                            </li>
+                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                Digital media production
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Service 03 -->
+    <section class="section bg-navy-light text-white" style="border-top: 1px solid var(--color-gray-border); border-bottom: 1px solid var(--color-gray-border);">
+        <div class="container">
+            <div class="grid-2">
+                <div>
+                    <span class="section-tag text-teal">Service 03</span>
+                    <h2 class="text-white">Winning Despite The Odds Coaching & AI Advocacy</h2>
+                    <p class="text-gold" style="font-size: 1.25rem; font-weight: 600; margin-bottom: 20px;">
+                        Learn to transform limitations into advantages.
+                    </p>
+                    <p style="color: var(--color-gray-light); margin-bottom: 30px; line-height: 1.6;">
+                        Built from Marchello's personal journey and years of navigating adversity, this coaching experience focuses on helping people reframe challenges, build resilience, and discover opportunities hidden inside constraints.
+                        <br><br>
+                        At the same time, Marchello teaches practical ways artificial intelligence can empower people to accomplish more, communicate more effectively, and expand what is possible in their personal and professional lives.
+                    </p>
+                    
+                    <div style="background: rgba(7, 24, 39, 0.4); border-radius: var(--radius-md); border: 1px solid rgba(0, 209, 193, 0.2); padding: var(--spacing-md); margin-bottom: 20px;">
+                        <h4 class="text-white" style="margin-bottom: 15px; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.05em;">Ideal For:</h4>
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                            <span class="btn btn-outline-teal" style="padding: 6px 12px; font-size: 0.75rem; pointer-events: none; text-transform: none;">Individuals Facing Adversity</span>
+                            <span class="btn btn-outline-teal" style="padding: 6px 12px; font-size: 0.75rem; pointer-events: none; text-transform: none;">Educators & Schools</span>
+                            <span class="btn btn-outline-teal" style="padding: 6px 12px; font-size: 0.75rem; pointer-events: none; text-transform: none;">Organizations</span>
+                            <span class="btn btn-outline-teal" style="padding: 6px 12px; font-size: 0.75rem; pointer-events: none; text-transform: none;">Leadership Teams</span>
+                            <span class="btn btn-outline-teal" style="padding: 6px 12px; font-size: 0.75rem; pointer-events: none; text-transform: none;">Entrepreneurs</span>
+                            <span class="btn btn-outline-teal" style="padding: 6px 12px; font-size: 0.75rem; pointer-events: none; text-transform: none;">Anyone Seeking Growth</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="card bg-navy" style="border: 1px solid rgba(0, 209, 193, 0.2); padding: var(--spacing-lg);">
+                        <h3 class="text-white" style="margin-bottom: 20px; font-size: 1.35rem; border-bottom: 1px solid rgba(0, 209, 193, 0.2); padding-bottom: 10px; font-family: var(--font-heading);">Topics Include</h3>
+                        <div style="display: flex; flex-direction: column; gap: 15px;">
+                            <div style="display: flex; gap: 12px;">
+                                <div style="margin-top: 3px;">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                </div>
+                                <div>
+                                    <h4 class="text-white" style="font-size: 1.05rem; margin-bottom: 3px; font-family: var(--font-heading);">Constraint-Based Thinking</h4>
+                                    <p style="color: var(--color-gray-light); font-size: 0.9rem; margin-bottom: 0; line-height: 1.4;">Learning how obstacles can become sources of innovation.</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 12px;">
+                                <div style="margin-top: 3px;">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                </div>
+                                <div>
+                                    <h4 class="text-white" style="font-size: 1.05rem; margin-bottom: 3px; font-family: var(--font-heading);">Resilience & Mindset</h4>
+                                    <p style="color: var(--color-gray-light); font-size: 0.9rem; margin-bottom: 0; line-height: 1.4;">Developing healthier responses to difficult circumstances.</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 12px;">
+                                <div style="margin-top: 3px;">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                </div>
+                                <div>
+                                    <h4 class="text-white" style="font-size: 1.05rem; margin-bottom: 3px; font-family: var(--font-heading);">Winning Despite The Odds Framework</h4>
+                                    <p style="color: var(--color-gray-light); font-size: 0.9rem; margin-bottom: 0; line-height: 1.4;">The philosophy that guides Marchello's speaking, coaching, and educational work.</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 12px;">
+                                <div style="margin-top: 3px;">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                </div>
+                                <div>
+                                    <h4 class="text-white" style="font-size: 1.05rem; margin-bottom: 3px; font-family: var(--font-heading);">AI Empowerment</h4>
+                                    <p style="color: var(--color-gray-light); font-size: 0.9rem; margin-bottom: 0; line-height: 1.4;">Understanding how technology can amplify human capability.</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 12px;">
+                                <div style="margin-top: 3px;">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                </div>
+                                <div>
+                                    <h4 class="text-white" style="font-size: 1.05rem; margin-bottom: 3px; font-family: var(--font-heading);">Personal Growth</h4>
+                                    <p style="color: var(--color-gray-light); font-size: 0.9rem; margin-bottom: 0; line-height: 1.4;">Building confidence, purpose, and momentum.</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 12px;">
+                                <div style="margin-top: 3px;">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                </div>
+                                <div>
+                                    <h4 class="text-white" style="font-size: 1.05rem; margin-bottom: 3px; font-family: var(--font-heading);">Human Potential</h4>
+                                    <p style="color: var(--color-gray-light); font-size: 0.9rem; margin-bottom: 0; line-height: 1.4;">Discovering strengths hidden beneath limitations.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Innovation Section -->
+    <section class="section bg-white">
+        <div class="container text-center" style="max-width: 800px;">
+            <span class="section-tag">Vision & Exploration</span>
+            <h2>Always Exploring What's Next</h2>
+            <p class="section-desc">
+                Marchello is not simply a service provider. He is an active explorer of emerging technologies, AI systems, creative tools, and digital experiences. His passion lies in discovering practical applications that help people create more, communicate better, save time, and unlock opportunities that previously seemed out of reach. Every project, lesson, and conversation is guided by one belief:
+            </p>
+            <div style="background: var(--color-white); border-left: 5px solid var(--color-teal); border-radius: 4px; padding: var(--spacing-md) var(--spacing-lg); margin-top: 30px; display: inline-block; text-align: left; max-width: 650px; box-shadow: var(--shadow-md); border: 1px solid var(--color-gray-border);">
+                <p style="font-style: italic; font-size: 1.25rem; font-weight: 600; color: var(--color-navy); margin-bottom: 0; font-family: var(--font-heading);">
+                    "Your limitations may shape your path, but they do not define your potential."
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Closing Section -->
+    <section class="section bg-navy text-white" style="border-top: 1px solid rgba(0, 209, 193, 0.2);">
+        <div class="container text-center" style="max-width: 800px;">
+            <span class="section-tag text-teal">Start Today</span>
+            <h2 class="text-white">Let's Build Something Meaningful</h2>
+            <p class="section-desc" style="color: var(--color-gray-light);">
+                Whether you're building a business, creating content, exploring AI, or learning how to navigate life's challenges with greater confidence, Marchello brings together technology, creativity, and lived experience to help you move forward.
+            </p>
+            <div class="hero-ctas" style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 30px;">
+                <a href="#/contact" class="btn btn-teal">WORK WITH MARCHELLO</a>
+                <a href="#/contact" class="btn btn-outline-white">BOOK A CONVERSATION</a>
             </div>
         </div>
     </section>
@@ -773,11 +1213,11 @@ Router.register('/impact', () => `
 `);
 
 // 12. Hub (Blog) Page Template
-Router.register('/hub', () => `
+Router.register('/marchellos-blog', () => `
     <div class="page-intro">
         <div class="container text-center">
             <span class="section-tag text-teal">Story Notes & AI</span>
-            <h1 style="color: white;">The Hub</h1>
+            <h1 style="color: white;">Marchello's Blog</h1>
             <p class="section-desc" style="color: var(--color-gray-light);">
                 Explore the mind behind the mission. Reflections on adaptation, prompt guides, personal notes, and framework worksheets.
             </p>
@@ -803,6 +1243,8 @@ Router.register('/hub', () => `
         </div>
     </section>
 `);
+
+Router.register('/hub', () => Router.routes['/marchellos-blog']());
 
 // 13. Contact Page Template
 Router.register('/contact', () => `
@@ -952,8 +1394,42 @@ Router.register('/accessibility-statement', () => `
             
             <h2 style="margin-top: 25px;">Built-in Accessibility Widget</h2>
             <p>
-                We provide a custom accessibility widget (accessible by clicking the icon in the lower corner of the screen). It allows you to toggle high-contrast profiles, swap readable or dyslexia-friendly fonts, increase size scales, highlight links and headings, and pause motion or scroll animations.
+                We provide a custom accessibility widget (accessible by clicking the icon in the lower corner of the screen). It allows users to toggle, scale, and adjust a comprehensive set of interface features:
             </p>
+            
+            <div class="accessibility-features-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 20px; margin-bottom: 25px;">
+                <div class="card" style="margin: 0; padding: 20px; background: #081b29; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; color: #FFFFFF;">
+                    <h3 style="color: #0ad8ad; font-size: 1.1rem; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                        <span>👁️</span> Essential Helpers
+                    </h3>
+                    <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 0.92rem; color: #E2E8F0;">
+                        <li><strong>Larger Text Scale:</strong> A range slider to adjust text sizing globally from 100% up to 160%.</li>
+                        <li><strong>High Contrast Mode:</strong> Enhances text legibility with yellow-on-black color profiles.</li>
+                        <li><strong>Grayscale / Monochrome:</strong> Desaturates colors for reduced sensory stimulation.</li>
+                        <li><strong>Underline Links:</strong> Automatically underscores all hyperlink elements.</li>
+                        <li><strong>Highlight Links:</strong> Outlines and highlights all links with high-visibility overlays.</li>
+                        <li><strong>Highlight Headings:</strong> Binds distinct teal borders around page headers.</li>
+                        <li><strong>Dyslexic Reading Font:</strong> Swaps typefaces to dyslexia-friendly alternatives.</li>
+                        <li><strong>Readable Font:</strong> Forces standard Arial/sans-serif typography.</li>
+                        <li><strong>Increase Spacing:</strong> Expands letter-spacing to ease visual tracking.</li>
+                        <li><strong>Line Height +:</strong> Increases vertical line height to 2.0x.</li>
+                    </ul>
+                </div>
+                
+                <div class="card" style="margin: 0; padding: 20px; background: #081b29; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; color: #FFFFFF;">
+                    <h3 style="color: #0ad8ad; font-size: 1.1rem; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                        <span>🚀</span> Creative Focus Tools
+                    </h3>
+                    <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 0.92rem; color: #E2E8F0;">
+                        <li><strong>ADHD Reading Ruler:</strong> A horizontal layout guide following the cursor for reading focus.</li>
+                        <li><strong>Focus Spotlight:</strong> Dimmer mask highlighting only the direct space around the mouse pointer.</li>
+                        <li><strong>High-Visibility Cursor:</strong> Replaces browser arrow with a large, high-visibility visual pointer.</li>
+                        <li><strong>Text-to-Speech Reader:</strong> Reads out focused or hovered items while applying a green outline highlight.</li>
+                        <li><strong>Pause Animations:</strong> Instantly halts transitions and scroll-based motion.</li>
+                        <li><strong>Chime Sound Effects:</strong> Custom synthesizes Web Audio chime feedback on toggles.</li>
+                    </ul>
+                </div>
+            </div>
             
             <h2 style="margin-top: 25px;">Keyboard & Screen-Reader Optimization</h2>
             <p>

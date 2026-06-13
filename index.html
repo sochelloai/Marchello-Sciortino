@@ -9,11 +9,11 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Oswald:wght@700;800&family=Permanent+Marker&display=swap" rel="stylesheet">
     
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/accessibility.css">
+    <link rel="stylesheet" href="css/style.css?v=17">
+    <link rel="stylesheet" href="css/accessibility.css?v=3">
     <link rel="stylesheet" href="css/brain.css">
     <link rel="stylesheet" href="css/chat.css">
     <link rel="stylesheet" href="css/music.css">
@@ -25,8 +25,13 @@
     <!-- Top Navigation Header -->
     <header class="main-header">
         <div class="header-container">
+            <!-- Glowing Neon Lens Flares -->
+            <div class="nav-flare nav-flare-top-left"></div>
+            <div class="nav-flare nav-flare-bottom-right"></div>
+            <div class="nav-flare nav-flare-top-right"></div>
+
             <a href="#/home" class="brand-logo" aria-label="Marchello Sciortino Home">
-                <span class="logo-text">Marchello<span class="text-teal">.</span></span>
+                <img src="assets/logo-light.png?v=2" alt="Marchello Sciortino" class="header-logo-img">
             </a>
             
             <button class="menu-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Toggle Navigation Menu">
@@ -37,12 +42,15 @@
                 <ul class="nav-list">
                     <li><a href="#/home" class="nav-link active">Home</a></li>
                     <li><a href="#/story" class="nav-link">Story</a></li>
-                    <li><a href="#/speaking" class="nav-link">Speaking</a></li>
-                    <li><a href="#/book" class="nav-link">Book</a></li>
-                    <li><a href="#/hub" class="nav-link">Hub</a></li>
+                    <li><a href="#/services" class="nav-link">Services</a></li>
                     <li><a href="#/contact" class="nav-link">Contact</a></li>
+                    <!-- Mobile-only CTA in the list -->
+                    <li class="mobile-cta-only"><a href="#/speaking" class="btn-cta-orange">Book Me To Speak &rarr;</a></li>
                 </ul>
             </nav>
+
+            <!-- Desktop-only CTA Button -->
+            <a href="#/speaking" class="btn-cta-orange desktop-cta-only">Book Me To Speak &rarr;</a>
         </div>
     </header>
 
@@ -58,7 +66,9 @@
     <footer class="main-footer">
         <div class="footer-container">
             <div class="footer-brand">
-                <a href="#/home" class="footer-logo">Marchello<span class="text-teal">.</span></a>
+                <a href="#/home" class="footer-logo" aria-label="Marchello Sciortino Home">
+                    <img src="assets/logo-light.png?v=2" alt="Marchello Sciortino" class="footer-logo-img">
+                </a>
                 <p class="footer-mission">Turning limitations into creative agency, adaptation into strength, and AI into a bridge for possibility.</p>
             </div>
             
@@ -70,6 +80,7 @@
                         <li><a href="#/brain">The Brain Map</a></li>
                         <li><a href="#/impact">Impact & Reviews</a></li>
                         <li><a href="#/resources">Downloads & Kit</a></li>
+                        <li><a href="#/marchellos-blog">Blog</a></li>
                     </ul>
                 </div>
                 <div class="footer-nav-col">
@@ -79,6 +90,7 @@
                         <li><a href="#/chelloai">ChelloAI Companion</a></li>
                         <li><a href="#/music">AI Music Jingles</a></li>
                         <li><a href="#/media">Media Assets</a></li>
+                        <li><a href="#/book">Book</a></li>
                     </ul>
                 </div>
                 <div class="footer-nav-col">
@@ -108,50 +120,237 @@
         
         <div id="accessibility-panel" class="accessibility-panel" aria-hidden="true">
             <div class="panel-header">
-                <h3>Accessibility Profiles</h3>
-                <button id="close-panel-btn" class="close-panel-btn" aria-label="Close Accessibility Panel">&times;</button>
+                <div class="header-title-area">
+                    <h3>Accessibility Features <span class="gear-icon">⚙️</span></h3>
+                    <span class="header-subtitle">CUSTOMIZE READING INTERFACE</span>
+                </div>
+                <button id="close-panel-btn" class="close-panel-btn" aria-label="Close Accessibility Panel">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
             </div>
+            
             <div class="panel-body">
+                <!-- Section 1: Essential Helpers -->
                 <div class="panel-section">
-                    <h4 class="section-title">Contrast Settings</h4>
-                    <div class="widget-grid">
-                        <button class="widget-btn" data-action="contrast-default" aria-pressed="true">Midnight (Default)</button>
-                        <button class="widget-btn" data-action="contrast-high" aria-pressed="false">High Contrast (Yellow/Black)</button>
-                        <button class="widget-btn" data-action="contrast-light" aria-pressed="false">Light Mode</button>
-                    </div>
-                </div>
-                
-                <div class="panel-section">
-                    <h4 class="section-title">Screen Reader</h4>
-                    <div class="widget-grid">
-                        <button class="widget-btn" data-action="voice-male" aria-pressed="false">Male Voice</button>
-                        <button class="widget-btn" data-action="voice-female" aria-pressed="false">Female Voice</button>
-                    </div>
-                </div>
-                
-                <div class="panel-section">
-                    <h4 class="section-title">Typography & Layout</h4>
-                    <div class="widget-grid">
-                        <button class="widget-btn" data-action="text-increase" aria-label="Increase text size">Text Size +</button>
-                        <button class="widget-btn" data-action="text-decrease" aria-label="Decrease text size">Text Size -</button>
-                        <button class="widget-btn" data-action="font-dyslexic" aria-pressed="false">Dyslexic Font</button>
-                        <button class="widget-btn" data-action="font-readable" aria-pressed="false">Readable Font</button>
-                        <button class="widget-btn" data-action="spacing-increase" aria-pressed="false">Increase Spacing</button>
-                        <button class="widget-btn" data-action="lineheight-increase" aria-pressed="false">Line Height +</button>
-                    </div>
-                </div>
+                    <h4 class="section-title">
+                        <span class="section-emoji">👁️</span> ESSENTIAL HELPERS
+                    </h4>
+                    <div class="widget-list">
+                        <div class="widget-card" id="larger-text-card">
+                            <div class="btn-left">
+                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 7V4h10v3M9 4v16M7 20h4M14 12V10h6v2M17 10v10M15 20h4"></path>
+                                </svg>
+                                <span class="btn-text">Larger Text</span>
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" id="font-scale-slider" min="1.00" max="1.60" step="0.05" value="1.00" aria-label="Text size scale slider">
+                                <span class="slider-value" id="font-scale-value">100%</span>
+                            </div>
+                        </div>
+                        
+                        <button class="widget-btn" data-action="high-contrast" aria-pressed="false">
+                            <div class="btn-left">
+                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                                <span class="btn-text">High Contrast Mode</span>
+                            </div>
+                            <span class="toggle-pill">OFF</span>
+                        </button>
+                        
+                        <button class="widget-btn" data-action="grayscale" aria-pressed="false">
+                            <div class="btn-left">
+                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <path d="M12 2a10 10 0 0 0 0 20V2z" fill="currentColor"></path>
+                                </svg>
+                                <span class="btn-text">Grayscale / Monochrome</span>
+                            </div>
+                            <span class="toggle-pill">OFF</span>
+                        </button>
+                        
+                        <button class="widget-btn" data-action="underline-links" aria-pressed="false">
+                            <div class="btn-left">
+                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                                    <line x1="3" y1="21" x2="21" y2="21"></line>
+                                </svg>
+                                <span class="btn-text">Underline Links</span>
+                            </div>
+                            <span class="toggle-pill">OFF</span>
+                        </button>
 
-                <div class="panel-section">
-                    <h4 class="section-title">Interaction Aids</h4>
-                    <div class="widget-grid">
-                        <button class="widget-btn" data-action="pause-animations" aria-pressed="false">Pause Animations</button>
-                        <button class="widget-btn" data-action="highlight-links" aria-pressed="false">Highlight Links</button>
-                        <button class="widget-btn" data-action="highlight-headings" aria-pressed="false">Highlight Headings</button>
-                        <button class="widget-btn" data-action="large-cursor" aria-pressed="false">Large Cursor</button>
+                        <button class="widget-btn" data-action="highlight-links" aria-pressed="false">
+                            <div class="btn-left">
+                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                                    <rect x="2" y="18" width="20" height="4" fill="currentColor" opacity="0.3" stroke="none"></rect>
+                                </svg>
+                                <span class="btn-text">Highlight Links</span>
+                            </div>
+                            <span class="toggle-pill">OFF</span>
+                        </button>
+                        
+                        <button class="widget-btn" data-action="highlight-headings" aria-pressed="false">
+                            <div class="btn-left">
+                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M6 12h12M6 20V4M18 20V4"></path>
+                                    <rect x="3" y="8" width="18" height="8" rx="1.5" stroke-dasharray="3,3"></rect>
+                                </svg>
+                                <span class="btn-text">Highlight Headings</span>
+                            </div>
+                            <span class="toggle-pill">OFF</span>
+                        </button>
+                        
+                        <button class="widget-btn" data-action="dyslexic-font" aria-pressed="false">
+                            <div class="btn-left">
+                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
+                                <span class="btn-text">Dyslexic Reading Font</span>
+                            </div>
+                            <span class="toggle-pill">OFF</span>
+                        </button>
+
+                        <button class="widget-btn" data-action="readable-font" aria-pressed="false">
+                            <div class="btn-left">
+                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="4 7 4 4 20 4 20 7"></polyline>
+                                    <line x1="9" y1="20" x2="15" y2="20"></line>
+                                    <line x1="12" y1="4" x2="12" y2="20"></line>
+                                </svg>
+                                <span class="btn-text">Readable Font</span>
+                            </div>
+                            <span class="toggle-pill">OFF</span>
+                        </button>
+
+                        <button class="widget-btn" data-action="spacing-increase" aria-pressed="false">
+                            <div class="btn-left">
+                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 9v6"></path>
+                                    <path d="M21 9v6"></path>
+                                    <path d="M3 12h18"></path>
+                                    <path d="M6 9l-3 3 3 3"></path>
+                                    <path d="M18 9l3 3-3 3"></path>
+                                </svg>
+                                <span class="btn-text">Increase Spacing</span>
+                            </div>
+                            <span class="toggle-pill">OFF</span>
+                        </button>
+
+                        <button class="widget-btn" data-action="lineheight-increase" aria-pressed="false">
+                            <div class="btn-left">
+                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="21" y1="6" x2="9" y2="6"></line>
+                                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                                    <line x1="21" y1="18" x2="9" y2="18"></line>
+                                    <path d="M5 4v16"></path>
+                                    <path d="M3 7l2-3 2 3"></path>
+                                    <path d="M3 17l2 3 2-3"></path>
+                                </svg>
+                                <span class="btn-text">Line Height +</span>
+                            </div>
+                            <span class="toggle-pill">OFF</span>
+                        </button>
                     </div>
                 </div>
                 
-                <button id="reset-accessibility" class="reset-accessibility-btn">Reset All Settings</button>
+                <!-- Section 2: Creative Focus Tools -->
+                <div class="panel-section">
+                    <h4 class="section-title">
+                        <span class="section-emoji">🚀</span> CREATIVE FOCUS TOOLS
+                    </h4>
+                    <div class="widget-list">
+                        <button class="widget-btn" data-action="reading-ruler" aria-pressed="false">
+                            <div class="btn-left">
+                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="2" y="7" width="20" height="10" rx="2" ry="2"></rect>
+                                    <line x1="6" y1="7" x2="6" y2="11"></line>
+                                    <line x1="10" y1="7" x2="10" y2="13"></line>
+                                    <line x1="14" y1="7" x2="14" y2="11"></line>
+                                    <line x1="18" y1="7" x2="18" y2="13"></line>
+                                </svg>
+                                <span class="btn-text">ADHD Reading Ruler</span>
+                            </div>
+                            <span class="toggle-pill">OFF</span>
+                        </button>
+                        
+                        <button class="widget-btn" data-action="focus-spotlight" aria-pressed="false">
+                            <div class="btn-left">
+                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m11.314 11.314l.707.707M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10z"></path>
+                                </svg>
+                                <span class="btn-text">Focus Spotlight</span>
+                            </div>
+                            <span class="toggle-pill">OFF</span>
+                        </button>
+                        
+                        <button class="widget-btn" data-action="large-cursor" aria-pressed="false">
+                            <div class="btn-left">
+                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"></path>
+                                    <path d="M13 13l6 6"></path>
+                                </svg>
+                                <span class="btn-text">High-Visibility Cursor</span>
+                            </div>
+                            <span class="toggle-pill">OFF</span>
+                        </button>
+                        
+                        <button class="widget-btn" data-action="voice-reader" aria-pressed="false">
+                            <div class="btn-left">
+                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+                                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                                </svg>
+                                <span class="btn-text">Text-to-Speech Reader</span>
+                            </div>
+                            <span class="toggle-pill">OFF</span>
+                        </button>
+
+                        <button class="widget-btn" data-action="pause-animations" aria-pressed="false">
+                            <div class="btn-left">
+                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="6" y="4" width="4" height="16" rx="1"></rect>
+                                    <rect x="14" y="4" width="4" height="16" rx="1"></rect>
+                                </svg>
+                                <span class="btn-text">Pause Animations</span>
+                            </div>
+                            <span class="toggle-pill">OFF</span>
+                        </button>
+                        
+                        <button class="widget-btn" data-action="sound-effects" aria-pressed="true">
+                            <div class="btn-left">
+                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                                </svg>
+                                <span class="btn-text">Chime Sound Effects</span>
+                            </div>
+                            <span class="toggle-pill">ON</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="panel-footer">
+                <button id="reset-accessibility" class="reset-link-btn" aria-label="Reset All Settings">
+                    <svg class="reset-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                    </svg>
+                    Reset Settings
+                </button>
+                <span class="compliance-text">WCAG 2.1 Compliant</span>
             </div>
         </div>
     </div>
@@ -163,7 +362,7 @@
             <div class="modal-body text-center">
                 <div class="success-icon-wrapper">
                     <!-- Success Check SVG -->
-                    <svg class="success-check-svg" viewBox="0 0 24 24" fill="none" stroke="#00D1C1" stroke-width="3">
+                    <svg class="success-check-svg" viewBox="0 0 24 24" fill="none" stroke="#0ad8ad" stroke-width="3">
                         <polyline points="20 6 9 17 4 12"></polyline>
                     </svg>
                 </div>
@@ -190,12 +389,12 @@
     </div>
 
     <!-- Core App Scripts -->
-    <script src="js/accessibility.js"></script>
-    <script src="js/router.js"></script>
+    <script src="js/accessibility.js?v=4"></script>
+    <script src="js/router.js?v=9"></script>
     <script src="js/brain.js"></script>
     <script src="js/chat.js"></script>
     <script src="js/music.js"></script>
     <script src="js/hub.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/main.js?v=3"></script>
 </body>
 </html>

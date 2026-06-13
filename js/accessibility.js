@@ -1,26 +1,85 @@
 /**
- * Accessibility Module - Controls the floating ADA settings panel.
- * Includes text scaling, contrast theme overrides, and a custom English screen reader.
+ * Accessibility Module - Controls the redesigned floating ADA settings panel.
+ * Includes text scaling, monochrome, high contrast, dyslexic font, underline links,
+ * ADHD reading ruler, focus spotlight, high-visibility cursor, and synthesized chime sound effects.
  */
 const Accessibility = {
-    // Current scale values
-    fontScale: 1.0,
-    spacingScale: false,
-    lineHeightScale: 1.6,
-    activeVoice: null, // 'male', 'female', or null
-    lastSpokenElement: null,
-    activeUtterance: null, // Keeps speech in scope to prevent garbage collection bugs
+    // Current states
+    soundEffects: true,
+    voiceReaderActive: false,
+    readingRulerActive: false,
+    focusSpotlightActive: false,
     
-    // List of body class toggles
+    // Class mapping for body toggles
     toggles: {
-        'contrast-high': 'accessibility-contrast-high',
-        'contrast-light': 'accessibility-contrast-light',
-        'font-dyslexic': 'accessibility-dyslexic-font',
-        'font-readable': 'accessibility-readable-font',
-        'pause-animations': 'accessibility-paused-animations',
+        'high-contrast': 'accessibility-contrast-high',
+        'grayscale': 'accessibility-monochrome',
+        'underline-links': 'accessibility-underline-links',
         'highlight-links': 'accessibility-highlight-links',
         'highlight-headings': 'accessibility-highlight-headings',
-        'large-cursor': 'accessibility-large-cursor'
+        'dyslexic-font': 'accessibility-dyslexic-font',
+        'readable-font': 'accessibility-readable-font',
+        'pause-animations': 'accessibility-paused-animations',
+        'large-cursor': 'accessibility-large-cursor',
+        'spacing-increase': 'accessibility-spacing-increase',
+        'lineheight-increase': 'accessibility-lineheight-increase'
+    },
+    
+    // Event listener handlers for dynamic elements
+    rulerMoveHandler: null,
+    spotlightMoveHandler: null,
+    
+    // Audio synthesis context and oscillators
+    playChime(isTurnOn) {
+        if (!this.soundEffects) return;
+        try {
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            if (!AudioCtx) return;
+            const ctx = new AudioCtx();
+            const now = ctx.currentTime;
+            
+            if (isTurnOn) {
+                // Bright, premium ascending C-Major arpeggio (C5 -> E5 -> G5 -> C6)
+                const freqs = [523.25, 659.25, 783.99, 1046.50];
+                freqs.forEach((freq, idx) => {
+                    const osc = ctx.createOscillator();
+                    const gainNode = ctx.createGain();
+                    osc.connect(gainNode);
+                    gainNode.connect(ctx.destination);
+                    
+                    osc.type = 'triangle'; // Mellow tone
+                    osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+                    
+                    gainNode.gain.setValueAtTime(0, now + idx * 0.08);
+                    gainNode.gain.linearRampToValueAtTime(0.06, now + idx * 0.08 + 0.02);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.22);
+                    
+                    osc.start(now + idx * 0.08);
+                    osc.stop(now + idx * 0.08 + 0.25);
+                });
+            } else {
+                // Downward soothing tone (G5 -> E5 -> C5)
+                const freqs = [783.99, 659.25, 523.25];
+                freqs.forEach((freq, idx) => {
+                    const osc = ctx.createOscillator();
+                    const gainNode = ctx.createGain();
+                    osc.connect(gainNode);
+                    gainNode.connect(ctx.destination);
+                    
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+                    
+                    gainNode.gain.setValueAtTime(0, now + idx * 0.08);
+                    gainNode.gain.linearRampToValueAtTime(0.06, now + idx * 0.08 + 0.02);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.22);
+                    
+                    osc.start(now + idx * 0.08);
+                    osc.stop(now + idx * 0.08 + 0.25);
+                });
+            }
+        } catch (e) {
+            console.warn("Audio Context error playing chime:", e);
+        }
     },
 
     init() {
@@ -41,6 +100,11 @@ const Accessibility = {
         this.closeBtn = document.getElementById('close-panel-btn');
         this.resetBtn = document.getElementById('reset-accessibility');
         this.actionButtons = this.panel.querySelectorAll('.widget-btn');
+        
+        // Slider elements
+        this.slider = document.getElementById('font-scale-slider');
+        this.sliderVal = document.getElementById('font-scale-value');
+        this.sliderCard = document.getElementById('larger-text-card');
     },
 
     bindEvents() {
@@ -75,6 +139,11 @@ const Accessibility = {
         // Reset button
         this.resetBtn.addEventListener('click', () => this.resetAll());
 
+        // Text size scale slider event
+        this.slider.addEventListener('input', (e) => {
+            this.handleSlider(parseFloat(e.target.value));
+        });
+
         // Screen reader hover & focus event delegation listeners
         document.addEventListener('mouseover', (e) => this.handleScreenReader(e, 'hover'));
         document.addEventListener('focusin', (e) => this.handleScreenReader(e, 'focus'));
@@ -87,7 +156,6 @@ const Accessibility = {
         this.panel.setAttribute('aria-hidden', isExpanded);
         
         if (!isExpanded) {
-            // Focus close button on open
             this.closeBtn.focus();
         }
     },
@@ -98,218 +166,254 @@ const Accessibility = {
         this.panel.setAttribute('aria-hidden', 'true');
     },
 
+    handleSlider(scaleValue) {
+        // Adjust root document font scale
+        document.documentElement.style.setProperty('--font-scale', scaleValue);
+        
+        // Sync text value
+        const percent = Math.round(scaleValue * 100);
+        if (this.sliderVal) {
+            this.sliderVal.textContent = `${percent}%`;
+        }
+        
+        // Toggle card active border state
+        if (this.sliderCard) {
+            if (scaleValue > 1.0) {
+                this.sliderCard.classList.add('active-slider');
+            } else {
+                this.sliderCard.classList.remove('active-slider');
+            }
+        }
+        
+        this.savePreference('fontScale', scaleValue);
+    },
+
     handleAction(action, btn) {
         if (this.toggles[action]) {
-            // It is a standard class toggle
+            // Standard html class toggle to avoid fixed positioning stacking bugs
             const className = this.toggles[action];
-            const isToggled = document.body.classList.toggle(className);
+            const isToggled = document.documentElement.classList.toggle(className);
             
-            // Sync button visual state
-            btn.setAttribute('aria-pressed', isToggled);
+            // Sync button state
+            this.syncButtonState(action, isToggled);
             
-            // Handle exclusive toggles (like fonts and contrasts)
-            if (action === 'font-dyslexic' && isToggled) {
-                this.deactivateAction('font-readable');
-            } else if (action === 'font-readable' && isToggled) {
-                this.deactivateAction('font-dyslexic');
+            // Handle exclusive font face toggle options
+            if (action === 'dyslexic-font' && isToggled) {
+                if (document.documentElement.classList.contains(this.toggles['readable-font'])) {
+                    document.documentElement.classList.remove(this.toggles['readable-font']);
+                    this.syncButtonState('readable-font', false);
+                    this.savePreference('readable-font', false);
+                }
+            } else if (action === 'readable-font' && isToggled) {
+                if (document.documentElement.classList.contains(this.toggles['dyslexic-font'])) {
+                    document.documentElement.classList.remove(this.toggles['dyslexic-font']);
+                    this.syncButtonState('dyslexic-font', false);
+                    this.savePreference('dyslexic-font', false);
+                }
             }
             
+            // Audio confirmation
+            this.playChime(isToggled);
+            
+            // Persist preference
             this.savePreference(action, isToggled);
         } else {
-            // Custom panel commands
+            // Custom helper operations
             switch(action) {
-                case 'contrast-default':
-                    this.clearContrasts();
-                    btn.setAttribute('aria-pressed', 'true');
+                case 'reading-ruler':
+                    this.readingRulerActive = !this.readingRulerActive;
+                    this.syncButtonState(action, this.readingRulerActive);
+                    if (this.readingRulerActive) {
+                        this.initRuler();
+                    } else {
+                        this.destroyRuler();
+                    }
+                    this.playChime(this.readingRulerActive);
+                    this.savePreference('reading-ruler', this.readingRulerActive);
                     break;
-                case 'contrast-high':
-                    this.clearContrasts();
-                    document.body.classList.add(this.toggles['contrast-high']);
-                    btn.setAttribute('aria-pressed', 'true');
-                    this.savePreference('contrast', 'high');
+                    
+                case 'focus-spotlight':
+                    this.focusSpotlightActive = !this.focusSpotlightActive;
+                    this.syncButtonState(action, this.focusSpotlightActive);
+                    if (this.focusSpotlightActive) {
+                        this.initSpotlight();
+                    } else {
+                        this.destroySpotlight();
+                    }
+                    this.playChime(this.focusSpotlightActive);
+                    this.savePreference('focus-spotlight', this.focusSpotlightActive);
                     break;
-                case 'contrast-light':
-                    this.clearContrasts();
-                    document.body.classList.add(this.toggles['contrast-light']);
-                    btn.setAttribute('aria-pressed', 'true');
-                    this.savePreference('contrast', 'light');
+                    
+                case 'voice-reader':
+                    this.voiceReaderActive = !this.voiceReaderActive;
+                    this.syncButtonState(action, this.voiceReaderActive);
+                    if (this.voiceReaderActive) {
+                        this.speakText("Screen Reader Enabled");
+                    } else {
+                        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+                        this.clearSpeakingHighlight();
+                    }
+                    this.playChime(this.voiceReaderActive);
+                    this.savePreference('voice-reader', this.voiceReaderActive);
                     break;
-                case 'voice-male':
-                    this.toggleVoice('male', btn, true);
-                    break;
-                case 'voice-female':
-                    this.toggleVoice('female', btn, true);
-                    break;
-                case 'text-increase':
-                    this.adjustFontScale(0.15);
-                    break;
-                case 'text-decrease':
-                    this.adjustFontScale(-0.15);
-                    break;
-                case 'spacing-increase':
-                    this.toggleTextSpacing(btn);
-                    break;
-                case 'lineheight-increase':
-                    this.toggleLineHeight(btn);
+                    
+                case 'sound-effects':
+                    // If turning off, play the downward chime first, then disable variable
+                    if (this.soundEffects) {
+                        this.playChime(false);
+                        this.soundEffects = false;
+                    } else {
+                        this.soundEffects = true;
+                        this.playChime(true);
+                    }
+                    this.syncButtonState(action, this.soundEffects);
+                    this.savePreference('sound-effects', this.soundEffects);
                     break;
             }
         }
     },
 
-    deactivateAction(action) {
-        const className = this.toggles[action];
-        document.body.classList.remove(className);
-        const btn = this.panel.querySelector(`[data-action="${action}"]`);
-        if (btn) btn.setAttribute('aria-pressed', 'false');
-        this.savePreference(action, false);
+    // ADHD Reading Ruler controller
+    initRuler() {
+        let ruler = document.getElementById('accessibility-reading-ruler');
+        if (!ruler) {
+            ruler = document.createElement('div');
+            ruler.id = 'accessibility-reading-ruler';
+            document.body.appendChild(ruler);
+        }
+        ruler.style.display = 'block';
+        
+        this.rulerMoveHandler = (e) => {
+            ruler.style.top = e.clientY + 'px';
+        };
+        window.addEventListener('mousemove', this.rulerMoveHandler);
     },
-
-    clearContrasts() {
-        document.body.classList.remove(this.toggles['contrast-high']);
-        document.body.classList.remove(this.toggles['contrast-light']);
-        
-        const defaultBtn = this.panel.querySelector('[data-action="contrast-default"]');
-        const highBtn = this.panel.querySelector('[data-action="contrast-high"]');
-        const lightBtn = this.panel.querySelector('[data-action="contrast-light"]');
-        
-        if (defaultBtn) defaultBtn.setAttribute('aria-pressed', 'true');
-        if (highBtn) highBtn.setAttribute('aria-pressed', 'false');
-        if (lightBtn) lightBtn.setAttribute('aria-pressed', 'false');
-        
-        this.savePreference('contrast', 'default');
+    
+    destroyRuler() {
+        const ruler = document.getElementById('accessibility-reading-ruler');
+        if (ruler) {
+            ruler.style.display = 'none';
+        }
+        if (this.rulerMoveHandler) {
+            window.removeEventListener('mousemove', this.rulerMoveHandler);
+            this.rulerMoveHandler = null;
+        }
     },
-
-    toggleVoice(gender, btn, shouldSpeak = true) {
-        const maleBtn = this.panel.querySelector('[data-action="voice-male"]');
-        const femaleBtn = this.panel.querySelector('[data-action="voice-female"]');
+    
+    // Focus Spotlight controller
+    initSpotlight() {
+        let spotlight = document.getElementById('accessibility-focus-spotlight');
+        if (!spotlight) {
+            spotlight = document.createElement('div');
+            spotlight.id = 'accessibility-focus-spotlight';
+            document.body.appendChild(spotlight);
+        }
+        spotlight.style.display = 'block';
         
-        if (this.activeVoice === gender) {
-            // Turning it off
-            this.activeVoice = null;
-            btn.setAttribute('aria-pressed', 'false');
-            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-            this.savePreference('voice', 'none');
-        } else {
-            // Turning it on (and off the other gender)
-            this.activeVoice = gender;
-            
-            if (gender === 'male') {
-                if (maleBtn) maleBtn.setAttribute('aria-pressed', 'true');
-                if (femaleBtn) femaleBtn.setAttribute('aria-pressed', 'false');
-            } else {
-                if (maleBtn) maleBtn.setAttribute('aria-pressed', 'false');
-                if (femaleBtn) femaleBtn.setAttribute('aria-pressed', 'true');
-            }
-            
-            this.savePreference('voice', gender);
-            
-            if (shouldSpeak) {
-                // Speak confirmation
-                const confirmMsg = gender === 'male' ? "Male Screen Reader Enabled" : "Female Screen Reader Enabled";
-                this.speakText(confirmMsg);
-            }
+        this.spotlightMoveHandler = (e) => {
+            document.documentElement.style.setProperty('--mouse-x', e.clientX + 'px');
+            document.documentElement.style.setProperty('--mouse-y', e.clientY + 'px');
+        };
+        window.addEventListener('mousemove', this.spotlightMoveHandler);
+        
+        // Initial location coordinate set to center
+        document.documentElement.style.setProperty('--mouse-x', '50%');
+        document.documentElement.style.setProperty('--mouse-y', '50%');
+    },
+    
+    destroySpotlight() {
+        const spotlight = document.getElementById('accessibility-focus-spotlight');
+        if (spotlight) {
+            spotlight.style.display = 'none';
+        }
+        if (this.spotlightMoveHandler) {
+            window.removeEventListener('mousemove', this.spotlightMoveHandler);
+            this.spotlightMoveHandler = null;
         }
     },
 
-    speakText(text) {
+    // Speech synthesis reader engine
+    lastSpokenElement: null,
+    activeUtterance: null,
+    
+    speakText(text, target = null) {
         if (!('speechSynthesis' in window)) return;
-        
-        // Cancel active speech to clear the queue
         window.speechSynthesis.cancel();
         
-        if (!this.activeVoice) return;
+        this.clearSpeakingHighlight();
         
-        // Wrap speak in a 100ms timeout to allow the asynchronous cancel to complete in Chromium
+        if (!this.voiceReaderActive) return;
+        
+        if (target) {
+            target.classList.add('accessibility-speaking-highlight');
+        }
+        
         setTimeout(() => {
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'en-US'; // Force English vocalization coordinates
+            const phoneticText = text.replace(/Sciortino/gi, 'Shor-tee-no');
+            const utterance = new SpeechSynthesisUtterance(phoneticText);
+            utterance.lang = 'en-US';
             
             const voices = window.speechSynthesis.getVoices();
-            const isFemale = this.activeVoice === 'female';
-            const searchTerms = isFemale 
-                ? ['zira', 'hazel', 'samantha', 'susan', 'karen', 'female', 'google us english', 'heather', 'serena', 'samantha']
-                : ['david', 'george', 'mark', 'male', 'ravi', 'microsoft david', 'google uk english male'];
-            
-            // Look for English vocal gender matches
-            let matchVoice = voices.find(v => {
-                const name = v.name.toLowerCase();
-                const lang = v.lang.toLowerCase();
-                return lang.startsWith('en') && searchTerms.some(term => name.includes(term));
-            });
-            
-            // Fallback to any language match
-            if (!matchVoice) {
-                matchVoice = voices.find(v => {
-                    const name = v.name.toLowerCase();
-                    return searchTerms.some(term => name.includes(term));
-                });
-            }
-            
-            if (matchVoice) {
-                utterance.voice = matchVoice;
-            } else {
-                // Pitch fallback adjustments if gender voices aren't resolved in local OS
-                utterance.pitch = isFemale ? 1.35 : 0.82;
+            // Fallback English voice matching
+            const voice = voices.find(v => v.lang.startsWith('en') && v.name.toLowerCase().includes('google'))
+                       || voices.find(v => v.lang.startsWith('en'))
+                       || voices[0];
+            if (voice) {
+                utterance.voice = voice;
             }
             
             utterance.rate = 1.05;
-            
-            // Prevent garbage collection mid-speech bug
             this.activeUtterance = utterance;
             
+            utterance.onend = () => {
+                if (target && target.classList.contains('accessibility-speaking-highlight')) {
+                    target.classList.remove('accessibility-speaking-highlight');
+                }
+            };
+            utterance.onerror = () => {
+                if (target && target.classList.contains('accessibility-speaking-highlight')) {
+                    target.classList.remove('accessibility-speaking-highlight');
+                }
+            };
+            
             window.speechSynthesis.speak(utterance);
-        }, 100);
+        }, 80);
     },
-
+    
+    clearSpeakingHighlight() {
+        const highlighted = document.querySelectorAll('.accessibility-speaking-highlight');
+        highlighted.forEach(el => el.classList.remove('accessibility-speaking-highlight'));
+    },
+    
     handleScreenReader(e, eventType) {
-        if (!this.activeVoice) return;
+        if (!this.voiceReaderActive) return;
         
-        // Find closest read-worthy interactive elements or semantic structures
-        const target = e.target.closest('a, button, h1, h2, h3, h4, p, [role="button"], .brain-node');
+        let target = e.target.closest('a, button, h1, h2, h3, h4, h5, h6, p, li, span, label, [role="button"], .brain-node, .message-bubble, blockquote, q, td, th, option, small, em, i, strong, b, cite, mark, figcaption, legend, summary');
+        
+        // Fallback: If no standard target is matched, but the hovered element is a leaf node containing text, read it
+        if (!target && e.target && e.target.nodeType === Node.ELEMENT_NODE) {
+            if (e.target.children.length === 0 && e.target.textContent.trim().length > 0) {
+                target = e.target;
+            }
+        }
+        
         if (!target) return;
         
-        // Ignore menu widgets text to avoid feedback loops inside dashboard
-        if (this.panel.contains(target)) return;
+        // Prioritize parent links, buttons, headings, list items, blockquotes, or message bubbles if this target is an inline child
+        const blockParent = target.closest('a, button, h1, h2, h3, h4, h5, h6, p, li, [role="button"], .message-bubble, blockquote, figcaption, legend, summary');
+        if (blockParent && blockParent !== target) {
+            target = blockParent;
+        }
         
         if (eventType === 'hover' && this.lastSpokenElement === target) return;
         this.lastSpokenElement = target;
-        
-        let prefix = '';
-        if (target.tagName === 'A') {
-            prefix = 'Link: ';
-        } else if (target.tagName === 'BUTTON' || target.getAttribute('role') === 'button') {
-            prefix = 'Button: ';
-        } else if (target.tagName.match(/^H[1-6]$/)) {
-            prefix = 'Heading: ';
-        }
         
         let textToRead = target.getAttribute('aria-label') || target.textContent;
         textToRead = textToRead.trim().replace(/\s+/g, ' ');
         
         if (textToRead) {
-            this.speakText(prefix + textToRead);
+            this.speakText(textToRead, target);
         }
-    },
-
-    adjustFontScale(amount) {
-        this.fontScale = Math.min(Math.max(0.85, this.fontScale + amount), 1.6);
-        document.documentElement.style.setProperty('--font-scale', this.fontScale);
-        this.savePreference('fontScale', this.fontScale);
-    },
-
-    toggleTextSpacing(btn) {
-        this.spacingScale = !this.spacingScale;
-        const spacing = this.spacingScale ? '0.08em' : 'normal';
-        document.documentElement.style.setProperty('--letter-spacing', spacing);
-        btn.setAttribute('aria-pressed', this.spacingScale);
-        this.savePreference('spacingScale', this.spacingScale);
-    },
-
-    toggleLineHeight(btn) {
-        this.lineHeightScale = this.lineHeightScale === 1.6 ? 2.0 : 1.6;
-        document.documentElement.style.setProperty('--line-height-scale', this.lineHeightScale);
-        btn.setAttribute('aria-pressed', this.lineHeightScale === 2.0);
-        this.savePreference('lineHeightScale', this.lineHeightScale);
     },
 
     savePreference(key, value) {
@@ -317,95 +421,113 @@ const Accessibility = {
     },
 
     loadSavedPreferences() {
-        // Load class toggles
+        // 1. Load sound effects state (defaults to true)
+        const savedSounds = localStorage.getItem('ms-access-sound-effects');
+        this.soundEffects = savedSounds === null ? true : (savedSounds === 'true');
+        this.syncButtonState('sound-effects', this.soundEffects);
+        
+        // 2. Load standard body toggles
         for (const [action, className] of Object.entries(this.toggles)) {
-            if (action.startsWith('contrast-')) continue;
-            
             const saved = localStorage.getItem(`ms-access-${action}`);
             if (saved === 'true') {
-                document.body.classList.add(className);
-                const btn = this.panel.querySelector(`[data-action="${action}"]`);
-                if (btn) btn.setAttribute('aria-pressed', 'true');
+                document.documentElement.classList.add(className);
+                this.syncButtonState(action, true);
+            } else {
+                this.syncButtonState(action, false);
             }
         }
         
-        // Load contrast state
-        const savedContrast = localStorage.getItem('ms-access-contrast');
-        if (savedContrast) {
-            const btn = this.panel.querySelector(`[data-action="contrast-${savedContrast}"]`);
-            if (btn) this.handleAction(`contrast-${savedContrast}`, btn);
+        // 3. Load ADHD reading ruler
+        const savedRuler = localStorage.getItem('ms-access-reading-ruler');
+        if (savedRuler === 'true') {
+            this.readingRulerActive = true;
+            this.syncButtonState('reading-ruler', true);
+            this.initRuler();
         }
-
-        // Load voice state (suppressing autoplay warning/block speech on load)
-        const savedVoice = localStorage.getItem('ms-access-voice');
-        if (savedVoice && savedVoice !== 'none') {
-            const btn = this.panel.querySelector(`[data-action="voice-${savedVoice}"]`);
-            if (btn) this.toggleVoice(savedVoice, btn, false);
+        
+        // 4. Load Focus Spotlight
+        const savedSpotlight = localStorage.getItem('ms-access-focus-spotlight');
+        if (savedSpotlight === 'true') {
+            this.focusSpotlightActive = true;
+            this.syncButtonState('focus-spotlight', true);
+            this.initSpotlight();
         }
-
-        // Load scale properties
+        
+        // 5. Load Voice Reader (TTS)
+        const savedVoice = localStorage.getItem('ms-access-voice-reader');
+        if (savedVoice === 'true') {
+            this.voiceReaderActive = true;
+            this.syncButtonState('voice-reader', true);
+        }
+        
+        // 6. Load font scale slider
         const savedFontScale = localStorage.getItem('ms-access-fontScale');
         if (savedFontScale) {
-            this.fontScale = parseFloat(savedFontScale);
-            document.documentElement.style.setProperty('--font-scale', this.fontScale);
+            const scale = parseFloat(savedFontScale);
+            if (this.slider) this.slider.value = scale;
+            this.handleSlider(scale);
+        } else {
+            this.handleSlider(1.0);
         }
-
-        const savedSpacing = localStorage.getItem('ms-access-spacingScale');
-        if (savedSpacing === 'true') {
-            const btn = this.panel.querySelector('[data-action="spacing-increase"]');
-            if (btn) this.toggleTextSpacing(btn);
-        }
-
-        const savedLineHeight = localStorage.getItem('ms-access-lineHeightScale');
-        if (savedLineHeight) {
-            this.lineHeightScale = parseFloat(savedLineHeight);
-            document.documentElement.style.setProperty('--line-height-scale', this.lineHeightScale);
-            const btn = this.panel.querySelector('[data-action="lineheight-increase"]');
-            if (btn) btn.setAttribute('aria-pressed', this.lineHeightScale === 2.0);
+    },
+    
+    syncButtonState(action, isActive) {
+        const btn = this.panel.querySelector(`[data-action="${action}"]`);
+        if (btn) {
+            btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+            const pill = btn.querySelector('.toggle-pill');
+            if (pill) {
+                pill.textContent = isActive ? 'ON' : 'OFF';
+            }
         }
     },
 
     resetAll() {
         // Clear body classes
         for (const className of Object.values(this.toggles)) {
-            document.body.classList.remove(className);
+            document.documentElement.classList.remove(className);
         }
         
-        // Cancel active screen reader voices
+        // Cancel reading voice
         if ('speechSynthesis' in window) {
             window.speechSynthesis.cancel();
         }
+        this.clearSpeakingHighlight();
         
-        // Reset properties
-        this.fontScale = 1.0;
-        this.spacingScale = false;
-        this.lineHeightScale = 1.6;
-        this.activeVoice = null;
-        this.lastSpokenElement = null;
-        this.activeUtterance = null;
+        // Reset state properties
+        this.soundEffects = true;
+        this.voiceReaderActive = false;
+        this.readingRulerActive = false;
+        this.focusSpotlightActive = false;
         
-        document.documentElement.style.setProperty('--font-scale', 1.0);
-        document.documentElement.style.setProperty('--letter-spacing', 'normal');
-        document.documentElement.style.setProperty('--line-height-scale', 1.6);
+        // Destroy overlays
+        this.destroyRuler();
+        this.destroySpotlight();
         
-        // Reset button tags
-        this.actionButtons.forEach(btn => {
-            const action = btn.getAttribute('data-action');
-            if (action === 'contrast-default') {
-                btn.setAttribute('aria-pressed', 'true');
-            } else {
-                btn.setAttribute('aria-pressed', 'false');
-            }
-        });
+        // Reset all button visuals
+        this.syncButtonState('sound-effects', true);
+        for (const action of Object.keys(this.toggles)) {
+            this.syncButtonState(action, false);
+        }
+        this.syncButtonState('reading-ruler', false);
+        this.syncButtonState('focus-spotlight', false);
+        this.syncButtonState('voice-reader', false);
         
-        // Reset localStorage keys
+        // Reset font scale slider
+        if (this.slider) this.slider.value = 1.0;
+        this.handleSlider(1.0);
+        
+        // Play confirming chime sound
+        this.playChime(true);
+        
+        // Clear all localStorage preferences
         for (const action of Object.keys(this.toggles)) {
             localStorage.removeItem(`ms-access-${action}`);
         }
-        localStorage.removeItem('ms-access-contrast');
-        localStorage.removeItem('ms-access-voice');
+        localStorage.removeItem('ms-access-sound-effects');
+        localStorage.removeItem('ms-access-reading-ruler');
+        localStorage.removeItem('ms-access-focus-spotlight');
+        localStorage.removeItem('ms-access-voice-reader');
         localStorage.removeItem('ms-access-fontScale');
-        localStorage.removeItem('ms-access-spacingScale');
-        localStorage.removeItem('ms-access-lineHeightScale');
     }
 };
