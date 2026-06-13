@@ -234,19 +234,25 @@ Router.register('/home', () => `
         <div class="container">
             <h2 class="text-center" style="margin-bottom: var(--spacing-lg);">The Brand Ecosystem</h2>
             <div class="grid-3">
-                <div class="card">
+                <div class="glare-card">
+                    <div class="glare-card-glare"></div>
+                    <div class="glare-card-rainbow"></div>
                     <span class="section-tag">Keynotes</span>
                     <h3 class="card-title">Keynote Speaking</h3>
                     <p>Delivering practical, no-fluff perspectives on resilience and adaptation for corporate, educational, and faith-driven events.</p>
                     <a href="#/speaking" class="text-teal">Book Speaking Details &rarr;</a>
                 </div>
-                <div class="card">
+                <div class="glare-card">
+                    <div class="glare-card-glare"></div>
+                    <div class="glare-card-rainbow"></div>
                     <span class="section-tag">Literature</span>
                     <h3 class="card-title">Limitations to Liberation</h3>
                     <p>My upcoming book about the practical tools, mental models, and spiritual principles that build freedom from limitation.</p>
                     <a href="#/book" class="text-teal">Read Book Mockups &rarr;</a>
                 </div>
-                <div class="card">
+                <div class="glare-card">
+                    <div class="glare-card-glare"></div>
+                    <div class="glare-card-rainbow"></div>
                     <span class="section-tag">Technology</span>
                     <h3 class="card-title">Accessible AIM</h3>
                     <p>A mission to help individuals with physical challenges discover how AI can act as a bridge for creation and communication.</p>

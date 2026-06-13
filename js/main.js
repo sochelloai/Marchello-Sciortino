@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (page === 'home') {
             initHeroParallax();
+            GlareCardEffect.init();
         } else if (page === 'brain') {
             Brain.init();
         } else if (page === 'chelloai') {
@@ -289,4 +290,45 @@ function cleanupHeroParallax() {
         heroResizeListener = null;
     }
 }
+
+/**
+ * GlareCardEffect - Implements the Aceternity-style hover reflections
+ * and 3D tilting card effects natively in vanilla Javascript.
+ */
+const GlareCardEffect = { 
+    init() {
+        const cards = document.querySelectorAll('.glare-card');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => this.handleMouseMove(e, card));
+            card.addEventListener('mouseleave', () => this.handleMouseLeave(card));
+        });
+    },
+    
+    handleMouseMove(e, card) {
+        if (document.documentElement.classList.contains('accessibility-paused-animations')) {
+            return;
+        }
+
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const pctX = (x / rect.width) * 100;
+        const pctY = (y / rect.height) * 100;
+        
+        card.style.setProperty('--glare-x', `${pctX}%`);
+        card.style.setProperty('--glare-y', `${pctY}%`);
+        
+        const tiltX = -((y / rect.height) - 0.5) * 12;
+        const tiltY = ((x / rect.width) - 0.5) * 12;
+        
+        card.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.03)`;
+    },
+    
+    handleMouseLeave(card) {
+        card.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+        card.style.setProperty('--glare-x', '50%');
+        card.style.setProperty('--glare-y', '50%');
+    }
+};
 
