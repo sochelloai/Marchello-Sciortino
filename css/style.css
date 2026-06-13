@@ -1244,6 +1244,7 @@ textarea.form-control {
     width: 100%;
     display: block;
     text-align: left;
+    position: relative;
 }
 
 .win-card-wrapper:focus-visible {
@@ -1433,5 +1434,48 @@ html.accessibility-paused-animations .win-flip-card-front .glare-card-rainbow {
 html.accessibility-paused-animations .flip-prompt-icon {
     transition: none !important;
     transform: none !important;
+}
+
+/* WIN Card Tooltip (Visible ONLY when accessibility pause-animations is active) */
+.win-card-tooltip {
+    position: absolute;
+    top: -45px;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background-color: var(--color-navy-dark);
+    color: var(--color-gold);
+    border: 1px solid var(--color-gold);
+    padding: 6px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 0.82rem;
+    font-weight: 600;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 100;
+    box-shadow: var(--shadow-md);
+    transition: opacity 0.22s cubic-bezier(0.4, 0, 0.2, 1), transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.22s;
+}
+
+.win-card-tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 8px;
+    height: 8px;
+    background-color: var(--color-navy-dark);
+    border-right: 1px solid var(--color-gold);
+    border-bottom: 1px solid var(--color-gold);
+}
+
+/* Trigger display of tooltip only when animations are paused on html root */
+html.accessibility-paused-animations .win-card-wrapper:hover .win-card-tooltip,
+html.accessibility-paused-animations .win-card-wrapper:focus-within .win-card-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
 }
 

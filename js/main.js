@@ -361,6 +361,12 @@ const WinCardsEffect = {
             const letter = wrapper.getAttribute('data-card');
             const term = letter === 'W' ? 'Warrior Story' : (letter === 'I' ? 'Inspiring Impact' : 'Nurturing Outcomes');
             wrapper.setAttribute('aria-label', `${term}, click to reveal details. Currently showing ${isFlipped ? 'details (flipped)' : 'front face'}.`);
+            
+            // Dynamically update tooltip content for paused animation state
+            const tooltip = wrapper.querySelector('.win-card-tooltip');
+            if (tooltip) {
+                tooltip.textContent = isFlipped ? 'Click to Return (Animations Paused)' : 'Click to Flip (Animations Paused)';
+            }
         }
     }
 };

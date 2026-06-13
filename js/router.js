@@ -814,6 +814,7 @@ Router.register('/mission', () => `
             <div class="win-grid">
                 <!-- Card 1: W -->
                 <div class="win-card-wrapper" data-card="W" tabindex="0" role="button" aria-label="Warrior Story, click to reveal details">
+                    <div class="win-card-tooltip">Click to Flip (Animations Paused)</div>
                     <div class="win-card-tilt">
                         <div class="win-flip-card">
                             <!-- Front -->
@@ -847,6 +848,7 @@ Router.register('/mission', () => `
 
                 <!-- Card 2: I -->
                 <div class="win-card-wrapper" data-card="I" tabindex="0" role="button" aria-label="Inspiring Impact, click to reveal details">
+                    <div class="win-card-tooltip">Click to Flip (Animations Paused)</div>
                     <div class="win-card-tilt">
                         <div class="win-flip-card">
                             <!-- Front -->
@@ -880,6 +882,7 @@ Router.register('/mission', () => `
 
                 <!-- Card 3: N -->
                 <div class="win-card-wrapper" data-card="N" tabindex="0" role="button" aria-label="Nurturing Outcomes, click to reveal details">
+                    <div class="win-card-tooltip">Click to Flip (Animations Paused)</div>
                     <div class="win-card-tilt">
                         <div class="win-flip-card">
                             <!-- Front -->
