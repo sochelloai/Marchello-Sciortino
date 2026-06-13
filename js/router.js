@@ -872,7 +872,7 @@ Router.register('/speaking', () => `
             <div class="grid-2" style="margin-bottom: var(--spacing-lg);">
                 <div>
                     <span class="section-tag">Signature Message</span>
-                    <h2>Winning Despite The Odds: Reframing Resilience</h2>
+                    <h2>Winning Despite The Odds</h2>
                     <p>
                         Most motivational talks outline a temporary setback that was magically solved. My message is different: I live with a progressive condition that gets harder every day. Resilience isn't a one-time event; it is a daily adjustment.
                     </p>
