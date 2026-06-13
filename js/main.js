@@ -27,6 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
             Music.init();
         } else if (page === 'hub' || page === 'marchellos-blog') {
             Hub.init();
+        } else if (page === 'mission') {
+            WinCardsEffect.init();
         }
         
         // Always bind forms rendered inside the page view
@@ -289,4 +291,77 @@ function cleanupHeroParallax() {
         heroResizeListener = null;
     }
 }
+
+/**
+ * WinCardsEffect - Implements the dynamic 3D tilt, glare tracking, and 3D card flip
+ * effects for the W.I.N. framework on the Mission page.
+ */
+const WinCardsEffect = {
+    init() {
+        const cards = document.querySelectorAll('.win-card-wrapper');
+        cards.forEach(card => {
+            const tiltContainer = card.querySelector('.win-card-tilt');
+            const flipCard = card.querySelector('.win-flip-card');
+            
+            if (!tiltContainer || !flipCard) return;
+
+            // Hover (3D Tilt & Glare Coordinate calculations)
+            card.addEventListener('mousemove', (e) => this.handleMouseMove(e, card, tiltContainer));
+            card.addEventListener('mouseleave', () => this.handleMouseLeave(tiltContainer));
+            
+            // Interaction (Click to Flip)
+            card.addEventListener('click', () => this.toggleFlip(flipCard));
+            
+            // Accessibility (Keypress Space or Enter to Flip)
+            card.addEventListener('keydown', (e) => {
+                if (e.key === ' ' || e.key === 'Enter') {
+                    e.preventDefault(); // Stop page scrolling on Spacebar
+                    this.toggleFlip(flipCard);
+                }
+            });
+        });
+    },
+    
+    handleMouseMove(e, wrapper, tiltContainer) {
+        // Accessibility check: disable tilt when animations are paused
+        if (document.documentElement.classList.contains('accessibility-paused-animations')) {
+            return;
+        }
+
+        const rect = wrapper.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        // Calculate percentages for radial glare overlay
+        const pctX = (x / rect.width) * 100;
+        const pctY = (y / rect.height) * 100;
+        
+        wrapper.style.setProperty('--glare-x', `${pctX}%`);
+        wrapper.style.setProperty('--glare-y', `${pctY}%`);
+        
+        // Calculate tilt rotation (-6 to 6 degrees max to be subtle but noticeable)
+        const tiltX = -((y / rect.height) - 0.5) * 12;
+        const tiltY = ((x / rect.width) - 0.5) * 12;
+        
+        tiltContainer.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.02)`;
+    },
+    
+    handleMouseLeave(tiltContainer) {
+        // Reset tilt transformation back to initial state
+        tiltContainer.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+    },
+    
+    toggleFlip(flipCard) {
+        flipCard.classList.toggle('is-flipped');
+        
+        // Update accessibility attributes
+        const isFlipped = flipCard.classList.contains('is-flipped');
+        const wrapper = flipCard.closest('.win-card-wrapper');
+        if (wrapper) {
+            const letter = wrapper.getAttribute('data-card');
+            const term = letter === 'W' ? 'Warrior Story' : (letter === 'I' ? 'Inspiring Impact' : 'Nurturing Outcomes');
+            wrapper.setAttribute('aria-label', `${term}, click to reveal details. Currently showing ${isFlipped ? 'details (flipped)' : 'front face'}.`);
+        }
+    }
+};
 

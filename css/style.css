@@ -1210,3 +1210,228 @@ textarea.form-control {
 .radio-container input[type="radio"]:checked ~ span {
     font-weight: 600;
 }
+
+/* ==========================================================================
+   W.I.N. Framework Dynamic 3D Cards styling
+   ========================================================================== */
+.win-section {
+    position: relative;
+    background-color: var(--color-navy);
+}
+
+.win-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-lg) var(--spacing-md);
+    margin-top: var(--spacing-md);
+}
+
+@media (max-width: 992px) {
+    .win-grid {
+        grid-template-columns: 1fr;
+        max-width: 450px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+.win-card-wrapper {
+    perspective: 1000px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    padding: 0;
+    width: 100%;
+    display: block;
+    text-align: left;
+}
+
+.win-card-wrapper:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 4px;
+    border-radius: var(--radius-md);
+}
+
+.win-card-tilt {
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.1s ease;
+}
+
+.win-flip-card {
+    position: relative;
+    width: 100%;
+    height: 380px;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.win-flip-card.is-flipped {
+    transform: rotateY(180deg);
+}
+
+.win-flip-card-front,
+.win-flip-card-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: var(--radius-md);
+    padding: var(--spacing-lg) var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    border: 1px solid rgba(10, 216, 173, 0.15);
+    overflow: hidden;
+}
+
+.win-flip-card-front {
+    background: var(--color-navy-light);
+    color: var(--color-white);
+    z-index: 2;
+}
+
+.win-flip-card-back {
+    background: var(--color-navy-dark);
+    color: var(--color-white);
+    transform: rotateY(180deg);
+    border-color: rgba(246, 184, 75, 0.2);
+}
+
+.win-flip-card-front > *:not(.glare-card-glare):not(.glare-card-rainbow),
+.win-flip-card-back > * {
+    position: relative;
+    z-index: 5;
+}
+
+.win-letter {
+    font-family: 'Oswald', 'Outfit', sans-serif;
+    font-size: 5rem;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: var(--spacing-xs);
+    display: block;
+    user-select: none;
+    transform: translateZ(50px);
+}
+
+.win-card-title {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    color: var(--color-white);
+    margin-bottom: var(--spacing-sm);
+    font-weight: 700;
+    transform: translateZ(35px);
+}
+
+.win-back-heading {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    color: var(--color-gold);
+    margin-bottom: var(--spacing-xs);
+    font-weight: 600;
+    transform: translateZ(30px);
+}
+
+.win-back-text {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--color-gray-light);
+    max-width: 90%;
+    margin: 0 auto;
+    transform: translateZ(25px);
+}
+
+/* Glare & Rainbow layers specifically for WIN cards */
+.win-flip-card-front .glare-card-glare,
+.win-flip-card-front .glare-card-rainbow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+}
+
+.win-flip-card-front .glare-card-glare {
+    background: radial-gradient(
+        circle 200px at var(--glare-x, 50%) var(--glare-y, 50%),
+        rgba(255, 255, 255, 0.15) 0%,
+        rgba(255, 255, 255, 0.02) 60%,
+        transparent 100%
+    );
+    mix-blend-mode: overlay;
+}
+
+.win-flip-card-front .glare-card-rainbow {
+    background: radial-gradient(
+        circle 300px at var(--glare-x, 50%) var(--glare-y, 50%),
+        rgba(10, 216, 173, 0.12) 0%,  /* Teal */
+        rgba(246, 184, 75, 0.08) 40%,  /* Gold */
+        rgba(255, 94, 0, 0.05) 80%,    /* Orange */
+        transparent 100%
+    );
+    mix-blend-mode: color-dodge;
+}
+
+.win-card-wrapper:hover .glare-card-glare,
+.win-card-wrapper:hover .glare-card-rainbow {
+    opacity: 1;
+}
+
+.flip-prompt {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-teal);
+    margin-top: var(--spacing-sm);
+    transform: translateZ(20px);
+    transition: color 0.2s ease;
+}
+
+.win-card-wrapper:hover .flip-prompt {
+    color: var(--color-gold);
+}
+
+.flip-prompt-icon {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.4s ease;
+}
+
+.win-card-wrapper:hover .flip-prompt-icon {
+    transform: rotate(180deg);
+}
+
+/* Accessibility Settings Pauses Support */
+html.accessibility-paused-animations .win-card-tilt {
+    transition: none !important;
+    transform: none !important;
+}
+
+html.accessibility-paused-animations .win-flip-card {
+    transition: none !important;
+}
+
+html.accessibility-paused-animations .win-flip-card-front .glare-card-glare,
+html.accessibility-paused-animations .win-flip-card-front .glare-card-rainbow {
+    display: none !important;
+}
+
+html.accessibility-paused-animations .flip-prompt-icon {
+    transition: none !important;
+    transform: none !important;
+}
+

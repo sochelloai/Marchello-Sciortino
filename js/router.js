@@ -793,16 +793,129 @@ Router.register('/mission', () => `
                         My mission is to demonstrate that <strong>purpose and contribution do not require physical perfection</strong>. You do not need a perfect body to create a world-class website, direct a business strategy, or offer value to others.
                     </p>
                 </div>
-                <div class="card bg-navy" style="padding: var(--spacing-lg);">
-                    <h3 class="text-teal" style="margin-bottom: 15px;">The W.I.N. Framework</h3>
-                    <ul style="list-style: none; display: flex; flex-direction: column; gap: 15px; color: var(--color-white);">
-                        <li><strong class="text-gold">W - Warrior Story:</strong> Refusing to defend limitation, choosing not to accept the ordinary.</li>
-                        <li><strong class="text-gold">I - Inspiring Impact:</strong> Building visible outcomes that prove capacity to others struggling.</li>
-                        <li><strong class="text-gold">N - Nurturing Outcomes:</strong> Guiding people to adapt step-by-step to their own parameters.</li>
-                    </ul>
+                <div class="graphic-panel bg-navy text-white" style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: var(--spacing-lg); border-radius: var(--radius-md); position: relative; overflow: hidden; border: 1px solid rgba(10, 216, 173, 0.15); min-height: 280px;">
+                    <div class="graphic-flare" style="position: absolute; width: 150px; height: 150px; background: var(--color-teal); filter: blur(70px); opacity: 0.15; top: 20%; left: 20%;"></div>
+                    <div class="graphic-flare" style="position: absolute; width: 120px; height: 120px; background: var(--color-gold); filter: blur(60px); opacity: 0.12; bottom: 20%; right: 20%;"></div>
+                    <span style="font-family: 'Permanent Marker', sans-serif; font-size: 2.2rem; color: var(--color-teal); transform: rotate(-5deg); margin-bottom: 10px; z-index: 2;">No Excuses.</span>
+                    <p class="text-center" style="font-size: 0.95rem; color: var(--color-gray-steel); max-width: 280px; text-align: center; margin: 0; line-height: 1.5; z-index: 2;">
+                        "The limit is not the parameter of the body, but the boundary of the imagination."
+                    </p>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- Dynamic W.I.N. Framework Section -->
+    <section class="section bg-navy win-section" style="border-top: 1px solid rgba(10, 216, 173, 0.1); border-bottom: 1px solid rgba(10, 216, 173, 0.1); position: relative; overflow: hidden;">
+        <div class="container">
+            <span class="section-tag text-teal text-center" style="display: block; margin: 0 auto 10px auto;">Framework</span>
+            <h2 class="text-center" style="color: white; margin-bottom: var(--spacing-lg);">The W.I.N. Framework</h2>
             
+            <div class="win-grid">
+                <!-- Card 1: W -->
+                <div class="win-card-wrapper" data-card="W" tabindex="0" role="button" aria-label="Warrior Story, click to reveal details">
+                    <div class="win-card-tilt">
+                        <div class="win-flip-card">
+                            <!-- Front -->
+                            <div class="win-flip-card-front">
+                                <div class="glare-card-glare"></div>
+                                <div class="glare-card-rainbow"></div>
+                                <span class="win-letter text-teal">W</span>
+                                <h3 class="win-card-title">Warrior Story</h3>
+                                <div class="flip-prompt">
+                                    <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                                    </svg>
+                                    <span>Click to Flip</span>
+                                </div>
+                            </div>
+                            <!-- Back -->
+                            <div class="win-flip-card-back">
+                                <span class="win-letter text-gold">W</span>
+                                <h4 class="win-back-heading">Warrior Story</h4>
+                                <p class="win-back-text">Refusing to defend limitation, choosing not to accept the ordinary.</p>
+                                <div class="flip-prompt">
+                                    <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                                    </svg>
+                                    <span>Click to Return</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: I -->
+                <div class="win-card-wrapper" data-card="I" tabindex="0" role="button" aria-label="Inspiring Impact, click to reveal details">
+                    <div class="win-card-tilt">
+                        <div class="win-flip-card">
+                            <!-- Front -->
+                            <div class="win-flip-card-front">
+                                <div class="glare-card-glare"></div>
+                                <div class="glare-card-rainbow"></div>
+                                <span class="win-letter text-teal">I</span>
+                                <h3 class="win-card-title">Inspiring Impact</h3>
+                                <div class="flip-prompt">
+                                    <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                                    </svg>
+                                    <span>Click to Flip</span>
+                                </div>
+                            </div>
+                            <!-- Back -->
+                            <div class="win-flip-card-back">
+                                <span class="win-letter text-gold">I</span>
+                                <h4 class="win-back-heading">Inspiring Impact</h4>
+                                <p class="win-back-text">Building visible outcomes that prove capacity to others struggling.</p>
+                                <div class="flip-prompt">
+                                    <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                                    </svg>
+                                    <span>Click to Return</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: N -->
+                <div class="win-card-wrapper" data-card="N" tabindex="0" role="button" aria-label="Nurturing Outcomes, click to reveal details">
+                    <div class="win-card-tilt">
+                        <div class="win-flip-card">
+                            <!-- Front -->
+                            <div class="win-flip-card-front">
+                                <div class="glare-card-glare"></div>
+                                <div class="glare-card-rainbow"></div>
+                                <span class="win-letter text-teal">N</span>
+                                <h3 class="win-card-title">Nurturing Outcomes</h3>
+                                <div class="flip-prompt">
+                                    <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                                    </svg>
+                                    <span>Click to Flip</span>
+                                </div>
+                            </div>
+                            <!-- Back -->
+                            <div class="win-flip-card-back">
+                                <span class="win-letter text-gold">N</span>
+                                <h4 class="win-back-heading">Nurturing Outcomes</h4>
+                                <p class="win-back-text">Guiding people to adapt step-by-step to their own parameters.</p>
+                                <div class="flip-prompt">
+                                    <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                                    </svg>
+                                    <span>Click to Return</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section bg-white">
+        <div class="container">
             <div class="grid-3">
                 <div class="card">
                     <h3>Constraint-Based Thinking</h3>
