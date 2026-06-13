@@ -125,7 +125,7 @@ function bindFormHandlers() {
             const data = {
                 name: document.getElementById('contact-name').value,
                 email: document.getElementById('contact-email').value,
-                reason: document.getElementById('contact-reason').value,
+                reason: (contactForm.querySelector('input[name="contact-reason"]:checked')?.value || ""),
                 message: document.getElementById('contact-message').value,
                 timestamp: new Date().toISOString()
             };

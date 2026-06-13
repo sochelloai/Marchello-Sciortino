@@ -29,6 +29,50 @@
     background-color: var(--color-teal-hover);
 }
 
+.widget-tooltip {
+    position: absolute;
+    right: 70px;
+    top: 50%;
+    transform: translateY(-50%) translateX(10px);
+    background-color: var(--color-navy);
+    color: var(--color-white);
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.25s;
+    z-index: 10000;
+}
+
+.widget-tooltip::after {
+    content: '';
+    position: absolute;
+    right: -5px;
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+    width: 10px;
+    height: 10px;
+    background-color: var(--color-navy);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.accessibility-toggle-btn:hover ~ .widget-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(-50%) translateX(0);
+}
+
+.accessibility-toggle-btn[aria-expanded="true"] ~ .widget-tooltip {
+    display: none;
+}
+
 .accessibility-toggle-btn svg {
     width: 28px;
     height: 28px;
@@ -403,6 +447,14 @@ html.accessibility-contrast-high .panel-body,
 html.accessibility-contrast-high .panel-footer {
     background-color: #000000 !important;
     border-color: #FFFF00 !important;
+}
+
+html.accessibility-contrast-high .widget-tooltip,
+html.accessibility-contrast-high .widget-tooltip::after {
+    background-color: #000000 !important;
+    color: #FFFF00 !important;
+    border: 2px solid #FFFF00 !important;
+    box-shadow: none !important;
 }
 
 html.accessibility-contrast-high a, 

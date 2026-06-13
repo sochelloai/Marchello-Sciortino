@@ -284,42 +284,119 @@ Router.register('/story', () => `
     </div>
     
     <section class="section bg-white">
-        <div class="container">
-            <div class="timeline-list">
-                <div class="timeline-item">
-                    <div class="timeline-year">1996 - Childhood & Early Years</div>
-                    <div class="timeline-card">
-                        <p>Born in St. Louis, Missouri. I had a fantastic childhood filled with comfort and stability provided by my loving parents, David and Alicia. Early on, I was a quiet, shy kid who stayed clear of sports after choking up at a t-ball game, preferring to play and observe.</p>
+        <div class="container text-center">
+            <div class="alternating-timeline" style="margin-top: 0;">
+                <!-- Row 1: Card Left, Image Right -->
+                <div class="timeline-row">
+                    <div class="timeline-col timeline-content-left">
+                        <div class="timeline-year">1996 - Childhood & Early Years</div>
+                        <div class="timeline-card">
+                            <p>Born in St. Louis, Missouri. I had a fantastic childhood filled with comfort and stability provided by my loving parents, David and Alicia. Early on, I was a quiet, shy kid who stayed clear of sports after choking up at a t-ball game, preferring to play and observe.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-col timeline-center">
+                        <div class="timeline-bar-line"></div>
+                        <div class="timeline-bullet bullet-teal"></div>
+                    </div>
+                    <div class="timeline-col timeline-content-right">
+                        <div class="timeline-image-placeholder">
+                            <img src="assets/timeline-1.png" alt="Born in St. Louis and childhood years" class="timeline-img">
+                        </div>
                     </div>
                 </div>
-                <div class="timeline-item">
-                    <div class="timeline-year">Around 3rd & 4th Grade</div>
-                    <div class="timeline-card">
-                        <p>I began noticing shortness of breath and a rapid heartbeat after normal activity in gym class. Soon, balance blocks appeared. I couldn't run as fast, walk in a straight line, or balance across parking blocks. Other kids started asking, "Why do you walk like that?" and I had no answers.</p>
+                
+                <!-- Row 2: Image Left, Card Right -->
+                <div class="timeline-row">
+                    <div class="timeline-col timeline-content-left">
+                        <div class="timeline-image-placeholder">
+                            <img src="assets/timeline-2.png" alt="Noticing progressive balance challenges in gym class" class="timeline-img">
+                        </div>
+                    </div>
+                    <div class="timeline-col timeline-center">
+                        <div class="timeline-bar-line"></div>
+                        <div class="timeline-bullet bullet-gold"></div>
+                    </div>
+                    <div class="timeline-col timeline-content-right">
+                        <div class="timeline-year">Around 3rd & 4th Grade</div>
+                        <div class="timeline-card">
+                            <p>I began noticing shortness of breath and a rapid heartbeat after normal activity in gym class. Soon, balance blocks appeared. I couldn't run as fast, walk in a straight line, or balance across parking blocks. Other kids started asking, "Why do you walk like that?" and I had no answers.</p>
+                        </div>
                     </div>
                 </div>
-                <div class="timeline-item">
-                    <div class="timeline-year">The Diagnosis at 14</div>
-                    <div class="timeline-card">
-                        <p>After years of medical uncertainty, muscle tests, and spinal checks, we received a laboratory diagnosis: Friedrich's ataxia. It's a progressive, neuromuscular condition that disrupts neural pathways, affecting fine motor skills, gait, energy, and hearing. It was a clear confirmation that my physical state would slowly decline over time.</p>
+                
+                <!-- Row 3: Card Left, Image Right -->
+                <div class="timeline-row">
+                    <div class="timeline-col timeline-content-left">
+                        <div class="timeline-year">The Diagnosis at 14</div>
+                        <div class="timeline-card">
+                            <p>After years of medical uncertainty, muscle tests, and spinal checks, we received a laboratory diagnosis: Friedrich's ataxia. It's a progressive, neuromuscular condition that disrupts neural pathways, affecting fine motor skills, gait, energy, and hearing. It was a clear confirmation that my physical state would slowly decline over time.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-col timeline-center">
+                        <div class="timeline-bar-line"></div>
+                        <div class="timeline-bullet bullet-teal"></div>
+                    </div>
+                    <div class="timeline-col timeline-content-right">
+                        <div class="timeline-image-placeholder">
+                            <img src="assets/timeline-3.png" alt="Medical diagnosis of Friedrich's ataxia at age 14" class="timeline-img">
+                        </div>
                     </div>
                 </div>
-                <div class="timeline-item">
-                    <div class="timeline-year">Progression & Independence Shift</div>
-                    <div class="timeline-card">
-                        <p>High school and college years required constant adjustments. I eventually transitioned to a wheelchair. Simple things—sitting up, opening a soda, getting in or out of bed—required parent assistance. The hardest challenge was the mental fatigue: resisting feeling like a "nuisance" or "disabled mooch" and choosing to focus on what coordinates I still controlled.</p>
+                
+                <!-- Row 4: Image Left, Card Right -->
+                <div class="timeline-row">
+                    <div class="timeline-col timeline-content-left">
+                        <div class="timeline-image-placeholder">
+                            <img src="assets/timeline-4.png" alt="Transition to wheelchair and adapting daily routines" class="timeline-img">
+                        </div>
+                    </div>
+                    <div class="timeline-col timeline-center">
+                        <div class="timeline-bar-line"></div>
+                        <div class="timeline-bullet bullet-gold"></div>
+                    </div>
+                    <div class="timeline-col timeline-content-right">
+                        <div class="timeline-year">Progression & Independence Shift</div>
+                        <div class="timeline-card">
+                            <p>High school and college years required constant adjustments. I eventually transitioned to a wheelchair. Simple things—sitting up, opening a soda, getting in or out of bed—required parent assistance. The hardest challenge was the mental fatigue: resisting feeling like a "nuisance" or "disabled mooch" and choosing to focus on what coordinates I still controlled.</p>
+                        </div>
                     </div>
                 </div>
-                <div class="timeline-item gold-marker">
-                    <div class="timeline-year">Discovering Digital Marketing & AI</div>
-                    <div class="timeline-card">
-                        <p>With physical labor impossible, I focused on digital skillsets. I trained, became ClickFunnels certified, and began building websites and marketing campaigns for business partners. As typing became a nightmare, AI became my typing speed. It bridged the physical gap, acting as an amplifier for my ideas, voice, and designs.</p>
+                
+                <!-- Row 5: Card Left, Image Right -->
+                <div class="timeline-row">
+                    <div class="timeline-col timeline-content-left">
+                        <div class="timeline-year">Discovering Digital Marketing & AI</div>
+                        <div class="timeline-card">
+                            <p>With physical labor impossible, I focused on digital skillsets. I trained, became ClickFunnels certified, and began building websites and marketing campaigns for business partners. As typing became a nightmare, AI became my typing speed. It bridged the physical gap, acting as an amplifier for my ideas, voice, and designs.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-col timeline-center">
+                        <div class="timeline-bar-line"></div>
+                        <div class="timeline-bullet bullet-teal"></div>
+                    </div>
+                    <div class="timeline-col timeline-content-right">
+                        <div class="timeline-image-placeholder">
+                            <img src="assets/timeline-5.png" alt="Using AI and digital marketing as creative tools" class="timeline-img">
+                        </div>
                     </div>
                 </div>
-                <div class="timeline-item gold-marker">
-                    <div class="timeline-year">Today - Writing the Legacy</div>
-                    <div class="timeline-card">
-                        <p>The challenges changed, but the mission did not. I continue to build systems, write books, create AI-powered songs, and deliver keynotes to show that limits are parameters to create around, not blockades to accept.</p>
+                
+                <!-- Row 6: Image Left, Card Right -->
+                <div class="timeline-row">
+                    <div class="timeline-col timeline-content-left">
+                        <div class="timeline-image-placeholder">
+                            <img src="assets/timeline-6.png" alt="Keynote speaking on resilience and adaptive legacy" class="timeline-img">
+                        </div>
+                    </div>
+                    <div class="timeline-col timeline-center">
+                        <div class="timeline-bar-line"></div>
+                        <div class="timeline-bullet bullet-gold"></div>
+                    </div>
+                    <div class="timeline-col timeline-content-right">
+                        <div class="timeline-year">Today - Writing the Legacy</div>
+                        <div class="timeline-card">
+                            <p>The challenges changed, but the mission did not. I continue to build systems, write books, create AI-powered songs, and deliver keynotes to show that limits are parameters to create around, not blockades to accept.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1271,15 +1348,29 @@ Router.register('/contact', () => `
                         <input type="email" id="contact-email" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="contact-reason">Reason for Reaching Out</label>
-                        <select id="contact-reason" class="form-control" required>
-                            <option value="">Select an option</option>
-                            <option value="general">General Connection / Encouragement</option>
-                            <option value="speaking">Keynote Speaking Opportunity</option>
-                            <option value="book">Book Question or Interview</option>
-                            <option value="music">AI Music Jingle Inquiry</option>
-                            <option value="aim">Accessible AIM Platform Inquiry</option>
-                        </select>
+                        <label style="display: block; margin-bottom: 12px; font-weight: 600;">Reason for Reaching Out</label>
+                        <div class="radio-group">
+                            <label class="radio-container">
+                                <input type="radio" name="contact-reason" value="general" required checked>
+                                <span>General Connection / Encouragement</span>
+                            </label>
+                            <label class="radio-container">
+                                <input type="radio" name="contact-reason" value="speaking">
+                                <span>Keynote Speaking Opportunity</span>
+                            </label>
+                            <label class="radio-container">
+                                <input type="radio" name="contact-reason" value="book">
+                                <span>Book Question or Interview</span>
+                            </label>
+                            <label class="radio-container">
+                                <input type="radio" name="contact-reason" value="music">
+                                <span>AI Music Jingle Inquiry</span>
+                            </label>
+                            <label class="radio-container">
+                                <input type="radio" name="contact-reason" value="aim">
+                                <span>Accessible AIM Platform Inquiry</span>
+                            </label>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="contact-message">Your Message</label>
