@@ -14,11 +14,14 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('page-loaded', (e) => {
         const page = e.detail.page;
         
-        // Clean up parallax listener when page transitions
+        // Clean up parallax and timeline listeners when page transitions
         cleanupHeroParallax();
+        cleanupTimelineScroll();
         
         if (page === 'home') {
             initHeroParallax();
+        } else if (page === 'story') {
+            initStoryTimelineScroll();
         } else if (page === 'brain') {
             Brain.init();
         } else if (page === 'chelloai') {
@@ -29,6 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
             Hub.init();
         } else if (page === 'mission') {
             WinCardsEffect.init();
+        } else if (page === 'shop') {
+            initShop();
         }
         
         // Always bind forms rendered inside the page view
@@ -124,11 +129,12 @@ function bindFormHandlers() {
     if (contactForm) {
         contactForm.addEventListener('submit', (e) => {
             e.preventDefault();
+            const fileInput = document.getElementById('contact-attachments');
             const data = {
-                name: document.getElementById('contact-name').value,
                 email: document.getElementById('contact-email').value,
-                reason: (contactForm.querySelector('input[name="contact-reason"]:checked')?.value || ""),
-                message: document.getElementById('contact-message').value,
+                subject: document.getElementById('contact-subject').value,
+                description: document.getElementById('contact-description').value,
+                attachmentName: fileInput && fileInput.files && fileInput.files[0] ? fileInput.files[0].name : "",
                 timestamp: new Date().toISOString()
             };
             saveFormEntry('contact', data);
@@ -370,4 +376,215 @@ const WinCardsEffect = {
         }
     }
 };
+
+let timelineScrollListener = null;
+
+/**
+ * initStoryTimelineScroll - Sets up scroll-linked vertical progress animations
+ * and spring active highlights on timeline nodes.
+ */
+function initStoryTimelineScroll() {
+    const timeline = document.querySelector('.alternating-timeline');
+    if (!timeline) return;
+
+    // Inject the progress bar overlay if not already present
+    let progressBar = timeline.querySelector('.alternating-timeline-progress-bar');
+    if (!progressBar) {
+        progressBar = document.createElement('div');
+        progressBar.className = 'alternating-timeline-progress-bar';
+        timeline.appendChild(progressBar);
+    }
+
+    const bullets = timeline.querySelectorAll('.timeline-bullet');
+
+    const handleScroll = () => {
+        // Accessibility check: Pause animations toggles snap full progress and skips effects
+        const animationsPaused = document.documentElement.classList.contains('accessibility-paused-animations');
+        
+        if (animationsPaused) {
+            bullets.forEach(b => b.classList.add('active-bullet'));
+            return;
+        }
+
+        const rect = timeline.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        
+        // Trigger point is at 55% height of the screen (slightly below center for organic flow)
+        const triggerPoint = viewportHeight * 0.55;
+        
+        // Calculate progress percentage
+        const scrolled = triggerPoint - rect.top;
+        let percentage = (scrolled / rect.height) * 100;
+        percentage = Math.max(0, Math.min(100, percentage));
+        
+        progressBar.style.height = `${percentage}%`;
+
+        // Check each bullet and activate when progress line crosses it
+        bullets.forEach(bullet => {
+            const bulletRect = bullet.getBoundingClientRect();
+            // Trigger when center of bullet crosses triggerPoint
+            const bulletCenter = bulletRect.top + bulletRect.height / 2;
+            if (bulletCenter < triggerPoint) {
+                bullet.classList.add('active-bullet');
+            } else {
+                bullet.classList.remove('active-bullet');
+            }
+        });
+    };
+
+    timelineScrollListener = handleScroll;
+    window.addEventListener('scroll', timelineScrollListener, { passive: true });
+    
+    // Initial run
+    handleScroll();
+}
+
+/**
+ * cleanupTimelineScroll - Safely unbinds the scroll listeners.
+ */
+function cleanupTimelineScroll() {
+    if (timelineScrollListener) {
+        window.removeEventListener('scroll', timelineScrollListener);
+        timelineScrollListener = null;
+    }
+}
+
+/**
+ * initShop - Binds interactive click/keydown handlers on Shop page cards to display detailed modals.
+ */
+function initShop() {
+    const filterBtns = document.querySelectorAll('.shop-filter-btn');
+    const shopGrid = document.querySelector('.shop-grid');
+    const shopCards = document.querySelectorAll('.shop-card');
+
+    // Helper to update card keyboard focus & ARIA state based on filters
+    const updateCardAccessibility = () => {
+        if (!shopGrid) return;
+        const isProgram = shopGrid.classList.contains('filter-active-program');
+        const isService = shopGrid.classList.contains('filter-active-service');
+        const isSwag = shopGrid.classList.contains('filter-active-swag');
+        const hasActiveFilter = isProgram || isService || isSwag;
+        
+        shopCards.forEach(card => {
+            let shouldBeActive = true;
+            if (hasActiveFilter) {
+                if (isProgram && !card.classList.contains('category-program')) shouldBeActive = false;
+                if (isService && !card.classList.contains('category-service')) shouldBeActive = false;
+                if (isSwag && !card.classList.contains('category-swag')) shouldBeActive = false;
+            }
+            
+            if (shouldBeActive) {
+                card.setAttribute('tabindex', '0');
+                card.removeAttribute('aria-disabled');
+            } else {
+                card.setAttribute('tabindex', '-1');
+                card.setAttribute('aria-disabled', 'true');
+            }
+        });
+    };
+
+    // Bind event listeners to filter buttons
+    if (filterBtns.length > 0 && shopGrid) {
+        filterBtns.forEach(btn => {
+            const filterVal = btn.getAttribute('data-filter');
+            
+            const handleFilterClick = (e) => {
+                e.preventDefault();
+                const isActive = btn.classList.contains('active');
+                
+                // Clear active states on buttons
+                filterBtns.forEach(b => b.classList.remove('active'));
+                
+                // Remove all active grid classes
+                shopGrid.classList.remove('filter-active-program', 'filter-active-service', 'filter-active-swag');
+                
+                if (!isActive) {
+                    btn.classList.add('active');
+                    shopGrid.classList.add(`filter-active-${filterVal}`);
+                }
+                
+                updateCardAccessibility();
+            };
+            
+            btn.addEventListener('click', handleFilterClick);
+            btn.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    handleFilterClick(e);
+                }
+            });
+        });
+    }
+
+    // Bind event listeners to shop cards for details modal
+    shopCards.forEach(card => {
+        const showModalFn = () => {
+            // Guard: If grid has active filter and this card is not of active category, ignore clicks
+            if (shopGrid) {
+                const isProgram = shopGrid.classList.contains('filter-active-program');
+                const isService = shopGrid.classList.contains('filter-active-service');
+                const isSwag = shopGrid.classList.contains('filter-active-swag');
+                const hasActiveFilter = isProgram || isService || isSwag;
+                
+                if (hasActiveFilter) {
+                    if (isProgram && !card.classList.contains('category-program')) return;
+                    if (isService && !card.classList.contains('category-service')) return;
+                    if (isSwag && !card.classList.contains('category-swag')) return;
+                }
+            }
+
+            const tag = card.getAttribute('data-tag');
+            const title = card.getAttribute('data-title');
+            const bodyText = card.getAttribute('data-body');
+            
+            const modal = document.getElementById('detail-modal');
+            const tagEl = document.getElementById('detail-node-tag');
+            const titleEl = document.getElementById('detail-node-title');
+            const bodyEl = document.getElementById('detail-node-body');
+            
+            if (modal && titleEl && bodyEl) {
+                if (tagEl) tagEl.textContent = tag || "";
+                titleEl.textContent = title || "";
+                bodyEl.innerHTML = `
+                    <p style="font-size: 1.1rem; line-height: 1.6; color: var(--color-navy); margin-bottom: 25px;">${bodyText || ""}</p>
+                    <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                        <a href="#/contact" class="btn btn-teal modal-contact-btn" style="text-decoration:none;">Inquire / Purchase</a>
+                        <button class="btn btn-outline-white modal-close-btn" style="border-color: var(--color-gray-steel); color: var(--color-navy);">Close</button>
+                    </div>
+                `;
+                
+                // Re-bind close button inside the modal content
+                const innerClose = bodyEl.querySelector('.modal-close-btn');
+                if (innerClose) {
+                    innerClose.addEventListener('click', () => {
+                        modal.classList.remove('active');
+                        modal.setAttribute('aria-hidden', 'true');
+                        card.focus();
+                    });
+                }
+                
+                const contactBtn = bodyEl.querySelector('.modal-contact-btn');
+                if (contactBtn) {
+                    contactBtn.addEventListener('click', () => {
+                        modal.classList.remove('active');
+                        modal.setAttribute('aria-hidden', 'true');
+                    });
+                }
+
+                modal.classList.add('active');
+                modal.setAttribute('aria-hidden', 'false');
+                
+                const primaryClose = modal.querySelector('.modal-close-btn');
+                if (primaryClose) primaryClose.focus();
+            }
+        };
+
+        card.addEventListener('click', showModalFn);
+        card.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                showModalFn();
+            }
+        });
+    });
+}
 

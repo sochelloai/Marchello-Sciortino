@@ -58,6 +58,7 @@ const Router = {
                 '/home': "Marchello Sciortino | Official Digital Hub",
                 '/story': "My Story | Marchello Sciortino",
                 '/services': "Services | Marchello Sciortino",
+                '/shop': "Shop | Marchello Sciortino",
                 '/mission': "The Mission | Marchello Sciortino",
                 '/brain': "The Brain Map | Marchello Sciortino",
                 '/speaking': "Speaking | Marchello Sciortino",
@@ -806,109 +807,109 @@ Router.register('/mission', () => `
     </section>
 
     <!-- Dynamic W.I.N. Framework Section -->
-    <section class="section bg-navy win-section" style="border-top: 1px solid rgba(10, 216, 173, 0.1); border-bottom: 1px solid rgba(10, 216, 173, 0.1); position: relative; overflow: hidden;">
+    <section class="section bg-navy win-section" style="border-top: 1px solid rgba(10, 216, 173, 0.1); border-bottom: 1px solid rgba(10, 216, 173, 0.1); position: relative; overflow: hidden; padding-bottom: 0;">
         <div class="container">
             <span class="section-tag text-teal text-center" style="display: block; margin: 0 auto 10px auto;">Framework</span>
             <h2 class="text-center" style="color: white; margin-bottom: var(--spacing-lg);">The W.I.N. Framework</h2>
-            
-            <div class="win-grid">
-                <!-- Card 1: W -->
-                <div class="win-card-wrapper" data-card="W" tabindex="0" role="button" aria-label="Warrior Story, click to reveal details">
-                    <div class="win-card-tooltip">Click to Flip (Animations Paused)</div>
-                    <div class="win-card-tilt">
-                        <div class="win-flip-card">
-                            <!-- Front -->
-                            <div class="win-flip-card-front">
-                                <div class="glare-card-glare"></div>
-                                <div class="glare-card-rainbow"></div>
-                                <span class="win-letter text-teal">W</span>
-                                <h3 class="win-card-title">Warrior Story</h3>
-                                <div class="flip-prompt">
-                                    <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
-                                    </svg>
-                                    <span>Click to Flip</span>
-                                </div>
+        </div>
+        
+        <div class="win-grid">
+            <!-- Card 1: W -->
+            <div class="win-card-wrapper" data-card="W" tabindex="0" role="button" aria-label="Warrior Story, click to reveal details">
+                <div class="win-card-tooltip">Click to Flip (Animations Paused)</div>
+                <div class="win-card-tilt">
+                    <div class="win-flip-card">
+                        <!-- Front -->
+                        <div class="win-flip-card-front">
+                            <div class="glare-card-glare"></div>
+                            <div class="glare-card-rainbow"></div>
+                            <span class="win-letter text-teal">W</span>
+                            <h3 class="win-card-title">Warrior Story</h3>
+                            <div class="flip-prompt">
+                                <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                                </svg>
+                                <span>Click to Flip</span>
                             </div>
-                            <!-- Back -->
-                            <div class="win-flip-card-back">
-                                <span class="win-letter text-gold">W</span>
-                                <h4 class="win-back-heading">Warrior Story</h4>
-                                <p class="win-back-text">Refusing to defend limitation, choosing not to accept the ordinary.</p>
-                                <div class="flip-prompt">
-                                    <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
-                                    </svg>
-                                    <span>Click to Return</span>
-                                </div>
+                        </div>
+                        <!-- Back -->
+                        <div class="win-flip-card-back">
+                            <span class="win-letter text-gold">W</span>
+                            <h4 class="win-back-heading">Warrior Story</h4>
+                            <p class="win-back-text">Refusing to defend limitation, choosing not to accept the ordinary.</p>
+                            <div class="flip-prompt">
+                                <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                                </svg>
+                                <span>Click to Return</span>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Card 2: I -->
-                <div class="win-card-wrapper" data-card="I" tabindex="0" role="button" aria-label="Inspiring Impact, click to reveal details">
-                    <div class="win-card-tooltip">Click to Flip (Animations Paused)</div>
-                    <div class="win-card-tilt">
-                        <div class="win-flip-card">
-                            <!-- Front -->
-                            <div class="win-flip-card-front">
-                                <div class="glare-card-glare"></div>
-                                <div class="glare-card-rainbow"></div>
-                                <span class="win-letter text-teal">I</span>
-                                <h3 class="win-card-title">Inspiring Impact</h3>
-                                <div class="flip-prompt">
-                                    <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
-                                    </svg>
-                                    <span>Click to Flip</span>
-                                </div>
+            <!-- Card 2: I -->
+            <div class="win-card-wrapper" data-card="I" tabindex="0" role="button" aria-label="Inspiring Impact, click to reveal details">
+                <div class="win-card-tooltip">Click to Flip (Animations Paused)</div>
+                <div class="win-card-tilt">
+                    <div class="win-flip-card">
+                        <!-- Front -->
+                        <div class="win-flip-card-front">
+                            <div class="glare-card-glare"></div>
+                            <div class="glare-card-rainbow"></div>
+                            <span class="win-letter text-teal">I</span>
+                            <h3 class="win-card-title">Inspiring Impact</h3>
+                            <div class="flip-prompt">
+                                <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                                </svg>
+                                <span>Click to Flip</span>
                             </div>
-                            <!-- Back -->
-                            <div class="win-flip-card-back">
-                                <span class="win-letter text-gold">I</span>
-                                <h4 class="win-back-heading">Inspiring Impact</h4>
-                                <p class="win-back-text">Building visible outcomes that prove capacity to others struggling.</p>
-                                <div class="flip-prompt">
-                                    <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
-                                    </svg>
-                                    <span>Click to Return</span>
-                                </div>
+                        </div>
+                        <!-- Back -->
+                        <div class="win-flip-card-back">
+                            <span class="win-letter text-gold">I</span>
+                            <h4 class="win-back-heading">Inspiring Impact</h4>
+                            <p class="win-back-text">Building visible outcomes that prove capacity to others struggling.</p>
+                            <div class="flip-prompt">
+                                <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                                </svg>
+                                <span>Click to Return</span>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Card 3: N -->
-                <div class="win-card-wrapper" data-card="N" tabindex="0" role="button" aria-label="Nurturing Outcomes, click to reveal details">
-                    <div class="win-card-tooltip">Click to Flip (Animations Paused)</div>
-                    <div class="win-card-tilt">
-                        <div class="win-flip-card">
-                            <!-- Front -->
-                            <div class="win-flip-card-front">
-                                <div class="glare-card-glare"></div>
-                                <div class="glare-card-rainbow"></div>
-                                <span class="win-letter text-teal">N</span>
-                                <h3 class="win-card-title">Nurturing Outcomes</h3>
-                                <div class="flip-prompt">
-                                    <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
-                                    </svg>
-                                    <span>Click to Flip</span>
-                                </div>
+            <!-- Card 3: N -->
+            <div class="win-card-wrapper" data-card="N" tabindex="0" role="button" aria-label="Nurturing Outcomes, click to reveal details">
+                <div class="win-card-tooltip">Click to Flip (Animations Paused)</div>
+                <div class="win-card-tilt">
+                    <div class="win-flip-card">
+                        <!-- Front -->
+                        <div class="win-flip-card-front">
+                            <div class="glare-card-glare"></div>
+                            <div class="glare-card-rainbow"></div>
+                            <span class="win-letter text-teal">N</span>
+                            <h3 class="win-card-title">Nurturing Outcomes</h3>
+                            <div class="flip-prompt">
+                                <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                                </svg>
+                                <span>Click to Flip</span>
                             </div>
-                            <!-- Back -->
-                            <div class="win-flip-card-back">
-                                <span class="win-letter text-gold">N</span>
-                                <h4 class="win-back-heading">Nurturing Outcomes</h4>
-                                <p class="win-back-text">Guiding people to adapt step-by-step to their own parameters.</p>
-                                <div class="flip-prompt">
-                                    <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
-                                    </svg>
-                                    <span>Click to Return</span>
-                                </div>
+                        </div>
+                        <!-- Back -->
+                        <div class="win-flip-card-back">
+                            <span class="win-letter text-gold">N</span>
+                            <h4 class="win-back-heading">Nurturing Outcomes</h4>
+                            <p class="win-back-text">Guiding people to adapt step-by-step to their own parameters.</p>
+                            <div class="flip-prompt">
+                                <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                                </svg>
+                                <span>Click to Return</span>
                             </div>
                         </div>
                     </div>
@@ -1453,46 +1454,30 @@ Router.register('/contact', () => `
     
     <section class="section bg-white">
         <div class="container" style="max-width: 600px;">
-            <div class="card">
+            <div class="contact-card-custom">
                 <form id="contact-page-form">
-                    <div class="form-group">
-                        <label for="contact-name">Your Name</label>
-                        <input type="text" id="contact-name" class="form-control" required>
+                    <div class="contact-form-group">
+                        <label for="contact-email" class="contact-label">EMAIL <span class="contact-asterisk">*</span></label>
+                        <input type="email" id="contact-email" class="contact-input" required>
                     </div>
-                    <div class="form-group">
-                        <label for="contact-email">Email Address</label>
-                        <input type="email" id="contact-email" class="form-control" required>
+                    <div class="contact-form-group">
+                        <label for="contact-subject" class="contact-label">SUBJECT: <span class="contact-asterisk">*</span></label>
+                        <input type="text" id="contact-subject" class="contact-input" required>
                     </div>
-                    <div class="form-group">
-                        <label style="display: block; margin-bottom: 12px; font-weight: 600;">Reason for Reaching Out</label>
-                        <div class="radio-group">
-                            <label class="radio-container">
-                                <input type="radio" name="contact-reason" value="general" required checked>
-                                <span>General Connection / Encouragement</span>
-                            </label>
-                            <label class="radio-container">
-                                <input type="radio" name="contact-reason" value="speaking">
-                                <span>Keynote Speaking Opportunity</span>
-                            </label>
-                            <label class="radio-container">
-                                <input type="radio" name="contact-reason" value="book">
-                                <span>Book Question or Interview</span>
-                            </label>
-                            <label class="radio-container">
-                                <input type="radio" name="contact-reason" value="music">
-                                <span>AI Music Jingle Inquiry</span>
-                            </label>
-                            <label class="radio-container">
-                                <input type="radio" name="contact-reason" value="aim">
-                                <span>Accessible AIM Platform Inquiry</span>
-                            </label>
+                    <div class="contact-form-group">
+                        <label for="contact-description" class="contact-label">DESCRIPTION: <span class="contact-asterisk">*</span></label>
+                        <textarea id="contact-description" class="contact-textarea" required></textarea>
+                    </div>
+                    <div class="contact-form-group">
+                        <label for="contact-attachments" class="contact-label">ATTACHMENTS:</label>
+                        <div class="contact-file-wrapper">
+                            <input type="file" id="contact-attachments" class="contact-file-input">
+                            <span class="contact-file-info">Max. file size: 50 MB.</span>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="contact-message">Your Message</label>
-                        <textarea id="contact-message" class="form-control" placeholder="Tell me what is on your mind..." required></textarea>
+                    <div class="contact-form-group">
+                        <button type="submit" class="contact-btn-submit">Submit</button>
                     </div>
-                    <button type="submit" class="btn btn-teal" style="width: 100%;">Send Message</button>
                 </form>
             </div>
         </div>
@@ -1531,6 +1516,117 @@ Router.register('/resources', () => `
                     <h3>Digital Flow Audit</h3>
                     <p>A simple check sheet to audit your landing pages for ADA accessibility and speed friction blocks.</p>
                     <a href="#/resources" class="btn btn-outline-teal" onclick="alert('Downloading Digital Flow Audit Checklist'); return false;" style="margin-top: 15px;">Download Checklist</a>
+                </div>
+            </div>
+        </div>
+    </section>
+`);
+
+// 14.5. Shop Page Template
+Router.register('/shop', () => `
+    <div class="shop-hero">
+        <div class="container text-center" style="max-width: 800px;">
+            <span class="section-tag text-teal">Shop</span>
+            <h1 class="shop-main-title">Programs, Services & Swag</h1>
+            <p class="shop-hero-desc">
+                Connect deeply, automate your systems, and represent the movement of turning limitations into agency with custom-crafted software, resilience coaching, and premium apparel.
+            </p>
+        </div>
+    </div>
+
+    <section class="section bg-white" id="shop-catalog">
+        <div class="container">
+            <div class="shop-filter-bar">
+                <button class="shop-filter-btn" data-filter="program">Program</button>
+                <button class="shop-filter-btn" data-filter="service">Services</button>
+                <button class="shop-filter-btn" data-filter="swag">Swag</button>
+            </div>
+            <div class="shop-grid">
+                <!-- Programs Category Card -->
+                <div class="shop-card category-program" role="button" tabindex="0" data-tag="Program" data-title="Accessible AI Masterclass" data-body="Learn the exact workflows, transcription macros, and tailored AI assistant architectures designed to bypass typing barriers. This digital program guides you through constructing an efficient workspace optimized to act as your physical extension, multiplying your writing and execution speeds.">
+                    <div class="shop-card-bg" style="background-image: url('assets/accessible_ai.png');"></div>
+                    <div class="shop-card-gradient"></div>
+                    <div class="shop-card-corner-glow"></div>
+                    <div class="shop-card-content">
+                        <span class="shop-card-tag">Program</span>
+                        <h3 class="shop-card-title">Accessible AI Masterclass</h3>
+                        <p class="shop-card-desc">Bypass physical typing barriers. Learn to construct speech macros and custom AI assistants that act as your hands.</p>
+                    </div>
+                    <div class="shop-card-badge">
+                        <span>$297 | Enroll</span>
+                    </div>
+                </div>
+
+                <!-- Services Category Cards -->
+                <div class="shop-card category-service" role="button" tabindex="0" data-tag="Service" data-title="Certified Funnel Architecture" data-body="Get custom, high-converting digital sales funnels built specifically to your project parameters. As a ClickFunnels certified builder, I develop landing pages, membership systems, and checkout tunnels that blend premium design layout with lightning-fast load times and complete keyboard/screen-reader accessibility compliance.">
+                    <div class="shop-card-bg" style="background-image: url('assets/funnel_building.png');"></div>
+                    <div class="shop-card-gradient"></div>
+                    <div class="shop-card-corner-glow"></div>
+                    <div class="shop-card-content">
+                        <span class="shop-card-tag">Service</span>
+                        <h3 class="shop-card-title">Certified Funnel Architecture</h3>
+                        <p class="shop-card-desc">Certified custom landing pages and sales pipelines built with high-fidelity visual design and accessibility.</p>
+                    </div>
+                    <div class="shop-card-badge">
+                        <span>Book Consultation</span>
+                    </div>
+                </div>
+
+                <div class="shop-card category-service" role="button" tabindex="0" data-tag="Service" data-title="AI Content Strategy & Pipeline" data-body="Scale your publication outputs without diluting your signature voice. We audit your workflows and deliver tailored AI prompt recipes, document templates, and custom publishing pipelines that coordinate across social, newsletters, and blogs, reducing editing overhead by 80%.">
+                    <div class="shop-card-bg" style="background-image: url('assets/ai_content.png');"></div>
+                    <div class="shop-card-gradient"></div>
+                    <div class="shop-card-corner-glow"></div>
+                    <div class="shop-card-content">
+                        <span class="shop-card-tag">Service</span>
+                        <h3 class="shop-card-title">AI Content Strategy & Pipeline</h3>
+                        <p class="shop-card-desc">Scale creative output. We map custom templates, content workflows, and AI assistants tailored to your voice.</p>
+                    </div>
+                    <div class="shop-card-badge">
+                        <span>Get Custom Plan</span>
+                    </div>
+                </div>
+
+                <div class="shop-card category-service" role="button" tabindex="0" data-tag="Service" data-title="Ring Anyway Resilience Mentorship" data-body="Direct, raw, 1-on-1 strategic consulting to turn constraints into competitive leverage. Inspired by the 'Ring Anyway' philosophy, this program focuses on workflow adaptation, operational setup, and cognitive positioning. Build resilience systems to scale agency and output.">
+                    <div class="shop-card-bg" style="background-image: url('assets/ring_anyway_coaching.png');"></div>
+                    <div class="shop-card-gradient"></div>
+                    <div class="shop-card-corner-glow"></div>
+                    <div class="shop-card-content">
+                        <span class="shop-card-tag">Service</span>
+                        <h3 class="shop-card-title">Ring Anyway Resilience Mentorship</h3>
+                        <p class="shop-card-desc">1-on-1 strategic consulting to convert constraint obstacles into structured operational advantages.</p>
+                    </div>
+                    <div class="shop-card-badge">
+                        <span>Apply Now</span>
+                    </div>
+                </div>
+
+                <!-- Swag Category Cards -->
+                <div class="shop-card category-swag" role="button" tabindex="0" data-tag="Swag" data-title="'Limitations to Liberation' Apparel" data-body="Premium heavyweight streetwear representing the movement of active agency. Includes minimalist black hoodies and structured t-shirts featuring organic cotton materials, tailored designs, and our signature graphic outline prints.">
+                    <div class="shop-card-bg" style="background-image: url('assets/apparel.png');"></div>
+                    <div class="shop-card-gradient"></div>
+                    <div class="shop-card-corner-glow"></div>
+                    <div class="shop-card-content">
+                        <span class="shop-card-tag">Swag</span>
+                        <h3 class="shop-card-title">'Limitations to Liberation' Apparel</h3>
+                        <p class="shop-card-desc">Premium, heavyweight hoodies and t-shirts featuring signature brand art and durable comfort styling.</p>
+                    </div>
+                    <div class="shop-card-badge">
+                        <span>$55 | Shop Hoodie</span>
+                    </div>
+                </div>
+
+                <div class="shop-card category-swag" role="button" tabindex="0" data-tag="Swag" data-title="'Ring Anyway' Official Accessories" data-body="Custom everyday essentials to support a high-agency routine. Features high-quality matte black ceramic mugs, laser-engraved dotted-grid notebook journals, and heavy-duty vinyl stickers decorated with motivational coordinates.">
+                    <div class="shop-card-bg" style="background-image: url('assets/accessories.png');"></div>
+                    <div class="shop-card-gradient"></div>
+                    <div class="shop-card-corner-glow"></div>
+                    <div class="shop-card-content">
+                        <span class="shop-card-tag">Swag</span>
+                        <h3 class="shop-card-title">'Ring Anyway' Accessories</h3>
+                        <p class="shop-card-desc">Elevate your workspace with custom matte black coffee mugs, laser-engraved dotted journals, and badge stickers.</p>
+                    </div>
+                    <div class="shop-card-badge">
+                        <span>$18 | View Collection</span>
+                    </div>
                 </div>
             </div>
         </div>
