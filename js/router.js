@@ -271,30 +271,6 @@ Router.register('/home', () => `
         </div>
     </section>
 
-    <!-- The Shift Section -->
-    <section class="section bg-navy">
-        <div class="container">
-            <div class="split-shift">
-                <div class="shift-left">
-                    <span class="section-tag text-teal">Perspective</span>
-                    <h3>The Turning Point</h3>
-                    <p class="text-teal" style="font-size: 1.35rem; font-weight:600; margin: 15px 0;">
-                        "Acceptance is not quitting. It is looking at the hand you are dealt and deciding what to build next."
-                    </p>
-                    <p style="color: var(--color-gray-steel);">
-                        The heavy cramps, exhausted muscles, and fatigue are real design constraints. They are not limitations on legacy, faith, or impact.
-                    </p>
-                </div>
-                <div class="shift-right">
-                    <div class="shift-words">From Constraints to Craft</div>
-                    <p style="margin-bottom: 20px;">
-                        With fine motor skills fading, standard workflows stopped working. That is where AI entered the picture. It became my typing hands, my coding logic, and my voice amplifier.
-                    </p>
-                    <a href="#/brain" class="btn btn-teal">Explore the Mind Map</a>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- Key previews grid -->
     <section class="section bg-white">
