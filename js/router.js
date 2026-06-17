@@ -1160,6 +1160,7 @@ Router.register('/speaking', () => `
                             <a href="#/speaking" class="btn btn-teal btn-sm" onclick="alert('Downloading placeholder: Brand_Assets.zip'); return false;">Download</a>
                         </li>
                     </ul>
+                </div>
             </div>
             
             <div class="media-gallery-row">
