@@ -301,27 +301,27 @@ Router.register('/home', () => `
 
     <!-- Book Promotion Section -->
     <section class="book-promo-sec">
-        <div class="container">
-            <div class="grid-2">
-                <div class="book-promo-content">
-                    <span class="section-tag text-teal">New Book Release</span>
-                    <h2 class="book-promo-headline">LIMITATIONS TO LIBERATION</h2>
-                    <p class="book-promo-subheadline">Discover the mental models, resilience systems, and practical tools to build freedom and turn daily limits into creative agency.</p>
-                    <div style="margin-top: var(--spacing-sm);">
-                        <a href="https://www.limitationstoliberation.com/" target="_blank" rel="noopener noreferrer" class="btn-cta-orange">Get The Book <span class="arrow">&rarr;</span></a>
+        <div style="flex-grow: 1; display: flex; align-items: center; width: 100%; padding-top: 3rem;">
+            <div class="container">
+                <div class="grid-2">
+                    <div class="book-promo-content">
+                        <span class="section-tag text-teal">New Book Release</span>
+                        <h2 class="book-promo-headline">LIMITATIONS TO LIBERATION</h2>
+                        <p class="book-promo-subheadline">Discover the mental models, resilience systems, and practical tools to build freedom and turn daily limits into creative agency.</p>
+                        <div style="margin-top: var(--spacing-sm);">
+                            <a href="https://www.limitationstoliberation.com/" target="_blank" rel="noopener noreferrer" class="btn-cta-orange">Get The Book <span class="arrow">&rarr;</span></a>
+                        </div>
                     </div>
-                </div>
-                <div class="book-promo-empty-col">
-                    <!-- Right column is empty to showcase the background image -->
+                    <div class="book-promo-empty-col">
+                        <!-- Right column is empty to showcase the background image -->
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
-
-    <!-- Legacy Wall Promo -->
-    <section class="section bg-navy text-center" style="padding: 4.5rem 0;">
-        <div class="container">
-            <h2 class="legacy-title">Much love, party people!<br>That was awesome. The next one will only be better!</h2>
+        <div class="book-promo-footer-row text-center" style="width: 100%; padding-bottom: 3rem; position: relative; z-index: 2;">
+            <div class="container">
+                <h2 class="legacy-title">Much love, party people!<br>That was awesome. The next one will only be better!</h2>
+            </div>
         </div>
     </section>
 `);
