@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60" fill="none">
+  <rect width="40" height="40" x="10" y="10" rx="8" fill="#0ad8ad" fill-opacity="0.15" stroke="#0ad8ad" stroke-width="2"/>
+  <path d="M22 22H38M30 22V38" stroke="#0ad8ad" stroke-width="3" stroke-linecap="round"/>
+  <text x="65" y="36" font-family="'Outfit', 'Montserrat', sans-serif" font-size="16" font-weight="700" fill="#ffffff" letter-spacing="0.05em">TECH</text>
+  <text x="65" y="48" font-family="'Outfit', 'Montserrat', sans-serif" font-size="12" font-weight="500" fill="#6B7C8F" letter-spacing="0.2em">WEEKLY</text>
+</svg>

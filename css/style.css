@@ -23,7 +23,7 @@
     --color-gold-hover: #e5a73b;
     --color-white: #F7FAFC;
     --color-pure-white: #FFFFFF;
-    --color-gray-steel: #6B7C8F;
+    --color-gray-steel: #475569;
     --color-gray-light: #E2E8F0;
     --color-gray-border: rgba(107, 124, 143, 0.2);
     
@@ -241,7 +241,17 @@ img {
 .text-teal { color: var(--color-teal) !important; }
 .text-gold { color: var(--color-gold) !important; }
 .bg-navy { background-color: var(--color-navy) !important; color: var(--color-white) !important; }
+.bg-navy-light { background-color: var(--color-navy-light) !important; color: var(--color-white) !important; }
 .bg-white { background-color: var(--color-white) !important; color: var(--color-navy) !important; }
+
+/* Ensure proper paragraph & heading contrast on dark backgrounds */
+.bg-navy p, .bg-navy-light p, .bg-navy-dark p {
+    color: var(--color-gray-light) !important;
+}
+.bg-navy h1, .bg-navy h2, .bg-navy h3, .bg-navy h4, .bg-navy h5, .bg-navy h6,
+.bg-navy-light h1, .bg-navy-light h2, .bg-navy-light h3, .bg-navy-light h4, .bg-navy-light h5, .bg-navy-light h6 {
+    color: var(--color-white) !important;
+}
 
 .nav-menu {
     display: flex;
@@ -513,6 +523,12 @@ img {
     background: var(--color-teal);
     color: var(--color-navy);
     transform: translateY(-2px);
+}
+
+.btn-sm {
+    padding: 0.4rem 1rem;
+    font-size: 0.75rem;
+    border-radius: var(--radius-sm);
 }
 
 /* Grid & Section Container System */
@@ -1272,27 +1288,20 @@ textarea.form-control {
     font-weight: 600;
 }
 
-/* ==========================================================================
-   W.I.N. Framework Dynamic 3D Cards styling
-   ========================================================================== */
 .win-section {
     position: relative;
     background-color: var(--color-navy);
 }
 
 .win-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0;
-    margin-top: var(--spacing-md);
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-top: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
     width: 100%;
-}
-
-@media (max-width: 992px) {
-    .win-grid {
-        grid-template-columns: 1fr;
-        max-width: 100%;
-    }
+    padding: 0 var(--spacing-md);
 }
 
 .win-card-wrapper {
@@ -1302,15 +1311,56 @@ textarea.form-control {
     border: none;
     padding: 0;
     width: 100%;
+    max-width: 300px;
     display: block;
     text-align: left;
     position: relative;
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease;
+    border-radius: 1.25rem;
+}
+
+/* Card theme color tokens based on categories */
+.win-card-wrapper[data-card="W"],
+.win-card-wrapper[data-card="1"],
+.win-card-wrapper[data-card="A"] {
+    --accent-rgb: 10, 216, 173; /* Teal */
+    --accent-hex: #0ad8ad;
+}
+
+.win-card-wrapper[data-card="I"],
+.win-card-wrapper[data-card="2"] {
+    --accent-rgb: 55, 177, 255; /* Blue */
+    --accent-hex: #37b1ff;
+}
+
+.win-card-wrapper[data-card="N"],
+.win-card-wrapper[data-card="3"],
+.win-card-wrapper[data-card="M"] {
+    --accent-rgb: 246, 184, 75; /* Gold */
+    --accent-hex: #f6b84b;
+}
+
+/* Hover Translate Lift & Theme shadow glow */
+.win-card-wrapper:hover {
+    transform: translateY(-12px) scale(1.015);
+}
+
+.win-card-wrapper[data-card="W"]:hover {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.55), 0 0 30px rgba(10, 216, 173, 0.22);
+}
+
+.win-card-wrapper[data-card="I"]:hover {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.55), 0 0 30px rgba(55, 177, 255, 0.22);
+}
+
+.win-card-wrapper[data-card="N"]:hover {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.55), 0 0 30px rgba(246, 184, 75, 0.22);
 }
 
 .win-card-wrapper:focus-visible {
-    outline: 2px solid var(--color-teal);
+    outline: 2px solid var(--accent-hex);
     outline-offset: 4px;
-    border-radius: var(--radius-md);
+    border-radius: 1.25rem;
 }
 
 .win-card-tilt {
@@ -1323,9 +1373,10 @@ textarea.form-control {
 .win-flip-card {
     position: relative;
     width: 100%;
-    height: 380px;
+    height: 400px;
     transform-style: preserve-3d;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+    border-radius: 1.25rem;
 }
 
 .win-flip-card.is-flipped {
@@ -1341,43 +1392,59 @@ textarea.form-control {
     height: 100%;
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
-    border-radius: 0;
-    padding: var(--spacing-lg) var(--spacing-md);
+    border-radius: 1.25rem;
+    padding: 2.2rem 1.5rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
     text-align: center;
-    border: 1px solid rgba(10, 216, 173, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     overflow: hidden;
 }
 
-/* Share borders between flushtouching cards to prevent border doubling */
-@media (min-width: 993px) {
-    .win-grid > .win-card-wrapper:not(:first-of-type) .win-flip-card-front,
-    .win-grid > .win-card-wrapper:not(:first-of-type) .win-flip-card-back {
-        border-left: none;
-    }
-}
-
-@media (max-width: 992px) {
-    .win-grid > .win-card-wrapper:not(:first-of-type) .win-flip-card-front,
-    .win-grid > .win-card-wrapper:not(:first-of-type) .win-flip-card-back {
-        border-top: none;
-    }
-}
-
 .win-flip-card-front {
-    background: var(--color-navy-light);
+    background: linear-gradient(180deg, rgba(22, 32, 51, 0.95) 0%, rgba(10, 15, 26, 0.98) 100%);
     color: var(--color-white);
     z-index: 2;
 }
 
+/* Ambient background light radial effect on front */
+.win-flip-card-front::before {
+    content: '';
+    position: absolute;
+    top: -20%;
+    left: -20%;
+    width: 140%;
+    height: 140%;
+    background: radial-gradient(circle at 50% 35%, rgba(var(--accent-rgb), 0.15) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+    transition: transform 0.7s ease;
+}
+
+.win-card-wrapper:hover .win-flip-card-front::before {
+    transform: scale(1.12);
+}
+
 .win-flip-card-back {
-    background: var(--color-navy-dark);
+    background: linear-gradient(180deg, rgba(13, 19, 31, 0.98) 0%, rgba(3, 5, 10, 1) 100%);
     color: var(--color-white);
     transform: rotateY(180deg);
-    border-color: rgba(246, 184, 75, 0.2);
+    border-color: rgba(var(--accent-rgb), 0.25);
+}
+
+/* Subtle accent bottom glow for the back of cards */
+.win-flip-card-back::before {
+    content: '';
+    position: absolute;
+    bottom: -20%;
+    right: -20%;
+    width: 140%;
+    height: 140%;
+    background: radial-gradient(circle at 50% 85%, rgba(var(--accent-rgb), 0.1) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
 }
 
 .win-flip-card-front > *:not(.glare-card-glare):not(.glare-card-rainbow),
@@ -1386,40 +1453,106 @@ textarea.form-control {
     z-index: 5;
 }
 
+/* Badge pill style at top of cards */
+.win-badge {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    padding: 5px 14px;
+    border-radius: 50px;
+    border: 1px solid rgba(var(--accent-rgb), 0.35);
+    background: rgba(var(--accent-rgb), 0.08);
+    color: var(--accent-hex);
+    transition: all 0.3s ease;
+    user-select: none;
+}
+
+.win-card-wrapper:hover .win-badge {
+    background: rgba(var(--accent-rgb), 0.15);
+    border-color: rgba(var(--accent-rgb), 0.7);
+    box-shadow: 0 0 8px rgba(var(--accent-rgb), 0.15);
+}
+
+.win-content-front,
+.win-content-back {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
 .win-letter {
     font-family: 'Oswald', 'Outfit', sans-serif;
-    font-size: 5rem;
+    font-size: 5.5rem;
     font-weight: 800;
     line-height: 1;
+    color: var(--accent-hex);
     margin-bottom: var(--spacing-xs);
     display: block;
     user-select: none;
+    text-shadow: 0 0 20px rgba(var(--accent-rgb), 0.35);
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), text-shadow 0.6s ease;
     transform: translateZ(50px);
 }
 
-.win-card-title {
-    font-family: var(--font-heading);
-    font-size: 1.5rem;
-    color: var(--color-white);
+.win-card-wrapper:hover .win-letter {
+    transform: scale(1.12) translateZ(60px);
+    text-shadow: 0 0 35px rgba(var(--accent-rgb), 0.6);
+}
+
+.win-letter-back {
+    font-family: 'Oswald', 'Outfit', sans-serif;
+    font-size: 2.8rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--accent-hex);
     margin-bottom: var(--spacing-sm);
+    display: block;
+    user-select: none;
+    text-shadow: 0 0 15px rgba(var(--accent-rgb), 0.3);
+}
+
+.win-card-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.6rem;
+    color: var(--color-white);
+    margin-bottom: var(--spacing-xs);
     font-weight: 700;
     transform: translateZ(35px);
 }
 
+.win-card-teaser {
+    font-size: 0.95rem;
+    color: var(--color-gray-light);
+    opacity: 0.85;
+    margin: 0;
+    transform: translateZ(20px);
+}
+
 .win-back-heading {
-    font-family: var(--font-heading);
-    font-size: 1.25rem;
-    color: var(--color-gold);
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.35rem;
+    color: var(--color-white);
     margin-bottom: var(--spacing-xs);
-    font-weight: 600;
+    font-weight: 700;
     transform: translateZ(30px);
 }
 
+.win-divider {
+    width: 45px;
+    height: 2px;
+    background-color: var(--accent-hex);
+    margin: var(--spacing-xs) auto var(--spacing-md) auto;
+    border-radius: 2px;
+    box-shadow: 0 0 8px rgba(var(--accent-rgb), 0.4);
+}
+
 .win-back-text {
-    font-size: 1.05rem;
+    font-size: 1.02rem;
     line-height: 1.6;
     color: var(--color-gray-light);
-    max-width: 90%;
+    max-width: 95%;
     margin: 0 auto;
     transform: translateZ(25px);
 }
@@ -1471,14 +1604,16 @@ textarea.form-control {
     font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: var(--color-teal);
+    color: var(--accent-hex);
     margin-top: var(--spacing-sm);
     transform: translateZ(20px);
-    transition: color 0.2s ease;
+    transition: color 0.2s ease, opacity 0.2s ease;
+    opacity: 0.8;
 }
 
 .win-card-wrapper:hover .flip-prompt {
-    color: var(--color-gold);
+    opacity: 1;
+    color: var(--color-white);
 }
 
 .flip-prompt-icon {
@@ -1492,6 +1627,17 @@ textarea.form-control {
 }
 
 /* Accessibility Settings Pauses Support */
+html.accessibility-paused-animations .win-card-wrapper {
+    transition: none !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+html.accessibility-paused-animations .win-card-wrapper:hover {
+    transform: none !important;
+    box-shadow: var(--shadow-sm) !important;
+}
+
 html.accessibility-paused-animations .win-card-tilt {
     transition: none !important;
     transform: none !important;
@@ -1501,6 +1647,15 @@ html.accessibility-paused-animations .win-flip-card {
     transition: none !important;
 }
 
+html.accessibility-paused-animations .win-badge,
+html.accessibility-paused-animations .win-letter {
+    transition: none !important;
+    transform: none !important;
+    text-shadow: none !important;
+}
+
+html.accessibility-paused-animations .win-flip-card-front::before,
+html.accessibility-paused-animations .win-flip-card-back::before,
 html.accessibility-paused-animations .win-flip-card-front .glare-card-glare,
 html.accessibility-paused-animations .win-flip-card-front .glare-card-rainbow {
     display: none !important;
@@ -2049,5 +2204,182 @@ html.accessibility-paused-animations .win-card-wrapper:focus-within .win-card-to
     pointer-events: none;
 }
 
+/* ==========================================================================
+   Featured In Scrolling Marquee
+   ========================================================================== */
+.featured-in {
+    padding: 3.5rem 0;
+    background-color: var(--color-navy-dark);
+    border-bottom: 1px solid var(--color-gray-border);
+    position: relative;
+    overflow: hidden;
+    z-index: 10;
+}
 
+.featured-title {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    color: var(--color-gray-steel);
+    text-align: center;
+    margin-bottom: 2rem;
+    font-weight: 700;
+}
 
+.marquee-wrapper {
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+    width: 100%;
+}
+
+/* Fading edge gradients for scrolling marquee container */
+.marquee-wrapper::before,
+.marquee-wrapper::after {
+    position: absolute;
+    top: 0;
+    width: 150px;
+    height: 100%;
+    content: "";
+    z-index: 2;
+    pointer-events: none;
+}
+
+.marquee-wrapper::before {
+    left: 0;
+    background: linear-gradient(to right, var(--color-navy-dark) 15%, transparent 100%);
+}
+
+.marquee-wrapper::after {
+    right: 0;
+    background: linear-gradient(to left, var(--color-navy-dark) 15%, transparent 100%);
+}
+
+.marquee-track {
+    display: flex;
+    width: max-content;
+    align-items: center;
+    gap: 6rem;
+    animation: marquee-scroll 32s linear infinite;
+}
+
+.marquee-track:hover {
+    animation-play-state: paused;
+}
+
+.marquee-item {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.marquee-item img {
+    height: 42px;
+    width: auto;
+    opacity: 0.5;
+    transition: opacity var(--transition-fast), filter var(--transition-fast), transform var(--transition-fast);
+    filter: grayscale(1) brightness(1.3);
+}
+
+.marquee-item img:hover {
+    opacity: 0.95;
+    filter: grayscale(0) brightness(1);
+    transform: scale(1.05);
+}
+
+@keyframes marquee-scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* ==========================================================================
+   Book Promotion Section (Limitations to Liberation)
+   ========================================================================== */
+.book-promo-sec {
+    background: linear-gradient(to right, rgba(8, 27, 41, 0.92) 0%, rgba(8, 27, 41, 0.7) 50%, rgba(8, 27, 41, 0.3) 100%), url('../assets/Gemini_Generated_Image_vboctvvboctvvboc.jpg') no-repeat center center / cover;
+    min-height: 100vh;
+    padding: 4rem 0;
+    display: flex;
+    align-items: center;
+    color: var(--color-white);
+    position: relative;
+    border-top: 1px solid var(--color-gray-border);
+    width: 100%;
+}
+
+.book-promo-content {
+    max-width: 650px;
+    text-align: left;
+    position: relative;
+    z-index: 2;
+}
+
+.book-promo-headline {
+    color: var(--color-white) !important;
+    font-size: 2.8rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.75rem;
+    font-family: 'Oswald', 'Impact', sans-serif;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    line-height: 1.15;
+}
+
+.book-promo-subheadline {
+    color: var(--color-gray-light) !important;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    .book-promo-sec {
+        background: linear-gradient(to bottom, rgba(8, 27, 41, 0.95) 0%, rgba(8, 27, 41, 0.8) 100%), url('../assets/Gemini_Generated_Image_vboctvvboctvvboc.jpg') no-repeat center center / cover;
+        padding: 4.5rem 0;
+    }
+    
+    .book-promo-headline {
+        font-size: 2.2rem;
+    }
+
+    .book-promo-empty-col {
+        display: none;
+    }
+}
+
+/* Legacy Wall Title with Caveat script font */
+.legacy-title {
+    font-family: 'Caveat', cursive;
+    font-weight: 700;
+    font-size: 38px;
+    color: var(--color-white) !important;
+    margin-bottom: 0;
+    line-height: 1.4;
+    letter-spacing: 0.03em;
+}
+
+@media (max-width: 768px) {
+    .legacy-title {
+        font-size: 28px;
+    }
+}
+
+/* Mobile font legibility adjustments */
+@media (max-width: 768px) {
+    body {
+        font-size: 16px !important;
+    }
+    p, li {
+        font-size: 1rem !important;
+        line-height: 1.625 !important;
+    }
+    .section-desc {
+        font-size: 1.05rem !important;
+    }
+}

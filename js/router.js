@@ -39,6 +39,12 @@ const Router = {
         
         const route = this.parseRoute(hash);
         
+        if (route === '/book') {
+            window.location.hash = '#/home';
+            window.open('https://www.limitationstoliberation.com/', '_blank');
+            return;
+        }
+        
         // Match route or redirect to home
         const templateFn = this.routes[route] || this.routes['/home'];
         
@@ -58,20 +64,17 @@ const Router = {
                 '/home': "Marchello Sciortino | Official Digital Hub",
                 '/story': "My Story | Marchello Sciortino",
                 '/services': "Services | Marchello Sciortino",
-                '/shop': "Shop | Marchello Sciortino",
                 '/mission': "The Mission | Marchello Sciortino",
                 '/brain': "The Brain Map | Marchello Sciortino",
                 '/speaking': "Speaking | Marchello Sciortino",
-                '/book': "The Book | Marchello Sciortino",
                 '/aim': "Accessible AIM | Marchello Sciortino",
-                '/chelloai': "ChelloAI Companion | Marchello Sciortino",
+                '/chelloai': "ChelloAI | Marchello Sciortino",
                 '/music': "AI Music Jingles | Marchello Sciortino",
-                '/media': "Media Assets | Marchello Sciortino",
                 '/impact': "Impact & Reviews | Marchello Sciortino",
                 '/marchellos-blog': "Marchello's Blog | Marchello Sciortino",
                 '/hub': "Marchello's Blog | Marchello Sciortino",
                 '/contact': "Contact | Marchello Sciortino",
-                '/resources': "Downloads & Kit | Marchello Sciortino",
+                '/resources': "Free Resources | Marchello Sciortino",
                 '/privacy': "Privacy Policy | Marchello Sciortino",
                 '/terms': "Terms of Service | Marchello Sciortino",
                 '/accessibility-statement': "Accessibility Statement | Marchello Sciortino"
@@ -150,6 +153,69 @@ Router.register('/home', () => `
             <div class="hero-ctas">
                 <a href="#/story" class="btn btn-teal">WATCH MY STORY</a>
                 <a href="#/aim" class="btn btn-outline-white">EXPLORE ACCESSIBLE AIM</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured In Scrolling Marquee -->
+    <section class="featured-in bg-navy-dark">
+        <div class="container">
+            <h2 class="featured-title">As Featured In</h2>
+            <div class="marquee-wrapper">
+                <div class="marquee-track">
+                    <div class="marquee-item"><img src="assets/brand-tech-weekly.svg" alt="Tech Weekly"></div>
+                    <div class="marquee-item"><img src="assets/brand-ai-journal.svg" alt="AI Journal"></div>
+                    <div class="marquee-item"><img src="assets/brand-access-magazine.svg" alt="Access Magazine"></div>
+                    <div class="marquee-item"><img src="assets/brand-speaker-today.svg" alt="Speaker Today"></div>
+                    <div class="marquee-item"><img src="assets/brand-digital-builder.svg" alt="Digital Builder"></div>
+                    <div class="marquee-item"><img src="assets/brand-resilience-quarterly.svg" alt="Resilience Quarterly"></div>
+                    
+                    <div class="marquee-item"><img src="assets/brand-tech-weekly.svg" alt="Tech Weekly"></div>
+                    <div class="marquee-item"><img src="assets/brand-ai-journal.svg" alt="AI Journal"></div>
+                    <div class="marquee-item"><img src="assets/brand-access-magazine.svg" alt="Access Magazine"></div>
+                    <div class="marquee-item"><img src="assets/brand-speaker-today.svg" alt="Speaker Today"></div>
+                    <div class="marquee-item"><img src="assets/brand-digital-builder.svg" alt="Digital Builder"></div>
+                    <div class="marquee-item"><img src="assets/brand-resilience-quarterly.svg" alt="Resilience Quarterly"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Impact & Reviews Section -->
+    <section class="section bg-white" style="border-bottom: 1px solid var(--color-gray-border); padding: 4.5rem 0;">
+        <div class="container">
+            <div class="text-center" style="margin-bottom: var(--spacing-lg);">
+                <span class="section-tag">Audience & Client Reviews</span>
+                <h2>Real Impact, Verified Outcomes</h2>
+                <p class="section-desc" style="margin-bottom: 0;">
+                    See what event planners, brand founders, and advocacy leaders say about working with Marchello.
+                </p>
+            </div>
+            <div class="grid-3">
+                <div class="card">
+                    <span class="text-gold" style="font-size: 1.5rem;">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                    <h4 style="margin-top: 10px;">"A Shift in Paradigm"</h4>
+                    <p style="font-style: italic; font-size: 0.95rem;">
+                        "Marchello's keynote stripped away all the usual corny slogans we hear at sales rallies. His honest details about progression and practical AI execution changed how our management team views challenges."
+                    </p>
+                    <strong style="display:block; font-size: 0.85rem; margin-top: 10px;">— Event Planner, Leadership Forum</strong>
+                </div>
+                <div class="card">
+                    <span class="text-gold" style="font-size: 1.5rem;">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                    <h4 style="margin-top: 10px;">"Zero Fluff, Real Proof"</h4>
+                    <p style="font-style: italic; font-size: 0.95rem;">
+                        "We hired Marchello to build our ClickFunnels logic. His technical design system was flawless, and knowing the coordination coordinates he works with just proved to us that his capacity is second to none."
+                    </p>
+                    <strong style="display:block; font-size: 0.85rem; margin-top: 10px;">— Founder, Tech Accelerator</strong>
+                </div>
+                <div class="card">
+                    <span class="text-gold" style="font-size: 1.5rem;">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                    <h4 style="margin-top: 10px;">"Inspiring and Practical"</h4>
+                    <p style="font-style: italic; font-size: 0.95rem;">
+                        "As a parent of a disabled child, hearing Marchello speak gave me a realistic, non-pity roadmap. He shows that adaptation isn't giving up; it is just a smarter execution strategy."
+                    </p>
+                    <strong style="display:block; font-size: 0.85rem; margin-top: 10px;">— Attendee, Advocacy Summit</strong>
+                </div>
             </div>
         </div>
     </section>
@@ -245,7 +311,7 @@ Router.register('/home', () => `
                     <span class="section-tag">Literature</span>
                     <h3 class="card-title">Limitations to Liberation</h3>
                     <p>My upcoming book about the practical tools, mental models, and spiritual principles that build freedom from limitation.</p>
-                    <a href="#/book" class="text-teal">Read Book Mockups &rarr;</a>
+                    <a href="https://www.limitationstoliberation.com/" target="_blank" rel="noopener noreferrer" class="text-teal">"Limitations to Liberation" book &rarr;</a>
                 </div>
                 <div class="card">
                     <span class="section-tag">Technology</span>
@@ -257,17 +323,29 @@ Router.register('/home', () => `
         </div>
     </section>
 
-    <!-- Legacy Wall Promo -->
-    <section class="section bg-navy text-center">
+    <!-- Book Promotion Section -->
+    <section class="book-promo-sec">
         <div class="container">
-            <h2 style="color: white; margin-bottom: 10px;">The Story Is Still Being Written.</h2>
-            <p class="section-desc" style="color: var(--color-gray-steel); margin-bottom: 25px;">
-                Whether skydiving taped to a tandem master or building applications from my bed, the goal is always to serve first.
-            </p>
-            <div style="display: flex; justify-content: center; gap: 15px;">
-                <a href="#/music" class="btn btn-outline-teal">Hear My AI Music</a>
-                <a href="#/impact" class="btn btn-gold">Read Audience Stories</a>
+            <div class="grid-2">
+                <div class="book-promo-content">
+                    <span class="section-tag text-teal">New Book Release</span>
+                    <h2 class="book-promo-headline">LIMITATIONS TO LIBERATION</h2>
+                    <p class="book-promo-subheadline">Discover the mental models, resilience systems, and practical tools to build freedom and turn daily limits into creative agency.</p>
+                    <div style="margin-top: var(--spacing-sm);">
+                        <a href="https://www.limitationstoliberation.com/" target="_blank" rel="noopener noreferrer" class="btn-cta-orange">Get The Book <span class="arrow">&rarr;</span></a>
+                    </div>
+                </div>
+                <div class="book-promo-empty-col">
+                    <!-- Right column is empty to showcase the background image -->
+                </div>
             </div>
+        </div>
+    </section>
+
+    <!-- Legacy Wall Promo -->
+    <section class="section bg-navy text-center" style="padding: 4.5rem 0;">
+        <div class="container">
+            <h2 class="legacy-title">Much love, party people!<br>That was awesome. The next one will only be better!</h2>
         </div>
     </section>
 `);
@@ -823,8 +901,11 @@ Router.register('/mission', () => `
                         <div class="win-flip-card-front">
                             <div class="glare-card-glare"></div>
                             <div class="glare-card-rainbow"></div>
-                            <span class="win-letter text-teal">W</span>
-                            <h3 class="win-card-title">Warrior Story</h3>
+                            <div class="win-content-front">
+                                <span class="win-letter">W</span>
+                                <h3 class="win-card-title">Warrior Story</h3>
+                                <p class="win-card-teaser">Refuse to defend limitations.</p>
+                            </div>
                             <div class="flip-prompt">
                                 <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
@@ -834,9 +915,13 @@ Router.register('/mission', () => `
                         </div>
                         <!-- Back -->
                         <div class="win-flip-card-back">
-                            <span class="win-letter text-gold">W</span>
-                            <h4 class="win-back-heading">Warrior Story</h4>
-                            <p class="win-back-text">Refusing to defend limitation, choosing not to accept the ordinary.</p>
+                            <span class="win-badge">Details</span>
+                            <div class="win-content-back">
+                                <span class="win-letter-back">W</span>
+                                <h4 class="win-back-heading">Warrior Story</h4>
+                                <div class="win-divider"></div>
+                                <p class="win-back-text">Refusing to defend limitation, choosing not to accept the ordinary.</p>
+                            </div>
                             <div class="flip-prompt">
                                 <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
@@ -857,8 +942,11 @@ Router.register('/mission', () => `
                         <div class="win-flip-card-front">
                             <div class="glare-card-glare"></div>
                             <div class="glare-card-rainbow"></div>
-                            <span class="win-letter text-teal">I</span>
-                            <h3 class="win-card-title">Inspiring Impact</h3>
+                            <div class="win-content-front">
+                                <span class="win-letter">I</span>
+                                <h3 class="win-card-title">Inspiring Impact</h3>
+                                <p class="win-card-teaser">Prove capacity to others.</p>
+                            </div>
                             <div class="flip-prompt">
                                 <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
@@ -868,9 +956,13 @@ Router.register('/mission', () => `
                         </div>
                         <!-- Back -->
                         <div class="win-flip-card-back">
-                            <span class="win-letter text-gold">I</span>
-                            <h4 class="win-back-heading">Inspiring Impact</h4>
-                            <p class="win-back-text">Building visible outcomes that prove capacity to others struggling.</p>
+                            <span class="win-badge">Details</span>
+                            <div class="win-content-back">
+                                <span class="win-letter-back">I</span>
+                                <h4 class="win-back-heading">Inspiring Impact</h4>
+                                <div class="win-divider"></div>
+                                <p class="win-back-text">Building visible outcomes that prove capacity to others struggling.</p>
+                            </div>
                             <div class="flip-prompt">
                                 <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
@@ -891,8 +983,11 @@ Router.register('/mission', () => `
                         <div class="win-flip-card-front">
                             <div class="glare-card-glare"></div>
                             <div class="glare-card-rainbow"></div>
-                            <span class="win-letter text-teal">N</span>
-                            <h3 class="win-card-title">Nurturing Outcomes</h3>
+                            <div class="win-content-front">
+                                <span class="win-letter">N</span>
+                                <h3 class="win-card-title">Nurturing Outcomes</h3>
+                                <p class="win-card-teaser">Adapt to your parameters.</p>
+                            </div>
                             <div class="flip-prompt">
                                 <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
@@ -902,9 +997,13 @@ Router.register('/mission', () => `
                         </div>
                         <!-- Back -->
                         <div class="win-flip-card-back">
-                            <span class="win-letter text-gold">N</span>
-                            <h4 class="win-back-heading">Nurturing Outcomes</h4>
-                            <p class="win-back-text">Guiding people to adapt step-by-step to their own parameters.</p>
+                            <span class="win-badge">Details</span>
+                            <div class="win-content-back">
+                                <span class="win-letter-back">N</span>
+                                <h4 class="win-back-heading">Nurturing Outcomes</h4>
+                                <div class="win-divider"></div>
+                                <p class="win-back-text">Guiding people to adapt step-by-step to their own parameters.</p>
+                            </div>
                             <div class="flip-prompt">
                                 <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
@@ -984,9 +1083,10 @@ Router.register('/speaking', () => `
         </div>
     </div>
     
+    <!-- Section 1: Signature Message & Booking Inquiry -->
     <section class="section bg-white">
         <div class="container">
-            <div class="grid-2" style="margin-bottom: var(--spacing-lg);">
+            <div class="grid-2">
                 <div>
                     <span class="section-tag">Signature Message</span>
                     <h2>Winning Despite The Odds</h2>
@@ -1033,72 +1133,78 @@ Router.register('/speaking', () => `
                     </form>
                 </div>
             </div>
-            
-            <div>
-                <h3 class="text-center" style="margin-bottom: var(--spacing-md);">Speaking Topics</h3>
-                <div class="grid-3">
-                    <div class="card">
-                        <h4 class="text-teal">Perspective & The Hand You are Dealt</h4>
-                        <p>How to accept real limitations without accepting defeat. A tactical guide to shifting perspective to discover what abilities remain.</p>
+        </div>
+    </section>
+
+    <!-- Section 2: Speaker Bios & Media Kit Assets -->
+    <section class="section bg-navy-light text-white" style="border-top: 1px solid var(--color-gray-border); border-bottom: 1px solid var(--color-gray-border);">
+        <div class="container">
+            <div class="grid-2">
+                <div>
+                    <span class="section-tag text-teal">Speaker Materials</span>
+                    <h2 class="text-white">Speaker Bios</h2>
+                    <div style="margin-bottom: 20px;">
+                        <span class="section-tag text-teal" style="font-size: 0.8rem; margin-bottom: 5px;">Short Bio (100 words)</span>
+                        <p style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-left: 3px solid var(--color-teal); font-size: 0.95rem; color: var(--color-gray-light); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; margin-bottom: var(--spacing-sm);">
+                            Marchello Sciortino is a ClickFunnels certified builder, digital creator, and keynote speaker living with Friedrich's ataxia, a progressive neuromuscular condition. Rejecting traditional limits, Marchello uses emerging AI tools to amplify his voice and creative agency. Driven by his W.I.N. framework, he coaches individuals and brands on how to turn physical and strategic limitations into practical, high-performance outcomes.
+                        </p>
                     </div>
-                    <div class="card">
-                        <h4 class="text-teal">AI as a Creative Catalyst</h4>
-                        <p>How technology can act as an equalizer. Practical insights into how businesses and individuals can amplify their productivity using modern AI tools.</p>
+                    <div>
+                        <span class="section-tag text-teal" style="font-size: 0.8rem; margin-bottom: 5px;">Long Bio</span>
+                        <p style="font-size: 0.95rem; line-height: 1.6; color: var(--color-gray-light);">
+                            Marchello Sciortino is a St. Louis native, digital creator, and keynote speaker. Diagnosed at age 14 with Friedrich’s ataxia, a progressive neuromuscular condition that impacts mobility, energy, and speech, Marchello learned early to reframe boundaries. Rather than accepting defeat, he built a career in online marketing, creating brand websites, funnels, and applications. Today, he leverages AI as an accessibility bridge and shares his W.I.N. (Warrior story, Inspiring impact, Nurturing outcomes) framework with audiences worldwide, helping them turn daily limits into creative assets.
+                        </p>
                     </div>
-                    <div class="card">
-                        <h4 class="text-teal">Faith, Family & Daily Adaptation</h4>
-                        <p>Reflections on the support structures, faith foundations, and community ties that keep a warrior story moving forward under pressure.</p>
-                    </div>
+                </div>
+                
+                <div class="card bg-navy" style="border: 1px solid rgba(0, 209, 193, 0.2); color: white;">
+                    <span class="section-tag text-teal">Media Assets</span>
+                    <h3 class="text-white">Download Media Kit</h3>
+                    <p style="font-size: 0.95rem; margin-bottom: 20px; color: var(--color-gray-light);">Select files to download for event programs, promotional flyers, or articles.</p>
+                    <ul style="list-style: none; display: flex; flex-direction: column; gap: 15px;">
+                        <li style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 10px;">
+                            <div>
+                                <strong style="display:block; color: white;">Speaker One-Sheet</strong>
+                                <span style="font-size:0.8rem; color:rgba(255, 255, 255, 0.75);">PDF (1.2 MB)</span>
+                            </div>
+                            <a href="#/speaking" class="btn btn-teal btn-sm" onclick="alert('Downloading placeholder: Speaker One-Sheet.pdf'); return false;">Download</a>
+                        </li>
+                        <li style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 10px;">
+                            <div>
+                                <strong style="display:block; color: white;">Headshot Gallery</strong>
+                                <span style="font-size:0.8rem; color:rgba(255, 255, 255, 0.75);">ZIP (12 MB)</span>
+                            </div>
+                            <a href="#/speaking" class="btn btn-teal btn-sm" onclick="alert('Downloading placeholder: Headshots.zip'); return false;">Download</a>
+                        </li>
+                        <li style="display:flex; justify-content:space-between; align-items:center;">
+                            <div>
+                                <strong style="display:block; color: white;">W.I.N. Framework Logo Assets</strong>
+                                <span style="font-size:0.8rem; color:rgba(255, 255, 255, 0.75);">PNG/SVG (3 MB)</span>
+                            </div>
+                            <a href="#/speaking" class="btn btn-teal btn-sm" onclick="alert('Downloading placeholder: Brand_Assets.zip'); return false;">Download</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
     </section>
-`);
 
-// 6. Book Page Template
-Router.register('/book', () => `
-    <div class="page-intro">
-        <div class="container text-center">
-            <span class="section-tag text-teal">Literature</span>
-            <h1 style="color: white;">The Book</h1>
-            <p class="section-desc" style="color: var(--color-gray-light);">
-                My upcoming release: a guide to converting structural limits into emotional and creative freedom.
-            </p>
-        </div>
-    </div>
-    
-    <section class="section bg-white">
+    <!-- Section 3: Speaking Topics -->
+    <section class="section bg-white" style="border-bottom: 1px solid var(--color-gray-border);">
         <div class="container">
-            <div class="grid-2">
-                <div style="display: flex; justify-content: center;">
-                    <img src="assets/book_cover_mockup.png" alt="Limitations to Liberation Book Mockup" style="max-width: 350px; box-shadow: var(--shadow-lg); border-radius: var(--radius-md);">
+            <h3 class="text-center" style="margin-bottom: var(--spacing-lg); font-size: 2.25rem;">Speaking Topics</h3>
+            <div class="grid-3">
+                <div class="card">
+                    <h4 class="text-teal" style="font-size: 1.3rem; margin-bottom: 12px;">Perspective & The Hand You are Dealt</h4>
+                    <p>How to accept real limitations without accepting defeat. A tactical guide to shifting perspective to discover what abilities remain.</p>
                 </div>
-                <div>
-                    <span class="section-tag">Limitations to Liberation</span>
-                    <h2>A Blueprint for Thriving</h2>
-                    <p class="text-teal" style="font-size: 1.2rem; font-weight:600; margin: 10px 0;">
-                        "This book is not about pretending limitations do not hurt. It is about learning how to build possibility anyway."
-                    </p>
-                    <p>
-                        In this book, I share my raw experiences living with Friedrich's ataxia, the slow decline of my physical coordinates, and how that forced a complete overhaul of how I think, communicate, and construct value.
-                    </p>
-                    <p style="margin-bottom: 20px;">
-                        It breaks down standard clichés, offers honest reflections on dependency, and provides actionable guides to setting up digital work, adopting AI, and nurturing faith.
-                    </p>
-                    
-                    <div class="card" style="background: var(--color-white); margin-bottom: 20px;">
-                        <h4>What is inside:</h4>
-                        <ul style="padding-left: 20px; margin-top: 10px; color: var(--color-gray-steel);">
-                            <li>The transition from athletic dreams to physical assistance.</li>
-                            <li>The design parameters model: reframing boundaries as inputs.</li>
-                            <li>A practical breakdown of the W.I.N. warrior framework.</li>
-                        </ul>
-                    </div>
-                    
-                    <form id="book-notify-form" style="display: flex; gap: 10px;">
-                        <input type="email" placeholder="Enter your email" class="form-control" required style="flex: 1;">
-                        <button type="submit" class="btn btn-teal">Notify Me on Release</button>
-                    </form>
+                <div class="card">
+                    <h4 class="text-teal" style="font-size: 1.3rem; margin-bottom: 12px;">AI as a Creative Catalyst</h4>
+                    <p>How technology can act as an equalizer. Practical insights into how businesses and individuals can amplify their productivity using modern AI tools.</p>
+                </div>
+                <div class="card">
+                    <h4 class="text-teal" style="font-size: 1.3rem; margin-bottom: 12px;">Faith, Family & Daily Adaptation</h4>
+                    <p>Reflections on the support structures, faith foundations, and community ties that keep a warrior story moving forward under pressure.</p>
                 </div>
             </div>
         </div>
@@ -1117,61 +1223,164 @@ Router.register('/aim', () => `
         </div>
     </div>
     
-    <section class="section bg-white">
+    <section class="section bg-white" style="padding-bottom: 0;">
+        <div class="container text-center" style="max-width: 800px; margin: 0 auto;">
+            <span class="section-tag">Teaser & Vision</span>
+            <h2>Amplifying Ability through AI</h2>
+            <p style="font-size: 1.15rem; line-height: 1.7; margin-bottom: var(--spacing-md); color: var(--color-gray-steel);">
+                When physical coordinates become hard to reach, simple tasks like typing, communicating, and coding can become significant barriers. 
+                <strong>Accessible AIM</strong> is a program and platform designed to teach constraint-based AI use. We train individuals with disabilities, neuromuscular conditions, and physical constraints on how to configure AI tools to act as their physical extensions.
+            </p>
+            <p style="font-size: 1.1rem; line-height: 1.7; margin-bottom: var(--spacing-lg); color: var(--color-gray-steel);">
+                By learning how to prompt, structure data, and automate layouts, members can build online careers, handle personal admin tasks, and write their own stories with less friction.
+            </p>
+        </div>
+    </section>
+
+    <!-- Dynamic Pillars Section (W.I.N. styled card deck) -->
+    <section class="section bg-navy win-section" style="border-top: 1px solid rgba(10, 216, 173, 0.1); border-bottom: 1px solid rgba(10, 216, 173, 0.1); position: relative; overflow: hidden; padding-bottom: 4rem;">
         <div class="container">
-            <div class="grid-2" style="margin-bottom: var(--spacing-lg);">
-                <div>
-                    <h2>Amplifying Ability</h2>
-                    <p>
-                        When physical coordinates become hard to reach, simple things like typing, writing emails, organizing thoughts, or drafting templates can become a nightmare. 
-                    </p>
-                    <p>
-                        <strong>Accessible AIM</strong> is a program and platform designed to teach constraint-based AI use. We train individuals with disabilities, neuromuscular conditions, and physical constraints on how to configure AI tools to act as their physical extensions.
-                    </p>
-                    <p style="margin-bottom: 20px;">
-                        By learning how to prompt, structure data, and automate layouts, members can build online careers, handle personal admin tasks, and write their own stories with less friction.
-                    </p>
-                </div>
-                <div class="card">
-                    <h3>Join the Early Access Waitlist</h3>
-                    <p style="font-size: 0.9rem; margin-bottom: 15px;">We are currently building the first training tracks. Join the list to receive initial guides and early entry notifications.</p>
-                    <form id="aim-waitlist-form">
-                        <div class="form-group">
-                            <label for="aim-name">Full Name</label>
-                            <input type="text" id="aim-name" class="form-control" required>
+            <span class="section-tag text-teal text-center" style="display: block; margin: 0 auto 10px auto;">Pillars</span>
+            <h2 class="text-center" style="color: white; margin-bottom: var(--spacing-lg);">Core Focus Areas</h2>
+        </div>
+        
+        <div class="win-grid">
+            <!-- Card 1: 1 / A -->
+            <div class="win-card-wrapper" data-card="1" tabindex="0" role="button" aria-label="AI Configuration, click to reveal details">
+                <div class="win-card-tooltip">Click to Flip (Animations Paused)</div>
+                <div class="win-card-tilt">
+                    <div class="win-flip-card">
+                        <!-- Front -->
+                        <div class="win-flip-card-front">
+                            <div class="glare-card-glare"></div>
+                            <div class="glare-card-rainbow"></div>
+                            <div class="win-content-front">
+                                <span class="win-letter">1</span>
+                                <h3 class="win-card-title">AI Configuration</h3>
+                                <p class="win-card-teaser">Optimize your workspace.</p>
+                            </div>
+                            <div class="flip-prompt">
+                                <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                                </svg>
+                                <span>Click to Flip</span>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="aim-email">Email Address</label>
-                            <input type="email" id="aim-email" class="form-control" required>
+                        <!-- Back -->
+                        <div class="win-flip-card-back">
+                            <span class="win-badge">Details</span>
+                            <div class="win-content-back">
+                                <span class="win-letter-back">1</span>
+                                <h4 class="win-back-heading">AI Configuration</h4>
+                                <div class="win-divider"></div>
+                                <p class="win-back-text">Setting up voice-to-text assistants, keyboard shortcuts, and visual layouts to reduce fine motor strain.</p>
+                            </div>
+                            <div class="flip-prompt">
+                                <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                                </svg>
+                                <span>Click to Return</span>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="aim-role">Why are you interested in Accessible AIM?</label>
-                            <select id="aim-role" class="form-control" required>
-                                <option value="">Select an option</option>
-                                <option value="disabled">I have physical limitations and want to learn</option>
-                                <option value="caregiver">I am a caregiver/family member</option>
-                                <option value="professional">I am an educator or professional</option>
-                                <option value="other">General supporter</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-teal" style="width: 100%;">Join Waitlist</button>
-                    </form>
+                    </div>
                 </div>
             </div>
-            
-            <div class="grid-3 text-center">
-                <div class="card">
-                    <h4 class="text-teal">1. AI Configuration</h4>
-                    <p>Setting up voice-to-text assistants, keyboard shortcuts, and visual layouts to reduce fine motor strain.</p>
+
+            <!-- Card 2: 2 / I -->
+            <div class="win-card-wrapper" data-card="2" tabindex="0" role="button" aria-label="Creative Execution, click to reveal details">
+                <div class="win-card-tooltip">Click to Flip (Animations Paused)</div>
+                <div class="win-card-tilt">
+                    <div class="win-flip-card">
+                        <!-- Front -->
+                        <div class="win-flip-card-front">
+                            <div class="glare-card-glare"></div>
+                            <div class="glare-card-rainbow"></div>
+                            <div class="win-content-front">
+                                <span class="win-letter">2</span>
+                                <h3 class="win-card-title">Creative Execution</h3>
+                                <p class="win-card-teaser">Build without barriers.</p>
+                            </div>
+                            <div class="flip-prompt">
+                                <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                                </svg>
+                                <span>Click to Flip</span>
+                            </div>
+                        </div>
+                        <!-- Back -->
+                        <div class="win-flip-card-back">
+                            <span class="win-badge">Details</span>
+                            <div class="win-content-back">
+                                <span class="win-letter-back">2</span>
+                                <h4 class="win-back-heading">Creative Execution</h4>
+                                <div class="win-divider"></div>
+                                <p class="win-back-text">Using AI to write, code, design graphics, and build websites using prompts and constraint-based directives.</p>
+                            </div>
+                            <div class="flip-prompt">
+                                <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                                </svg>
+                                <span>Click to Return</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="card">
-                    <h4 class="text-teal">2. Creative Execution</h4>
-                    <p>Using AI to write, code, design graphics, and build websites using prompts and constraint-based directives.</p>
+            </div>
+
+            <!-- Card 3: 3 / M -->
+            <div class="win-card-wrapper" data-card="3" tabindex="0" role="button" aria-label="Community Workspace, click to reveal details">
+                <div class="win-card-tooltip">Click to Flip (Animations Paused)</div>
+                <div class="win-card-tilt">
+                    <div class="win-flip-card">
+                        <!-- Front -->
+                        <div class="win-flip-card-front">
+                            <div class="glare-card-glare"></div>
+                            <div class="glare-card-rainbow"></div>
+                            <div class="win-content-front">
+                                <span class="win-letter">3</span>
+                                <h3 class="win-card-title">Community Workspace</h3>
+                                <p class="win-card-teaser">Grow with others.</p>
+                            </div>
+                            <div class="flip-prompt">
+                                <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                                </svg>
+                                <span>Click to Flip</span>
+                            </div>
+                        </div>
+                        <!-- Back -->
+                        <div class="win-flip-card-back">
+                            <span class="win-badge">Details</span>
+                            <div class="win-content-back">
+                                <span class="win-letter-back">3</span>
+                                <h4 class="win-back-heading">Community Workspace</h4>
+                                <div class="win-divider"></div>
+                                <p class="win-back-text">A friendly, no-pity environment where members share custom workflows, support, and professional projects.</p>
+                            </div>
+                            <div class="flip-prompt">
+                                <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                                </svg>
+                                <span>Click to Return</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="card">
-                    <h4 class="text-teal">3. Community Workspace</h4>
-                    <p>A friendly, no-pity environment where members share custom workflows, support, and professional projects.</p>
-                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Waitlist CTA Section -->
+    <section class="section bg-white">
+        <div class="container text-center">
+            <div style="max-width: 800px; margin: 0 auto; border: 1px solid var(--color-gray-border); border-radius: var(--radius-lg); padding: var(--spacing-lg); box-shadow: var(--shadow-md);">
+                <h3 style="margin-bottom: 10px;">Join the Early Access Waitlist</h3>
+                <p style="color: var(--color-gray-steel); margin-bottom: 25px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                    We are currently building the first training tracks. Click the button below to join the waitlist, receive initial guides, and get early entry notifications.
+                </p>
+                <a href="https://www.accessibleaim.com/optin" target="_blank" rel="noopener noreferrer" class="btn btn-teal" style="padding: 1rem 2.5rem; font-size: 1.1rem; box-shadow: var(--shadow-teal);">
+                    Join Waitlist Now &rarr;
+                </a>
             </div>
         </div>
     </section>
@@ -1287,69 +1496,6 @@ Router.register('/music', () => `
                 
                 <div id="audio-players-container">
                     <!-- Javascript will dynamically inject the audio player list here -->
-                </div>
-            </div>
-        </div>
-    </section>
-`);
-
-// 10. Media Page Template
-Router.register('/media', () => `
-    <div class="page-intro">
-        <div class="container text-center">
-            <span class="section-tag text-teal">Press Kit</span>
-            <h1 style="color: white;">Media & Resources</h1>
-            <p class="section-desc" style="color: var(--color-gray-light);">
-                Approved assets, speaker bios, and media kit downloads for hosts, journalists, and planners.
-            </p>
-        </div>
-    </div>
-    
-    <section class="section bg-white">
-        <div class="container">
-            <div class="grid-2" style="margin-bottom: var(--spacing-lg);">
-                <div>
-                    <h2>Speaker Bios</h2>
-                    <div style="margin-bottom: 20px;">
-                        <span class="section-tag">Short Bio (100 words)</span>
-                        <p style="background: var(--color-white); padding: 15px; border-left: 3px solid var(--color-teal); font-size: 0.95rem;">
-                            Marchello Sciortino is a ClickFunnels certified builder, digital creator, and keynote speaker living with Friedrich's ataxia, a progressive neuromuscular condition. Rejecting traditional limits, Marchello uses emerging AI tools to amplify his voice and creative agency. Driven by his W.I.N. framework, he coaches individuals and brands on how to turn physical and strategic limitations into practical, high-performance outcomes.
-                        </p>
-                    </div>
-                    <div>
-                        <span class="section-tag">Long Bio</span>
-                        <p style="font-size: 0.95rem; line-height: 1.6;">
-                            Marchello Sciortino is a St. Louis native, digital creator, and keynote speaker. Diagnosed at age 14 with Friedrich’s ataxia, a progressive neuromuscular condition that impacts mobility, energy, and speech, Marchello learned early to reframe boundaries. Rather than accepting defeat, he built a career in online marketing, creating brand websites, funnels, and applications. Today, he leverages AI as an accessibility bridge and shares his W.I.N. (Warrior story, Inspiring impact, Nurturing outcomes) framework with audiences worldwide, helping them turn daily limits into creative assets.
-                        </p>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <h3>Download Media Kit</h3>
-                    <p style="font-size: 0.95rem; margin-bottom: 20px;">Select files to download for event programs, promotional flyers, or articles.</p>
-                    <ul style="list-style: none; display: flex; flex-direction: column; gap: 15px;">
-                        <li style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid var(--color-gray-border); padding-bottom: 10px;">
-                            <div>
-                                <strong style="display:block;">Speaker One-Sheet</strong>
-                                <span style="font-size:0.8rem; color:var(--color-gray-steel);">PDF (1.2 MB)</span>
-                            </div>
-                            <a href="#/media" class="btn btn-teal btn-sm" onclick="alert('Downloading placeholder: Speaker One-Sheet.pdf'); return false;">Download</a>
-                        </li>
-                        <li style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid var(--color-gray-border); padding-bottom: 10px;">
-                            <div>
-                                <strong style="display:block;">Headshot Gallery</strong>
-                                <span style="font-size:0.8rem; color:var(--color-gray-steel);">ZIP (12 MB)</span>
-                            </div>
-                            <a href="#/media" class="btn btn-teal btn-sm" onclick="alert('Downloading placeholder: Headshots.zip'); return false;">Download</a>
-                        </li>
-                        <li style="display:flex; justify-content:space-between; align-items:center;">
-                            <div>
-                                <strong style="display:block;">W.I.N. Framework Logo Assets</strong>
-                                <span style="font-size:0.8rem; color:var(--color-gray-steel);">PNG/SVG (3 MB)</span>
-                            </div>
-                            <a href="#/media" class="btn btn-teal btn-sm" onclick="alert('Downloading placeholder: Brand_Assets.zip'); return false;">Download</a>
-                        </li>
-                    </ul>
                 </div>
             </div>
         </div>
@@ -1522,116 +1668,7 @@ Router.register('/resources', () => `
     </section>
 `);
 
-// 14.5. Shop Page Template
-Router.register('/shop', () => `
-    <div class="shop-hero">
-        <div class="container text-center" style="max-width: 800px;">
-            <span class="section-tag text-teal">Shop</span>
-            <h1 class="shop-main-title">Programs, Services & Swag</h1>
-            <p class="shop-hero-desc">
-                Connect deeply, automate your systems, and represent the movement of turning limitations into agency with custom-crafted software, resilience coaching, and premium apparel.
-            </p>
-        </div>
-    </div>
 
-    <section class="section bg-white" id="shop-catalog">
-        <div class="container">
-            <div class="shop-filter-bar">
-                <button class="shop-filter-btn" data-filter="program">Program</button>
-                <button class="shop-filter-btn" data-filter="service">Services</button>
-                <button class="shop-filter-btn" data-filter="swag">Swag</button>
-            </div>
-            <div class="shop-grid">
-                <!-- Programs Category Card -->
-                <div class="shop-card category-program" role="button" tabindex="0" data-tag="Program" data-title="Accessible AI Masterclass" data-body="Learn the exact workflows, transcription macros, and tailored AI assistant architectures designed to bypass typing barriers. This digital program guides you through constructing an efficient workspace optimized to act as your physical extension, multiplying your writing and execution speeds.">
-                    <div class="shop-card-bg" style="background-image: url('assets/accessible_ai.png');"></div>
-                    <div class="shop-card-gradient"></div>
-                    <div class="shop-card-corner-glow"></div>
-                    <div class="shop-card-content">
-                        <span class="shop-card-tag">Program</span>
-                        <h3 class="shop-card-title">Accessible AI Masterclass</h3>
-                        <p class="shop-card-desc">Bypass physical typing barriers. Learn to construct speech macros and custom AI assistants that act as your hands.</p>
-                    </div>
-                    <div class="shop-card-badge">
-                        <span>$297 | Enroll</span>
-                    </div>
-                </div>
-
-                <!-- Services Category Cards -->
-                <div class="shop-card category-service" role="button" tabindex="0" data-tag="Service" data-title="Certified Funnel Architecture" data-body="Get custom, high-converting digital sales funnels built specifically to your project parameters. As a ClickFunnels certified builder, I develop landing pages, membership systems, and checkout tunnels that blend premium design layout with lightning-fast load times and complete keyboard/screen-reader accessibility compliance.">
-                    <div class="shop-card-bg" style="background-image: url('assets/funnel_building.png');"></div>
-                    <div class="shop-card-gradient"></div>
-                    <div class="shop-card-corner-glow"></div>
-                    <div class="shop-card-content">
-                        <span class="shop-card-tag">Service</span>
-                        <h3 class="shop-card-title">Certified Funnel Architecture</h3>
-                        <p class="shop-card-desc">Certified custom landing pages and sales pipelines built with high-fidelity visual design and accessibility.</p>
-                    </div>
-                    <div class="shop-card-badge">
-                        <span>Book Consultation</span>
-                    </div>
-                </div>
-
-                <div class="shop-card category-service" role="button" tabindex="0" data-tag="Service" data-title="AI Content Strategy & Pipeline" data-body="Scale your publication outputs without diluting your signature voice. We audit your workflows and deliver tailored AI prompt recipes, document templates, and custom publishing pipelines that coordinate across social, newsletters, and blogs, reducing editing overhead by 80%.">
-                    <div class="shop-card-bg" style="background-image: url('assets/ai_content.png');"></div>
-                    <div class="shop-card-gradient"></div>
-                    <div class="shop-card-corner-glow"></div>
-                    <div class="shop-card-content">
-                        <span class="shop-card-tag">Service</span>
-                        <h3 class="shop-card-title">AI Content Strategy & Pipeline</h3>
-                        <p class="shop-card-desc">Scale creative output. We map custom templates, content workflows, and AI assistants tailored to your voice.</p>
-                    </div>
-                    <div class="shop-card-badge">
-                        <span>Get Custom Plan</span>
-                    </div>
-                </div>
-
-                <div class="shop-card category-service" role="button" tabindex="0" data-tag="Service" data-title="Ring Anyway Resilience Mentorship" data-body="Direct, raw, 1-on-1 strategic consulting to turn constraints into competitive leverage. Inspired by the 'Ring Anyway' philosophy, this program focuses on workflow adaptation, operational setup, and cognitive positioning. Build resilience systems to scale agency and output.">
-                    <div class="shop-card-bg" style="background-image: url('assets/ring_anyway_coaching.png');"></div>
-                    <div class="shop-card-gradient"></div>
-                    <div class="shop-card-corner-glow"></div>
-                    <div class="shop-card-content">
-                        <span class="shop-card-tag">Service</span>
-                        <h3 class="shop-card-title">Ring Anyway Resilience Mentorship</h3>
-                        <p class="shop-card-desc">1-on-1 strategic consulting to convert constraint obstacles into structured operational advantages.</p>
-                    </div>
-                    <div class="shop-card-badge">
-                        <span>Apply Now</span>
-                    </div>
-                </div>
-
-                <!-- Swag Category Cards -->
-                <div class="shop-card category-swag" role="button" tabindex="0" data-tag="Swag" data-title="'Limitations to Liberation' Apparel" data-body="Premium heavyweight streetwear representing the movement of active agency. Includes minimalist black hoodies and structured t-shirts featuring organic cotton materials, tailored designs, and our signature graphic outline prints.">
-                    <div class="shop-card-bg" style="background-image: url('assets/apparel.png');"></div>
-                    <div class="shop-card-gradient"></div>
-                    <div class="shop-card-corner-glow"></div>
-                    <div class="shop-card-content">
-                        <span class="shop-card-tag">Swag</span>
-                        <h3 class="shop-card-title">'Limitations to Liberation' Apparel</h3>
-                        <p class="shop-card-desc">Premium, heavyweight hoodies and t-shirts featuring signature brand art and durable comfort styling.</p>
-                    </div>
-                    <div class="shop-card-badge">
-                        <span>$55 | Shop Hoodie</span>
-                    </div>
-                </div>
-
-                <div class="shop-card category-swag" role="button" tabindex="0" data-tag="Swag" data-title="'Ring Anyway' Official Accessories" data-body="Custom everyday essentials to support a high-agency routine. Features high-quality matte black ceramic mugs, laser-engraved dotted-grid notebook journals, and heavy-duty vinyl stickers decorated with motivational coordinates.">
-                    <div class="shop-card-bg" style="background-image: url('assets/accessories.png');"></div>
-                    <div class="shop-card-gradient"></div>
-                    <div class="shop-card-corner-glow"></div>
-                    <div class="shop-card-content">
-                        <span class="shop-card-tag">Swag</span>
-                        <h3 class="shop-card-title">'Ring Anyway' Accessories</h3>
-                        <p class="shop-card-desc">Elevate your workspace with custom matte black coffee mugs, laser-engraved dotted journals, and badge stickers.</p>
-                    </div>
-                    <div class="shop-card-badge">
-                        <span>$18 | View Collection</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-`);
 
 // 15. Privacy Page Template
 Router.register('/privacy', () => `
