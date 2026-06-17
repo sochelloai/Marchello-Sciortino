@@ -1160,6 +1160,40 @@ Router.register('/speaking', () => `
                             <a href="#/speaking" class="btn btn-teal btn-sm" onclick="alert('Downloading placeholder: Brand_Assets.zip'); return false;">Download</a>
                         </li>
                     </ul>
+            </div>
+            
+            <div class="media-gallery-row">
+                <h4 class="text-white" style="margin-bottom: 5px; font-family: var(--font-heading); font-size: 1.25rem;">Preview Speaker Materials</h4>
+                <p style="font-size: 0.9rem; color: var(--color-gray-light); margin-bottom: 20px;">Preview of assets included in the Download Media Kit package.</p>
+                <div class="media-gallery-grid">
+                    <div class="gallery-item">
+                        <img src="assets/placeholders/speaker_munching.svg" alt="Speaker Action">
+                        <span class="gallery-item-label">Speaker Action</span>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="assets/placeholders/headshot_1.svg" alt="Headshot 1">
+                        <span class="gallery-item-label">Headshot 1</span>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="assets/placeholders/headshot_2.svg" alt="Headshot 2">
+                        <span class="gallery-item-label">Headshot 2</span>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="assets/placeholders/headshot_3.svg" alt="Headshot 3">
+                        <span class="gallery-item-label">Headshot 3</span>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="assets/placeholders/headshot_4.svg" alt="Headshot 4">
+                        <span class="gallery-item-label">Headshot 4</span>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="assets/placeholders/win_logo_1.svg" alt="WIN Logo Dark">
+                        <span class="gallery-item-label">WIN Logo Dark</span>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="assets/placeholders/win_logo_2.svg" alt="WIN Logo Light">
+                        <span class="gallery-item-label">WIN Logo Light</span>
+                    </div>
                 </div>
             </div>
         </div>
