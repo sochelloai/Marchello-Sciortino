@@ -875,6 +875,7 @@ Router.register('/mission', () => `
                     <div class="win-flip-card">
                         <!-- Front -->
                         <div class="win-flip-card-front">
+                            <video class="win-card-video" src="assets/videos/W.mp4" loop muted playsinline preload="auto"></video>
                             <div class="glare-card-glare"></div>
                             <div class="glare-card-rainbow"></div>
                             <div class="win-content-front">
@@ -916,6 +917,7 @@ Router.register('/mission', () => `
                     <div class="win-flip-card">
                         <!-- Front -->
                         <div class="win-flip-card-front">
+                            <video class="win-card-video" src="assets/videos/I.mp4" loop muted playsinline preload="auto"></video>
                             <div class="glare-card-glare"></div>
                             <div class="glare-card-rainbow"></div>
                             <div class="win-content-front">
@@ -957,6 +959,7 @@ Router.register('/mission', () => `
                     <div class="win-flip-card">
                         <!-- Front -->
                         <div class="win-flip-card-front">
+                            <video class="win-card-video" src="assets/videos/N.mp4" loop muted playsinline preload="auto"></video>
                             <div class="glare-card-glare"></div>
                             <div class="glare-card-rainbow"></div>
                             <div class="win-content-front">

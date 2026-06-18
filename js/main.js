@@ -310,8 +310,22 @@ const WinCardsEffect = {
             if (!tiltContainer || !flipCard) return;
 
             // Hover (3D Tilt & Glare Coordinate calculations)
+            card.addEventListener('mouseenter', () => {
+                const video = card.querySelector('.win-card-video');
+                if (video) {
+                    video.play().catch(err => console.log('Video play interrupted:', err));
+                }
+            });
+            
             card.addEventListener('mousemove', (e) => this.handleMouseMove(e, card, tiltContainer));
-            card.addEventListener('mouseleave', () => this.handleMouseLeave(tiltContainer));
+            
+            card.addEventListener('mouseleave', () => {
+                const video = card.querySelector('.win-card-video');
+                if (video) {
+                    video.pause();
+                }
+                this.handleMouseLeave(tiltContainer);
+            });
             
             // Interaction (Click to Flip)
             card.addEventListener('click', () => this.toggleFlip(flipCard));
