@@ -481,11 +481,14 @@ img {
 
 .btn-teal {
     background-color: var(--color-teal);
-    color: var(--color-navy);
+    color: var(--color-navy) !important;
 }
 
-.btn-teal:hover {
+.btn-teal:hover,
+.btn-teal:focus,
+.btn-teal:active {
     background-color: var(--color-teal-hover);
+    color: var(--color-navy) !important;
     transform: translateY(-2px);
     box-shadow: var(--shadow-teal);
 }
