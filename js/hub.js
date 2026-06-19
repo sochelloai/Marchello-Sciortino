@@ -5,29 +5,29 @@ const Hub = {
     articles: [
         {
             id: 'acceptance',
-            title: "Acceptance is Not Quitting",
+            title: "Acceptance and Constraints",
             tag: "Lessons From Limitation",
-            desc: "Understanding the difference between throwing in the towel and acknowledging your real design constraints.",
+            desc: "A practical look at how identifying your coordinates allows you to build solutions.",
             date: "June 4, 2026",
             body: `
-                <p>One of the biggest lessons I learned growing up with Friedrich's ataxia is that acceptance is completely different from giving up. In fact, acceptance is the absolute foundation of strength.</p>
-                <p>When my coordination began failing, I spent a lot of time fighting the reality of it. I tried to convince myself that I just wasn't trying hard enough, or that my exhaustion was normal. But you cannot design a workaround for a problem you refuse to see.</p>
-                <blockquote>"Accepting your constraints is not giving up. It is looking at the coordinates of your map and choosing the smartest path forward."</blockquote>
-                <p>In digital marketing, constraints are normal. We deal with code limits, narrow bandwidths, and screen boundaries. We don't complain that the screen is small—we design a responsive layout that fits it. When you treat physical or personal limitations as simple design constraints, the self-pity drops away, and you can finally get back to building.</p>
+                <p>One of the biggest lessons I learned growing up with Friedrich's ataxia is that acceptance is the foundation of strength.</p>
+                <p>When my coordination began changing, I spent time fighting the reality of it. Designing workarounds begins with seeing our coordinates clearly.</p>
+                <blockquote>"Identifying constraints is the first step of construction. It is finding the clearest path on your coordinates."</blockquote>
+                <p>In digital design, constraints are normal. We deal with code limits and screen boundaries. We design responsive layouts to fit the exact parameters available. When you treat physical or personal limitations as simple parameters, you focus your energy on what you can build today.</p>
             `
         },
         {
             id: 'skydiving',
             title: "The Skydiving Tape Method",
             tag: "Story Notes",
-            desc: "A story about white duck-tape, tandem skydiving at 14,000 feet, and why solving details is about raw adaptation.",
+            desc: "How a roll of tape and a jump from 14,000 feet taught me the reality of daily adaptation.",
             date: "May 22, 2026",
             body: `
-                <p>August 27, 2021. I was scheduled to jump out of a perfectly good airplane. After monsoon rains delayed us three times, the skies cleared and we got the green light to fly up and fall down.</p>
+                <p>August 27, 2021. I was scheduled to jump out of a airplane. After monsoon rains delayed us three times, the skies cleared and we got the green light to fly.</p>
                 <p>Just before boarding, my tandem expert realized a problem: 'We need you to lift and hold your legs up for landing so they don't break. Since you can't control them, we have a problem.'</p>
-                <p>He didn't panic or tell me I couldn't jump. Instead, he ran to the supply cabinet and returned with a roll of white duck-tape. He taped my legs together so I could lift them as a single unit using my upper body strength. It worked perfectly.</p>
+                <p>He stayed calm and focused on a workaround. He ran to the supply cabinet and returned with a roll of white duck-tape. He taped my legs together so I could lift them as a single unit using my upper body strength. It worked perfectly.</p>
                 <blockquote>"When life gives you coordination blocks, find the nearest roll of duck-tape."</blockquote>
-                <p>That jump taught me that adaptation isn't polished or corporate. It is gritty, immediate, and practical. When you want to achieve an outcome, you don't accept defeat because of a limitation—you grab the tape and design a bridge.</p>
+                <p>That jump taught me that adaptation is gritty, immediate, and practical. When you want to build a solution, you work with the available parameters to design a bridge.</p>
             `
         },
         {
@@ -37,15 +37,9 @@ const Hub = {
             desc: "A step-by-step breakdown on how I trained ChelloAI on my personal guidelines and voice parameters to help write for me.",
             date: "April 15, 2026",
             body: `
-                <p>Typing is a nightmare. As fine motor movements fade, pushing keys is exhausting and takes me hours. That's why I turned AI models into my physical extensions.</p>
-                <p>ChelloAI was born out of a simple need: I needed a partner that could communicate my thoughts without me having to type every word. To build it, I created a text corpus detailing my life timeline, my chiropractic treatment experiences, and specific conversational parameters.</p>
-                <p>Key rules I used to train the companion:</p>
-                <ul>
-                    <li><strong>No Pity:</strong> Never write replies that seek sympathy or use expressions like 'victim' or 'suffering from.'</li>
-                    <li><strong>No Buzzwords:</strong> Exclude terms like 'synergize' or 'optimize'—write like a real friend.</li>
-                    <li><strong>Direct Value:</strong> Focus on solving problems with no-fluff answers.</li>
-                </ul>
-                <p>By using localized data loading, I now have an assistant that speaks with my direct attitude, acting as a conversational and creative partner.</p>
+                <p>Typing is a physical struggle. As coordination changes, pushing keys is exhausting. That's why I use AI models as my typing assistants.</p>
+                <p>ChelloAI was born out of a simple need: I needed a digital helper that could communicate my thoughts in my voice. To build it, I compiled a text corpus detailing my life timeline, my design experiences, and specific conversational parameters.</p>
+                <p>The rules I used to train the companion focus on keeping the writing authentic, avoiding marketing buzzwords, and framing challenges positively without seeking pity. By loading this custom data, I now have an assistant that speaks with my direct attitude, acting as a conversational partner.</p>
             `
         },
         {
@@ -58,11 +52,11 @@ const Hub = {
                 <p>Whether you are a business owner dealing with a tight budget or an individual dealing with a health coordinate, we all face boundaries. I created the W.I.N. framework to audit these limits and find direction.</p>
                 <p>The matrix is split into three phases:</p>
                 <ol>
-                    <li><strong>Warrior Story:</strong> Write down the limitations you are facing. Stop defending them. Acknowledge them fully as parameters.</li>
-                    <li><strong>Inspiring Impact:</strong> Ask: What is the highest value outcome we can still produce within these exact coordinates? What is the digital proof of capacity?</li>
-                    <li><strong>Nurturing Outcomes:</strong> Break down the daily steps required. What tools (like AI or automation) can take over the mechanical tasks to save your energy?</li>
+                    <li><strong>Warrior Story:</strong> Write down the limitations you are facing. Acknowledge them fully as parameters.</li>
+                    <li><strong>Inspiring Impact:</strong> Identify the highest value outcome you can produce within these coordinates.</li>
+                    <li><strong>Nurturing Outcomes:</strong> Break down the daily steps. Use AI tools to handle repetitive tasks and save your energy.</li>
                 </ol>
-                <p>By moving through this matrix, you stop looking at what you lost and start focusing on what you can still create from where you are today.</p>
+                <p>By moving through this matrix, you focus your energy on what you can create from where you are today.</p>
             `
         }
     ],

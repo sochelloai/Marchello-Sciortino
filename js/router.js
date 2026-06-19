@@ -8,7 +8,7 @@ const Router = {
     init() {
         // Register window hash change listener
         window.addEventListener('hashchange', () => this.handleRouting());
-        
+
         // Handle initial page load
         window.addEventListener('load', () => {
             if (!window.location.hash) {
@@ -25,40 +25,40 @@ const Router = {
 
     handleRouting() {
         const hash = window.location.hash;
-        
+
         // If hash is empty or just #, set to #/home
         if (!hash || hash === '#') {
             window.location.hash = '#/home';
             return;
         }
-        
+
         // If it's a page anchor or skip-link (doesn't start with #/), let browser handle it
         if (!hash.startsWith('#/')) {
             return;
         }
-        
+
         const route = this.parseRoute(hash);
-        
+
         if (route === '/book') {
             window.location.hash = '#/home';
             window.open('https://www.limitationstoliberation.com/', '_blank');
             return;
         }
-        
+
         // Match route or redirect to home
         const templateFn = this.routes[route] || this.routes['/home'];
-        
+
         if (templateFn) {
             // Update current page
             this.currentPage = route.substring(1); // strip leading slash
-            
+
             // Execute template builder
             const html = templateFn();
-            
+
             // Ingest to app container
             const app = document.getElementById('app');
             app.innerHTML = html;
-            
+
             // Update document title dynamically for SEO
             const titles = {
                 '/home': "Marchello Sciortino | Official Digital Hub",
@@ -67,7 +67,6 @@ const Router = {
                 '/mission': "The Mission | Marchello Sciortino",
                 '/brain': "The Brain Map | Marchello Sciortino",
                 '/speaking': "Speaking | Marchello Sciortino",
-                '/aim': "Accessible AIM | Marchello Sciortino",
                 '/chelloai': "ChelloAI | Marchello Sciortino",
                 '/music': "AI Music Jingles | Marchello Sciortino",
                 '/impact': "Impact & Reviews | Marchello Sciortino",
@@ -80,11 +79,11 @@ const Router = {
                 '/accessibility-statement': "Accessibility Statement | Marchello Sciortino"
             };
             document.title = titles[route] || "Marchello Sciortino";
-            
+
             // Post-rendering actions
             this.updateNavLinks(hash);
             this.resetFocus();
-            
+
             // Dispatch page load event for submodules
             const event = new CustomEvent('page-loaded', { detail: { page: this.currentPage } });
             document.dispatchEvent(event);
@@ -92,16 +91,20 @@ const Router = {
     },
 
     parseRoute(hash) {
-        // Simple router logic: hash like '#/story' -> '/story'
+        // Simple router logic: hash like '#/story?interest=Create' -> '/story'
         let route = hash.replace('#', '');
+        if (route.includes('?')) {
+            route = route.split('?')[0];
+        }
         if (route === '') route = '/home';
         return route;
     },
 
     updateNavLinks(hash) {
         const navLinks = document.querySelectorAll('.nav-link');
+        const cleanHash = hash.split('?')[0];
         navLinks.forEach(link => {
-            if (link.getAttribute('href') === hash) {
+            if (link.getAttribute('href') === cleanHash) {
                 link.classList.add('active');
             } else {
                 link.classList.remove('active');
@@ -112,7 +115,7 @@ const Router = {
     resetFocus() {
         // Reset scroll position to top
         window.scrollTo({ top: 0, behavior: 'auto' });
-        
+
         // Shift screen-reader focus to the main focus helper
         const mainFocus = document.getElementById('main-focus');
         if (mainFocus) {
@@ -136,7 +139,7 @@ Router.register('/home', () => `
             </filter>
             <rect width="100%" height="100%" filter="url(#grain-noise)" />
         </svg>
-
+ 
         <div class="container">
             <h1 class="hero-title">
                 <span class="hero-title-line-1">LIMITATIONS DO NOT</span>
@@ -152,11 +155,11 @@ Router.register('/home', () => `
             </p>
             <div class="hero-ctas">
                 <a href="#/services" class="btn btn-teal">MY SERVICES</a>
-                <a href="#/aim" class="btn btn-outline-white">EXPLORE ACCESSIBLE AIM</a>
+                <a href="https://www.accessibleaim.com" target="_blank" rel="noopener noreferrer" class="btn btn-outline-white">EXPLORE ACCESSIBLE AIM</a>
             </div>
         </div>
     </section>
-
+ 
     <!-- Featured In Scrolling Marquee -->
     <section class="featured-in bg-navy-dark">
         <div class="container">
@@ -204,7 +207,7 @@ Router.register('/home', () => `
                     <span class="text-gold" style="font-size: 1.5rem;">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
                     <h4 style="margin-top: 10px;">"Zero Fluff, Real Proof"</h4>
                     <p style="font-style: italic; font-size: 0.95rem;">
-                        "We hired Marchello to build our ClickFunnels logic. His technical design system was flawless, and knowing the coordination coordinates he works with just proved to us that his capacity is second to none."
+                        "We hired Marchello to build our ClickFunnels logic. His technical design system was flawless, and knowing the limitations he works with just proved to us that he builds solid solutions."
                     </p>
                     <strong style="display:block; font-size: 0.85rem; margin-top: 10px;">— Founder, Tech Accelerator</strong>
                 </div>
@@ -212,35 +215,34 @@ Router.register('/home', () => `
                     <span class="text-gold" style="font-size: 1.5rem;">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
                     <h4 style="margin-top: 10px;">"Inspiring and Practical"</h4>
                     <p style="font-style: italic; font-size: 0.95rem;">
-                        "As a parent of a disabled child, hearing Marchello speak gave me a realistic, non-pity roadmap. He shows that adaptation isn't giving up; it is just a smarter execution strategy."
+                        "As a parent of a disabled child, hearing Marchello speak gave me a realistic, non-pity roadmap. He shows that adapting is just a smarter way to execute."
                     </p>
                     <strong style="display:block; font-size: 0.85rem; margin-top: 10px;">— Attendee, Advocacy Summit</strong>
                 </div>
             </div>
         </div>
     </section>
-
+ 
     <!-- The Reality Section -->
     <section class="section bg-white">
         <div class="container text-center">
             <span class="section-tag">The Daily Framework</span>
             <h2>Working Within Reality</h2>
             <p class="section-desc">
-                Living with Friedrich’s ataxia (a progressive neuromuscular condition) means my physical boundaries change often. My response is simple: adapt, construct, and show up.
+                Living with Friedrich’s ataxia (a progressive neuromuscular condition) means my physical boundaries change often. I focus on adapting my systems so I can keep building.
             </p>
             
             <div class="alternating-timeline">
-                <!-- Row 1: Card on Left, Line/Bullet in Center, Image on Right -->
+                <!-- Row 1: Card on Left, Line in Center, Image on Right -->
                 <div class="timeline-row">
                     <div class="timeline-col timeline-content-left">
                         <div class="timeline-year">Losing Mobility</div>
                         <div class="timeline-card">
-                            <p>When coordinates in gym class became difficult and balance disappeared, I plateaued at a confusing level before accepting my progression. It meant learning to live without walking, relying on assistance, and planning daily energy blocks carefully.</p>
+                            <p>When gym class activities became difficult and my balance disappeared, I had to accept the physical change. I adjusted my daily routine to save energy and started using a wheelchair.</p>
                         </div>
                     </div>
                     <div class="timeline-col timeline-center">
                         <div class="timeline-bar-line"></div>
-                        <div class="timeline-bullet bullet-teal"></div>
                     </div>
                     <div class="timeline-col timeline-content-right">
                         <div class="timeline-image-placeholder">
@@ -249,7 +251,16 @@ Router.register('/home', () => `
                     </div>
                 </div>
                 
-                <!-- Row 2: Image on Left, Line/Bullet in Center, Card on Right -->
+                <!-- Blank Spacer Row with Headline -->
+                <div class="timeline-row timeline-spacer-row" style="height: auto; justify-content: center; position: relative; z-index: 2; margin-top: 50px; margin-bottom: 50px;">
+                    <div style="background: var(--color-white); padding: 15px 30px; z-index: 3; position: relative;">
+                        <h3 style="font-family: var(--font-heading); font-size: clamp(1.4rem, 3vw, 2.2rem); font-weight: 800; color: var(--color-navy); margin: 0; text-align: center; line-height: 1.3; text-transform: uppercase; letter-spacing: 0.03em;">
+                            Many shifts in <span class="text-orange-brush" style="font-size: inherit;">perspective<span class="brush-underline"></span></span> had to happen...
+                        </h3>
+                    </div>
+                </div>
+                
+                <!-- Row 2: Image on Left, Line in Center, Card on Right -->
                 <div class="timeline-row">
                     <div class="timeline-col timeline-content-left">
                         <div class="timeline-image-placeholder">
@@ -258,20 +269,58 @@ Router.register('/home', () => `
                     </div>
                     <div class="timeline-col timeline-center">
                         <div class="timeline-bar-line"></div>
-                        <div class="timeline-bullet bullet-gold"></div>
                     </div>
                     <div class="timeline-col timeline-content-right">
-                        <div class="timeline-year">Refusing Defeat</div>
+                        <div class="timeline-year">Warrior Story</div>
                         <div class="timeline-card">
-                            <p>Being a warrior in my vocabulary isn't about being a superhero. It's deciding that physical limitations don't define creative output. I shifted my career to digital marketing, designing websites, funnels, and systems online.</p>
+                            <p>To me, being a warrior means focusing on what I can still create rather than what I have lost. I adjusted my plans and built a career in digital design, creating websites, funnels, and systems online.</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+ 
+    <!-- Articulated Inspiration Section -->
+    <section class="section bg-navy-light text-white" style="border-bottom: 1px solid rgba(0, 209, 193, 0.1); padding: 4.5rem 0;">
+        <div class="container">
+            <div class="text-center" style="margin-bottom: var(--spacing-lg);">
+                <span class="section-tag text-teal" style="display: block; margin-bottom: var(--spacing-xs);">A New Way to See AI</span>
+                <h2 class="text-white" style="margin-bottom: var(--spacing-md);">Articulated Inspiration</h2>
+            </div>
+            
+            <div class="grid-2" style="align-items: center; gap: var(--spacing-lg);">
+                
+                <!-- Left Column: Text -->
+                <div>
+                    <p style="font-size: 1.15rem; line-height: 1.7; color: var(--color-gray-light); margin-bottom: var(--spacing-md);">
+                        Articulated Inspiration is the moving joint between thought and expression. It is the process of bringing the ideas and creativity already present within us into active, functional reality.
+                    </p>
+                    <p style="font-size: 1.15rem; line-height: 1.7; color: var(--color-gray-light); margin-bottom: var(--spacing-lg);">
+                        This philosophy serves as the foundation of the <strong>Accessible AIM</strong> (Articulated Inspiration Method). Through this framework, I treat artificial intelligence as a helper for human capability, acting as that moving joint so we can translate our concepts into active projects.
+                    </p>
+                    <div style="border-top: 1px solid rgba(0, 209, 193, 0.15); padding-top: var(--spacing-md); display: flex; align-items: flex-start; gap: 15px;">
+                        <span style="font-size: 1.6rem; color: var(--color-teal); line-height: 1;">💡</span>
+                        <div>
+                            <strong style="color: var(--color-teal); display: block; margin-bottom: 6px; font-size: 1rem; letter-spacing: 0.05em;">THE METHOD IN ACTION:</strong>
+                            <span style="font-size: 1rem; color: var(--color-gray-steel); line-height: 1.5; display: block;">
+                                When physical coordination makes typing a struggle, I use custom prompt setups to act as the moving joint—turning a spoken draft into a clean, functional webpage.
+                            </span>
+                        </div>
+                    </div>
+                </div>
 
 
+                <!-- Right Column: Visual Representation -->
+                <div style="text-align: center;">
+                    <img src="assets/articulated_inspiration.png" alt="Articulated Inspiration visualization" class="articulated-img">
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+ 
     <!-- Key previews grid -->
     <section class="section bg-white">
         <div class="container">
@@ -281,24 +330,24 @@ Router.register('/home', () => `
                     <span class="section-tag">Keynotes</span>
                     <h3 class="card-title">Keynote Speaking</h3>
                     <p>Delivering practical, no-fluff perspectives on resilience and adaptation for corporate, educational, and faith-driven events.</p>
-                    <a href="#/speaking" class="text-teal">Book Speaking Details &rarr;</a>
+                    <a href="#/speaking" class="text-teal">Speaking Details &rarr;</a>
                 </div>
                 <div class="card">
                     <span class="section-tag">Literature</span>
                     <h3 class="card-title">Limitations to Liberation</h3>
-                    <p>My upcoming book about the practical tools, mental models, and spiritual principles that build freedom from limitation.</p>
+                    <p>My new book about reframing constraints, finding your competitive advantage to thrive, and turning them into a message.</p>
                     <a href="https://www.limitationstoliberation.com/" target="_blank" rel="noopener noreferrer" class="text-teal">"Limitations to Liberation" book &rarr;</a>
                 </div>
                 <div class="card">
                     <span class="section-tag">Technology</span>
                     <h3 class="card-title">Accessible AIM</h3>
                     <p>A mission to help individuals with physical challenges discover how AI can act as a bridge for creation and communication.</p>
-                    <a href="#/aim" class="text-teal">Join AIM Waitlist &rarr;</a>
+                    <a href="https://www.accessibleaim.com" target="_blank" rel="noopener noreferrer" class="text-teal">Join AIM Waitlist &rarr;</a>
                 </div>
             </div>
         </div>
     </section>
-
+ 
     <!-- Book Promotion Section -->
     <section class="book-promo-sec">
         <div style="flex-grow: 1; display: flex; align-items: center; width: 100%; padding-top: 3rem;">
@@ -307,7 +356,7 @@ Router.register('/home', () => `
                     <div class="book-promo-content">
                         <span class="section-tag text-teal">New Book Release</span>
                         <h2 class="book-promo-headline">LIMITATIONS TO LIBERATION</h2>
-                        <p class="book-promo-subheadline">Discover the mental models, resilience systems, and practical tools to build freedom and turn daily limits into creative agency.</p>
+                        <p class="book-promo-subheadline">Learn the mental models and daily systems to build freedom from limitation and write your own story.</p>
                         <div style="margin-top: var(--spacing-sm);">
                             <a href="https://www.limitationstoliberation.com/" target="_blank" rel="noopener noreferrer" class="btn-cta-orange">Get The Book <span class="arrow">&rarr;</span></a>
                         </div>
@@ -333,7 +382,7 @@ Router.register('/story', () => `
             <span class="section-tag text-teal">Timeline</span>
             <h1 style="color: white;">My Journey</h1>
             <p class="section-desc" style="color: var(--color-gray-light);">
-                No hero-worship. No pity. Just an honest timeline of progressive challenges and the choices made to keep building.
+                An honest look at my timeline, the progressive challenges, and how I choose to keep building.
             </p>
         </div>
     </div>
@@ -374,7 +423,7 @@ Router.register('/story', () => `
                     <div class="timeline-col timeline-content-right">
                         <div class="timeline-year">Around 3rd & 4th Grade</div>
                         <div class="timeline-card">
-                            <p>I began noticing shortness of breath and a rapid heartbeat after normal activity in gym class. Soon, balance blocks appeared. I couldn't run as fast, walk in a straight line, or balance across parking blocks. Other kids started asking, "Why do you walk like that?" and I had no answers.</p>
+                            <p>I began noticing shortness of breath and a rapid heartbeat during gym class. Soon, my balance slipped. I couldn't keep up or walk in a straight line. Other kids started asking why I walked that way, and I had no answers.</p>
                         </div>
                     </div>
                 </div>
@@ -384,7 +433,7 @@ Router.register('/story', () => `
                     <div class="timeline-col timeline-content-left">
                         <div class="timeline-year">The Diagnosis at 14</div>
                         <div class="timeline-card">
-                            <p>After years of medical uncertainty, muscle tests, and spinal checks, we received a laboratory diagnosis: Friedrich's ataxia. It's a progressive, neuromuscular condition that disrupts neural pathways, affecting fine motor skills, gait, energy, and hearing. It was a clear confirmation that my physical state would slowly decline over time.</p>
+                            <p>After years of tests, we received the laboratory diagnosis: Friedrich's ataxia. This progressive condition affects coordination, energy, and fine motor skills. It was clear confirmation that my physical abilities would change over time.</p>
                         </div>
                     </div>
                     <div class="timeline-col timeline-center">
@@ -412,7 +461,7 @@ Router.register('/story', () => `
                     <div class="timeline-col timeline-content-right">
                         <div class="timeline-year">Progression & Independence Shift</div>
                         <div class="timeline-card">
-                            <p>High school and college years required constant adjustments. I eventually transitioned to a wheelchair. Simple things—sitting up, opening a soda, getting in or out of bed—required parent assistance. The hardest challenge was the mental fatigue: resisting feeling like a "nuisance" or "disabled mooch" and choosing to focus on what coordinates I still controlled.</p>
+                            <p>High school and college required constant adjustments as I transitioned to a wheelchair. Simple things like getting out of bed or opening a soda required my parents' help. The hardest part was the mental fatigue of feeling like an energy-draining mooch, but I chose to focus on what I could still control.</p>
                         </div>
                     </div>
                 </div>
@@ -422,7 +471,7 @@ Router.register('/story', () => `
                     <div class="timeline-col timeline-content-left">
                         <div class="timeline-year">Discovering Digital Marketing & AI</div>
                         <div class="timeline-card">
-                            <p>With physical labor impossible, I focused on digital skillsets. I trained, became ClickFunnels certified, and began building websites and marketing campaigns for business partners. As typing became a nightmare, AI became my typing speed. It bridged the physical gap, acting as an amplifier for my ideas, voice, and designs.</p>
+                            <p>Since physical work was out of the question, I focused on digital skills. I got ClickFunnels certified and built websites for business partners. When typing became a nightmare, I turned to AI. It acted as my typing speed, helping me write code and design pages.</p>
                         </div>
                     </div>
                     <div class="timeline-col timeline-center">
@@ -450,376 +499,275 @@ Router.register('/story', () => `
                     <div class="timeline-col timeline-content-right">
                         <div class="timeline-year">Today - Writing the Legacy</div>
                         <div class="timeline-card">
-                            <p>The challenges changed, but the mission did not. I continue to build systems, write books, create AI-powered songs, and deliver keynotes to show that limits are parameters to create around, not blockades to accept.</p>
+                            <p>My physical challenges change, but my goal stays the same. I build websites, write, and speak to show that limits are parameters we can design around.</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
 `);
 
-// 2b. Services Page Template
 Router.register('/services', () => `
-    <div class="page-intro">
-        <div class="container text-center">
-            <span class="section-tag text-teal">WHAT I DO</span>
-            <h1 style="color: white;">Services</h1>
-            <p class="section-desc" style="color: var(--color-gray-light);">
-                Where AI, Creativity, and Human Potential Meet
+    <div class="services-header" style="position: relative; padding: 7.5rem 0 5rem 0; text-align: center; overflow: hidden; background: linear-gradient(to right, rgba(7, 24, 39, 0.95) 0%, rgba(7, 24, 39, 0.75) 60%, rgba(7, 24, 39, 0.5) 100%), url('assets/hero-bg.png?v=3') no-repeat center center / cover; border-bottom: 2px solid var(--color-teal);">
+        <!-- Curved background gold lines using inline SVG -->
+        <svg style="position: absolute; left: 0; top: 0; height: 100%; width: 220px; pointer-events: none; opacity: 0.25;" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path d="M -10,0 Q 20,40 100,50 M -10,15 Q 20,55 100,65 M -10,30 Q 20,70 100,80 M -10,45 Q 20,85 100,95 M -10,60 Q 20,100 100,110" fill="none" stroke="var(--color-teal)" stroke-width="0.3" />
+        </svg>
+        <svg style="position: absolute; right: 0; top: 0; height: 100%; width: 220px; pointer-events: none; opacity: 0.25;" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path d="M 110,0 Q 80,40 0,50 M 110,15 Q 80,55 0,65 M 110,30 Q 80,70 0,80 M 110,45 Q 80,85 0,95 M 110,60 Q 80,100 0,110" fill="none" stroke="var(--color-teal)" stroke-width="0.3" />
+        </svg>
+        
+        <div class="container" style="position: relative; z-index: 2;">
+            <span class="section-tag" style="color: var(--color-teal); font-size: 0.85rem; letter-spacing: 0.15em; font-weight: 600; margin-bottom: var(--spacing-sm);">SOLUTIONS THAT CREATE IMPACT</span>
+            <h1 style="color: white; font-family: var(--font-heading); font-size: clamp(2.2rem, 5vw, 3.25rem); font-weight: 800; letter-spacing: 0.02em; margin-bottom: 15px; text-transform: uppercase;">
+                WHAT <span style="color: var(--color-teal);">MARCHELLO</span> DOES
+            </h1>
+            <div style="width: 60px; height: 2px; background: var(--color-teal); margin: 0 auto var(--spacing-md) auto;"></div>
+            <p style="color: var(--color-gray-light); font-size: 1.15rem; font-weight: 400; max-width: 600px; margin: 0 auto; line-height: 1.6;">
+                Three powerful ways we help you create, build, and overcome.
             </p>
         </div>
     </div>
-    
-    <!-- Hero / Main Section -->
-    <section class="section bg-white">
+
+    <!-- Section 1: CREATE -->
+    <section class="section" style="background-color: var(--color-white); padding: 6rem 0; border-bottom: 1px solid var(--color-gray-border);">
         <div class="container">
-            <div class="grid-2">
-                <div>
-                    <span class="section-tag">Overview</span>
-                    <h2>Where AI, Creativity, and Human Potential Meet</h2>
-                    <p class="text-teal" style="font-size: 1.25rem; font-weight: 600; margin-bottom: 20px; line-height: 1.4;">
-                        Marchello helps individuals, businesses, and organizations leverage artificial intelligence, digital strategy, and resilience-based thinking to create meaningful results.
-                    </p>
-                    <p style="color: var(--color-gray-steel); margin-bottom: 20px; font-weight: 500; font-style: italic;">
-                        Technology changes quickly. Human potential does not.
-                    </p>
-                    <p style="color: var(--color-gray-steel); margin-bottom: 30px;">
-                        Marchello combines AI innovation, digital creation, and lived experience to help people build businesses, amplify ideas, and overcome obstacles. His work sits at the intersection of creativity, technology, and possibility.
-                    </p>
-                    <div class="hero-ctas">
-                        <a href="#/contact" class="btn btn-teal">WORK WITH MARCHELLO</a>
-                        <a href="#services-list" class="btn btn-outline-teal">EXPLORE SERVICES</a>
+            <div class="grid-2" style="align-items: center; gap: 60px;">
+                
+                <!-- Left Column: Card 01 -->
+                <div class="card" style="background: white; border: 1px solid var(--color-gray-border); border-radius: var(--radius-md); padding: 50px 30px 40px 30px; text-align: center; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; position: relative; margin-top: 30px; max-width: 380px; width: 100%; margin-left: auto; margin-right: auto;">
+                    <!-- Circle Icon -->
+                    <div style="width: 80px; height: 80px; background-color: var(--color-navy); border-radius: 50%; display: flex; justify-content: center; align-items: center; position: absolute; top: -40px; left: calc(50% - 40px); border: 4px solid var(--color-white); box-shadow: 0 8px 20px rgba(0,0,0,0.08);">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M15 4V2M15 16v-2M8 9h2M20 9h2M17.8 4.2l-1.4 1.4M7.6 14.4l-1.4 1.4M17.8 13.8l-1.4-1.4M7.6 4.2l-1.4 1.4" />
+                            <path d="M2 22l8-8M14 10l3-3" />
+                        </svg>
                     </div>
-                </div>
-                <div>
-                    <div class="card bg-navy text-white" style="border: 1px solid var(--color-gray-border); padding: var(--spacing-lg); max-width: 480px; margin: 0 auto; box-shadow: var(--shadow-lg);">
-                        <div class="success-icon-wrapper" style="background: rgba(0, 209, 193, 0.1); margin-bottom: 20px;">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="2" style="width: 40px; height: 40px;">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <polyline points="12 6 12 12 16 14"></polyline>
-                            </svg>
-                        </div>
-                        <h3 class="text-white text-center" style="font-size: 1.5rem; margin-bottom: 15px;">Three Ways Marchello Helps People Win</h3>
-                        <p style="color: var(--color-gray-light); font-size: 0.95rem; line-height: 1.6; text-align: center;">
-                            Rather than offering dozens of disconnected services, Marchello focuses on three core areas that bring together his experience as a creator, builder, speaker, AI explorer, and advocate.
+                    
+                    <div style="margin-top: 15px;">
+                        <span style="color: var(--color-teal); font-size: 1.25rem; font-weight: 700; display: block; margin-bottom: 5px; font-family: var(--font-heading);">01</span>
+                        <h2 style="font-size: 1.75rem; color: var(--color-navy); font-weight: 800; letter-spacing: 0.05em; margin-bottom: 12px; text-transform: uppercase;">CREATE</h2>
+                        <div style="width: 40px; height: 2.5px; background: var(--color-teal); margin: 0 auto 10px auto; opacity: 0.8;"></div>
+                        <p style="color: var(--color-gray-steel); font-size: 0.98rem; line-height: 1.6; margin-bottom: 10px; font-weight: 500;">
+                            AI-powered content and creative solutions that bring your ideas to life.
                         </p>
                     </div>
+                    
+                    <div style="margin-top: 10px;">
+                        <a href="#/contact?interest=Create" class="btn btn-teal" style="width: 100%;">CONTACT ME</a>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Introduction Section -->
-    <section class="section bg-white" id="services-list" style="border-top: 1px solid var(--color-gray-border);">
-        <div class="container text-center" style="max-width: 800px;">
-            <span class="section-tag">How I Serve</span>
-            <h2>Three Ways Marchello Helps People Win Despite The Odds</h2>
-            <p class="section-desc">
-                Rather than offering dozens of disconnected services, Marchello focuses on three core areas that bring together his experience as a creator, builder, speaker, AI explorer, and advocate.
-            </p>
-            <p style="color: var(--color-gray-steel); margin-top: -15px; margin-bottom: 40px;">
-                These categories represent the primary ways clients, organizations, and individuals work with him.
-            </p>
-        </div>
-    </section>
-
-    <!-- Services Detail Section -->
-    
-    <!-- Service 01 -->
-    <section class="section bg-navy-light text-white" style="border-top: 1px solid var(--color-gray-border); border-bottom: 1px solid var(--color-gray-border);">
-        <div class="container">
-            <div class="grid-2">
-                <div>
-                    <span class="section-tag text-teal">Service 01</span>
-                    <h2 class="text-white">Digital Experiences & Funnel Engineering</h2>
-                    <p class="text-gold" style="font-size: 1.25rem; font-weight: 600; margin-bottom: 20px;">
-                        Build systems that attract, engage, and convert.
-                    </p>
-                    <p style="color: var(--color-gray-light); margin-bottom: 30px; line-height: 1.6;">
-                        Marchello designs digital experiences that help businesses communicate clearly and guide visitors toward action. Whether it is a sales funnel, landing page, website, membership area, or custom application, every project is built around creating a seamless user experience and meaningful outcomes.
+                <!-- Right Column: Text Expansion -->
+                <div style="padding-left: 10px;">
+                    <span class="section-tag text-teal" style="font-size: 0.85rem; letter-spacing: 0.12em; display: inline-block; margin-bottom: 10px;">AI-Powered Creative Strategy</span>
+                    <h2 style="color: var(--color-navy); font-size: 2.2rem; font-weight: 800; margin-bottom: 15px; font-family: var(--font-heading);">AI-POWERED CONTENT CREATION</h2>
+                    <p style="font-size: 1.15rem; line-height: 1.7; color: var(--color-gray-steel); margin-bottom: 25px;">
+                        I use generative AI systems to build customized visual and written creative outputs. Whether you need audio loops, copy packages, or digital graphics, I construct systems that turn raw ideas into active assets.
                     </p>
                     
-                    <div style="background: rgba(7, 24, 39, 0.4); border-radius: var(--radius-md); border: 1px solid rgba(0, 209, 193, 0.2); padding: var(--spacing-md); margin-bottom: 20px;">
-                        <h4 class="text-white" style="margin-bottom: 15px; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.05em;">Ideal For:</h4>
-                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                            <span class="btn btn-outline-teal" style="padding: 6px 12px; font-size: 0.75rem; pointer-events: none; text-transform: none;">Entrepreneurs</span>
-                            <span class="btn btn-outline-teal" style="padding: 6px 12px; font-size: 0.75rem; pointer-events: none; text-transform: none;">Small Businesses</span>
-                            <span class="btn btn-outline-teal" style="padding: 6px 12px; font-size: 0.75rem; pointer-events: none; text-transform: none;">Coaches</span>
-                            <span class="btn btn-outline-teal" style="padding: 6px 12px; font-size: 0.75rem; pointer-events: none; text-transform: none;">Speakers</span>
-                            <span class="btn btn-outline-teal" style="padding: 6px 12px; font-size: 0.75rem; pointer-events: none; text-transform: none;">Course Creators</span>
-                            <span class="btn btn-outline-teal" style="padding: 6px 12px; font-size: 0.75rem; pointer-events: none; text-transform: none;">Organizations</span>
-                        </div>
-                    </div>
+                    <ul style="list-style: none; padding-left: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+                        <li style="display: flex; gap: 12px; align-items: flex-start;">
+                            <span style="color: var(--color-teal); font-size: 1.3rem; line-height: 1;">💡</span>
+                            <div>
+                                <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--color-navy); margin-bottom: 4px;">Custom Images & Video</h4>
+                                <p style="font-size: 0.95rem; color: var(--color-gray-steel); margin: 0; line-height: 1.5;">Generating custom graphics, promotional videos, and interactive visual content with AI models.</p>
+                            </div>
+                        </li>
+                        <li style="display: flex; gap: 12px; align-items: flex-start;">
+                            <span style="color: var(--color-teal); font-size: 1.3rem; line-height: 1;">🎵</span>
+                            <div>
+                                <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--color-navy); margin-bottom: 4px;">Songs & Brand Jingles</h4>
+                                <p style="font-size: 0.95rem; color: var(--color-gray-steel); margin: 0; line-height: 1.5;">Crafting distinct background tunes, melodies, and custom jingles to enrich your message.</p>
+                            </div>
+                        </li>
+                        <li style="display: flex; gap: 12px; align-items: flex-start;">
+                            <span style="color: var(--color-teal); font-size: 1.3rem; line-height: 1;">✍️</span>
+                            <div>
+                                <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--color-navy); margin-bottom: 4px;">Assisted Writing & Copy</h4>
+                                <p style="font-size: 0.95rem; color: var(--color-gray-steel); margin: 0; line-height: 1.5;">Writing books, storytelling, and copy scripting using structured AI prompts and voice-dictated editing.</p>
+                            </div>
+                        </li>
+                        <li style="display: flex; gap: 12px; align-items: flex-start;">
+                            <span style="color: var(--color-teal); font-size: 1.3rem; line-height: 1;">🧠</span>
+                            <div>
+                                <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--color-navy); margin-bottom: 4px;">Creative AI Consulting</h4>
+                                <p style="font-size: 0.95rem; color: var(--color-gray-steel); margin: 0; line-height: 1.5;">Consulting on customized prompt setups and configurations to simplify your daily writing workflow.</p>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-                
-                <div>
-                    <div class="card bg-navy" style="border: 1px solid rgba(0, 209, 193, 0.2); padding: var(--spacing-lg);">
-                        <h3 class="text-white" style="margin-bottom: 20px; font-size: 1.35rem; border-bottom: 1px solid rgba(0, 209, 193, 0.2); padding-bottom: 10px; font-family: var(--font-heading);">What's Included</h3>
-                        <ul style="list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; color: var(--color-gray-light); padding-left: 0;">
-                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                Funnel building
-                            </li>
-                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                Website design
-                            </li>
-                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                Sales page engineering
-                            </li>
-                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                Landing pages
-                            </li>
-                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                Membership platforms
-                            </li>
-                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                Course portals
-                            </li>
-                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                Lead generation systems
-                            </li>
-                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                Customer journey optimization
-                            </li>
-                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                App development
-                            </li>
-                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                AI-powered experiences
-                            </li>
-                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                ClickFunnels implementation
-                            </li>
-                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                Conversion strategy
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+
             </div>
         </div>
     </section>
 
-    <!-- Service 02 -->
-    <section class="section bg-white">
+    <!-- Section 2: BUILD -->
+    <section class="section bg-navy-light text-white" style="padding: 6rem 0; border-bottom: 1px solid rgba(0, 209, 193, 0.1);">
         <div class="container">
-            <div class="grid-2">
-                <div style="order: 2;">
-                    <span class="section-tag">Service 02</span>
-                    <h2>AI-Powered Content Creation</h2>
-                    <p class="text-teal" style="font-size: 1.25rem; font-weight: 600; margin-bottom: 20px;">
-                        Transform ideas into content, media, and stories.
-                    </p>
-                    <p style="color: var(--color-gray-steel); margin-bottom: 30px; line-height: 1.6;">
-                        Marchello actively explores emerging AI tools and creative technologies to help people create content faster and more effectively. From visual assets and videos to books, music, copywriting, and storytelling, AI becomes a creative amplifier rather than a replacement for human imagination.
+            <div class="grid-2" style="align-items: center; gap: 60px;">
+                
+                <!-- Left Column: Card 02 -->
+                <div class="card" style="background: var(--color-navy); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: 50px 30px 40px 30px; text-align: center; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; position: relative; margin-top: 30px; max-width: 380px; width: 100%; margin-left: auto; margin-right: auto; color: white;">
+                    <!-- Circle Icon -->
+                    <div style="width: 80px; height: 80px; background-color: var(--color-navy); border-radius: 50%; display: flex; justify-content: center; align-items: center; position: absolute; top: -40px; left: calc(50% - 40px); border: 4px solid var(--color-navy-light); box-shadow: 0 8px 20px rgba(0,0,0,0.15);">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                            <line x1="8" y1="21" x2="16" y2="21" />
+                            <line x1="12" y1="17" x2="12" y2="21" />
+                            <line x1="6" y1="8" x2="10" y2="8" />
+                            <circle cx="6" cy="12" r="1" />
+                            <circle cx="10" cy="12" r="1" />
+                        </svg>
+                    </div>
+                    
+                    <div style="margin-top: 15px;">
+                        <span style="color: var(--color-teal); font-size: 1.25rem; font-weight: 700; display: block; margin-bottom: 5px; font-family: var(--font-heading);">02</span>
+                        <h2 style="font-size: 1.75rem; color: white; font-weight: 800; letter-spacing: 0.05em; margin-bottom: 12px; text-transform: uppercase;">BUILD</h2>
+                        <div style="width: 40px; height: 2.5px; background: var(--color-teal); margin: 0 auto 10px auto; opacity: 0.8;"></div>
+                        <p style="color: var(--color-gray-light); font-size: 0.98rem; line-height: 1.6; margin-bottom: 10px; font-weight: 500;">
+                            Websites, funnels, and digital solutions that grow your business and automate success.
+                        </p>
+                    </div>
+                    
+                    <div style="margin-top: 10px;">
+                        <a href="#/contact?interest=Build" class="btn btn-teal" style="width: 100%;">CONTACT ME</a>
+                    </div>
+                </div>
+
+                <!-- Right Column: Text Expansion -->
+                <div style="padding-left: 10px;">
+                    <span class="section-tag text-teal" style="font-size: 0.85rem; letter-spacing: 0.12em; display: inline-block; margin-bottom: 10px;">Websites & Digital Ecosystems</span>
+                    <h2 style="color: white; font-size: 2.2rem; font-weight: 800; margin-bottom: 15px; font-family: var(--font-heading);">WEBSITES, FUNNELS & SOLUTIONS</h2>
+                    <p style="font-size: 1.15rem; line-height: 1.7; color: var(--color-gray-light); margin-bottom: 25px;">
+                        I construct modern web architectures, landing pages, and lead workflows. Using AI-assisted programming tools, I design responsive templates that connect with visitors and support clean automation pipelines.
                     </p>
                     
-                    <div style="background: var(--color-white); border-radius: var(--radius-md); border: 1px solid var(--color-gray-border); padding: var(--spacing-md); margin-bottom: 20px;">
-                        <h4 style="margin-bottom: 15px; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-navy);">Ideal For:</h4>
-                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                            <span class="btn btn-outline-teal" style="padding: 6px 12px; font-size: 0.75rem; pointer-events: none; text-transform: none;">Personal Brands</span>
-                            <span class="btn btn-outline-teal" style="padding: 6px 12px; font-size: 0.75rem; pointer-events: none; text-transform: none;">Content Creators</span>
-                            <span class="btn btn-outline-teal" style="padding: 6px 12px; font-size: 0.75rem; pointer-events: none; text-transform: none;">Businesses</span>
-                            <span class="btn btn-outline-teal" style="padding: 6px 12px; font-size: 0.75rem; pointer-events: none; text-transform: none;">Authors</span>
-                            <span class="btn btn-outline-teal" style="padding: 6px 12px; font-size: 0.75rem; pointer-events: none; text-transform: none;">Speakers</span>
-                            <span class="btn btn-outline-teal" style="padding: 6px 12px; font-size: 0.75rem; pointer-events: none; text-transform: none;">Marketing Teams</span>
-                        </div>
-                    </div>
+                    <ul style="list-style: none; padding-left: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+                        <li style="display: flex; gap: 12px; align-items: flex-start;">
+                            <span style="color: var(--color-teal); font-size: 1.3rem; line-height: 1;">💻</span>
+                            <div>
+                                <h4 style="font-size: 1.05rem; font-weight: 700; color: white; margin-bottom: 4px;">Web Development</h4>
+                                <p style="font-size: 0.95rem; color: var(--color-gray-light); margin: 0; line-height: 1.5;">Designing and deploying modern web portals, clean layouts, and functional portfolios.</p>
+                            </div>
+                        </li>
+                        <li style="display: flex; gap: 12px; align-items: flex-start;">
+                            <span style="color: var(--color-teal); font-size: 1.3rem; line-height: 1;">🚀</span>
+                            <div>
+                                <h4 style="font-size: 1.05rem; font-weight: 700; color: white; margin-bottom: 4px;">Funnels & Landing Pages</h4>
+                                <p style="font-size: 0.95rem; color: var(--color-gray-light); margin: 0; line-height: 1.5;">Building structured multi-page pathways and lead captures that turn clicks into active queries.</p>
+                            </div>
+                        </li>
+                        <li style="display: flex; gap: 12px; align-items: flex-start;">
+                            <span style="color: var(--color-teal); font-size: 1.3rem; line-height: 1;">⚙️</span>
+                            <div>
+                                <h4 style="font-size: 1.05rem; font-weight: 700; color: white; margin-bottom: 4px;">Workflow Automation</h4>
+                                <p style="font-size: 0.95rem; color: var(--color-gray-light); margin: 0; line-height: 1.5;">Connecting tools and automating administrative tasks using AI to save valuable hours.</p>
+                            </div>
+                        </li>
+                        <li style="display: flex; gap: 12px; align-items: flex-start;">
+                            <span style="color: var(--color-teal); font-size: 1.3rem; line-height: 1;">🔒</span>
+                            <div>
+                                <h4 style="font-size: 1.05rem; font-weight: 700; color: white; margin-bottom: 4px;">Membership Platforms</h4>
+                                <p style="font-size: 0.95rem; color: var(--color-gray-light); margin: 0; line-height: 1.5;">Setting up membership vaults, lesson portals, and automated digital course areas.</p>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-                
-                <div style="order: 1;">
-                    <div class="card bg-navy-light text-white" style="border: 1px solid rgba(0, 209, 193, 0.2); padding: var(--spacing-lg);">
-                        <h3 class="text-white" style="margin-bottom: 20px; font-size: 1.35rem; border-bottom: 1px solid rgba(0, 209, 193, 0.2); padding-bottom: 10px; font-family: var(--font-heading);">What's Included</h3>
-                        <ul style="list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; color: var(--color-gray-light); padding-left: 0;">
-                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                AI-assisted copywriting
-                            </li>
-                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                AI image generation
-                            </li>
-                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                AI video generation
-                            </li>
-                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                AI music & song creation
-                            </li>
-                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                AI book development
-                            </li>
-                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                AI storytelling
-                            </li>
-                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                Brand messaging
-                            </li>
-                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                Content systems
-                            </li>
-                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                Marketing assets
-                            </li>
-                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                Creative campaigns
-                            </li>
-                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                Educational content
-                            </li>
-                            <li style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                Digital media production
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+
             </div>
         </div>
     </section>
 
-    <!-- Service 03 -->
-    <section class="section bg-navy-light text-white" style="border-top: 1px solid var(--color-gray-border); border-bottom: 1px solid var(--color-gray-border);">
+    <!-- Section 3: OVERCOME -->
+    <section class="section" style="background-color: var(--color-white); padding: 6rem 0 3.5rem 0;">
         <div class="container">
-            <div class="grid-2">
-                <div>
-                    <span class="section-tag text-teal">Service 03</span>
-                    <h2 class="text-white">Winning Despite The Odds Coaching & AI Advocacy</h2>
-                    <p class="text-gold" style="font-size: 1.25rem; font-weight: 600; margin-bottom: 20px;">
-                        Learn to transform limitations into advantages.
-                    </p>
-                    <p style="color: var(--color-gray-light); margin-bottom: 30px; line-height: 1.6;">
-                        Built from Marchello's personal journey and years of navigating adversity, this coaching experience focuses on helping people reframe challenges, build resilience, and discover opportunities hidden inside constraints.
-                        <br><br>
-                        At the same time, Marchello teaches practical ways artificial intelligence can empower people to accomplish more, communicate more effectively, and expand what is possible in their personal and professional lives.
+            <div class="grid-2" style="align-items: center; gap: 60px; margin-bottom: 60px;">
+                
+                <!-- Left Column: Card 03 -->
+                <div class="card" style="background: white; border: 1px solid var(--color-gray-border); border-radius: var(--radius-md); padding: 50px 30px 40px 30px; text-align: center; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; position: relative; margin-top: 30px; max-width: 380px; width: 100%; margin-left: auto; margin-right: auto;">
+                    <!-- Circle Icon -->
+                    <div style="width: 80px; height: 80px; background-color: var(--color-navy); border-radius: 50%; display: flex; justify-content: center; align-items: center; position: absolute; top: -40px; left: calc(50% - 40px); border: 4px solid var(--color-white); box-shadow: 0 8px 20px rgba(0,0,0,0.08);">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 22L12 2l8 20H4z" />
+                            <path d="M12 2v10" stroke-width="1.2" />
+                            <path d="M12 5h4l-2 2 2 2h-4" fill="var(--color-teal)" />
+                        </svg>
+                    </div>
+                    
+                    <div style="margin-top: 15px;">
+                        <span style="color: var(--color-teal); font-size: 1.25rem; font-weight: 700; display: block; margin-bottom: 5px; font-family: var(--font-heading);">03</span>
+                        <h2 style="font-size: 1.75rem; color: var(--color-navy); font-weight: 800; letter-spacing: 0.05em; margin-bottom: 12px; text-transform: uppercase;">OVERCOME</h2>
+                        <div style="width: 40px; height: 2.5px; background: var(--color-teal); margin: 0 auto 10px auto; opacity: 0.8;"></div>
+                        <p style="color: var(--color-gray-steel); font-size: 0.98rem; line-height: 1.6; margin-bottom: 10px; font-weight: 500;">
+                            Coaching and strategies to help you win despite the odds and reach your fullest potential.
+                        </p>
+                    </div>
+                    
+                    <div style="margin-top: 10px;">
+                        <a href="#/contact?interest=Overcome" class="btn btn-teal" style="width: 100%;">CONTACT ME</a>
+                    </div>
+                </div>
+
+                <!-- Right Column: Text Expansion -->
+                <div style="padding-left: 10px;">
+                    <span class="section-tag text-teal" style="font-size: 0.85rem; letter-spacing: 0.12em; display: inline-block; margin-bottom: 10px;">Resilience & Mindset Coaching</span>
+                    <h2 style="color: var(--color-navy); font-size: 2.2rem; font-weight: 800; margin-bottom: 15px; font-family: var(--font-heading);">WINNING DESPITE THE ODDS</h2>
+                    <p style="font-size: 1.15rem; line-height: 1.7; color: var(--color-gray-steel); margin-bottom: 25px;">
+                        I work directly with individuals to shift their perspective and reframe their limitations. Through mindset coaching and constraint-based problem solving, we establish customized habits to convert physical or mental barriers into growth pathways.
                     </p>
                     
-                    <div style="background: rgba(7, 24, 39, 0.4); border-radius: var(--radius-md); border: 1px solid rgba(0, 209, 193, 0.2); padding: var(--spacing-md); margin-bottom: 20px;">
-                        <h4 class="text-white" style="margin-bottom: 15px; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.05em;">Ideal For:</h4>
-                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                            <span class="btn btn-outline-teal" style="padding: 6px 12px; font-size: 0.75rem; pointer-events: none; text-transform: none;">Individuals Facing Adversity</span>
-                            <span class="btn btn-outline-teal" style="padding: 6px 12px; font-size: 0.75rem; pointer-events: none; text-transform: none;">Educators & Schools</span>
-                            <span class="btn btn-outline-teal" style="padding: 6px 12px; font-size: 0.75rem; pointer-events: none; text-transform: none;">Organizations</span>
-                            <span class="btn btn-outline-teal" style="padding: 6px 12px; font-size: 0.75rem; pointer-events: none; text-transform: none;">Leadership Teams</span>
-                            <span class="btn btn-outline-teal" style="padding: 6px 12px; font-size: 0.75rem; pointer-events: none; text-transform: none;">Entrepreneurs</span>
-                            <span class="btn btn-outline-teal" style="padding: 6px 12px; font-size: 0.75rem; pointer-events: none; text-transform: none;">Anyone Seeking Growth</span>
-                        </div>
-                    </div>
+                    <ul style="list-style: none; padding-left: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+                        <li style="display: flex; gap: 12px; align-items: flex-start;">
+                            <span style="color: var(--color-teal); font-size: 1.3rem; line-height: 1;">🌱</span>
+                            <div>
+                                <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--color-navy); margin-bottom: 4px;">Personal Growth</h4>
+                                <p style="font-size: 0.95rem; color: var(--color-gray-steel); margin: 0; line-height: 1.5;">Developing actionable goals and personal strategies to build consistent creative momentum.</p>
+                            </div>
+                        </li>
+                        <li style="display: flex; gap: 12px; align-items: flex-start;">
+                            <span style="color: var(--color-teal); font-size: 1.3rem; line-height: 1;">🧩</span>
+                            <div>
+                                <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--color-navy); margin-bottom: 4px;">Constraint-Based Strategy</h4>
+                                <p style="font-size: 0.95rem; color: var(--color-gray-steel); margin: 0; line-height: 1.5;">Reframing physical limitations or tight boundaries as structured design constraints for creation.</p>
+                            </div>
+                        </li>
+                        <li style="display: flex; gap: 12px; align-items: flex-start;">
+                            <span style="color: var(--color-teal); font-size: 1.3rem; line-height: 1;">🗣️</span>
+                            <div>
+                                <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--color-navy); margin-bottom: 4px;">Speaking & Workshops</h4>
+                                <p style="font-size: 0.95rem; color: var(--color-gray-steel); margin: 0; line-height: 1.5;">Hosting presentations and active workshops showing the intersection of resilience and AI capability.</p>
+                            </div>
+                        </li>
+                        <li style="display: flex; gap: 12px; align-items: flex-start;">
+                            <span style="color: var(--color-teal); font-size: 1.3rem; line-height: 1;">🤝</span>
+                            <div>
+                                <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--color-navy); margin-bottom: 4px;">Adaptability Consulting</h4>
+                                <p style="font-size: 0.95rem; color: var(--color-gray-steel); margin: 0; line-height: 1.5;">Setting up customized voice commands, adaptive workspaces, and productivity hacks.</p>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-                
-                <div>
-                    <div class="card bg-navy" style="border: 1px solid rgba(0, 209, 193, 0.2); padding: var(--spacing-lg);">
-                        <h3 class="text-white" style="margin-bottom: 20px; font-size: 1.35rem; border-bottom: 1px solid rgba(0, 209, 193, 0.2); padding-bottom: 10px; font-family: var(--font-heading);">Topics Include</h3>
-                        <div style="display: flex; flex-direction: column; gap: 15px;">
-                            <div style="display: flex; gap: 12px;">
-                                <div style="margin-top: 3px;">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                </div>
-                                <div>
-                                    <h4 class="text-white" style="font-size: 1.05rem; margin-bottom: 3px; font-family: var(--font-heading);">Constraint-Based Thinking</h4>
-                                    <p style="color: var(--color-gray-light); font-size: 0.9rem; margin-bottom: 0; line-height: 1.4;">Learning how obstacles can become sources of innovation.</p>
-                                </div>
-                            </div>
-                            <div style="display: flex; gap: 12px;">
-                                <div style="margin-top: 3px;">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                </div>
-                                <div>
-                                    <h4 class="text-white" style="font-size: 1.05rem; margin-bottom: 3px; font-family: var(--font-heading);">Resilience & Mindset</h4>
-                                    <p style="color: var(--color-gray-light); font-size: 0.9rem; margin-bottom: 0; line-height: 1.4;">Developing healthier responses to difficult circumstances.</p>
-                                </div>
-                            </div>
-                            <div style="display: flex; gap: 12px;">
-                                <div style="margin-top: 3px;">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                </div>
-                                <div>
-                                    <h4 class="text-white" style="font-size: 1.05rem; margin-bottom: 3px; font-family: var(--font-heading);">Winning Despite The Odds Framework</h4>
-                                    <p style="color: var(--color-gray-light); font-size: 0.9rem; margin-bottom: 0; line-height: 1.4;">The philosophy that guides Marchello's speaking, coaching, and educational work.</p>
-                                </div>
-                            </div>
-                            <div style="display: flex; gap: 12px;">
-                                <div style="margin-top: 3px;">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                </div>
-                                <div>
-                                    <h4 class="text-white" style="font-size: 1.05rem; margin-bottom: 3px; font-family: var(--font-heading);">AI Empowerment</h4>
-                                    <p style="color: var(--color-gray-light); font-size: 0.9rem; margin-bottom: 0; line-height: 1.4;">Understanding how technology can amplify human capability.</p>
-                                </div>
-                            </div>
-                            <div style="display: flex; gap: 12px;">
-                                <div style="margin-top: 3px;">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                </div>
-                                <div>
-                                    <h4 class="text-white" style="font-size: 1.05rem; margin-bottom: 3px; font-family: var(--font-heading);">Personal Growth</h4>
-                                    <p style="color: var(--color-gray-light); font-size: 0.9rem; margin-bottom: 0; line-height: 1.4;">Building confidence, purpose, and momentum.</p>
-                                </div>
-                            </div>
-                            <div style="display: flex; gap: 12px;">
-                                <div style="margin-top: 3px;">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                </div>
-                                <div>
-                                    <h4 class="text-white" style="font-size: 1.05rem; margin-bottom: 3px; font-family: var(--font-heading);">Human Potential</h4>
-                                    <p style="color: var(--color-gray-light); font-size: 0.9rem; margin-bottom: 0; line-height: 1.4;">Discovering strengths hidden beneath limitations.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
             </div>
-        </div>
-    </section>
-    
-    <!-- Innovation Section -->
-    <section class="section bg-white">
-        <div class="container text-center" style="max-width: 800px;">
-            <span class="section-tag">Vision & Exploration</span>
-            <h2>Always Exploring What's Next</h2>
-            <p class="section-desc">
-                Marchello is not simply a service provider. He is an active explorer of emerging technologies, AI systems, creative tools, and digital experiences. His passion lies in discovering practical applications that help people create more, communicate better, save time, and unlock opportunities that previously seemed out of reach. Every project, lesson, and conversation is guided by one belief:
-            </p>
-            <div style="background: var(--color-white); border-left: 5px solid var(--color-teal); border-radius: 4px; padding: var(--spacing-md) var(--spacing-lg); margin-top: 30px; display: inline-block; text-align: left; max-width: 650px; box-shadow: var(--shadow-md); border: 1px solid var(--color-gray-border);">
-                <p style="font-style: italic; font-size: 1.25rem; font-weight: 600; color: var(--color-navy); margin-bottom: 0; font-family: var(--font-heading);">
-                    "Your limitations may shape your path, but they do not define your potential."
+
+            <!-- Bottom Logo/M-Divider -->
+            <div style="display: flex; align-items: center; justify-content: center; gap: 20px; margin-top: 80px; margin-bottom: 25px;">
+                <div style="flex: 1; max-width: 280px; height: 1.5px; background: var(--color-gray-border);"></div>
+                <img src="assets/logo-dark.png" alt="M logo" style="height: 25px; width: auto; border-radius: 0; opacity: 0.85;">
+                <div style="flex: 1; max-width: 280px; height: 1.5px; background: var(--color-gray-border);"></div>
+            </div>
+
+            <!-- Bottom Branding Text -->
+            <div class="text-center">
+                <h4 style="font-family: var(--font-heading); color: var(--color-navy); font-size: 1.05rem; font-weight: 800; letter-spacing: 0.18em; margin-bottom: 8px; text-transform: uppercase;">
+                    CREATIVITY. TECHNOLOGY. DETERMINATION.
+                </h4>
+                <p style="color: var(--color-teal); font-family: var(--font-heading); font-size: 1.15rem; font-weight: 800; letter-spacing: 0.08em; margin-bottom: 0; text-transform: uppercase;">
+                     UNLOCKING POSSIBILITIES. DELIVERING RESULTS.
                 </p>
             </div>
-        </div>
-    </section>
 
-    <!-- Closing Section -->
-    <section class="section bg-navy text-white" style="border-top: 1px solid rgba(0, 209, 193, 0.2);">
-        <div class="container text-center" style="max-width: 800px;">
-            <span class="section-tag text-teal">Start Today</span>
-            <h2 class="text-white">Let's Build Something Meaningful</h2>
-            <p class="section-desc" style="color: var(--color-gray-light);">
-                Whether you're building a business, creating content, exploring AI, or learning how to navigate life's challenges with greater confidence, Marchello brings together technology, creativity, and lived experience to help you move forward.
-            </p>
-            <div class="hero-ctas" style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 30px;">
-                <a href="#/contact" class="btn btn-teal">WORK WITH MARCHELLO</a>
-                <a href="#/contact" class="btn btn-outline-white">BOOK A CONVERSATION</a>
-            </div>
         </div>
     </section>
 `);
@@ -842,10 +790,7 @@ Router.register('/mission', () => `
                 <div>
                     <h2>Rejecting the Default Limit</h2>
                     <p>
-                        A lot of the language around disability is either rooted in pity ("your life is so hard") or hero-worship ("you are such a hero"). Both frame the person solely by their limitation, putting them in a box.
-                    </p>
-                    <p>
-                        My mission is to demonstrate that <strong>purpose and contribution do not require physical perfection</strong>. You do not need a perfect body to create a world-class website, direct a business strategy, or offer value to others.
+                        We frame disability around capability. You do not need a perfect body to build a website, write copy, or help others. I focus on producing solid digital work with the physical coordination I have left.
                     </p>
                 </div>
                 <div class="graphic-panel bg-navy text-white" style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: var(--spacing-lg); border-radius: var(--radius-md); position: relative; overflow: hidden; border: 1px solid rgba(10, 216, 173, 0.15); min-height: 280px;">
@@ -853,7 +798,7 @@ Router.register('/mission', () => `
                     <div class="graphic-flare" style="position: absolute; width: 120px; height: 120px; background: var(--color-gold); filter: blur(60px); opacity: 0.12; bottom: 20%; right: 20%;"></div>
                     <span style="font-family: 'Permanent Marker', sans-serif; font-size: 2.2rem; color: var(--color-teal); transform: rotate(-5deg); margin-bottom: 10px; z-index: 2;">No Excuses.</span>
                     <p class="text-center" style="font-size: 0.95rem; color: var(--color-gray-steel); max-width: 280px; text-align: center; margin: 0; line-height: 1.5; z-index: 2;">
-                        "The limit is not the parameter of the body, but the boundary of the imagination."
+                        "Focus on what can be created within your constraints."
                     </p>
                 </div>
             </div>
@@ -881,7 +826,7 @@ Router.register('/mission', () => `
                             <div class="win-content-front">
                                 <span class="win-letter">W</span>
                                 <h3 class="win-card-title">Warrior Story</h3>
-                                <p class="win-card-teaser">Refuse to defend limitations.</p>
+                                <p class="win-card-teaser">Acknowledge your constraints.</p>
                             </div>
                             <div class="flip-prompt">
                                 <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -897,7 +842,7 @@ Router.register('/mission', () => `
                                 <span class="win-letter-back">W</span>
                                 <h4 class="win-back-heading">Warrior Story</h4>
                                 <div class="win-divider"></div>
-                                <p class="win-back-text">Refusing to defend limitation, choosing not to accept the ordinary.</p>
+                                <p class="win-back-text">Acknowledge your limits as parameters to design around.</p>
                             </div>
                             <div class="flip-prompt">
                                 <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -923,7 +868,7 @@ Router.register('/mission', () => `
                             <div class="win-content-front">
                                 <span class="win-letter">I</span>
                                 <h3 class="win-card-title">Inspiring Impact</h3>
-                                <p class="win-card-teaser">Prove capacity to others.</p>
+                                <p class="win-card-teaser">Focus on high-value execution.</p>
                             </div>
                             <div class="flip-prompt">
                                 <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -939,7 +884,7 @@ Router.register('/mission', () => `
                                 <span class="win-letter-back">I</span>
                                 <h4 class="win-back-heading">Inspiring Impact</h4>
                                 <div class="win-divider"></div>
-                                <p class="win-back-text">Building visible outcomes that prove capacity to others struggling.</p>
+                                <p class="win-back-text">Build digital projects that show what is possible with limited energy.</p>
                             </div>
                             <div class="flip-prompt">
                                 <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -965,7 +910,7 @@ Router.register('/mission', () => `
                             <div class="win-content-front">
                                 <span class="win-letter">N</span>
                                 <h3 class="win-card-title">Nurturing Outcomes</h3>
-                                <p class="win-card-teaser">Adapt to your parameters.</p>
+                                <p class="win-card-teaser">Build steady daily progress.</p>
                             </div>
                             <div class="flip-prompt">
                                 <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -981,7 +926,7 @@ Router.register('/mission', () => `
                                 <span class="win-letter-back">N</span>
                                 <h4 class="win-back-heading">Nurturing Outcomes</h4>
                                 <div class="win-divider"></div>
-                                <p class="win-back-text">Guiding people to adapt step-by-step to their own parameters.</p>
+                                <p class="win-back-text">Use AI tools and automation to handle repetitive tasks and save your energy.</p>
                             </div>
                             <div class="flip-prompt">
                                 <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1001,15 +946,15 @@ Router.register('/mission', () => `
             <div class="grid-3">
                 <div class="card">
                     <h3>Constraint-Based Thinking</h3>
-                    <p>In web design, constraints (screen sizes, load limits) force better solutions. The same is true in life. Limitations force us to filter out the noise and focus on what can still be created.</p>
+                    <p>In web design, constraints like screen size make us build simpler pages. In life, boundaries help us filter out noise and focus on what we can write or design today.</p>
                 </div>
                 <div class="card">
                     <h3>AI as a Human Bridge</h3>
-                    <p>Artificial Intelligence isn't about replacing humanity; it is about expanding capability. For those of us with motor blocks, AI operates as the ultimate accessibility tool, turning thoughts into execution.</p>
+                    <p>I treat AI as a helper for human capability. For anyone with motor blocks, AI acts as a physical assistant that types and formats copy based on spoken instructions.</p>
                 </div>
                 <div class="card">
                     <h3>Serve First, Sell Last</h3>
-                    <p>Relationships come first. Contribution is second. Selling is last. This hub is built to serve as a library of what is possible, helping others see a blueprint they can apply to their own lives.</p>
+                    <p>I value real connections and sharing helpful resources. This hub acts as a blueprint you can adapt for your own projects.</p>
                 </div>
             </div>
         </div>
@@ -1057,7 +1002,7 @@ Router.register('/speaking', () => `
             <span class="section-tag text-teal">Keynotes</span>
             <h1 style="color: white;">Speaking & Keynotes</h1>
             <p class="section-desc" style="color: var(--color-gray-light);">
-                A straight-forward, no-fluff, highly motivating message for leadership groups, disability advocacy conferences, and faith-driven events.
+                An honest, practical talk about adapting to change for leadership and advocacy events.
             </p>
         </div>
     </div>
@@ -1070,7 +1015,7 @@ Router.register('/speaking', () => `
                     <span class="section-tag">Signature Message</span>
                     <h2>Winning Despite The Odds</h2>
                     <p>
-                        Most motivational talks outline a temporary setback that was magically solved. My message is different: I live with a progressive condition that gets harder every day. Resilience isn't a one-time event; it is a daily adjustment.
+                        I speak about the reality of living with a progressive condition. Resilience is a daily choice to adjust your plans and keep moving forward.
                     </p>
                     <p style="margin-bottom: 20px;">
                         In this signature keynote, I share the W.I.N. framework to show how organizations, individuals, and teams can look at their changing parameters, reframe their focus, and build practical success.
@@ -1079,14 +1024,14 @@ Router.register('/speaking', () => `
                         <strong>Key Audience Takeaways:</strong>
                         <ul style="margin-top: 10px; padding-left: 20px; color: var(--color-gray-steel);">
                             <li>Shift perspective from limitations to creative constraints.</li>
-                            <li>Develop a can-do execution model when traditional resources shift.</li>
-                            <li>Leverage emerging AI technologies to multiply team output.</li>
+                            <li>Find practical alternatives when your physical or strategic resources change.</li>
+                            <li>Use AI tools to handle repetitive tasks and speed up your writing.</li>
                         </ul>
                     </div>
                 </div>
                 <div class="card">
-                    <h3>Book Speaking Booking Inquiry</h3>
-                    <p style="font-size: 0.9rem; margin-bottom: 15px;">Fill out this form to inquire about booking Marchello for an upcoming virtual or in-person event.</p>
+                    <h3>Book a Speaking Event</h3>
+                    <p style="font-size: 0.9rem; margin-bottom: 15px;">Fill out this form to inquire about speaking availability.</p>
                     <form id="speaking-inquiry-form" class="speaking-form">
                         <div class="form-group">
                             <label for="event-name">Event Name</label>
@@ -1125,13 +1070,13 @@ Router.register('/speaking', () => `
                     <div style="margin-bottom: 20px;">
                         <span class="section-tag text-teal" style="font-size: 0.8rem; margin-bottom: 5px;">Short Bio (100 words)</span>
                         <p style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-left: 3px solid var(--color-teal); font-size: 0.95rem; color: var(--color-gray-light); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; margin-bottom: var(--spacing-sm);">
-                            Marchello Sciortino is a ClickFunnels certified builder, digital creator, and keynote speaker living with Friedrich's ataxia, a progressive neuromuscular condition. Rejecting traditional limits, Marchello uses emerging AI tools to amplify his voice and creative agency. Driven by his W.I.N. framework, he coaches individuals and brands on how to turn physical and strategic limitations into practical, high-performance outcomes.
+                            I am a digital designer, ClickFunnels builder, and speaker living with Friedrich's ataxia. I use AI to write and build code, bypassing my physical limits. I coach people on how to work within their constraints and build digital projects.
                         </p>
                     </div>
                     <div>
                         <span class="section-tag text-teal" style="font-size: 0.8rem; margin-bottom: 5px;">Long Bio</span>
                         <p style="font-size: 0.95rem; line-height: 1.6; color: var(--color-gray-light);">
-                            Marchello Sciortino is a St. Louis native, digital creator, and keynote speaker. Diagnosed at age 14 with Friedrich’s ataxia, a progressive neuromuscular condition that impacts mobility, energy, and speech, Marchello learned early to reframe boundaries. Rather than accepting defeat, he built a career in online marketing, creating brand websites, funnels, and applications. Today, he leverages AI as an accessibility bridge and shares his W.I.N. (Warrior story, Inspiring impact, Nurturing outcomes) framework with audiences worldwide, helping them turn daily limits into creative assets.
+                            I grew up in St. Louis and was diagnosed with Friedrich's ataxia at age 14. As my coordination changed, I adjusted my plans and built a career in digital design. I configure AI to help me type, write code, and run my business. Today, I speak to groups about how to audit their constraints and build practical digital solutions.
                         </p>
                     </div>
                 </div>
@@ -1143,10 +1088,10 @@ Router.register('/speaking', () => `
                     <ul style="list-style: none; display: flex; flex-direction: column; gap: 15px;">
                         <li style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 10px;">
                             <div>
-                                <strong style="display:block; color: white;">Speaker One-Sheet</strong>
-                                <span style="font-size:0.8rem; color:rgba(255, 255, 255, 0.75);">PDF (1.2 MB)</span>
+                                <strong style="display:block; color: white;">Speaker one-sheet</strong>
+                                <span style="font-size:0.8rem; color:rgba(255, 255, 255, 0.75);">PNG (1.7 MB)</span>
                             </div>
-                            <a href="#/speaking" class="btn btn-teal btn-sm" onclick="alert('Downloading placeholder: Speaker One-Sheet.pdf'); return false;">Download</a>
+                            <a href="assets/speaker_1_sheet.png" download="Speaker_1_Sheet.png" class="btn btn-teal btn-sm">Download</a>
                         </li>
                         <li style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 10px;">
                             <div>
@@ -1171,8 +1116,8 @@ Router.register('/speaking', () => `
                 <p style="font-size: 0.9rem; color: var(--color-gray-light); margin-bottom: 20px;">Preview of assets included in the Download Media Kit package.</p>
                 <div class="media-gallery-grid">
                     <div class="gallery-item">
-                        <img src="assets/placeholders/speaker_munching.svg" alt="Speaker Action">
-                        <span class="gallery-item-label">Speaker Action</span>
+                        <img src="assets/speaker_1_sheet.png" alt="Speaker one-sheet">
+                        <span class="gallery-item-label">Speaker one-sheet</span>
                     </div>
                     <div class="gallery-item">
                         <img src="assets/placeholders/headshot_1.svg" alt="Headshot 1">
@@ -1210,191 +1155,16 @@ Router.register('/speaking', () => `
             <div class="grid-3">
                 <div class="card">
                     <h4 class="text-teal" style="font-size: 1.3rem; margin-bottom: 12px;">Perspective & The Hand You are Dealt</h4>
-                    <p>How to accept real limitations without accepting defeat. A tactical guide to shifting perspective to discover what abilities remain.</p>
+                    <p>A practical approach to working within physical limits and focusing on the abilities you still have.</p>
                 </div>
                 <div class="card">
-                    <h4 class="text-teal" style="font-size: 1.3rem; margin-bottom: 12px;">AI as a Creative Catalyst</h4>
-                    <p>How technology can act as an equalizer. Practical insights into how businesses and individuals can amplify their productivity using modern AI tools.</p>
+                    <h4 class="text-teal" style="font-size: 1.3rem; margin-bottom: 12px;">AI for Daily Work</h4>
+                    <p>How AI acts as a typing assistant. I share how to use prompts to write and design faster.</p>
                 </div>
                 <div class="card">
                     <h4 class="text-teal" style="font-size: 1.3rem; margin-bottom: 12px;">Faith, Family & Daily Adaptation</h4>
-                    <p>Reflections on the support structures, faith foundations, and community ties that keep a warrior story moving forward under pressure.</p>
+                    <p>Reflections on the faith and family support that keep me building under pressure.</p>
                 </div>
-            </div>
-        </div>
-    </section>
-`);
-
-// 7. Accessible AIM Page Template
-Router.register('/aim', () => `
-    <div class="page-intro">
-        <div class="container text-center">
-            <span class="section-tag text-teal">Community Initiative</span>
-            <h1 style="color: white;">Accessible AIM</h1>
-            <p class="section-desc" style="color: var(--color-gray-light);">
-                Helping people with physical limitations discover how AI can act as a voice amplifier, text simulator, and creative partner.
-            </p>
-        </div>
-    </div>
-    
-    <section class="section bg-white" style="padding-bottom: 0;">
-        <div class="container text-center" style="max-width: 800px; margin: 0 auto;">
-            <span class="section-tag">Teaser & Vision</span>
-            <h2>Amplifying Ability through AI</h2>
-            <p style="font-size: 1.15rem; line-height: 1.7; margin-bottom: var(--spacing-md); color: var(--color-gray-steel);">
-                When physical coordinates become hard to reach, simple tasks like typing, communicating, and coding can become significant barriers. 
-                <strong>Accessible AIM</strong> is a program and platform designed to teach constraint-based AI use. We train individuals with disabilities, neuromuscular conditions, and physical constraints on how to configure AI tools to act as their physical extensions.
-            </p>
-            <p style="font-size: 1.1rem; line-height: 1.7; margin-bottom: var(--spacing-lg); color: var(--color-gray-steel);">
-                By learning how to prompt, structure data, and automate layouts, members can build online careers, handle personal admin tasks, and write their own stories with less friction.
-            </p>
-        </div>
-    </section>
-
-    <!-- Dynamic Pillars Section (W.I.N. styled card deck) -->
-    <section class="section bg-navy win-section" style="border-top: 1px solid rgba(10, 216, 173, 0.1); border-bottom: 1px solid rgba(10, 216, 173, 0.1); position: relative; overflow: hidden; padding-bottom: 4rem;">
-        <div class="container">
-            <span class="section-tag text-teal text-center" style="display: block; margin: 0 auto 10px auto;">Pillars</span>
-            <h2 class="text-center" style="color: white; margin-bottom: var(--spacing-lg);">Core Focus Areas</h2>
-        </div>
-        
-        <div class="win-grid">
-            <!-- Card 1: 1 / A -->
-            <div class="win-card-wrapper" data-card="1" tabindex="0" role="button" aria-label="AI Configuration, click to reveal details">
-                <div class="win-card-tooltip">Click to Flip (Animations Paused)</div>
-                <div class="win-card-tilt">
-                    <div class="win-flip-card">
-                        <!-- Front -->
-                        <div class="win-flip-card-front">
-                            <div class="glare-card-glare"></div>
-                            <div class="glare-card-rainbow"></div>
-                            <div class="win-content-front">
-                                <span class="win-letter">1</span>
-                                <h3 class="win-card-title">AI Configuration</h3>
-                                <p class="win-card-teaser">Optimize your workspace.</p>
-                            </div>
-                            <div class="flip-prompt">
-                                <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
-                                </svg>
-                                <span>Click to Flip</span>
-                            </div>
-                        </div>
-                        <!-- Back -->
-                        <div class="win-flip-card-back">
-                            <span class="win-badge">Details</span>
-                            <div class="win-content-back">
-                                <span class="win-letter-back">1</span>
-                                <h4 class="win-back-heading">AI Configuration</h4>
-                                <div class="win-divider"></div>
-                                <p class="win-back-text">Setting up voice-to-text assistants, keyboard shortcuts, and visual layouts to reduce fine motor strain.</p>
-                            </div>
-                            <div class="flip-prompt">
-                                <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
-                                </svg>
-                                <span>Click to Return</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 2: 2 / I -->
-            <div class="win-card-wrapper" data-card="2" tabindex="0" role="button" aria-label="Creative Execution, click to reveal details">
-                <div class="win-card-tooltip">Click to Flip (Animations Paused)</div>
-                <div class="win-card-tilt">
-                    <div class="win-flip-card">
-                        <!-- Front -->
-                        <div class="win-flip-card-front">
-                            <div class="glare-card-glare"></div>
-                            <div class="glare-card-rainbow"></div>
-                            <div class="win-content-front">
-                                <span class="win-letter">2</span>
-                                <h3 class="win-card-title">Creative Execution</h3>
-                                <p class="win-card-teaser">Build without barriers.</p>
-                            </div>
-                            <div class="flip-prompt">
-                                <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
-                                </svg>
-                                <span>Click to Flip</span>
-                            </div>
-                        </div>
-                        <!-- Back -->
-                        <div class="win-flip-card-back">
-                            <span class="win-badge">Details</span>
-                            <div class="win-content-back">
-                                <span class="win-letter-back">2</span>
-                                <h4 class="win-back-heading">Creative Execution</h4>
-                                <div class="win-divider"></div>
-                                <p class="win-back-text">Using AI to write, code, design graphics, and build websites using prompts and constraint-based directives.</p>
-                            </div>
-                            <div class="flip-prompt">
-                                <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
-                                </svg>
-                                <span>Click to Return</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 3: 3 / M -->
-            <div class="win-card-wrapper" data-card="3" tabindex="0" role="button" aria-label="Community Workspace, click to reveal details">
-                <div class="win-card-tooltip">Click to Flip (Animations Paused)</div>
-                <div class="win-card-tilt">
-                    <div class="win-flip-card">
-                        <!-- Front -->
-                        <div class="win-flip-card-front">
-                            <div class="glare-card-glare"></div>
-                            <div class="glare-card-rainbow"></div>
-                            <div class="win-content-front">
-                                <span class="win-letter">3</span>
-                                <h3 class="win-card-title">Community Workspace</h3>
-                                <p class="win-card-teaser">Grow with others.</p>
-                            </div>
-                            <div class="flip-prompt">
-                                <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
-                                </svg>
-                                <span>Click to Flip</span>
-                            </div>
-                        </div>
-                        <!-- Back -->
-                        <div class="win-flip-card-back">
-                            <span class="win-badge">Details</span>
-                            <div class="win-content-back">
-                                <span class="win-letter-back">3</span>
-                                <h4 class="win-back-heading">Community Workspace</h4>
-                                <div class="win-divider"></div>
-                                <p class="win-back-text">A friendly, no-pity environment where members share custom workflows, support, and professional projects.</p>
-                            </div>
-                            <div class="flip-prompt">
-                                <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
-                                </svg>
-                                <span>Click to Return</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Waitlist CTA Section -->
-    <section class="section bg-white">
-        <div class="container text-center">
-            <div style="max-width: 800px; margin: 0 auto; border: 1px solid var(--color-gray-border); border-radius: var(--radius-lg); padding: var(--spacing-lg); box-shadow: var(--shadow-md);">
-                <h3 style="margin-bottom: 10px;">Join the Early Access Waitlist</h3>
-                <p style="color: var(--color-gray-steel); margin-bottom: 25px; max-width: 600px; margin-left: auto; margin-right: auto;">
-                    We are currently building the first training tracks. Click the button below to join the waitlist, receive initial guides, and get early entry notifications.
-                </p>
-                <a href="https://www.accessibleaim.com/optin" target="_blank" rel="noopener noreferrer" class="btn btn-teal" style="padding: 1rem 2.5rem; font-size: 1.1rem; box-shadow: var(--shadow-teal);">
-                    Join Waitlist Now &rarr;
-                </a>
             </div>
         </div>
     </section>
@@ -1407,7 +1177,7 @@ Router.register('/chelloai', () => `
             <span class="section-tag text-teal">Digital Companion</span>
             <h1 style="color: white;">ChelloAI Partner</h1>
             <p class="section-desc" style="color: var(--color-gray-light);">
-                Technology did not replace my voice. It amplified it. Interact with ChelloAI, my custom conversational companion.
+                Technology amplifies my voice. Interact with ChelloAI, my custom conversational companion.
             </p>
         </div>
     </div>
@@ -1421,13 +1191,13 @@ Router.register('/chelloai', () => `
                         Because typing can take me hours and my physical speech has changed, I developed ChelloAI. This partner is trained directly on my personal rules, writings, memories, and voice settings.
                     </p>
                     <p>
-                        It does not speak for me, but it represents me in conversations, answering standard questions, providing resources, and helping visitors understand my perspective without delay.
+                        It represents me in conversations, answering questions and sharing resources to help visitors understand my perspective.
                     </p>
                     <p style="margin-bottom: 20px;">
                         Select a preset topic on the simulator to see how ChelloAI acts as a typing hand and narrative companion.
                     </p>
                     <div style="display: flex; gap: 10px;">
-                        <a href="#/aim" class="btn btn-teal">Build Your Own Companion</a>
+                        <a href="https://www.accessibleaim.com" target="_blank" rel="noopener noreferrer" class="btn btn-teal">Build Your Own Companion</a>
                     </div>
                 </div>
                 
@@ -1447,7 +1217,7 @@ Router.register('/chelloai', () => `
                     <div class="chat-messages" id="chat-messages">
                         <!-- Initial message -->
                         <div class="message-bubble incoming">
-                            Hello! I am ChelloAI, Marchello's digital companion. Select any question below to explore his stories and tools.
+                            Hello! I am ChelloAI, my digital companion. Select any question below to explore my stories and tools.
                         </div>
                     </div>
                     
@@ -1458,6 +1228,44 @@ Router.register('/chelloai', () => `
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Articulated Inspiration Section -->
+    <section class="section bg-navy-light text-white" style="border-top: 1px solid rgba(0, 209, 193, 0.1); padding: 4.5rem 0;">
+        <div class="container">
+            <div class="text-center" style="margin-bottom: var(--spacing-lg);">
+                <span class="section-tag text-teal" style="display: block; margin-bottom: var(--spacing-xs);">A New Way to See AI</span>
+                <h3 class="text-white" style="font-size: 2rem; margin-bottom: var(--spacing-md);">Articulated Inspiration</h3>
+            </div>
+            
+            <div class="grid-2" style="align-items: center; gap: var(--spacing-lg);">
+                
+                <!-- Left Column: Text -->
+                <div>
+                    <p style="font-size: 1.15rem; line-height: 1.7; color: var(--color-gray-light); margin-bottom: var(--spacing-md);">
+                        Articulated Inspiration is the moving joint between thought and expression. It transforms the creativity and wisdom present within us into active, functional reality.
+                    </p>
+                    <p style="font-size: 1.15rem; line-height: 1.7; color: var(--color-gray-light); margin-bottom: var(--spacing-lg);">
+                        This philosophy serves as the foundation of the <strong>Accessible AIM</strong> (Articulated Inspiration Method). Through this framework, AI becomes an amplifier of human capability—providing the joint that translates silent ideas into active expression.
+                    </p>
+                    <div style="border-top: 1px solid rgba(0, 209, 193, 0.15); padding-top: var(--spacing-md); display: flex; align-items: flex-start; gap: 15px;">
+                        <span style="font-size: 1.6rem; color: var(--color-teal); line-height: 1;">💡</span>
+                        <div>
+                            <strong style="color: var(--color-teal); display: block; margin-bottom: 6px; font-size: 1rem; letter-spacing: 0.05em;">THE METHOD IN ACTION:</strong>
+                            <span style="font-size: 1rem; color: var(--color-gray-steel); line-height: 1.5; display: block;">
+                                ChelloAI acts as this moving joint. When motor coordination restricts typing speed, this digital partner translates my thoughts and memories directly into natural conversations.
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Visual Representation -->
+                <div style="text-align: center;">
+                    <img src="assets/articulated_inspiration.png" alt="Articulated Inspiration visualization" class="articulated-img">
+                </div>
+
             </div>
         </div>
     </section>
@@ -1543,7 +1351,7 @@ Router.register('/impact', () => `
                     <span class="text-gold" style="font-size: 1.5rem;">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
                     <h4 style="margin-top: 10px;">"Zero Fluff, Real Proof"</h4>
                     <p style="font-style: italic; font-size: 0.95rem;">
-                        "We hired Marchello to build our ClickFunnels logic. His technical design system was flawless, and knowing the coordination coordinates he works with just proved to us that his capacity is second to none."
+                        "We hired Marchello to build our ClickFunnels logic. His technical design system was flawless, and knowing the physical challenges he works with just proved to us that his capacity is second to none."
                     </p>
                     <strong style="display:block; font-size: 0.85rem; margin-top: 10px;">— Founder, Tech Accelerator</strong>
                 </div>
@@ -1551,7 +1359,7 @@ Router.register('/impact', () => `
                     <span class="text-gold" style="font-size: 1.5rem;">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
                     <h4 style="margin-top: 10px;">"Inspiring and Practical"</h4>
                     <p style="font-style: italic; font-size: 0.95rem;">
-                        "As a parent of a disabled child, hearing Marchello speak gave me a realistic, non-pity roadmap. He shows that adaptation isn't giving up; it is just a smarter execution strategy."
+                        "As a parent of a disabled child, hearing Marchello speak gave me a realistic, positive roadmap. He shows that adaptation is a practical pathway to build momentum."
                     </p>
                     <strong style="display:block; font-size: 0.85rem; margin-top: 10px;">— Attendee, Advocacy Summit</strong>
                 </div>
@@ -1559,8 +1367,8 @@ Router.register('/impact', () => `
             
             <div class="card bg-navy" style="padding: var(--spacing-lg); text-align: center; color: white;">
                 <h3 style="color: white; margin-bottom: 10px;">Want to share your story?</h3>
-                <p style="color: var(--color-gray-steel); margin-bottom: 20px;">If you have heard Marchello speak or read his articles, let us know how the W.I.N. model helped you.</p>
-                <a href="#/contact" class="btn btn-teal">Write to Marchello</a>
+                <p style="color: var(--color-gray-steel); margin-bottom: 20px;">If you have heard me speak or read my articles, let me know how the W.I.N. model helped you.</p>
+                <a href="#/contact" class="btn btn-teal">Write to Me</a>
             </div>
         </div>
     </section>
@@ -1571,7 +1379,7 @@ Router.register('/marchellos-blog', () => `
     <div class="page-intro">
         <div class="container text-center">
             <span class="section-tag text-teal">Story Notes & AI</span>
-            <h1 style="color: white;">Marchello's Blog</h1>
+            <h1 style="color: white;">My Blog</h1>
             <p class="section-desc" style="color: var(--color-gray-light);">
                 Explore the mind behind the mission. Reflections on adaptation, prompt guides, personal notes, and framework worksheets.
             </p>
@@ -1601,7 +1409,20 @@ Router.register('/marchellos-blog', () => `
 Router.register('/hub', () => Router.routes['/marchellos-blog']());
 
 // 13. Contact Page Template
-Router.register('/contact', () => `
+Router.register('/contact', () => {
+    // Read query parameter from current hash
+    const hash = window.location.hash;
+    let selectedInterest = 'Connect'; // default
+    if (hash.includes('?')) {
+        const queryStr = hash.split('?')[1];
+        const params = new URLSearchParams(queryStr);
+        const interestParam = params.get('interest');
+        if (['Connect', 'Create', 'Build', 'Overcome'].includes(interestParam)) {
+            selectedInterest = interestParam;
+        }
+    }
+
+    return `
     <div class="page-intro">
         <div class="container text-center">
             <span class="section-tag text-teal">Connect</span>
@@ -1613,36 +1434,70 @@ Router.register('/contact', () => `
     </div>
     
     <section class="section bg-white">
-        <div class="container" style="max-width: 600px;">
-            <div class="contact-card-custom">
-                <form id="contact-page-form">
-                    <div class="contact-form-group">
-                        <label for="contact-email" class="contact-label">EMAIL <span class="contact-asterisk">*</span></label>
-                        <input type="email" id="contact-email" class="contact-input" required>
+        <div class="container" style="max-width: 1000px;">
+            <div class="grid-2" style="align-items: center; gap: var(--spacing-lg);">
+                <!-- Left Column: Picture of Marchello -->
+                <div class="contact-image-column" style="text-align: center;">
+                    <img src="assets/chello_ai_avatar.png" alt="Marchello Sciortino" style="width: 100%; max-width: 400px; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); border: 1px solid var(--color-gray-border); margin-bottom: 20px; object-fit: cover;">
+                    <h3 style="color: var(--color-navy); margin-bottom: 6px; font-family: var(--font-heading); font-weight: 800; text-transform: uppercase; letter-spacing: 0.02em;">Marchello Sciortino</h3>
+                    <p style="color: var(--color-teal); font-weight: 700; font-family: var(--font-heading); font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0;">Creativity. Technology. Determination.</p>
+                </div>
+                
+                <!-- Right Column: Form -->
+                <div class="contact-form-column">
+                    <div class="contact-card-custom" style="padding: 40px 30px; border-radius: var(--radius-md); box-shadow: var(--shadow-lg); border: 1px solid var(--color-gray-border);">
+                        <form id="contact-page-form">
+                            <div class="contact-form-group">
+                                <label for="contact-email" class="contact-label">EMAIL <span class="contact-asterisk">*</span></label>
+                                <input type="email" id="contact-email" class="contact-input" required>
+                            </div>
+                            <div class="contact-form-group">
+                                <label for="contact-subject" class="contact-label">SUBJECT: <span class="contact-asterisk">*</span></label>
+                                <input type="text" id="contact-subject" class="contact-input" required>
+                            </div>
+                            <div class="contact-form-group">
+                                <label class="contact-label">I WANT TO: <span class="contact-asterisk">*</span></label>
+                                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px 24px; max-width: 320px; margin-top: 8px;">
+                                    <label style="display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-body); font-size: 0.95rem; color: var(--color-navy); cursor: pointer;">
+                                        <input type="radio" name="contact-interest" value="Connect" ${selectedInterest === 'Connect' ? 'checked' : ''} required style="accent-color: var(--color-teal); width: 18px; height: 18px; cursor: pointer;">
+                                        <span>Connect</span>
+                                    </label>
+                                    <label style="display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-body); font-size: 0.95rem; color: var(--color-navy); cursor: pointer;">
+                                        <input type="radio" name="contact-interest" value="Create" ${selectedInterest === 'Create' ? 'checked' : ''} style="accent-color: var(--color-teal); width: 18px; height: 18px; cursor: pointer;">
+                                        <span>Create</span>
+                                    </label>
+                                    <label style="display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-body); font-size: 0.95rem; color: var(--color-navy); cursor: pointer;">
+                                        <input type="radio" name="contact-interest" value="Build" ${selectedInterest === 'Build' ? 'checked' : ''} style="accent-color: var(--color-teal); width: 18px; height: 18px; cursor: pointer;">
+                                        <span>Build</span>
+                                    </label>
+                                    <label style="display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-body); font-size: 0.95rem; color: var(--color-navy); cursor: pointer;">
+                                        <input type="radio" name="contact-interest" value="Overcome" ${selectedInterest === 'Overcome' ? 'checked' : ''} style="accent-color: var(--color-teal); width: 18px; height: 18px; cursor: pointer;">
+                                        <span>Overcome</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="contact-form-group">
+                                <label for="contact-description" class="contact-label">DESCRIPTION: <span class="contact-asterisk">*</span></label>
+                                <textarea id="contact-description" class="contact-textarea" required></textarea>
+                            </div>
+                            <div class="contact-form-group">
+                                <label for="contact-attachments" class="contact-label">ATTACHMENTS:</label>
+                                <div class="contact-file-wrapper">
+                                    <input type="file" id="contact-attachments" class="contact-file-input">
+                                    <span class="contact-file-info">Max. file size: 50 MB.</span>
+                                </div>
+                            </div>
+                            <div class="contact-form-group" style="margin-bottom: 0;">
+                                <button type="submit" class="contact-btn-submit" style="width: 100%;">Submit</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="contact-form-group">
-                        <label for="contact-subject" class="contact-label">SUBJECT: <span class="contact-asterisk">*</span></label>
-                        <input type="text" id="contact-subject" class="contact-input" required>
-                    </div>
-                    <div class="contact-form-group">
-                        <label for="contact-description" class="contact-label">DESCRIPTION: <span class="contact-asterisk">*</span></label>
-                        <textarea id="contact-description" class="contact-textarea" required></textarea>
-                    </div>
-                    <div class="contact-form-group">
-                        <label for="contact-attachments" class="contact-label">ATTACHMENTS:</label>
-                        <div class="contact-file-wrapper">
-                            <input type="file" id="contact-attachments" class="contact-file-input">
-                            <span class="contact-file-info">Max. file size: 50 MB.</span>
-                        </div>
-                    </div>
-                    <div class="contact-form-group">
-                        <button type="submit" class="contact-btn-submit">Submit</button>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
     </section>
-`);
+`;
+});
 
 // 14. Resources Page Template
 Router.register('/resources', () => `
@@ -1651,7 +1506,7 @@ Router.register('/resources', () => `
             <span class="section-tag text-teal">Tools</span>
             <h1 style="color: white;">Free Resources</h1>
             <p class="section-desc" style="color: var(--color-gray-light);">
-                Worksheets, prompt templates, and PDF guides to help you reframe obstacles and scale output.
+                Worksheets, prompt templates, and PDF guides to help you reframe obstacles and build your projects.
             </p>
         </div>
     </div>
@@ -1717,13 +1572,13 @@ Router.register('/terms', () => `
     <section class="section bg-white">
         <div class="container" style="max-width: 800px;">
             <h2>Website Usage</h2>
-            <p>Welcome to Marchello Sciortino's official brand hub. By browsing this site, you agree to comply with standard usage policies. The materials, articles, SVG brain maps, and custom voice models featured on this domain are the intellectual assets of the brand.</p>
+            <p>Welcome to my official brand hub. By browsing this site, you agree to comply with standard usage policies. The materials, articles, SVG brain maps, and custom voice models featured on this domain are my intellectual assets.</p>
             
             <h2 style="margin-top: 25px;">No-Guarantees Disclaimer</h2>
-            <p>The advice, strategies, and lessons presented in the Hub or Speaking keynotes reflect Marchello's personal journey and digital experience. They do not constitute official medical advice or secure financial growth promises.</p>
+            <p>The advice, strategies, and lessons presented in the Hub or Speaking keynotes reflect my personal journey and digital experience. They do not constitute official medical advice or secure financial growth promises.</p>
             
             <h2 style="margin-top: 25px;">Limitation of Liability</h2>
-            <p>We are not liable for external links, user browser settings adjustments, or third-party implementations based on resources downloaded from this hub.</p>
+            <p>I am not liable for external links, user browser settings adjustments, or third-party implementations based on resources downloaded from this hub.</p>
         </div>
     </section>
 `);
@@ -1743,7 +1598,7 @@ Router.register('/accessibility-statement', () => `
         <div class="container" style="max-width: 800px;">
             <h2>Commitment to Digital Inclusion</h2>
             <p>
-                Marchello Sciortino is committed to making this digital hub accessible and navigable for as many people as possible. We actively develop this platform using WCAG 2.2 Level AA guidelines as our technical standard.
+                I am committed to making this digital hub accessible and navigable for as many people as possible. I actively develop this platform using WCAG 2.2 Level AA guidelines as my technical standard.
             </p>
             
             <h2 style="margin-top: 25px;">Built-in Accessibility Widget</h2>
@@ -1792,7 +1647,7 @@ Router.register('/accessibility-statement', () => `
             
             <div class="card" style="margin-top: 30px;">
                 <h3>Accessibility Feedback</h3>
-                <p style="font-size: 0.95rem; margin-bottom: 15px;">If you experience any barriers while navigating this hub, please let us know so we can adjust the layout constraints.</p>
+                <p style="font-size: 0.95rem; margin-bottom: 15px;">If you experience any barriers while navigating this hub, please let me know so I can adjust the layout constraints.</p>
                 <form id="access-feedback-form">
                     <div class="form-group">
                         <label for="access-email">Your Email</label>

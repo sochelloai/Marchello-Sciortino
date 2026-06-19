@@ -5,39 +5,39 @@ const Brain = {
     nodes: [
         {
             id: 'mind',
-            label: "Marchello's Mind",
+            label: "My Mind",
             tag: 'Core Mission',
             isCenter: true,
             x: 400, y: 250, r: 50,
-            quote: "The most powerful resource I have left is how I think. Friedrich's ataxia has changed my physical coordinates, but it has not touched my creative capacity."
+            quote: "The most powerful resource I have is how I think. Friedrich's ataxia has changed my physical coordinates, and I focus my energy on digital design and creation."
         },
         {
             id: 'resilience',
             label: 'Resilience',
             tag: 'Warrior Path',
             x: 180, y: 150, r: 35,
-            quote: "Acceptance is not quitting. It is deciding that physical limitations don't define creative agency. Being a warrior means choosing not to accept the ordinary."
+            quote: "Acceptance means adapting. I design around my physical parameters to keep building creative projects. Being a warrior is about finding a way forward with what I have today."
         },
         {
             id: 'adaptation',
             label: 'Adaptation',
             tag: 'Daily Systems',
             x: 620, y: 150, r: 35,
-            quote: "When simple actions—like sitting up, opening a bottle, or standing—require assistance, you learn to adapt. I design systems that let me build products despite motor strain."
+            quote: "When simple movements require assistance, I adapt. I design systems that let me build digital products despite physical strain."
         },
         {
             id: 'ai',
             label: 'AI Amplification',
             tag: 'Technology',
             x: 300, y: 380, r: 35,
-            quote: "Technology did not replace my voice. It amplified it. When typing became a nightmare, AI became my typing speed, writing code, websites, and text based on my instructions."
+            quote: "AI acts as my typing speed. When writing became a physical struggle, I configured prompt templates to help me build websites and draft articles."
         },
         {
             id: 'faith',
             label: 'Faith & Purpose',
             tag: 'Spiritual Foundation',
             x: 500, y: 380, r: 35,
-            quote: "A positive, faith-driven lifestyle provides the coordinates to persevere. Knowing that you are capable of any and all challenges with a little shift in perspective."
+            quote: "My faith provides the foundation to persevere. I know that more is possible than most people realize, with a little shift in perspective."
         },
         {
             id: 'family',
@@ -51,14 +51,14 @@ const Brain = {
             label: 'Speaking Topics',
             tag: 'Keynotes',
             x: 620, y: 320, r: 35,
-            quote: "Winning despite the odds is not about pretending obstacles do not exist. It is about bringing an honest, raw, and no-fluff story of execution to stages worldwide."
+            quote: "I deliver keynote talks that share the reality of progressive limitations and how to build practical momentum."
         },
         {
             id: 'aim',
             label: 'Accessible AIM',
             tag: 'Future Initiative',
             x: 400, y: 80, r: 35,
-            quote: "Accessible AIM is an AI education system and community for individuals with physical limits. We teach prompting and logic to help others turn AI into their physical extension."
+            quote: "Accessible AIM is an initiative where I share prompt setups to help others with physical limitations use AI as a creative assistant."
         }
     ],
 
@@ -158,7 +158,7 @@ const Brain = {
             
             body.innerHTML = `
                 <blockquote>"${node.quote}"</blockquote>
-                <p>Marchello works daily within these coordinates, adapting his strategies to maintain high execution quality, using creative parameters to achieve impact without pity.</p>
+                <p>I work daily within these coordinates, adapting my strategies to maintain high execution quality and achieve impact without pity.</p>
             `;
             
             // Activate modal

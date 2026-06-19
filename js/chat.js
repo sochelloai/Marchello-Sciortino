@@ -5,23 +5,23 @@ const Chat = {
     conversations: {
         'typing': {
             question: "How does AI help you write or type?",
-            answer: "Typing is a physical nightmare for me. By using structured AI prompts and configurations, I can generate complete articles, code structures, and marketing copies in minutes. It turns my ideas into execution, acting as my typing speed."
+            answer: "Typing is a physical struggle for me. By using structured AI prompts and templates, I draft articles and build code structures in minutes. It turns my ideas into results, acting as my typing speed."
         },
         'speaking': {
             question: "How do you speak at keynotes using technology?",
-            answer: "Friedrich's ataxia affects speech stability. To deliver professional keynotes, I draft scripts and use voice amplifiers, and dynamic text-to-speech systems (ChelloAI). This lets me present a raw, high-energy message on stage without vocal exhaustion."
+            answer: "Friedrich's ataxia affects speech stability. To deliver keynote presentations, I write detailed scripts and use voice amplification tools. This lets me share an authentic, direct message on stage."
         },
         'warrior': {
             question: "What does being a 'warrior' mean to you?",
-            answer: "It means refusing to defend your limitations or submit to being 'less than' others. It's accepting daily challenges as design parameters to create around, rather than blockades to sit behind in defeat."
+            answer: "It means identifying your constraints and treating them as design parameters. You design your work around your parameters to continue creating and building every day."
         },
         'aim': {
             question: "What is the goal of Accessible AIM?",
-            answer: "Accessible AIM exists to open-source my prompt workflows. We are building a space where individuals with physical constraints learn to configure AI tools, letting them write, code, design, and work online with zero friction."
+            answer: "Accessible AIM is an initiative where I share my prompt setups. I want to build a space where people with physical limitations learn to configure AI tools to write, code, and design using their voice."
         },
         'services': {
             question: "What digital services do you build?",
-            answer: "I am a ClickFunnels certified funnel builder and designer. I write layout code, optimize lead flow pipelines, and construct premium brand hubs. High-fidelity design meets smooth conversions, with no corporate fluff."
+            answer: "I build websites and funnels that make things easy and professional. I handle the code and set up clean designs that look great and work smoothly."
         }
     },
 

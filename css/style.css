@@ -21,6 +21,8 @@
     --color-teal-rgb: 10, 216, 173;
     --color-gold: #F6B84B;
     --color-gold-hover: #e5a73b;
+    --color-orange: #FF5E00;
+    --color-orange-rgb: 255, 94, 0;
     --color-white: #F7FAFC;
     --color-pure-white: #FFFFFF;
     --color-gray-steel: #475569;
@@ -728,7 +730,7 @@ img {
    ========================================================================== */
 .alternating-timeline {
     position: relative;
-    max-width: 1000px;
+    max-width: 100%;
     margin: 40px auto 0 auto;
 }
 
@@ -741,6 +743,17 @@ img {
 
 .timeline-row:last-child {
     margin-bottom: 0;
+}
+
+.timeline-spacer-row {
+    height: 80px;
+    margin-bottom: 40px;
+}
+@media (max-width: 768px) {
+    .timeline-spacer-row {
+        height: 40px;
+        margin-bottom: 30px;
+    }
 }
 
 .timeline-col {
@@ -801,29 +814,14 @@ img {
     left: 50%;
     top: 0;
     bottom: 0;
-    width: 2px;
-    background: var(--color-gray-light);
+    width: 3px;
+    background: var(--color-teal);
     transform: translateX(-50%);
     z-index: 1;
 }
 
-.alternating-timeline-progress-bar {
-    position: absolute;
-    left: 50%;
-    top: 0;
-    width: 4px;
-    background: linear-gradient(to bottom, var(--color-teal) 0%, var(--color-gold) 100%);
-    transform: translateX(-50%);
-    transform-origin: top;
-    height: 0%;
-    z-index: 2;
-    transition: height 0.08s ease-out;
-    box-shadow: 0 0 8px rgba(10, 216, 173, 0.4);
-}
-
 @media (max-width: 768px) {
-    .alternating-timeline::before,
-    .alternating-timeline-progress-bar {
+    .alternating-timeline::before {
         display: none !important;
     }
 }
@@ -831,10 +829,6 @@ img {
 /* Accessibility Settings Pauses Support */
 html.accessibility-paused-animations .alternating-timeline::before {
     background: var(--color-teal);
-}
-
-html.accessibility-paused-animations .alternating-timeline-progress-bar {
-    display: none !important;
 }
 
 html.accessibility-paused-animations .timeline-bullet {
@@ -927,6 +921,8 @@ html.accessibility-paused-animations .timeline-bullet.active-bullet {
     font-size: 1.4rem;
     color: var(--color-navy);
     margin-bottom: var(--spacing-xs);
+    text-align: left;
+    padding-left: var(--spacing-md);
 }
 
 .timeline-card {
@@ -1409,7 +1405,6 @@ textarea.form-control {
 .win-flip-card-front {
     background: linear-gradient(180deg, rgba(22, 32, 51, 0.95) 0%, rgba(10, 15, 26, 0.98) 100%);
     color: var(--color-white);
-    z-index: 2;
     justify-content: center;
 }
 
@@ -1469,6 +1464,8 @@ textarea.form-control {
     opacity: 0.65;
     pointer-events: none;
     transition: opacity 0.5s ease;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 .win-card-wrapper:hover .win-card-video {
@@ -2487,3 +2484,101 @@ html.accessibility-paused-animations .win-card-wrapper:focus-within .win-card-to
         gap: 10px;
     }
 }
+
+/* Articulated Inspiration Image Styles */
+.articulated-img {
+    width: 100%;
+    max-width: 450px;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 12px 30px rgba(0, 209, 193, 0.1);
+    border: 1px solid rgba(0, 209, 193, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.articulated-img:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 16px 35px rgba(0, 209, 193, 0.25);
+    border-color: rgba(0, 209, 193, 0.4);
+}
+
+/* ==========================================================================
+   Speaking Page Gallery Lightbox Modal
+   ========================================================================== */
+.gallery-lightbox-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* 50% opacity black */
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s;
+    cursor: pointer;
+}
+
+.gallery-lightbox-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.gallery-lightbox-wrapper {
+    position: relative;
+    max-width: 66.67vw; /* 2/3 of viewport width */
+    max-height: 66.67vh; /* 2/3 of viewport height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: scale(0.95);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.gallery-lightbox-overlay.active .gallery-lightbox-wrapper {
+    transform: scale(1);
+}
+
+.gallery-lightbox-image {
+    max-width: 66.67vw;
+    max-height: 66.67vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: var(--radius-md);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: block;
+}
+
+.gallery-lightbox-close-x {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    transition: background-color 0.2s, transform 0.2s;
+    z-index: 10002;
+    padding: 0;
+}
+
+.gallery-lightbox-close-x:hover {
+    background-color: #ffffff;
+    transform: scale(1.1);
+}
+
+.gallery-lightbox-close-x svg {
+    width: 16px;
+    height: 16px;
+}
+

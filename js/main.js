@@ -18,6 +18,15 @@ document.addEventListener('DOMContentLoaded', () => {
         cleanupHeroParallax();
         cleanupTimelineScroll();
         
+        // Clean up lightbox overlay when page transitions
+        if (typeof SpeakingGalleryLightbox !== 'undefined') {
+            SpeakingGalleryLightbox.close();
+            const overlay = document.getElementById('gallery-lightbox-overlay');
+            if (overlay) {
+                overlay.remove();
+            }
+        }
+        
         if (page === 'home') {
             initHeroParallax();
         } else if (page === 'story') {
@@ -32,6 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
             Hub.init();
         } else if (page === 'mission' || page === 'aim') {
             WinCardsEffect.init();
+        } else if (page === 'speaking') {
+            SpeakingGalleryLightbox.init();
         }
         
         // Always bind forms rendered inside the page view
@@ -117,7 +128,7 @@ function bindFormHandlers() {
                 timestamp: new Date().toISOString()
             };
             saveFormEntry('speaking', data);
-            showSuccessModal("Speaking Inquiry Received", "Thank you for reaching out. We will review your event details and respond within 2 business days.");
+            showSuccessModal("Speaking Inquiry Received", "Thank you for reaching out. I will review your event details and respond within 2 business days.");
             speakingForm.reset();
         });
     }
@@ -128,15 +139,17 @@ function bindFormHandlers() {
         contactForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const fileInput = document.getElementById('contact-attachments');
+            const selectedInterest = contactForm.querySelector('input[name="contact-interest"]:checked');
             const data = {
                 email: document.getElementById('contact-email').value,
+                interest: selectedInterest ? selectedInterest.value : "",
                 subject: document.getElementById('contact-subject').value,
                 description: document.getElementById('contact-description').value,
                 attachmentName: fileInput && fileInput.files && fileInput.files[0] ? fileInput.files[0].name : "",
                 timestamp: new Date().toISOString()
             };
             saveFormEntry('contact', data);
-            showSuccessModal("Message Sent", "Thank you, Marchello has received your message. We prioritize genuine connections and will get back to you shortly.");
+            showSuccessModal("Message Sent", "Thank you. I have received your message. I prioritize genuine connections and will get back to you shortly.");
             contactForm.reset();
         });
     }
@@ -153,7 +166,7 @@ function bindFormHandlers() {
                 timestamp: new Date().toISOString()
             };
             saveFormEntry('aim-waitlist', data);
-            showSuccessModal("Waitlist Joined", "Welcome to Accessible AIM! You have been successfully added to the early access queue. We will email you prompt starter files soon.");
+            showSuccessModal("Waitlist Joined", "Welcome to Accessible AIM! You are on the waitlist. I will email you prompt starter files soon.");
             aimForm.reset();
         });
     }
@@ -182,7 +195,7 @@ function bindFormHandlers() {
                 timestamp: new Date().toISOString()
             };
             saveFormEntry('music-quote', data);
-            showSuccessModal("Jingle Quote Requested", "Thank you. Marchello will review your brand details and follow up with structural melody ideas and package options.");
+            showSuccessModal("Jingle Quote Requested", "Thank you. I will review your details and follow up with melody ideas.");
             musicForm.reset();
         });
     }
@@ -198,7 +211,7 @@ function bindFormHandlers() {
                 timestamp: new Date().toISOString()
             };
             saveFormEntry('access-feedback', data);
-            showSuccessModal("Feedback Logged", "Thank you for helping us optimize. We review all barriers logged to construct layouts that serve more people.");
+            showSuccessModal("Feedback Logged", "Thank you for helping me improve this site. I review all feedback to make the layouts work better.");
             accessForm.reset();
         });
     }
@@ -346,6 +359,12 @@ const WinCardsEffect = {
             return;
         }
 
+        // Disable tilt when the card is flipped
+        const flipCard = wrapper.querySelector('.win-flip-card');
+        if (flipCard && flipCard.classList.contains('is-flipped')) {
+            return;
+        }
+
         const rect = wrapper.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
@@ -376,6 +395,22 @@ const WinCardsEffect = {
         const isFlipped = flipCard.classList.contains('is-flipped');
         const wrapper = flipCard.closest('.win-card-wrapper');
         if (wrapper) {
+            // Reset tilt transform on flip to prevent card from staying tilted
+            const tiltContainer = wrapper.querySelector('.win-card-tilt');
+            if (tiltContainer) {
+                tiltContainer.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+            }
+            
+            // Handle video playback on flip to save resources and prevent audio/bleed bugs
+            const video = wrapper.querySelector('.win-card-video');
+            if (video) {
+                if (isFlipped) {
+                    video.pause();
+                } else if (wrapper.matches(':hover')) {
+                    video.play().catch(err => console.log('Video play interrupted:', err));
+                }
+            }
+
             const letter = wrapper.getAttribute('data-card');
             const term = letter === 'W' ? 'Warrior Story' : (letter === 'I' ? 'Inspiring Impact' : 'Nurturing Outcomes');
             wrapper.setAttribute('aria-label', `${term}, click to reveal details. Currently showing ${isFlipped ? 'details (flipped)' : 'front face'}.`);
@@ -399,14 +434,6 @@ function initStoryTimelineScroll() {
     const timeline = document.querySelector('.alternating-timeline');
     if (!timeline) return;
 
-    // Inject the progress bar overlay if not already present
-    let progressBar = timeline.querySelector('.alternating-timeline-progress-bar');
-    if (!progressBar) {
-        progressBar = document.createElement('div');
-        progressBar.className = 'alternating-timeline-progress-bar';
-        timeline.appendChild(progressBar);
-    }
-
     const bullets = timeline.querySelectorAll('.timeline-bullet');
 
     const handleScroll = () => {
@@ -423,13 +450,6 @@ function initStoryTimelineScroll() {
         
         // Trigger point is at 55% height of the screen (slightly below center for organic flow)
         const triggerPoint = viewportHeight * 0.55;
-        
-        // Calculate progress percentage
-        const scrolled = triggerPoint - rect.top;
-        let percentage = (scrolled / rect.height) * 100;
-        percentage = Math.max(0, Math.min(100, percentage));
-        
-        progressBar.style.height = `${percentage}%`;
 
         // Check each bullet and activate when progress line crosses it
         bullets.forEach(bullet => {
@@ -460,6 +480,82 @@ function cleanupTimelineScroll() {
         timelineScrollListener = null;
     }
 }
+
+/**
+ * SpeakingGalleryLightbox - Handles the popup modal lightbox for Speaking page gallery images.
+ */
+const SpeakingGalleryLightbox = {
+    init() {
+        const galleryImages = document.querySelectorAll('.media-gallery-grid .gallery-item img');
+        if (galleryImages.length === 0) return;
+
+        // Dynamic element creation
+        let overlay = document.getElementById('gallery-lightbox-overlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'gallery-lightbox-overlay';
+            overlay.className = 'gallery-lightbox-overlay';
+            
+            const wrapper = document.createElement('div');
+            wrapper.id = 'gallery-lightbox-wrapper';
+            wrapper.className = 'gallery-lightbox-wrapper';
+            
+            const img = document.createElement('img');
+            img.id = 'gallery-lightbox-image';
+            img.className = 'gallery-lightbox-image';
+            
+            // Premium close button with black X icon
+            const closeBtn = document.createElement('button');
+            closeBtn.id = 'gallery-lightbox-close-x';
+            closeBtn.className = 'gallery-lightbox-close-x';
+            closeBtn.setAttribute('aria-label', 'Close lightbox');
+            closeBtn.innerHTML = `
+                <svg viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            `;
+            
+            wrapper.appendChild(img);
+            wrapper.appendChild(closeBtn);
+            overlay.appendChild(wrapper);
+            
+            // Append to body so it overlays the entire viewport safely
+            document.body.appendChild(overlay);
+
+            // Close on clicking overlay (which bubbles up from image, wrapper, or button clicks too)
+            overlay.addEventListener('click', () => this.close());
+        }
+
+        const lightboxImg = document.getElementById('gallery-lightbox-image');
+
+        galleryImages.forEach(imgEl => {
+            imgEl.style.cursor = 'pointer';
+            imgEl.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (lightboxImg) {
+                    lightboxImg.src = imgEl.src;
+                    lightboxImg.alt = imgEl.alt;
+                }
+                this.open(overlay);
+            });
+        });
+    },
+
+    open(overlay) {
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Disable scroll on page body
+    },
+
+    close() {
+        const overlay = document.getElementById('gallery-lightbox-overlay');
+        if (overlay) {
+            overlay.classList.remove('active');
+        }
+        document.body.style.overflow = ''; // Re-enable scroll
+    }
+};
+
 
 
 

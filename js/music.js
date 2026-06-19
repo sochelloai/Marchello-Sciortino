@@ -6,9 +6,9 @@ const Music = {
     tracks: [
         {
             id: 'warrior',
-            title: "The Warrior's Path",
+            title: "The Adaptive Path",
             genre: "Acoustic Rock Anthem",
-            desc: "A rhythmic guitar-driven track detailing early Lyme rashes, physical shifts, and the choice to keep building.",
+            desc: "A rhythmic guitar-driven track detailing early Lyme challenges and my choice to keep building.",
             durationSec: 222,
             durationStr: "3:42",
             frequency: 220 // base chord pitch A3
@@ -17,7 +17,7 @@ const Music = {
             id: 'monsoon',
             title: "Monsoon Hangar",
             genre: "Cinematic Country Synth",
-            desc: "A reflective electronic track capturing the storm clouds clearing at the airfield before the tandem skydive jump.",
+            desc: "A reflective electronic track capturing the storm clouds clearing at the airfield before my tandem skydive jump.",
             durationSec: 178,
             durationStr: "2:58",
             frequency: 261.63 // base chord pitch C4
@@ -26,7 +26,7 @@ const Music = {
             id: 'ambient',
             title: "Chello AI Melody",
             genre: "Warm Ambient Lo-Fi",
-            desc: "A soft, relaxing background track used during keynotes and readings, emphasizing perspective and space.",
+            desc: "A soft, relaxing background track I use during keynotes and readings to emphasize perspective.",
             durationSec: 255,
             durationStr: "4:15",
             frequency: 196 // base chord pitch G3
