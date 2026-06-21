@@ -37,6 +37,15 @@ export async function onRequestPost(context) {
             });
         }
 
+        // Sanitize the subdomain if a full URL was pasted
+        let cleanSubdomain = subdomain.trim();
+        if (cleanSubdomain.includes("://")) {
+            cleanSubdomain = cleanSubdomain.split("://")[1];
+        }
+        if (cleanSubdomain.includes(".")) {
+            cleanSubdomain = cleanSubdomain.split(".")[0];
+        }
+
         const commonHeaders = {
             "Authorization": `Bearer ${apiKey}`,
             "Content-Type": "application/json",
@@ -45,18 +54,12 @@ export async function onRequestPost(context) {
 
         // --- STEP 1: Create or Update Contact ---
         let contactId = null;
-        const createContactUrl = `https://${subdomain}.myclickfunnels.com/api/v2/contacts`;
+        const createContactUrl = `https://${cleanSubdomain}.myclickfunnels.com/api/v2/contacts`;
         
         const contactBody = {
             contact: {
                 email_address: email,
-                first_name: name || "",
-                custom_attributes: {
-                    subject: subject || "",
-                    interest: interest || "",
-                    description: description || "",
-                    attachment: attachmentName || ""
-                }
+                first_name: name || ""
             }
         };
 
@@ -71,7 +74,7 @@ export async function onRequestPost(context) {
             contactId = contactData.id || contactData.public_id;
         } else {
             // Fallback: If contact already exists or fails, try to fetch it by email address
-            const searchUrl = `https://${subdomain}.myclickfunnels.com/api/v2/contacts?filter[email_address]=${encodeURIComponent(email)}`;
+            const searchUrl = `https://${cleanSubdomain}.myclickfunnels.com/api/v2/contacts?filter[email_address]=${encodeURIComponent(email)}`;
             const searchResponse = await fetch(searchUrl, {
                 method: "GET",
                 headers: commonHeaders
@@ -93,7 +96,7 @@ export async function onRequestPost(context) {
 
         // --- STEP 2: Find or Create Tag ID ---
         let tagId = null;
-        const tagsUrl = `https://${subdomain}.myclickfunnels.com/api/v2/contacts/tags?filter[name]=${encodeURIComponent(tagName)}`;
+        const tagsUrl = `https://${cleanSubdomain}.myclickfunnels.com/api/v2/contacts/tags?filter[name]=${encodeURIComponent(tagName)}`;
         const tagsResponse = await fetch(tagsUrl, {
             method: "GET",
             headers: commonHeaders
@@ -110,7 +113,7 @@ export async function onRequestPost(context) {
 
         // Try to programmatically create the tag definition if it does not exist
         if (!tagId) {
-            const createTagUrl = `https://${subdomain}.myclickfunnels.com/api/v2/contacts/tags`;
+            const createTagUrl = `https://${cleanSubdomain}.myclickfunnels.com/api/v2/contacts/tags`;
             const createTagResponse = await fetch(createTagUrl, {
                 method: "POST",
                 headers: commonHeaders,
@@ -132,7 +135,7 @@ export async function onRequestPost(context) {
 
         // --- STEP 3: Apply the Tag to the Contact ---
         if (contactId && tagId) {
-            const applyTagUrl = `https://${subdomain}.myclickfunnels.com/api/v2/contacts/${contactId}/applied_tags`;
+            const applyTagUrl = `https://${cleanSubdomain}.myclickfunnels.com/api/v2/contacts/${contactId}/applied_tags`;
             const applyTagResponse = await fetch(applyTagUrl, {
                 method: "POST",
                 headers: commonHeaders,
