@@ -166,19 +166,22 @@ Router.register('/home', () => `
             <h2 class="featured-title">As Featured In</h2>
             <div class="marquee-wrapper">
                 <div class="marquee-track">
-                    <div class="marquee-item"><img src="assets/brand-tech-weekly.svg" alt="Tech Weekly"></div>
-                    <div class="marquee-item"><img src="assets/brand-ai-journal.svg" alt="AI Journal"></div>
-                    <div class="marquee-item"><img src="assets/brand-access-magazine.svg" alt="Access Magazine"></div>
-                    <div class="marquee-item"><img src="assets/brand-speaker-today.svg" alt="Speaker Today"></div>
-                    <div class="marquee-item"><img src="assets/brand-digital-builder.svg" alt="Digital Builder"></div>
-                    <div class="marquee-item"><img src="assets/brand-resilience-quarterly.svg" alt="Resilience Quarterly"></div>
-                    
-                    <div class="marquee-item"><img src="assets/brand-tech-weekly.svg" alt="Tech Weekly"></div>
-                    <div class="marquee-item"><img src="assets/brand-ai-journal.svg" alt="AI Journal"></div>
-                    <div class="marquee-item"><img src="assets/brand-access-magazine.svg" alt="Access Magazine"></div>
-                    <div class="marquee-item"><img src="assets/brand-speaker-today.svg" alt="Speaker Today"></div>
-                    <div class="marquee-item"><img src="assets/brand-digital-builder.svg" alt="Digital Builder"></div>
-                    <div class="marquee-item"><img src="assets/brand-resilience-quarterly.svg" alt="Resilience Quarterly"></div>
+                    <div class="marquee-group">
+                        <div class="marquee-item"><img src="assets/empower-1.png" alt="The Empower Network TV"></div>
+                        <div class="marquee-item"><img src="assets/empower-2.png" alt="The Empower Network TV"></div>
+                        <div class="marquee-item"><img src="assets/empower-3.png" alt="The Empower Network TV"></div>
+                        <div class="marquee-item"><img src="assets/empower-4.png" alt="The Empower Network TV"></div>
+                        <div class="marquee-item"><img src="assets/empower-5.png" alt="The Empower Network TV"></div>
+                        <div class="marquee-item"><img src="assets/empower-6.png" alt="The Empower Network TV"></div>
+                    </div>
+                    <div class="marquee-group" aria-hidden="true">
+                        <div class="marquee-item"><img src="assets/empower-1.png" alt="The Empower Network TV"></div>
+                        <div class="marquee-item"><img src="assets/empower-2.png" alt="The Empower Network TV"></div>
+                        <div class="marquee-item"><img src="assets/empower-3.png" alt="The Empower Network TV"></div>
+                        <div class="marquee-item"><img src="assets/empower-4.png" alt="The Empower Network TV"></div>
+                        <div class="marquee-item"><img src="assets/empower-5.png" alt="The Empower Network TV"></div>
+                        <div class="marquee-item"><img src="assets/empower-6.png" alt="The Empower Network TV"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -329,7 +332,7 @@ Router.register('/home', () => `
                 <div class="card">
                     <span class="section-tag">Keynotes</span>
                     <h3 class="card-title">Keynote Speaking</h3>
-                    <p>Delivering practical, no-fluff perspectives on resilience and adaptation for corporate, educational, and faith-driven events.</p>
+                    <p>Delivering practical, no-fluff perspectives on resilience and adaptation for motivational, educational, and faith-driven events.</p>
                     <a href="#/speaking" class="text-teal">Speaking Details &rarr;</a>
                 </div>
                 <div class="card">
@@ -1007,29 +1010,26 @@ Router.register('/speaking', () => `
         </div>
     </div>
     
-    <!-- Section 1: Signature Message & Booking Inquiry -->
+    <!-- Section 1: Keynote Video & Booking Inquiry -->
     <section class="section bg-white">
         <div class="container">
-            <div class="grid-2">
+            <div class="grid-7-3">
+                <!-- Left Column (70%): Keynote Video -->
                 <div>
-                    <span class="section-tag">Signature Message</span>
-                    <h2>Winning Despite The Odds</h2>
-                    <p>
-                        I speak about the reality of living with a progressive condition. Resilience is a daily choice to adjust your plans and keep moving forward.
-                    </p>
-                    <p style="margin-bottom: 20px;">
-                        In this signature keynote, I share the W.I.N. framework to show how organizations, individuals, and teams can look at their changing parameters, reframe their focus, and build practical success.
-                    </p>
-                    <div style="background: var(--color-white); border-left: 4px solid var(--color-teal); padding: var(--spacing-sm); margin-bottom: 20px;">
-                        <strong>Key Audience Takeaways:</strong>
-                        <ul style="margin-top: 10px; padding-left: 20px; color: var(--color-gray-steel);">
-                            <li>Shift perspective from limitations to creative constraints.</li>
-                            <li>Find practical alternatives when your physical or strategic resources change.</li>
-                            <li>Use AI tools to handle repetitive tasks and speed up your writing.</li>
-                        </ul>
+                    <h3 style="text-align: center; margin-bottom: 15px; color: var(--color-navy); font-family: var(--font-heading); font-weight: 700; font-size: 2.2rem;">A quick message from Marchello</h3>
+                    <div class="video-container" style="position: relative; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-lg); border: 1px solid rgba(10, 216, 173, 0.2); background: var(--color-navy-dark); line-height: 0; aspect-ratio: 16 / 9;">
+                        <video controls style="width: 100%; height: 100%; display: block; object-fit: cover; border-radius: var(--radius-md);" poster="assets/hero-bg.jpg">
+                            <source src="assets/videos/W.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
                     </div>
+                    <p style="font-size: 0.98rem; line-height: 1.6; color: var(--color-gray-steel); margin-top: 20px; font-style: italic; background: rgba(10, 216, 173, 0.05); padding: 15px 20px; border-left: 4px solid var(--color-teal); border-radius: 0 var(--radius-md) var(--radius-md) 0;">
+                        <strong>A note on my delivery:</strong> My approach to presentations is unique, which is by design. Due to my mobility and energy levels, I utilize assistance for longer speaking engagements. Although my delivery can sound weary at times, I am fully engaged. I have found this approach fosters greater attention and understanding from audiences, allowing us to connect more deeply.
+                    </p>
                 </div>
-                <div class="card">
+                
+                <!-- Right Column (30%): Speaking Inquiry Form -->
+                <div class="card" style="margin: 0;">
                     <h3>Book a Speaking Event</h3>
                     <p style="font-size: 0.9rem; margin-bottom: 15px;">Fill out this form to inquire about speaking availability.</p>
                     <form id="speaking-inquiry-form" class="speaking-form">
@@ -1088,7 +1088,7 @@ Router.register('/speaking', () => `
                     <ul style="list-style: none; display: flex; flex-direction: column; gap: 15px;">
                         <li style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 10px;">
                             <div>
-                                <strong style="display:block; color: white;">Speaker one-sheet</strong>
+                                <strong style="display:block; color: white;">Speaking One-Sheet</strong>
                                 <span style="font-size:0.8rem; color:rgba(255, 255, 255, 0.75);">PNG (1.7 MB)</span>
                             </div>
                             <a href="assets/speaker_1_sheet.png" download="Speaker_1_Sheet.png" class="btn btn-teal btn-sm">Download</a>
@@ -1096,16 +1096,16 @@ Router.register('/speaking', () => `
                         <li style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 10px;">
                             <div>
                                 <strong style="display:block; color: white;">Headshot Gallery</strong>
-                                <span style="font-size:0.8rem; color:rgba(255, 255, 255, 0.75);">ZIP (12 MB)</span>
+                                <span style="font-size:0.8rem; color:rgba(255, 255, 255, 0.75);">ZIP (9.6 MB)</span>
                             </div>
-                            <a href="#/speaking" class="btn btn-teal btn-sm" onclick="alert('Downloading placeholder: Headshots.zip'); return false;">Download</a>
+                            <a href="assets/Headshots.zip" download="Headshots.zip" class="btn btn-teal btn-sm">Download</a>
                         </li>
                         <li style="display:flex; justify-content:space-between; align-items:center;">
                             <div>
-                                <strong style="display:block; color: white;">W.I.N. Framework Logo Assets</strong>
-                                <span style="font-size:0.8rem; color:rgba(255, 255, 255, 0.75);">PNG/SVG (3 MB)</span>
+                                <strong style="display:block; color: white;">Marchello Sciortino Logo Assets</strong>
+                                <span style="font-size:0.8rem; color:rgba(255, 255, 255, 0.75);">ZIP (39 KB)</span>
                             </div>
-                            <a href="#/speaking" class="btn btn-teal btn-sm" onclick="alert('Downloading placeholder: Brand_Assets.zip'); return false;">Download</a>
+                            <a href="assets/Marchello_Sciortino_Logo_Assets.zip" download="Marchello_Sciortino_Logo_Assets.zip" class="btn btn-teal btn-sm">Download</a>
                         </li>
                     </ul>
                 </div>
@@ -1116,33 +1116,57 @@ Router.register('/speaking', () => `
                 <p style="font-size: 0.9rem; color: var(--color-gray-light); margin-bottom: 20px;">Preview of assets included in the Download Media Kit package.</p>
                 <div class="media-gallery-grid">
                     <div class="gallery-item">
-                        <img src="assets/speaker_1_sheet.png" alt="Speaker one-sheet">
-                        <span class="gallery-item-label">Speaker one-sheet</span>
+                        <img src="assets/speaker_1_sheet.png" alt="Speaking One-Sheet">
+                        <span class="gallery-item-label">Speaking One-Sheet</span>
                     </div>
                     <div class="gallery-item">
-                        <img src="assets/placeholders/headshot_1.svg" alt="Headshot 1">
+                        <img src="assets/headshot_1.jpg" alt="Headshot 1">
                         <span class="gallery-item-label">Headshot 1</span>
                     </div>
                     <div class="gallery-item">
-                        <img src="assets/placeholders/headshot_2.svg" alt="Headshot 2">
+                        <img src="assets/headshot_2.jpg" alt="Headshot 2">
                         <span class="gallery-item-label">Headshot 2</span>
                     </div>
                     <div class="gallery-item">
-                        <img src="assets/placeholders/headshot_3.svg" alt="Headshot 3">
+                        <img src="assets/headshot_3.jpg" alt="Headshot 3">
                         <span class="gallery-item-label">Headshot 3</span>
                     </div>
                     <div class="gallery-item">
-                        <img src="assets/placeholders/headshot_4.svg" alt="Headshot 4">
+                        <img src="assets/headshot_4.jpg" alt="Headshot 4">
                         <span class="gallery-item-label">Headshot 4</span>
                     </div>
                     <div class="gallery-item">
-                        <img src="assets/placeholders/win_logo_1.svg" alt="WIN Logo Dark">
-                        <span class="gallery-item-label">WIN Logo Dark</span>
+                        <img src="assets/marchello_logo_dark.png" alt="Marchello Sciortino Logo Dark">
+                        <span class="gallery-item-label">Marchello Sciortino Logo Dark</span>
                     </div>
                     <div class="gallery-item">
-                        <img src="assets/placeholders/win_logo_2.svg" alt="WIN Logo Light">
-                        <span class="gallery-item-label">WIN Logo Light</span>
+                        <img src="assets/marchello_logo_light.png" alt="Marchello Sciortino Logo Light">
+                        <span class="gallery-item-label">Marchello Sciortino Logo Light</span>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Signature Message Detail -->
+    <section class="section bg-white">
+        <div class="container">
+            <div style="max-width: 900px; margin: 0 auto;">
+                <span class="section-tag">Signature Message</span>
+                <h2 style="font-size: 2.2rem; margin-bottom: 20px;">Winning Despite The Odds</h2>
+                <p style="font-size: 1.15rem; line-height: 1.7; color: var(--color-gray-steel); margin-bottom: 20px;">
+                    I speak about the reality of living with a progressive condition. Resilience is a daily choice to adjust your plans and keep moving forward.
+                </p>
+                <p style="font-size: 1.15rem; line-height: 1.7; color: var(--color-gray-steel); margin-bottom: 30px;">
+                    In this signature keynote, I share the W.I.N. framework to show how organizations, individuals, and teams can look at their changing parameters, reframe their focus, and build practical success.
+                </p>
+                <div style="background: var(--color-white); border-left: 4px solid var(--color-teal); padding: var(--spacing-md); border-radius: 0 var(--radius-md) var(--radius-md) 0; box-shadow: var(--shadow-sm); border-top: 1px solid rgba(10, 216, 173, 0.1); border-right: 1px solid rgba(10, 216, 173, 0.1); border-bottom: 1px solid rgba(10, 216, 173, 0.1);">
+                    <strong style="font-size: 1.1rem; color: var(--color-navy); display: block; margin-bottom: 12px;">Key Audience Takeaways:</strong>
+                    <ul style="margin: 0; padding-left: 20px; color: var(--color-gray-steel); display: grid; gap: 10px; font-size: 1.05rem;">
+                        <li>Shift perspective from limitations to creative constraints.</li>
+                        <li>Find practical alternatives when your physical or strategic resources change.</li>
+                        <li>Use AI tools to handle repetitive tasks and speed up your writing.</li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -1447,6 +1471,10 @@ Router.register('/contact', () => {
                 <div class="contact-form-column">
                     <div class="contact-card-custom" style="padding: 40px 30px; border-radius: var(--radius-md); box-shadow: var(--shadow-lg); border: 1px solid var(--color-gray-border);">
                         <form id="contact-page-form">
+                            <div class="contact-form-group">
+                                <label for="contact-name" class="contact-label">NAME <span class="contact-asterisk">*</span></label>
+                                <input type="text" id="contact-name" class="contact-input" required placeholder="e.g. John Doe">
+                            </div>
                             <div class="contact-form-group">
                                 <label for="contact-email" class="contact-label">EMAIL <span class="contact-asterisk">*</span></label>
                                 <input type="email" id="contact-email" class="contact-input" required>

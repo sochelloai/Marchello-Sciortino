@@ -2290,12 +2290,18 @@ html.accessibility-paused-animations .win-card-wrapper:focus-within .win-card-to
     display: flex;
     width: max-content;
     align-items: center;
-    gap: 6rem;
     animation: marquee-scroll 32s linear infinite;
 }
 
 .marquee-track:hover {
     animation-play-state: paused;
+}
+
+.marquee-group {
+    display: flex;
+    align-items: center;
+    gap: 6rem;
+    padding-right: 6rem;
 }
 
 .marquee-item {
@@ -2580,5 +2586,18 @@ html.accessibility-paused-animations .win-card-wrapper:focus-within .win-card-to
 .gallery-lightbox-close-x svg {
     width: 16px;
     height: 16px;
+}
+
+/* Custom 70/30 Grid Layout for Speaking Page Video/Form */
+.grid-7-3 {
+    display: grid;
+    grid-template-columns: 7fr 3fr;
+    gap: var(--spacing-lg);
+    align-items: start;
+}
+@media (max-width: 992px) {
+    .grid-7-3 {
+        grid-template-columns: 1fr;
+    }
 }
 
