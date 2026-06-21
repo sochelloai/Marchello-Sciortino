@@ -188,12 +188,14 @@ export async function onRequestPost(context) {
                     }
                 }
             } else {
+                const searchErrBody = await searchResponse.clone().text();
                 await logErrorResponse("Search Contact", searchResponse);
+                throw new Error(`[DEBUG] CF Search failed. URL: ${searchUrl}. Status: ${searchResponse.status}. Body: ${searchErrBody}`);
             }
 
             if (!contactId) {
                 const errBody = await contactResponse.clone().text();
-                throw new Error(`Failed to create or retrieve contact: ${contactResponse.status} - ${errBody}`);
+                throw new Error(`[DEBUG] CF Create failed. URL: ${createContactUrl}. Status: ${contactResponse.status}. Body: ${errBody}. Subdomain: [${cleanSubdomain}]. Workspace: [${cleanWorkspaceId}]. API Key Len: ${apiKey ? apiKey.length : 0}`);
             }
         }
 
