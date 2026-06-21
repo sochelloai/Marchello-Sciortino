@@ -4,14 +4,15 @@ export async function onRequestPost(context) {
     // Retrieve credentials and configs from Cloudflare Environment Variables / Secrets
     const apiKey = env.CLICKFUNNELS_API_KEY || env["CLICKFUNNELS_API_KEY "];
     const subdomain = env.CLICKFUNNELS_SUBDOMAIN || env["CLICKFUNNELS_SUBDOMAIN "];
+    const workspaceId = env.CLICKFUNNELS_WORKSPACE_ID || env["CLICKFUNNELS_WORKSPACE_ID "];
     const tagName = env.CLICKFUNNELS_TAG_NAME || env["CLICKFUNNELS_TAG_NAME "] || "ms-contact-form";
 
     // 1. Configuration Validation
-    if (!apiKey || !subdomain) {
+    if (!apiKey || !subdomain || !workspaceId) {
         const availableKeys = env ? Object.keys(env) : [];
         return new Response(JSON.stringify({
             error: "Configuration Error",
-            message: `CLICKFUNNELS_API_KEY and CLICKFUNNELS_SUBDOMAIN must be defined in Cloudflare Variables and Secrets. Available keys: [${availableKeys.join(", ")}]`
+            message: `CLICKFUNNELS_API_KEY, CLICKFUNNELS_SUBDOMAIN, and CLICKFUNNELS_WORKSPACE_ID must be defined in Cloudflare Variables and Secrets. Available keys: [${availableKeys.join(", ")}]`
         }), {
             status: 500,
             headers: { 
@@ -110,7 +111,8 @@ export async function onRequestPost(context) {
 
         // --- STEP 1: Create or Update Contact ---
         let contactId = null;
-        const createContactUrl = `https://${cleanSubdomain}.myclickfunnels.com/api/v2/contacts`;
+        const cleanWorkspaceId = workspaceId.trim();
+        const createContactUrl = `https://${cleanSubdomain}.myclickfunnels.com/api/v2/workspaces/${cleanWorkspaceId}/contacts`;
         
         const contactBody = {
             contact: {
@@ -137,7 +139,7 @@ export async function onRequestPost(context) {
         } else {
             await logErrorResponse("Create Contact", contactResponse);
             // Fallback: If contact already exists or fails, try to fetch it by email address
-            const searchUrl = `https://${cleanSubdomain}.myclickfunnels.com/api/v2/contacts?filter[email_address]=${encodeURIComponent(email)}`;
+            const searchUrl = `https://${cleanSubdomain}.myclickfunnels.com/api/v2/workspaces/${cleanWorkspaceId}/contacts?filter[email_address]=${encodeURIComponent(email)}`;
             const searchResponse = await fetch(searchUrl, {
                 method: "GET",
                 headers: commonHeaders
@@ -151,7 +153,7 @@ export async function onRequestPost(context) {
                     
                     // Update existing contact custom attributes
                     try {
-                        const updateUrl = `https://${cleanSubdomain}.myclickfunnels.com/api/v2/contacts/${contactId}`;
+                        const updateUrl = `https://${cleanSubdomain}.myclickfunnels.com/api/v2/workspaces/${cleanWorkspaceId}/contacts/${contactId}`;
                         const updateResponse = await fetch(updateUrl, {
                             method: "PUT",
                             headers: commonHeaders,
