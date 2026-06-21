@@ -1,11 +1,32 @@
+function cleanEnvVar(val) {
+    if (!val) return "";
+    let clean = String(val).trim();
+    if ((clean.startsWith('"') && clean.endsWith('"')) || (clean.startsWith("'") && clean.endsWith("'"))) {
+        clean = clean.slice(1, -1);
+    }
+    return clean.trim();
+}
+
+function getEnvVal(env, keyName) {
+    if (!env) return "";
+    if (env[keyName] !== undefined) return env[keyName];
+    const keys = Object.keys(env);
+    for (const k of keys) {
+        if (k.trim().toLowerCase() === keyName.toLowerCase()) {
+            return env[k];
+        }
+    }
+    return "";
+}
+
 export async function onRequestPost(context) {
     const { env, request } = context;
     
     // Retrieve credentials and configs from Cloudflare Environment Variables / Secrets
-    const apiKey = env.CLICKFUNNELS_API_KEY || env["CLICKFUNNELS_API_KEY "];
-    const subdomain = env.CLICKFUNNELS_SUBDOMAIN || env["CLICKFUNNELS_SUBDOMAIN "];
-    const workspaceId = env.CLICKFUNNELS_WORKSPACE_ID || env["CLICKFUNNELS_WORKSPACE_ID "];
-    const tagName = env.CLICKFUNNELS_TAG_NAME || env["CLICKFUNNELS_TAG_NAME "] || "ms-contact-form";
+    const apiKey = cleanEnvVar(getEnvVal(env, "CLICKFUNNELS_API_KEY"));
+    const subdomain = cleanEnvVar(getEnvVal(env, "CLICKFUNNELS_SUBDOMAIN"));
+    const workspaceId = cleanEnvVar(getEnvVal(env, "CLICKFUNNELS_WORKSPACE_ID"));
+    const tagName = cleanEnvVar(getEnvVal(env, "CLICKFUNNELS_TAG_NAME")) || "ms-contact-form";
 
     // 1. Configuration Validation
     if (!apiKey || !subdomain || !workspaceId) {
@@ -111,7 +132,7 @@ export async function onRequestPost(context) {
 
         // --- STEP 1: Create or Update Contact ---
         let contactId = null;
-        const cleanWorkspaceId = workspaceId.trim();
+        const cleanWorkspaceId = workspaceId;
         const createContactUrl = `https://${cleanSubdomain}.myclickfunnels.com/api/v2/workspaces/${cleanWorkspaceId}/contacts`;
         
         const contactBody = {
@@ -153,7 +174,7 @@ export async function onRequestPost(context) {
                     
                     // Update existing contact custom attributes
                     try {
-                        const updateUrl = `https://${cleanSubdomain}.myclickfunnels.com/api/v2/workspaces/${cleanWorkspaceId}/contacts/${contactId}`;
+                        const updateUrl = `https://${cleanSubdomain}.myclickfunnels.com/api/v2/contacts/${contactId}`;
                         const updateResponse = await fetch(updateUrl, {
                             method: "PUT",
                             headers: commonHeaders,
@@ -178,7 +199,7 @@ export async function onRequestPost(context) {
 
         // --- STEP 2: Find or Create Tag ID ---
         let tagId = null;
-        const tagsUrl = `https://${cleanSubdomain}.myclickfunnels.com/api/v2/contacts/tags?filter[name]=${encodeURIComponent(tagName)}`;
+        const tagsUrl = `https://${cleanSubdomain}.myclickfunnels.com/api/v2/workspaces/${cleanWorkspaceId}/contacts/tags?filter[name]=${encodeURIComponent(tagName)}`;
         const tagsResponse = await fetch(tagsUrl, {
             method: "GET",
             headers: commonHeaders
@@ -197,7 +218,7 @@ export async function onRequestPost(context) {
 
         // Try to programmatically create the tag definition if it does not exist
         if (!tagId) {
-            const createTagUrl = `https://${cleanSubdomain}.myclickfunnels.com/api/v2/contacts/tags`;
+            const createTagUrl = `https://${cleanSubdomain}.myclickfunnels.com/api/v2/workspaces/${cleanWorkspaceId}/contacts/tags`;
             const createTagResponse = await fetch(createTagUrl, {
                 method: "POST",
                 headers: commonHeaders,
