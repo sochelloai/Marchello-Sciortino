@@ -185,7 +185,7 @@ function bindFormHandlers() {
                 
                 const result = await response.json();
                 console.log("[ClickFunnels API Success]", result);
-                showSuccessModal("Message Sent", "Thank you. Your message has been sent successfully and synced with ClickFunnels!");
+                showSuccessModal("Message Sent", "Thank you. I have received your message. I prioritize genuine connections and will get back to you shortly.");
                 contactForm.reset();
             } catch (error) {
                 console.error("[ClickFunnels Integration Error]", error);
