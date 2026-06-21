@@ -7,6 +7,25 @@ function cleanEnvVar(val) {
     return clean.trim();
 }
 
+function cleanWorkspaceId(val) {
+    if (!val) return "";
+    let clean = String(val).trim();
+    if ((clean.startsWith('"') && clean.endsWith('"')) || (clean.startsWith("'") && clean.endsWith("'"))) {
+        clean = clean.slice(1, -1);
+    }
+    clean = clean.trim();
+    // Try to extract workspaces/\d+ or any number
+    const match = clean.match(/\/workspaces\/(\d+)/);
+    if (match) {
+        return match[1];
+    }
+    const digitMatch = clean.match(/\b\d+\b/);
+    if (digitMatch) {
+        return digitMatch[0];
+    }
+    return clean;
+}
+
 function getEnvVal(env, keyName) {
     if (!env) return "";
     if (env[keyName] !== undefined) return env[keyName];
@@ -25,7 +44,7 @@ export async function onRequestPost(context) {
     // Retrieve credentials and configs from Cloudflare Environment Variables / Secrets
     const apiKey = cleanEnvVar(getEnvVal(env, "CLICKFUNNELS_API_KEY"));
     const subdomain = cleanEnvVar(getEnvVal(env, "CLICKFUNNELS_SUBDOMAIN"));
-    const workspaceId = cleanEnvVar(getEnvVal(env, "CLICKFUNNELS_WORKSPACE_ID"));
+    const workspaceId = cleanWorkspaceId(getEnvVal(env, "CLICKFUNNELS_WORKSPACE_ID"));
     const tagName = cleanEnvVar(getEnvVal(env, "CLICKFUNNELS_TAG_NAME")) || "ms-contact-form";
 
     // 1. Configuration Validation
