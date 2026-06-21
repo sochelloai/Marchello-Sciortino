@@ -8,9 +8,10 @@ export async function onRequestPost(context) {
 
     // 1. Configuration Validation
     if (!apiKey || !subdomain) {
+        const availableKeys = env ? Object.keys(env) : [];
         return new Response(JSON.stringify({
             error: "Configuration Error",
-            message: "CLICKFUNNELS_API_KEY and CLICKFUNNELS_SUBDOMAIN must be defined in Cloudflare Variables and Secrets."
+            message: `CLICKFUNNELS_API_KEY and CLICKFUNNELS_SUBDOMAIN must be defined in Cloudflare Variables and Secrets. Available keys: [${availableKeys.join(", ")}]`
         }), {
             status: 500,
             headers: { 
