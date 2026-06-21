@@ -148,7 +148,20 @@ function bindFormHandlers() {
             
             const fileInput = document.getElementById('contact-attachments');
             const selectedInterest = contactForm.querySelector('input[name="contact-interest"]:checked');
-            const data = {
+            
+            const formData = new FormData();
+            formData.append('name', document.getElementById('contact-name').value);
+            formData.append('email', document.getElementById('contact-email').value);
+            formData.append('interest', selectedInterest ? selectedInterest.value : "");
+            formData.append('subject', document.getElementById('contact-subject').value);
+            formData.append('description', document.getElementById('contact-description').value);
+            
+            if (fileInput && fileInput.files && fileInput.files[0]) {
+                formData.append('file', fileInput.files[0]);
+            }
+            
+            // Save locally as database backup
+            saveFormEntry('contact', {
                 name: document.getElementById('contact-name').value,
                 email: document.getElementById('contact-email').value,
                 interest: selectedInterest ? selectedInterest.value : "",
@@ -156,19 +169,13 @@ function bindFormHandlers() {
                 description: document.getElementById('contact-description').value,
                 attachmentName: fileInput && fileInput.files && fileInput.files[0] ? fileInput.files[0].name : "",
                 timestamp: new Date().toISOString()
-            };
-            
-            // Save locally as database backup
-            saveFormEntry('contact', data);
+            });
             
             try {
                 // Call the Cloudflare Pages Function secure endpoint
                 const response = await fetch('/api/submit-contact', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
+                    body: formData
                 });
                 
                 if (!response.ok) {
