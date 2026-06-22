@@ -1033,13 +1033,15 @@ Router.register('/speaking', () => `
                     <h3>Book a Speaking Event</h3>
                     <p style="font-size: 0.9rem; margin-bottom: 15px;">Fill out this form to inquire about speaking availability.</p>
                     <form id="speaking-inquiry-form" class="speaking-form">
-                        <div class="form-group">
-                            <label for="speaking-name">Your Name</label>
-                            <input type="text" id="speaking-name" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="speaking-email">Your Email</label>
-                            <input type="email" id="speaking-email" class="form-control" required>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="speaking-name">Name</label>
+                                <input type="text" id="speaking-name" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="speaking-email">Email</label>
+                                <input type="email" id="speaking-email" class="form-control" required>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="event-name">Event Name</label>
