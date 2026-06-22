@@ -808,6 +808,13 @@ img {
 }
 
 /* Scroll-linked progress timeline rules */
+.alternating-timeline {
+    position: relative;
+    max-width: 100%;
+    margin: 40px auto 0 auto;
+    --timeline-progress: 0%;
+}
+
 .alternating-timeline::before {
     content: '';
     position: absolute;
@@ -815,20 +822,39 @@ img {
     top: 0;
     bottom: 0;
     width: 3px;
-    background: var(--color-teal);
+    background: rgba(10, 216, 173, 0.15); /* Dim teal/navy background track */
     transform: translateX(-50%);
     z-index: 1;
 }
 
+.alternating-timeline::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    height: var(--timeline-progress, 0%);
+    width: 3px;
+    background: linear-gradient(to bottom, var(--color-teal), var(--color-gold));
+    transform: translateX(-50%);
+    z-index: 2;
+    box-shadow: 0 0 10px rgba(10, 216, 173, 0.6);
+    transition: height 0.1s ease-out;
+}
+
 @media (max-width: 768px) {
-    .alternating-timeline::before {
+    .alternating-timeline::before,
+    .alternating-timeline::after {
         display: none !important;
     }
 }
 
 /* Accessibility Settings Pauses Support */
 html.accessibility-paused-animations .alternating-timeline::before {
-    background: var(--color-teal);
+    background: rgba(10, 216, 173, 0.15);
+}
+html.accessibility-paused-animations .alternating-timeline::after {
+    height: 100% !important;
+    transition: none !important;
 }
 
 html.accessibility-paused-animations .timeline-bullet {
@@ -840,6 +866,70 @@ html.accessibility-paused-animations .timeline-bullet {
 html.accessibility-paused-animations .timeline-bullet.active-bullet {
     transform: none !important;
     border-color: var(--color-white) !important;
+}
+
+/* Timeline Active Row Highlights & Glows */
+.timeline-card,
+.timeline-image-placeholder,
+.timeline-year {
+    transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.timeline-row.active-row .timeline-card {
+    border-color: var(--color-teal);
+    box-shadow: 0 10px 30px rgba(10, 216, 173, 0.12), 0 0 15px rgba(10, 216, 173, 0.06);
+    transform: translateY(-2px);
+}
+
+.timeline-row.active-row .timeline-image-placeholder {
+    border-color: var(--color-teal);
+    box-shadow: 0 15px 35px rgba(10, 216, 173, 0.22), 0 0 25px rgba(10, 216, 173, 0.12);
+    transform: translateY(-4px) scale(1.025);
+}
+
+.timeline-row.active-row .timeline-year {
+    color: var(--color-teal);
+    text-shadow: 0 0 10px rgba(10, 216, 173, 0.35);
+}
+
+/* Gold Theme Custom highlights for gold bullets */
+.timeline-row.active-row:has(.bullet-gold) .timeline-card {
+    border-color: var(--color-gold);
+    box-shadow: 0 10px 30px rgba(246, 184, 75, 0.12), 0 0 15px rgba(246, 184, 75, 0.06);
+}
+
+.timeline-row.active-row:has(.bullet-gold) .timeline-image-placeholder {
+    border-color: var(--color-gold);
+    box-shadow: 0 15px 35px rgba(246, 184, 75, 0.22), 0 0 25px rgba(246, 184, 75, 0.12);
+}
+
+.timeline-row.active-row:has(.bullet-gold) .timeline-year {
+    color: var(--color-gold);
+    text-shadow: 0 0 10px rgba(246, 184, 75, 0.35);
+}
+
+/* Accessibility Pauses Highlights */
+html.accessibility-paused-animations .timeline-row .timeline-card {
+    border-color: var(--color-teal) !important;
+    transform: none !important;
+    box-shadow: var(--shadow-sm) !important;
+}
+html.accessibility-paused-animations .timeline-row:has(.bullet-gold) .timeline-card {
+    border-color: var(--color-gold) !important;
+}
+html.accessibility-paused-animations .timeline-row .timeline-image-placeholder {
+    border-color: var(--color-teal) !important;
+    transform: none !important;
+    box-shadow: var(--shadow-md) !important;
+}
+html.accessibility-paused-animations .timeline-row:has(.bullet-gold) .timeline-image-placeholder {
+    border-color: var(--color-gold) !important;
+}
+html.accessibility-paused-animations .timeline-row .timeline-year {
+    color: var(--color-teal) !important;
+}
+html.accessibility-paused-animations .timeline-row:has(.bullet-gold) .timeline-year {
+    color: var(--color-gold) !important;
 }
 
 .timeline-content-left {

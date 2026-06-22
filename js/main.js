@@ -528,6 +528,7 @@ function initStoryTimelineScroll() {
     if (!timeline) return;
 
     const bullets = timeline.querySelectorAll('.timeline-bullet');
+    const rows = timeline.querySelectorAll('.timeline-row');
 
     const handleScroll = () => {
         // Accessibility check: Pause animations toggles snap full progress and skips effects
@@ -535,6 +536,8 @@ function initStoryTimelineScroll() {
         
         if (animationsPaused) {
             bullets.forEach(b => b.classList.add('active-bullet'));
+            rows.forEach(r => r.classList.add('active-row'));
+            timeline.style.setProperty('--timeline-progress', '100%');
             return;
         }
 
@@ -543,6 +546,18 @@ function initStoryTimelineScroll() {
         
         // Trigger point is at 55% height of the screen (slightly below center for organic flow)
         const triggerPoint = viewportHeight * 0.55;
+
+        // Calculate progress percentage of the timeline element
+        const timelineTop = rect.top;
+        const timelineHeight = rect.height;
+        let scrolledPixels = triggerPoint - timelineTop;
+        let progressPercent = 0;
+        if (scrolledPixels > 0) {
+            progressPercent = Math.min(100, (scrolledPixels / timelineHeight) * 100);
+        } else {
+            progressPercent = 0;
+        }
+        timeline.style.setProperty('--timeline-progress', `${progressPercent}%`);
 
         // Check each bullet and activate when progress line crosses it
         bullets.forEach(bullet => {
@@ -553,6 +568,26 @@ function initStoryTimelineScroll() {
                 bullet.classList.add('active-bullet');
             } else {
                 bullet.classList.remove('active-bullet');
+            }
+        });
+
+        // Toggle active row highlight for glowing cards, images, and text
+        rows.forEach(row => {
+            const bullet = row.querySelector('.timeline-bullet');
+            if (bullet) {
+                if (bullet.classList.contains('active-bullet')) {
+                    row.classList.add('active-row');
+                } else {
+                    row.classList.remove('active-row');
+                }
+            } else {
+                const rowRect = row.getBoundingClientRect();
+                const rowCenter = rowRect.top + rowRect.height / 2;
+                if (rowCenter < triggerPoint) {
+                    row.classList.add('active-row');
+                } else {
+                    row.classList.remove('active-row');
+                }
             }
         });
     };
