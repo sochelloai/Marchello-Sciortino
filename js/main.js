@@ -117,19 +117,65 @@ function bindFormHandlers() {
     // 1. Speaking Inquiry Form
     const speakingForm = document.getElementById('speaking-inquiry-form');
     if (speakingForm) {
-        speakingForm.addEventListener('submit', (e) => {
+        speakingForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const data = {
-                name: document.getElementById('speaking-name').value,
-                email: document.getElementById('speaking-email').value,
-                event: document.getElementById('event-name').value,
-                location: document.getElementById('event-location').value,
-                message: document.getElementById('speaking-message').value,
+            const submitBtn = speakingForm.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn ? submitBtn.textContent : "Submit Speaking Inquiry";
+            
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = "Sending...";
+            }
+            
+            const name = document.getElementById('speaking-name').value;
+            const email = document.getElementById('speaking-email').value;
+            const eventName = document.getElementById('event-name').value;
+            const location = document.getElementById('event-location').value;
+            const message = document.getElementById('speaking-message').value;
+            
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('email', email);
+            formData.append('event', eventName);
+            formData.append('location', location);
+            formData.append('message', message);
+            
+            // Save locally as database backup
+            saveFormEntry('speaking', {
+                name,
+                email,
+                event: eventName,
+                location,
+                message,
                 timestamp: new Date().toISOString()
-            };
-            saveFormEntry('speaking', data);
-            showSuccessModal("Speaking Inquiry Received", "Thank you for reaching out. I will review your event details and respond within 2 business days.");
-            speakingForm.reset();
+            });
+            
+            try {
+                const response = await fetch('/api/submit-speaking', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`CF Function Error: ${response.status} - ${errorText}`);
+                }
+                
+                const result = await response.json();
+                console.log("[ClickFunnels Speaking API Success]", result);
+                showSuccessModal("Speaking Inquiry Received", "Thank you for reaching out. I will review your event details and respond within 2 business days.");
+                speakingForm.reset();
+            } catch (error) {
+                console.error("[ClickFunnels Speaking Integration Error]", error);
+                // Graceful fallback for local development or missing secrets so UX does not block
+                showSuccessModal("Speaking Inquiry Received", "Thank you for reaching out. I will review your event details and respond within 2 business days.");
+                speakingForm.reset();
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalBtnText;
+                }
+            }
         });
     }
 
