@@ -1034,6 +1034,14 @@ Router.register('/speaking', () => `
                     <p style="font-size: 0.9rem; margin-bottom: 15px;">Fill out this form to inquire about speaking availability.</p>
                     <form id="speaking-inquiry-form" class="speaking-form">
                         <div class="form-group">
+                            <label for="speaking-name">Your Name</label>
+                            <input type="text" id="speaking-name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="speaking-email">Your Email</label>
+                            <input type="email" id="speaking-email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
                             <label for="event-name">Event Name</label>
                             <input type="text" id="event-name" class="form-control" required>
                         </div>
@@ -1052,6 +1060,10 @@ Router.register('/speaking', () => `
                         <div class="form-group">
                             <label for="event-audience">Expected Audience size / Type</label>
                             <input type="text" id="event-audience" placeholder="e.g. 200 Corporate Managers" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="speaking-message">Message</label>
+                            <textarea id="speaking-message" class="form-control" placeholder="Provide any details about the speaking request..." required></textarea>
                         </div>
                         <button type="submit" class="btn btn-teal" style="width: 100%;">Submit Speaking Inquiry</button>
                     </form>
