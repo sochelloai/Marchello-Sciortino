@@ -123,10 +123,7 @@ function bindFormHandlers() {
                 name: document.getElementById('speaking-name').value,
                 email: document.getElementById('speaking-email').value,
                 event: document.getElementById('event-name').value,
-                org: document.getElementById('event-org').value,
-                date: document.getElementById('event-date').value,
                 location: document.getElementById('event-location').value,
-                audience: document.getElementById('event-audience').value,
                 message: document.getElementById('speaking-message').value,
                 timestamp: new Date().toISOString()
             };

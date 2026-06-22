@@ -1046,20 +1046,8 @@ Router.register('/speaking', () => `
                             <input type="text" id="event-name" class="form-control" required>
                         </div>
                         <div class="form-group">
-                            <label for="event-org">Organization</label>
-                            <input type="text" id="event-org" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="event-date">Proposed Date</label>
-                            <input type="date" id="event-date" class="form-control" required>
-                        </div>
-                        <div class="form-group">
                             <label for="event-location">Location / Virtual</label>
                             <input type="text" id="event-location" placeholder="e.g. St. Louis, MO or Zoom" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="event-audience">Expected Audience size / Type</label>
-                            <input type="text" id="event-audience" placeholder="e.g. 200 Corporate Managers" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label for="speaking-message">Message</label>
