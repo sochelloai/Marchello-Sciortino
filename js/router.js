@@ -1487,9 +1487,9 @@ Router.register('/speaking', () => `
     </section>
 
     <!-- Section 3: Signature Message Detail -->
-    <section class="section bg-white">
+    <section class="section bg-white" style="border-bottom: 1px solid var(--color-gray-border);">
         <div class="container">
-            <div style="max-width: 900px; margin: 0 auto;">
+            <div style="max-width: 900px; margin: 0 auto; margin-bottom: var(--spacing-lg);">
                 <span class="section-tag">Signature Message</span>
                 <h2 style="font-size: 2.2rem; margin-bottom: 20px;">Winning Despite The Odds</h2>
                 <p style="font-size: 1.15rem; line-height: 1.7; color: var(--color-gray-steel); margin-bottom: 20px;">
@@ -1507,25 +1507,23 @@ Router.register('/speaking', () => `
                     </ul>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- Section 3: Speaking Topics -->
-    <section class="section bg-white" style="border-bottom: 1px solid var(--color-gray-border);">
-        <div class="container">
-            <h3 class="text-center" style="margin-bottom: var(--spacing-lg); font-size: 2.25rem;">Speaking Topics</h3>
-            <div class="grid-3">
-                <div class="card">
-                    <h4 class="text-teal" style="font-size: 1.3rem; margin-bottom: 12px;">Perspective & The Hand You are Dealt</h4>
-                    <p>A practical approach to working within physical limits and focusing on the abilities you still have.</p>
-                </div>
-                <div class="card">
-                    <h4 class="text-teal" style="font-size: 1.3rem; margin-bottom: 12px;">AI for Daily Work</h4>
-                    <p>How AI acts as a typing assistant. I share how to use prompts to write and design faster.</p>
-                </div>
-                <div class="card">
-                    <h4 class="text-teal" style="font-size: 1.3rem; margin-bottom: 12px;">Faith, Family & Daily Adaptation</h4>
-                    <p>Reflections on the faith and family support that keep me building under pressure.</p>
+            <!-- Speaking Topics Row (Moved under signature takeaways) -->
+            <div style="margin-top: 3.5rem; border-top: 1px solid var(--color-gray-border); padding-top: 3rem;">
+                <h3 class="text-center" style="margin-bottom: var(--spacing-lg); font-size: 2.25rem;">Speaking Topics</h3>
+                <div class="grid-3">
+                    <div class="card">
+                        <h4 class="text-teal" style="font-size: 1.3rem; margin-bottom: 12px;">Perspective & The Hand You are Dealt</h4>
+                        <p>A practical approach to working within physical limits and focusing on the abilities you still have.</p>
+                    </div>
+                    <div class="card">
+                        <h4 class="text-teal" style="font-size: 1.3rem; margin-bottom: 12px;">AI for Daily Work</h4>
+                        <p>How AI acts as a typing assistant. I share how to use prompts to write and design faster.</p>
+                    </div>
+                    <div class="card">
+                        <h4 class="text-teal" style="font-size: 1.3rem; margin-bottom: 12px;">Faith, Family & Daily Adaptation</h4>
+                        <p>Reflections on the faith and family support that keep me building under pressure.</p>
+                    </div>
                 </div>
             </div>
         </div>
