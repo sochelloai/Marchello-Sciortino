@@ -26,11 +26,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 overlay.remove();
             }
         }
+
+        // Clean up services portfolio logic
+        if (typeof ServicesPortfolio !== 'undefined') {
+            ServicesPortfolio.cleanup();
+        }
         
         if (page === 'home') {
             initHeroParallax();
         } else if (page === 'story') {
             initStoryTimelineScroll();
+        } else if (page === 'services') {
+            ServicesPortfolio.init();
         } else if (page === 'brain') {
             Brain.init();
         } else if (page === 'chelloai') {
@@ -43,6 +50,9 @@ document.addEventListener('DOMContentLoaded', () => {
             WinCardsEffect.init();
         } else if (page === 'speaking') {
             SpeakingGalleryLightbox.init();
+            if (typeof ServicesPortfolio !== 'undefined') {
+                ServicesPortfolio.init();
+            }
         }
         
         // Always bind forms rendered inside the page view
