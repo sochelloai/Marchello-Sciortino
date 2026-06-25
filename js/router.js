@@ -1469,95 +1469,140 @@ Router.register('/chelloai', () => `
         </div>
     </div>
     
-    <section class="section bg-white">
-        <div class="container">
-            <div class="grid-2">
-                <div>
-                    <h2>A Bridge for Connection</h2>
-                    <p>
-                        Because typing can take me hours and my physical speech has changed, I developed ChelloAI. This partner is trained directly on my personal rules, writings, memories, and voice settings.
-                    </p>
-                    <p>
-                        It represents me in conversations, answering questions and sharing resources to help visitors understand my perspective.
-                    </p>
-                    <p style="margin-bottom: 20px;">
-                        Select a preset topic on the simulator to see how ChelloAI acts as a typing hand, or start an interactive video session to speak directly with my Live Avatar companion.
-                    </p>
-                    <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                        <button id="start-avatar-btn" class="btn btn-teal" style="display: flex; align-items: center; gap: 8px;">
-                            <span style="font-size: 1.1rem;">🎙️</span> Talk to Live Avatar
-                        </button>
-                        <a href="https://www.accessibleaim.com" target="_blank" rel="noopener noreferrer" class="btn btn-outline-teal">Build Your Own Companion</a>
-                    </div>
-                </div>
-                
-                <!-- Right Column: Companion Display Wrapper -->
-                <div class="companion-display-wrapper" style="position: relative; width: 100%; min-height: 480px; display: flex; flex-direction: column;">
-                    <!-- Static Chat Simulator (Visible by default) -->
-                    <div class="chat-window" id="companion-chat-window" style="width: 100%; display: flex; flex-direction: column; flex: 1;">
-                        <div class="chat-header">
-                            <div class="chat-avatar-wrapper">
-                                <img src="assets/chello_ai_avatar.png" alt="ChelloAI Avatar" class="chat-avatar">
-                                <div class="avatar-status-dot"></div>
-                            </div>
-                            <div class="chat-header-info">
-                                <h4>ChelloAI</h4>
-                                <p>Voice & Concept Amplifier</p>
-                            </div>
-                        </div>
-                        
-                        <div class="chat-messages" id="chat-messages" style="flex: 1; min-height: 200px; max-height: 300px; overflow-y: auto;">
-                            <!-- Initial message -->
-                            <div class="message-bubble incoming">
-                                Hello! I am ChelloAI, my digital companion. Select any question below to explore my stories and tools.
-                            </div>
-                        </div>
-                        
-                        <div class="chat-suggestions">
-                            <p class="chat-suggestions-title">Select a topic to ask:</p>
-                            <div class="suggestions-grid" id="chat-suggestions-grid">
-                                <!-- Pre-baked buttons dynamically load here -->
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Live Avatar Container (Hidden by default) -->
-                    <div id="companion-avatar-container" style="display: none; width: 100%; min-height: 480px; border-radius: var(--radius-md); overflow: hidden; background: var(--color-navy); border: 2px solid var(--color-teal); box-shadow: var(--shadow-lg); flex-direction: column; flex: 1;">
-                        <div class="avatar-header" style="background: var(--color-navy-dark); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0, 209, 193, 0.15);">
-                            <div style="display: flex; align-items: center; gap: 12px;">
-                                <div style="width: 10px; height: 10px; background: #0ad8ad; border-radius: 50%; box-shadow: 0 0 10px #0ad8ad; animation: pulse 2s infinite;"></div>
-                                <h4 style="margin: 0; color: white; font-size: 1.1rem; font-family: var(--font-heading);">ChelloAI Live Session</h4>
-                            </div>
-                            <button id="stop-avatar-btn" style="background: rgba(255, 74, 74, 0.15); border: 1px solid rgba(255, 74, 74, 0.3); color: #ff7474; padding: 6px 14px; border-radius: 6px; font-size: 0.85rem; cursor: pointer; transition: var(--transition-fast); font-weight: 500;">End Session</button>
-                        </div>
-                        <div id="avatar-iframe-target" style="flex: 1; display: flex; align-items: center; justify-content: center; position: relative; background: #000; min-height: 380px;">
-                            <!-- Iframe dynamically loaded here -->
-                        </div>
-                    </div>
-                </div>
+    <!-- Section 1: Intro Copy (Centered) -->
+    <section class="section bg-white" style="padding: 4.5rem 0 3rem 0;">
+        <div class="container" style="max-width: 850px; text-align: center;">
+            <h2 class="text-navy" style="font-size: 2.2rem; margin-bottom: var(--spacing-sm);">A Bridge for Connection</h2>
+            <p style="font-size: 1.15rem; line-height: 1.7; color: var(--color-gray-medium); margin-bottom: var(--spacing-sm);">
+                Because typing can take me hours and my physical speech has changed, I developed ChelloAI. This partner is trained directly on my personal rules, writings, memories, and voice settings.
+            </p>
+            <p style="font-size: 1.15rem; line-height: 1.7; color: var(--color-gray-medium); margin-bottom: var(--spacing-sm);">
+                It represents me in conversations, answering questions and sharing resources to help visitors understand my perspective.
+            </p>
+            <p style="font-size: 1.15rem; line-height: 1.7; color: var(--color-gray-steel); margin-bottom: var(--spacing-lg); font-weight: 500;">
+                Speak directly with my Live Avatar companion below, or use the interactive chat simulator to ask preset questions.
+            </p>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button id="start-avatar-btn" class="btn btn-teal" style="display: flex; align-items: center; gap: 8px; padding: 12px 24px; font-size: 1rem;">
+                    <span style="font-size: 1.1rem;">🎙️</span> Talk to Live Avatar
+                </button>
+                <button id="scroll-to-simulator-btn" class="btn btn-outline-teal" style="padding: 12px 24px; font-size: 1rem;">
+                    💬 Try Chat Simulator
+                </button>
+                <a href="https://www.accessibleaim.com" target="_blank" rel="noopener noreferrer" class="btn btn-outline-white" style="background: var(--color-navy); color: white; border: 1px solid var(--color-navy); padding: 12px 24px; font-size: 1rem; transition: var(--transition-fast);">Build Your Own Companion</a>
             </div>
         </div>
     </section>
 
-    <!-- Articulated Inspiration Section -->
-    <section class="section bg-navy-light text-white" style="border-top: 1px solid rgba(0, 209, 193, 0.1); padding: 4.5rem 0;">
+    <!-- Section 2: Live Avatar Companion (Centered in its own section, centered in a large row) -->
+    <section id="live-avatar-section" class="section bg-navy-light" style="border-top: 1px solid rgba(0, 209, 193, 0.1); border-bottom: 1px solid rgba(0, 209, 193, 0.1); padding: 5rem 0;">
+        <div class="container" style="max-width: 900px; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+            
+            <div class="text-center" style="margin-bottom: var(--spacing-md); max-width: 600px;">
+                <span class="section-tag text-teal" style="display: block; margin-bottom: 8px;">Real-Time Voice Twin</span>
+                <h3 class="text-white" style="font-size: 2rem; margin-bottom: var(--spacing-sm);">Talk to ChelloAI Twin</h3>
+                <p style="color: var(--color-gray-light); font-size: 1.05rem; line-height: 1.5; margin: 0;">
+                    Have a live, spoken conversation. Ask about Marchello's story, digital services, and prompt frameworks.
+                </p>
+            </div>
+
+            <!-- Live Avatar Card (Centered in large row) -->
+            <div id="companion-avatar-container" style="width: 100%; max-width: 800px; min-height: 500px; border-radius: var(--radius-md); overflow: hidden; background: var(--color-navy); border: 2px solid var(--color-teal); box-shadow: var(--shadow-lg); display: flex; flex-direction: column; position: relative;">
+                
+                <!-- Live Avatar Header -->
+                <div class="avatar-header" style="background: var(--color-navy-dark); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0, 209, 193, 0.15); width: 100%; box-sizing: border-box;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div id="avatar-status-indicator" style="width: 10px; height: 10px; background: #a0aec0; border-radius: 50%;"></div>
+                        <h4 style="margin: 0; color: white; font-size: 1.1rem; font-family: var(--font-heading);">ChelloAI Live Session</h4>
+                    </div>
+                    <button id="stop-avatar-btn" style="display: none; background: rgba(255, 74, 74, 0.15); border: 1px solid rgba(255, 74, 74, 0.3); color: #ff7474; padding: 6px 14px; border-radius: 6px; font-size: 0.85rem; cursor: pointer; transition: var(--transition-fast); font-weight: 500;">End Session</button>
+                </div>
+                
+                <!-- Iframe Target / Start Screen Area -->
+                <div id="avatar-iframe-target" style="flex: 1; display: flex; align-items: center; justify-content: center; position: relative; background: #000; min-height: 440px; width: 100%;">
+                    <!-- Static preview overlay with start button -->
+                    <div id="avatar-placeholder-view" style="color: white; text-align: center; max-width: 500px; padding: 40px var(--spacing-md); display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%; box-sizing: border-box;">
+                        <div class="avatar-preview-circle" style="position: relative; width: 120px; height: 120px; margin-bottom: 10px;">
+                            <img src="assets/chello_ai_avatar.png" alt="ChelloAI Companion" style="width: 100%; height: 100%; border-radius: 50%; border: 3px solid var(--color-teal); object-fit: cover; box-shadow: 0 0 25px rgba(0, 209, 193, 0.3);">
+                            <div style="position: absolute; bottom: 5px; right: 5px; width: 20px; height: 20px; background: #48bb78; border-radius: 50%; border: 3px solid var(--color-navy);"></div>
+                        </div>
+                        <h4 style="margin: 0; color: var(--color-white); font-size: 1.35rem; font-family: var(--font-heading); font-weight: 600;">ChelloAI Conversational Twin</h4>
+                        <p style="font-size: 0.95rem; color: var(--color-gray-light); line-height: 1.5; margin: 0;">
+                            ChelloAI is configured with Marchello's brand guidelines to answer questions in real time with audio lip-syncing.
+                        </p>
+                        <button id="start-avatar-card-btn" class="btn btn-teal" style="display: flex; align-items: center; gap: 10px; padding: 14px 28px; font-size: 1.05rem; font-weight: 600; width: 100%; justify-content: center; max-width: 320px;">
+                            🎙️ Start Voice Conversation
+                        </button>
+                        <span style="font-size: 0.8rem; color: var(--color-gray-steel);">Note: Requires microphone permission. Standard data rates may apply.</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Interactive Chat Simulator (Centered in own section, centered in a large row) -->
+    <section id="chat-simulator-section" class="section bg-white" style="padding: 5rem 0; border-bottom: 1px solid var(--color-gray-border);">
+        <div class="container" style="max-width: 900px; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+            
+            <div class="text-center" style="margin-bottom: var(--spacing-lg); max-width: 600px;">
+                <span class="section-tag" style="display: block; margin-bottom: 8px;">Text Assistant</span>
+                <h3 class="text-navy" style="font-size: 2.2rem; margin-bottom: var(--spacing-sm);">Interactive Chat Simulator</h3>
+                <p style="color: var(--color-gray-medium); font-size: 1.05rem; line-height: 1.5; margin: 0;">
+                    Prefer text? Click any of the topics below to instantly chat with ChelloAI.
+                </p>
+            </div>
+
+            <!-- Static Chat Simulator (Always visible) -->
+            <div class="chat-window" id="companion-chat-window" style="width: 100%; max-width: 800px; display: flex; flex-direction: column;">
+                <div class="chat-header">
+                    <div class="chat-avatar-wrapper">
+                        <img src="assets/chello_ai_avatar.png" alt="ChelloAI Avatar" class="chat-avatar">
+                        <div class="avatar-status-dot"></div>
+                    </div>
+                    <div class="chat-header-info">
+                        <h4>ChelloAI</h4>
+                        <p>Voice & Concept Amplifier</p>
+                    </div>
+                </div>
+                
+                <div class="chat-messages" id="chat-messages" style="flex: 1; min-height: 250px; max-height: 350px; overflow-y: auto; padding: 20px;">
+                    <!-- Initial message -->
+                    <div class="message-bubble incoming">
+                        Hello! I am ChelloAI, my digital companion. Select any question below to explore my stories and tools.
+                    </div>
+                </div>
+                
+                <div class="chat-suggestions" style="padding: 20px; border-top: 1px solid var(--color-gray-border);">
+                    <p class="chat-suggestions-title" style="margin-bottom: 12px; font-weight: 600;">Select a topic to ask:</p>
+                    <div class="suggestions-grid" id="chat-suggestions-grid">
+                        <!-- Pre-baked buttons dynamically load here -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Section 4: Articulated Inspiration (Alternating to White) -->
+    <section class="section bg-white" style="padding: 5rem 0;">
         <div class="container">
             <div class="text-center" style="margin-bottom: var(--spacing-lg);">
                 <span class="section-tag text-teal" style="display: block; margin-bottom: var(--spacing-xs);">A New Way to See AI</span>
-                <h3 class="text-white" style="font-size: 2rem; margin-bottom: var(--spacing-md);">Articulated Inspiration</h3>
+                <h3 class="text-navy" style="font-size: 2.2rem; margin-bottom: var(--spacing-md);">Articulated Inspiration</h3>
             </div>
             
             <div class="grid-2" style="align-items: center; gap: var(--spacing-lg);">
                 
                 <!-- Left Column: Text -->
                 <div>
-                    <p style="font-size: 1.15rem; line-height: 1.7; color: var(--color-gray-light); margin-bottom: var(--spacing-md);">
+                    <p style="font-size: 1.15rem; line-height: 1.7; color: var(--color-gray-medium); margin-bottom: var(--spacing-md);">
                         Articulated Inspiration is the moving joint between thought and expression. It transforms the creativity and wisdom present within us into active, functional reality.
                     </p>
-                    <p style="font-size: 1.15rem; line-height: 1.7; color: var(--color-gray-light); margin-bottom: var(--spacing-lg);">
+                    <p style="font-size: 1.15rem; line-height: 1.7; color: var(--color-gray-medium); margin-bottom: var(--spacing-lg);">
                         This philosophy serves as the foundation of the <strong>Accessible AIM</strong> (Articulated Inspiration Method). Through this framework, AI becomes an amplifier of human capability—providing the joint that translates silent ideas into active expression.
                     </p>
-                    <div style="border-top: 1px solid rgba(0, 209, 193, 0.15); padding-top: var(--spacing-md); display: flex; align-items: flex-start; gap: 15px;">
+                    <div style="border-top: 1px solid var(--color-gray-border); padding-top: var(--spacing-md); display: flex; align-items: flex-start; gap: 15px;">
                         <span style="font-size: 1.6rem; color: var(--color-teal); line-height: 1;">💡</span>
                         <div>
                             <strong style="color: var(--color-teal); display: block; margin-bottom: 6px; font-size: 1rem; letter-spacing: 0.05em;">THE METHOD IN ACTION:</strong>

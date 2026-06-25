@@ -34,42 +34,93 @@ const Chat = {
         }
 
         // Bind LiveAvatar UI Elements
-        this.startAvatarBtn = document.getElementById('start-avatar-btn');
+        this.startAvatarBtn = document.getElementById('start-avatar-btn'); // Intro block trigger
+        this.scrollToSimulatorBtn = document.getElementById('scroll-to-simulator-btn'); // Intro block scroll trigger
+        this.startAvatarCardBtn = document.getElementById('start-avatar-card-btn'); // Card start button
         this.stopAvatarBtn = document.getElementById('stop-avatar-btn');
-        this.chatWindow = document.getElementById('companion-chat-window');
         this.avatarContainer = document.getElementById('companion-avatar-container');
         this.iframeTarget = document.getElementById('avatar-iframe-target');
+        this.statusIndicator = document.getElementById('avatar-status-indicator');
+        this.placeholderView = document.getElementById('avatar-placeholder-view');
 
-        if (this.startAvatarBtn && this.stopAvatarBtn) {
-            this.startAvatarBtn.addEventListener('click', () => this.startAvatarSession());
+        if (this.startAvatarBtn) {
+            this.startAvatarBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetSec = document.getElementById('live-avatar-section');
+                if (targetSec) {
+                    targetSec.scrollIntoView({ behavior: 'smooth' });
+                }
+                this.startAvatarSession();
+            });
+        }
+
+        if (this.scrollToSimulatorBtn) {
+            this.scrollToSimulatorBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const simulatorSec = document.getElementById('chat-simulator-section');
+                if (simulatorSec) {
+                    simulatorSec.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        }
+
+        if (this.startAvatarCardBtn) {
+            this.startAvatarCardBtn.addEventListener('click', () => this.startAvatarSession());
+        }
+
+        if (this.stopAvatarBtn) {
             this.stopAvatarBtn.addEventListener('click', () => this.stopAvatarSession());
         }
+
+        // AUTO START LIVE SESSION IF POSSIBLE
+        this.startAvatarSession();
     },
 
     async startAvatarSession() {
-        if (!this.chatWindow || !this.avatarContainer || !this.iframeTarget) return;
+        if (!this.avatarContainer || !this.iframeTarget) return;
 
-        // Disable button to prevent double clicks during load
-        this.startAvatarBtn.disabled = true;
-        this.startAvatarBtn.innerHTML = `<span style="font-size: 1.1rem; margin-right: 5px;">⏳</span> Connecting...`;
+        // Disable start buttons to prevent double clicks during load
+        if (this.startAvatarBtn) {
+            this.startAvatarBtn.disabled = true;
+            this.startAvatarBtn.innerHTML = `<span style="font-size: 1.1rem; margin-right: 5px;">⏳</span> Connecting...`;
+        }
+        if (this.startAvatarCardBtn) {
+            this.startAvatarCardBtn.disabled = true;
+            this.startAvatarCardBtn.innerHTML = `⏳ Connecting...`;
+        }
 
-        // Switch to the video avatar container
-        this.chatWindow.style.display = 'none';
-        this.avatarContainer.style.display = 'flex';
+        // Hide static placeholder view if it exists
+        if (this.placeholderView) {
+            this.placeholderView.style.display = 'none';
+        }
+
+        // Show stop button in header
+        if (this.stopAvatarBtn) {
+            this.stopAvatarBtn.style.display = 'block';
+        }
+
+        // Set status indicator to active (teal glow)
+        if (this.statusIndicator) {
+            this.statusIndicator.style.backgroundColor = '#0ad8ad';
+            this.statusIndicator.style.boxShadow = '0 0 10px #0ad8ad';
+            this.statusIndicator.style.animation = 'pulse 2s infinite';
+        }
         
         // Render spinner loading state
-        this.iframeTarget.innerHTML = `
+        const loadingDiv = document.createElement('div');
+        loadingDiv.id = 'avatar-loading';
+        loadingDiv.style.cssText = 'color: white; text-align: center; font-family: var(--font-body); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 15px; z-index: 10; height: 100%; width: 100%; min-height: 440px;';
+        loadingDiv.innerHTML = `
             <style>
                 @keyframes spin {
                     0% { transform: rotate(0deg); }
                     100% { transform: rotate(360deg); }
                 }
             </style>
-            <div id="avatar-loading" style="color: white; text-align: center; font-family: var(--font-body); display: flex; flex-direction: column; align-items: center; gap: 15px; z-index: 10;">
-                <div style="width: 40px; height: 40px; border: 3px solid rgba(10, 216, 173, 0.15); border-top-color: var(--color-teal); border-radius: 50%; animation: spin 1s linear infinite;"></div>
-                <p style="font-size: 1rem; color: var(--color-gray-light); margin: 0;">Connecting to ChelloAI voice companion...</p>
-            </div>
+            <div style="width: 40px; height: 40px; border: 3px solid rgba(10, 216, 173, 0.15); border-top-color: var(--color-teal); border-radius: 50%; animation: spin 1s linear infinite;"></div>
+            <p style="font-size: 1rem; color: var(--color-gray-light); margin: 0;">Connecting to ChelloAI voice companion...</p>
         `;
+        this.iframeTarget.appendChild(loadingDiv);
 
         try {
             const response = await fetch('/api/create-avatar-embed', {
@@ -85,15 +136,19 @@ const Chat = {
 
             const data = await response.json();
 
+            // Clear loading spinner
+            const loader = document.getElementById('avatar-loading');
+            if (loader) loader.remove();
+
             if (data.success && data.url) {
                 // Render secure iframe with microphone permissions
-                this.iframeTarget.innerHTML = `
-                    <iframe src="${data.url}" allow="microphone" title="LiveAvatar Embed" style="width: 100%; height: 100%; min-height: 380px; border: none;"></iframe>
-                `;
+                this.iframeTarget.insertAdjacentHTML('beforeend', `
+                    <iframe src="${data.url}" allow="microphone" title="LiveAvatar Embed" style="width: 100%; height: 100%; min-height: 440px; border: none;"></iframe>
+                `);
             } else if (data.isMock) {
                 // Key not configured yet - load developer sandbox assistant guide
-                this.iframeTarget.innerHTML = `
-                    <div style="color: white; text-align: center; max-width: 450px; padding: 25px; font-family: var(--font-body); display: flex; flex-direction: column; align-items: center; gap: 15px; z-index: 10; margin: 0 auto;">
+                this.iframeTarget.insertAdjacentHTML('beforeend', `
+                    <div id="avatar-sandbox-alert" style="color: white; text-align: center; max-width: 450px; padding: 25px; font-family: var(--font-body); display: flex; flex-direction: column; align-items: center; gap: 15px; z-index: 10; margin: 0 auto;">
                         <span style="font-size: 2.2rem; filter: drop-shadow(0 0 10px rgba(10, 216, 173, 0.4));">🤖</span>
                         <h4 style="margin: 0; color: var(--color-teal); font-size: 1.25rem; font-family: var(--font-heading); font-weight: 600;">Sandbox Mode Dev Alert</h4>
                         <p style="font-size: 0.95rem; color: var(--color-gray-light); line-height: 1.5; margin: 0;">
@@ -107,15 +162,18 @@ const Chat = {
                         </p>
                         <button id="load-sandbox-demo-btn" class="btn btn-teal" style="width: 100%; padding: 10px; font-size: 0.9rem;">Test Free Sandbox Demo Iframe</button>
                     </div>
-                `;
+                `);
 
                 // Allow loading the default sandbox demo iframe directly (requires no auth on iframe link)
                 const sandboxDemoBtn = document.getElementById('load-sandbox-demo-btn');
                 if (sandboxDemoBtn) {
                     sandboxDemoBtn.addEventListener('click', () => {
-                        this.iframeTarget.innerHTML = `
-                            <iframe src="https://embed.liveavatar.com/v1/65f9e3c9-d48b-4118-b73a-4ae2e3cbb8f0" allow="microphone" title="LiveAvatar Sandbox Demo" style="width: 100%; height: 100%; min-height: 380px; border: none;"></iframe>
-                        `;
+                        const alertDiv = document.getElementById('avatar-sandbox-alert');
+                        if (alertDiv) alertDiv.remove();
+                        
+                        this.iframeTarget.insertAdjacentHTML('beforeend', `
+                            <iframe src="https://embed.liveavatar.com/v1/65f9e3c9-d48b-4118-b73a-4ae2e3cbb8f0" allow="microphone" title="LiveAvatar Sandbox Demo" style="width: 100%; height: 100%; min-height: 440px; border: none;"></iframe>
+                        `);
                     });
                 }
             } else {
@@ -123,33 +181,70 @@ const Chat = {
             }
 
         } catch (err) {
-            this.iframeTarget.innerHTML = `
-                <div style="color: white; text-align: center; padding: 25px; font-family: var(--font-body); display: flex; flex-direction: column; align-items: center; gap: 15px; z-index: 10;">
+            // Clear loading spinner if still there
+            const loader = document.getElementById('avatar-loading');
+            if (loader) loader.remove();
+
+            this.iframeTarget.insertAdjacentHTML('beforeend', `
+                <div id="avatar-error" style="color: white; text-align: center; padding: 25px; font-family: var(--font-body); display: flex; flex-direction: column; align-items: center; gap: 15px; z-index: 10;">
                     <span style="font-size: 2.2rem; color: #ff5e5e;">❌</span>
                     <h4 style="margin: 0; color: #ff5e5e; font-size: 1.2rem; font-family: var(--font-heading); font-weight: 600;">Connection Refused</h4>
                     <p style="font-size: 0.95rem; color: var(--color-gray-light); max-width: 350px; line-height: 1.4; margin: 0;">${err.message}</p>
                     <button id="retry-avatar-btn" class="btn btn-outline-teal btn-sm" style="margin-top: 5px; padding: 8px 16px;">Retry Connection</button>
                 </div>
-            `;
+            `);
             const retryBtn = document.getElementById('retry-avatar-btn');
             if (retryBtn) {
-                retryBtn.addEventListener('click', () => this.startAvatarSession());
+                retryBtn.addEventListener('click', () => {
+                    const errDiv = document.getElementById('avatar-error');
+                    if (errDiv) errDiv.remove();
+                    this.startAvatarSession();
+                });
             }
         } finally {
-            this.startAvatarBtn.disabled = false;
-            this.startAvatarBtn.innerHTML = `<span style="font-size: 1.1rem; margin-right: 5px;">🎙️</span> Talk to Live Avatar`;
+            if (this.startAvatarBtn) {
+                this.startAvatarBtn.disabled = false;
+                this.startAvatarBtn.innerHTML = `<span style="font-size: 1.1rem; margin-right: 5px;">🎙️</span> Talk to Live Avatar`;
+            }
+            if (this.startAvatarCardBtn) {
+                this.startAvatarCardBtn.disabled = false;
+                this.startAvatarCardBtn.innerHTML = `🎙️ Start Voice Conversation`;
+            }
         }
     },
 
     stopAvatarSession() {
-        if (!this.chatWindow || !this.avatarContainer || !this.iframeTarget) return;
+        if (!this.iframeTarget) return;
 
-        // Clean out target DOM to sever WebRTC connections and stop microphone use
-        this.iframeTarget.innerHTML = '';
+        // Clear dynamic elements (iframe, sandbox alert, error view, loading spinner)
+        const iframe = this.iframeTarget.querySelector('iframe');
+        if (iframe) iframe.remove();
         
-        // Restore standard simulator display
-        this.avatarContainer.style.display = 'none';
-        this.chatWindow.style.display = 'flex';
+        const loader = document.getElementById('avatar-loading');
+        if (loader) loader.remove();
+        
+        const sandboxAlert = document.getElementById('avatar-sandbox-alert');
+        if (sandboxAlert) sandboxAlert.remove();
+        
+        const errorView = document.getElementById('avatar-error');
+        if (errorView) errorView.remove();
+
+        // Restore static placeholder view if it exists
+        if (this.placeholderView) {
+            this.placeholderView.style.display = 'flex';
+        }
+        
+        // Hide stop button
+        if (this.stopAvatarBtn) {
+            this.stopAvatarBtn.style.display = 'none';
+        }
+        
+        // Reset status indicator to inactive (gray)
+        if (this.statusIndicator) {
+            this.statusIndicator.style.backgroundColor = '#a0aec0';
+            this.statusIndicator.style.boxShadow = 'none';
+            this.statusIndicator.style.animation = 'none';
+        }
     },
 
     renderSuggestions() {
