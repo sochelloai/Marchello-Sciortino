@@ -1,0 +1,46 @@
+name: Automated Daily Blog Post
+
+on:
+  schedule:
+    # Run every day at 12:00 PM UTC (equivalent to 7:00 AM Central Time)
+    - cron: '0 12 * * *'
+  workflow_dispatch: # Allows manual trigger on demand
+
+jobs:
+  generate-post:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Required to allow pushing commits back to the repo
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Generate Daily Blog Post
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          node scripts/generate-daily-post.js
+
+      - name: Commit and Push Changes
+        run: |
+          # Configure Git User
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action Bot"
+          
+          # Stage changes
+          git add data/articles.json assets/blog/
+          
+          # Check if there are changes staged for commit
+          if git diff --cached --quiet; then
+            echo "No changes generated today. Skipping commit."
+          else
+            git commit -m "chore: automated daily blog post for $(date +'%Y-%m-%d')"
+            git push origin main
+          fi
