@@ -23,6 +23,50 @@ const ServicesPortfolio = {
     init() {
         this.cleanup();
         this.bindEvents();
+        this.initAccordion();
+    },
+
+    initAccordion() {
+        const panels = document.querySelectorAll('.accordion-panel');
+        panels.forEach(panel => {
+            const handleExpand = () => {
+                if (panel.classList.contains('active')) return;
+                panels.forEach(p => {
+                    p.classList.remove('active');
+                    p.setAttribute('aria-expanded', 'false');
+                    const num = p.querySelector('.panel-num') ? p.querySelector('.panel-num').textContent : '';
+                    const title = p.querySelector('.panel-vertical-title') ? p.querySelector('.panel-vertical-title').textContent : '';
+                    p.setAttribute('aria-label', `${num} ${title}, click to expand`);
+                });
+                panel.classList.add('active');
+                panel.setAttribute('aria-expanded', 'true');
+                const num = panel.querySelector('.panel-num') ? panel.querySelector('.panel-num').textContent : '';
+                const title = panel.querySelector('.panel-vertical-title') ? panel.querySelector('.panel-vertical-title').textContent : '';
+                panel.setAttribute('aria-label', `${num} ${title}, currently expanded`);
+            };
+
+            panel.addEventListener('click', (e) => {
+                if (panel.classList.contains('active') && !e.target.closest('.panel-trigger')) {
+                    return;
+                }
+                if (window.innerWidth <= 768 && panel.classList.contains('active') && e.target.closest('.panel-trigger')) {
+                    panel.classList.remove('active');
+                    panel.setAttribute('aria-expanded', 'false');
+                    const num = panel.querySelector('.panel-num') ? panel.querySelector('.panel-num').textContent : '';
+                    const title = panel.querySelector('.panel-vertical-title') ? panel.querySelector('.panel-vertical-title').textContent : '';
+                    panel.setAttribute('aria-label', `${num} ${title}, click to expand`);
+                    return;
+                }
+                handleExpand();
+            });
+
+            panel.addEventListener('keydown', (e) => {
+                if (e.key === ' ' || e.key === 'Enter') {
+                    e.preventDefault();
+                    handleExpand();
+                }
+            });
+        });
     },
 
     bindEvents() {

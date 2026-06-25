@@ -3011,4 +3011,299 @@ html.accessibility-paused-animations .win-card-wrapper:focus-within .win-card-to
     }
 }
 
+/* ==========================================================================
+   Services Horizontal Accordion
+   ========================================================================== */
+.services-accordion-section {
+    background-color: var(--color-navy-dark);
+    padding: 6rem 0;
+}
+
+.services-accordion {
+    display: flex;
+    width: 100%;
+    min-height: 680px;
+    background-color: var(--color-navy);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid rgba(10, 216, 173, 0.15);
+    box-shadow: var(--shadow-lg);
+}
+
+.accordion-panel {
+    display: flex;
+    flex: 0 0 80px;
+    transition: flex 0.6s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.4s ease;
+    overflow: hidden;
+    position: relative;
+    border-right: 1px solid rgba(10, 216, 173, 0.12);
+    background-color: var(--color-navy-dark);
+}
+
+.accordion-panel:last-child {
+    border-right: none;
+}
+
+.accordion-panel.active {
+    flex: 1;
+    background-color: var(--color-navy);
+}
+
+/* Collapsed Panel Trigger styles */
+.panel-trigger {
+    width: 80px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: var(--spacing-lg) 0;
+    user-select: none;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    background-color: var(--color-navy-dark);
+    z-index: 10;
+}
+
+.accordion-panel:hover:not(.active) .panel-trigger {
+    background-color: rgba(10, 216, 173, 0.05);
+}
+
+.panel-num {
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--color-teal);
+    margin-bottom: 2.5rem;
+    text-shadow: 0 0 10px rgba(10, 216, 173, 0.3);
+}
+
+.panel-vertical-title {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+    font-family: var(--font-heading);
+    font-size: 1.65rem;
+    font-weight: 800;
+    color: var(--color-gray-light);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin: 0;
+    opacity: 0.75;
+    transition: color 0.3s, opacity 0.3s;
+}
+
+.accordion-panel:hover:not(.active) .panel-vertical-title {
+    opacity: 1;
+    color: var(--color-white);
+}
+
+.accordion-panel.active .panel-trigger {
+    display: none;
+}
+
+/* Expanded Panel Content */
+.panel-content {
+    display: none;
+    flex: 1;
+    opacity: 0;
+    flex-direction: column;
+    padding: var(--spacing-lg);
+    box-sizing: border-box;
+    overflow-y: auto;
+    transition: opacity 0.4s ease;
+}
+
+.accordion-panel.active .panel-content {
+    display: flex;
+    opacity: 1;
+}
+
+.panel-content-inner {
+    display: grid;
+    grid-template-columns: 1.25fr 1fr;
+    gap: var(--spacing-lg);
+    align-items: center;
+}
+
+.panel-text-side {
+    display: flex;
+    flex-direction: column;
+}
+
+.panel-subtitle {
+    color: var(--color-teal);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: var(--spacing-xs);
+    font-family: var(--font-heading);
+    font-weight: 700;
+}
+
+.panel-title {
+    color: var(--color-white);
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: var(--spacing-sm);
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.panel-desc {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--color-gray-light);
+    margin-bottom: var(--spacing-md);
+    opacity: 0.9;
+}
+
+.panel-bullets {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-sm) var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.panel-bullets li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.bullet-emoji {
+    font-size: 1.4rem;
+    line-height: 1.1;
+}
+
+.panel-bullets h4 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--color-white);
+    margin-bottom: 4px;
+}
+
+.panel-bullets p {
+    font-size: 0.92rem;
+    color: rgba(247, 250, 252, 0.72);
+    margin: 0;
+    line-height: 1.45;
+}
+
+.panel-cta {
+    margin-top: var(--spacing-xs);
+}
+
+.panel-visual-side {
+    text-align: center;
+    position: relative;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid rgba(10, 216, 173, 0.25);
+    height: 100%;
+    min-height: 320px;
+    box-shadow: var(--shadow-md);
+}
+
+.panel-main-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* Portfolio Section */
+.panel-portfolio {
+    margin-top: var(--spacing-lg);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    padding-top: var(--spacing-md);
+}
+
+.portfolio-section-title {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    color: var(--color-teal);
+    letter-spacing: 0.12em;
+    margin-bottom: var(--spacing-sm);
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+/* Responsive Accordion Adapting */
+@media (max-width: 991px) {
+    .panel-content-inner {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+    .panel-visual-side {
+        min-height: 250px;
+    }
+}
+
+@media (max-width: 768px) {
+    .services-accordion {
+        flex-direction: column;
+        min-height: auto;
+    }
+    
+    .accordion-panel {
+        flex: none;
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid rgba(10, 216, 173, 0.15);
+        flex-direction: column;
+    }
+    
+    .accordion-panel:last-child {
+        border-bottom: none;
+    }
+    
+    .accordion-panel.active {
+        flex: none;
+    }
+    
+    .panel-trigger {
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+    
+    .panel-num {
+        margin-bottom: 0;
+    }
+    
+    .panel-vertical-title {
+        writing-mode: horizontal-tb;
+        text-orientation: mixed;
+        transform: none;
+        font-size: 1.3rem;
+        opacity: 1;
+    }
+    
+    .accordion-panel.active .panel-trigger {
+        display: flex;
+        border-bottom: 1px solid rgba(10, 216, 173, 0.15);
+        background-color: rgba(10, 216, 173, 0.05);
+    }
+    
+    .panel-content {
+        padding: var(--spacing-md);
+    }
+    
+    .panel-title {
+        font-size: 2rem;
+    }
+}
+
 

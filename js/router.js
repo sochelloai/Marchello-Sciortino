@@ -73,7 +73,8 @@ const Router = {
                 '/marchellos-blog': "Marchello's Blog | Marchello Sciortino",
                 '/hub': "Marchello's Blog | Marchello Sciortino",
                 '/contact': "Contact | Marchello Sciortino",
-                '/resources': "Free Resources | Marchello Sciortino",
+                '/free-gifts': "Free Gifts | Marchello Sciortino",
+                '/resources': "Resources | Marchello Sciortino",
                 '/privacy': "Privacy Policy | Marchello Sciortino",
                 '/terms': "Terms of Service | Marchello Sciortino",
                 '/accessibility-statement': "Accessibility Statement | Marchello Sciortino"
@@ -316,7 +317,7 @@ Router.register('/home', () => `
 
                 <!-- Right Column: Visual Representation -->
                 <div style="text-align: center;">
-                    <img src="assets/articulated_inspiration.png" alt="Articulated Inspiration visualization" class="articulated-img">
+                    <img src="assets/articulated_inspiration.jpg" alt="Articulated Inspiration visualization" class="articulated-img">
                 </div>
 
             </div>
@@ -532,478 +533,404 @@ Router.register('/services', () => `
         </div>
     </div>
 
-    <!-- Section 1: CREATE -->
-    <section class="section" style="background-color: var(--color-white); padding: 6rem 0; border-bottom: 1px solid var(--color-gray-border);">
+    <!-- Accordion Section: CREATE, BUILD, OVERCOME -->
+    <section class="services-accordion-section">
         <div class="container">
-            <div class="grid-2" style="align-items: center; gap: 60px;">
+            <div class="services-accordion" role="tablist" aria-label="Our Services">
                 
-                <!-- Left Column: Card 01 -->
-                <div class="card" style="background: white; border: 1px solid var(--color-gray-border); border-radius: var(--radius-md); padding: 50px 30px 40px 30px; text-align: center; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; position: relative; margin-top: 30px; max-width: 380px; width: 100%; margin-left: auto; margin-right: auto;">
-                    <!-- Circle Icon -->
-                    <div style="width: 80px; height: 80px; background-color: var(--color-navy); border-radius: 50%; display: flex; justify-content: center; align-items: center; position: absolute; top: -40px; left: calc(50% - 40px); border: 4px solid var(--color-white); box-shadow: 0 8px 20px rgba(0,0,0,0.08);">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M15 4V2M15 16v-2M8 9h2M20 9h2M17.8 4.2l-1.4 1.4M7.6 14.4l-1.4 1.4M17.8 13.8l-1.4-1.4M7.6 4.2l-1.4 1.4" />
-                            <path d="M2 22l8-8M14 10l3-3" />
-                        </svg>
+                <!-- Panel 1: CREATE -->
+                <div class="accordion-panel active" data-panel="create" tabindex="0" role="tab" aria-expanded="true" aria-label="01 CREATE, currently expanded">
+                    <div class="panel-trigger">
+                        <span class="panel-num">01</span>
+                        <h3 class="panel-vertical-title">CREATE</h3>
                     </div>
-                    
-                    <div style="margin-top: 15px;">
-                        <span style="color: var(--color-teal); font-size: 1.25rem; font-weight: 700; display: block; margin-bottom: 5px; font-family: var(--font-heading);">01</span>
-                        <h2 style="font-size: 1.75rem; color: var(--color-navy); font-weight: 800; letter-spacing: 0.05em; margin-bottom: 12px; text-transform: uppercase;">CREATE</h2>
-                        <div style="width: 40px; height: 2.5px; background: var(--color-teal); margin: 0 auto 10px auto; opacity: 0.8;"></div>
-                        <p style="color: var(--color-gray-steel); font-size: 0.98rem; line-height: 1.6; margin-bottom: 10px; font-weight: 500;">
-                            AI-powered content and creative solutions that bring your ideas to life.
-                        </p>
-                    </div>
-                    
-                    <div style="margin-top: 10px;">
-                        <a href="#/contact?interest=Create" class="btn btn-teal" style="width: 100%;">CONTACT ME</a>
+                    <div class="panel-content" id="panel-content-create" role="tabpanel">
+                        <div class="panel-content-inner">
+                            <div class="panel-text-side">
+                                <span class="panel-subtitle">AI-Powered Creative Strategy</span>
+                                <h2 class="panel-title">CREATE</h2>
+                                <p class="panel-desc">
+                                    I use generative AI systems to build customized visual and written creative outputs. Whether you need audio loops, copy packages, or digital graphics, I construct systems that turn raw ideas into active assets.
+                                </p>
+                                <ul class="panel-bullets">
+                                    <li>
+                                        <span class="bullet-emoji">💡</span>
+                                        <div>
+                                            <h4>Custom Images & Video</h4>
+                                            <p>Generating custom graphics, promotional videos, and interactive visual content with AI models.</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <span class="bullet-emoji">🎵</span>
+                                        <div>
+                                            <h4>Songs & Brand Jingles</h4>
+                                            <p>Crafting distinct background tunes, melodies, and custom jingles to enrich your message.</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <span class="bullet-emoji">✍️</span>
+                                        <div>
+                                            <h4>Assisted Writing & Copy</h4>
+                                            <p>Writing books, storytelling, and copy scripting using structured AI prompts and voice-dictated editing.</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <span class="bullet-emoji">🧠</span>
+                                        <div>
+                                            <h4>Creative AI Consulting</h4>
+                                            <p>Consulting on customized prompt setups and configurations to simplify your daily writing workflow.</p>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <div class="panel-cta">
+                                    <a href="#/contact?interest=Create" class="btn btn-teal">CONTACT ME</a>
+                                </div>
+                            </div>
+                            <div class="panel-visual-side">
+                                <img src="assets/ai_content.png" alt="AI Content Creation" class="panel-main-img">
+                            </div>
+                        </div>
+                        
+                        <!-- Panel Portfolio: CREATE -->
+                        <div class="panel-portfolio">
+                            <h4 class="portfolio-section-title">CREATE PORTFOLIO</h4>
+                            <div class="portfolio-grid">
+                                <div class="portfolio-card" data-type="video" data-src="assets/videos/W.mp4" aria-label="Play AI Promo Video" role="button" tabindex="0">
+                                    <div class="portfolio-card-bg" style="background-image: url('assets/ai_content.png');"></div>
+                                    <div class="portfolio-card-overlay"></div>
+                                    <div class="portfolio-card-icon">
+                                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
+                                    </div>
+                                    <div class="portfolio-card-content">
+                                        <span class="portfolio-badge">Video</span>
+                                        <h4 class="portfolio-title">AI Promo Video</h4>
+                                    </div>
+                                </div>
+                                <div class="portfolio-card" data-type="audio" data-id="create-audio-1" aria-label="Play Brand Jingle Audio" role="button" tabindex="0">
+                                    <div class="portfolio-card-bg" style="background-image: url('assets/articulated_inspiration.jpg');"></div>
+                                    <div class="portfolio-card-overlay"></div>
+                                    <div class="portfolio-card-icon">
+                                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
+                                    </div>
+                                    <div class="portfolio-card-content">
+                                        <span class="portfolio-badge">Audio</span>
+                                        <h4 class="portfolio-title">Commercial Jingle</h4>
+                                        <div class="portfolio-wave">
+                                            <div class="portfolio-wave-bar"></div>
+                                            <div class="portfolio-wave-bar"></div>
+                                            <div class="portfolio-wave-bar"></div>
+                                            <div class="portfolio-wave-bar"></div>
+                                            <div class="portfolio-wave-bar"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="portfolio-card" data-type="song" data-id="create-song-2" aria-label="Play Ambient Synth Track" role="button" tabindex="0">
+                                    <div class="portfolio-card-bg" style="background-image: url('assets/hero-bg.png');"></div>
+                                    <div class="portfolio-card-overlay"></div>
+                                    <div class="portfolio-card-icon">
+                                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
+                                    </div>
+                                    <div class="portfolio-card-content">
+                                        <span class="portfolio-badge">Song</span>
+                                        <h4 class="portfolio-title">Ambient Synth Track</h4>
+                                        <div class="portfolio-wave">
+                                            <div class="portfolio-wave-bar"></div>
+                                            <div class="portfolio-wave-bar"></div>
+                                            <div class="portfolio-wave-bar"></div>
+                                            <div class="portfolio-wave-bar"></div>
+                                            <div class="portfolio-wave-bar"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="portfolio-card" data-type="image" data-src="assets/ai_content.png" aria-label="View Brand Graphics Mockup" role="button" tabindex="0">
+                                    <div class="portfolio-card-bg" style="background-image: url('assets/ai_content.png');"></div>
+                                    <div class="portfolio-card-overlay"></div>
+                                    <div class="portfolio-card-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                                    </div>
+                                    <div class="portfolio-card-content">
+                                        <span class="portfolio-badge">Image</span>
+                                        <h4 class="portfolio-title">Brand Graphics</h4>
+                                    </div>
+                                </div>
+                                <div class="portfolio-card" data-type="image" data-src="assets/book_cover_mockup.png" aria-label="View Book Cover Mockup" role="button" tabindex="0">
+                                    <div class="portfolio-card-bg" style="background-image: url('assets/book_cover_mockup.png');"></div>
+                                    <div class="portfolio-card-overlay"></div>
+                                    <div class="portfolio-card-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                                    </div>
+                                    <div class="portfolio-card-content">
+                                        <span class="portfolio-badge">Image</span>
+                                        <h4 class="portfolio-title">Book Cover Mockup</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Right Column: Text Expansion -->
-                <div style="padding-left: 10px;">
-                    <span class="section-tag text-teal" style="font-size: 0.85rem; letter-spacing: 0.12em; display: inline-block; margin-bottom: 10px;">AI-Powered Creative Strategy</span>
-                    <h2 style="color: var(--color-navy); font-size: 2.2rem; font-weight: 800; margin-bottom: 15px; font-family: var(--font-heading);">AI-POWERED CONTENT CREATION</h2>
-                    <p style="font-size: 1.15rem; line-height: 1.7; color: var(--color-gray-steel); margin-bottom: 25px;">
-                        I use generative AI systems to build customized visual and written creative outputs. Whether you need audio loops, copy packages, or digital graphics, I construct systems that turn raw ideas into active assets.
-                    </p>
-                    
-                    <ul style="list-style: none; padding-left: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
-                        <li style="display: flex; gap: 12px; align-items: flex-start;">
-                            <span style="color: var(--color-teal); font-size: 1.3rem; line-height: 1;">💡</span>
-                            <div>
-                                <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--color-navy); margin-bottom: 4px;">Custom Images & Video</h4>
-                                <p style="font-size: 0.95rem; color: var(--color-gray-steel); margin: 0; line-height: 1.5;">Generating custom graphics, promotional videos, and interactive visual content with AI models.</p>
-                            </div>
-                        </li>
-                        <li style="display: flex; gap: 12px; align-items: flex-start;">
-                            <span style="color: var(--color-teal); font-size: 1.3rem; line-height: 1;">🎵</span>
-                            <div>
-                                <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--color-navy); margin-bottom: 4px;">Songs & Brand Jingles</h4>
-                                <p style="font-size: 0.95rem; color: var(--color-gray-steel); margin: 0; line-height: 1.5;">Crafting distinct background tunes, melodies, and custom jingles to enrich your message.</p>
-                            </div>
-                        </li>
-                        <li style="display: flex; gap: 12px; align-items: flex-start;">
-                            <span style="color: var(--color-teal); font-size: 1.3rem; line-height: 1;">✍️</span>
-                            <div>
-                                <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--color-navy); margin-bottom: 4px;">Assisted Writing & Copy</h4>
-                                <p style="font-size: 0.95rem; color: var(--color-gray-steel); margin: 0; line-height: 1.5;">Writing books, storytelling, and copy scripting using structured AI prompts and voice-dictated editing.</p>
-                            </div>
-                        </li>
-                        <li style="display: flex; gap: 12px; align-items: flex-start;">
-                            <span style="color: var(--color-teal); font-size: 1.3rem; line-height: 1;">🧠</span>
-                            <div>
-                                <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--color-navy); margin-bottom: 4px;">Creative AI Consulting</h4>
-                                <p style="font-size: 0.95rem; color: var(--color-gray-steel); margin: 0; line-height: 1.5;">Consulting on customized prompt setups and configurations to simplify your daily writing workflow.</p>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-
-            </div>
-
-            <!-- Section 1 Portfolio -->
-            <div class="services-portfolio-section">
-                <div class="portfolio-title-wrapper text-center">
-                    <span class="section-tag text-teal" style="font-size: 0.8rem; letter-spacing: 0.1em; display: inline-block; margin-bottom: 8px;">CREATE PORTFOLIO</span>
-                    <h3 style="font-family: var(--font-heading); font-size: 1.6rem; color: var(--color-navy); font-weight: 800; margin: 0; text-transform: uppercase;">Featured Creative Work</h3>
-                </div>
-                <div class="portfolio-grid">
-                    <!-- Item 1: Video -->
-                    <div class="portfolio-card" data-type="video" data-src="assets/videos/W.mp4" aria-label="Play AI Promo Video" role="button" tabindex="0">
-                        <div class="portfolio-card-bg" style="background-image: url('assets/ai_content.png');"></div>
-                        <div class="portfolio-card-overlay"></div>
-                        <div class="portfolio-card-icon">
-                            <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
-                        </div>
-                        <div class="portfolio-card-content">
-                            <span class="portfolio-badge">Video</span>
-                            <h4 class="portfolio-title">AI Promo Video</h4>
-                        </div>
+                <!-- Panel 2: BUILD -->
+                <div class="accordion-panel" data-panel="build" tabindex="0" role="tab" aria-expanded="false" aria-label="02 BUILD, click to expand">
+                    <div class="panel-trigger">
+                        <span class="panel-num">02</span>
+                        <h3 class="panel-vertical-title">BUILD</h3>
                     </div>
-                    <!-- Item 2: Audio -->
-                    <div class="portfolio-card" data-type="audio" data-id="create-audio-1" aria-label="Play Brand Jingle Audio" role="button" tabindex="0">
-                        <div class="portfolio-card-bg" style="background-image: url('assets/articulated_inspiration.png');"></div>
-                        <div class="portfolio-card-overlay"></div>
-                        <div class="portfolio-card-icon">
-                            <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
-                        </div>
-                        <div class="portfolio-card-content">
-                            <span class="portfolio-badge">Audio</span>
-                            <h4 class="portfolio-title">Commercial Jingle</h4>
-                            <div class="portfolio-wave">
-                                <div class="portfolio-wave-bar"></div>
-                                <div class="portfolio-wave-bar"></div>
-                                <div class="portfolio-wave-bar"></div>
-                                <div class="portfolio-wave-bar"></div>
-                                <div class="portfolio-wave-bar"></div>
+                    <div class="panel-content" id="panel-content-build" role="tabpanel">
+                        <div class="panel-content-inner">
+                            <div class="panel-text-side">
+                                <span class="panel-subtitle">Websites & Digital Ecosystems</span>
+                                <h2 class="panel-title">BUILD</h2>
+                                <p class="panel-desc">
+                                    I construct modern web architectures, landing pages, and lead workflows. Using AI-assisted programming tools, I design responsive templates that connect with visitors and support clean automation pipelines.
+                                </p>
+                                <ul class="panel-bullets">
+                                    <li>
+                                        <span class="bullet-emoji">💻</span>
+                                        <div>
+                                            <h4>Web Development</h4>
+                                            <p>Designing and deploying modern web portals, clean layouts, and functional portfolios.</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <span class="bullet-emoji">🚀</span>
+                                        <div>
+                                            <h4>Funnels & Landing Pages</h4>
+                                            <p>Building structured multi-page pathways and lead captures that turn clicks into active queries.</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <span class="bullet-emoji">⚙️</span>
+                                        <div>
+                                            <h4>Workflow Automation</h4>
+                                            <p>Connecting tools and automating administrative tasks using AI to save valuable hours.</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <span class="bullet-emoji">🔒</span>
+                                        <div>
+                                            <h4>Membership Platforms</h4>
+                                            <p>Setting up membership vaults, lesson portals, and automated digital course areas.</p>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <div class="panel-cta">
+                                    <a href="#/contact?interest=Build" class="btn btn-teal">CONTACT ME</a>
+                                </div>
+                            </div>
+                            <div class="panel-visual-side">
+                                <img src="assets/funnel_building.png" alt="Websites & Funnels Building" class="panel-main-img">
                             </div>
                         </div>
-                    </div>
-                    <!-- Item 3: Song -->
-                    <div class="portfolio-card" data-type="song" data-id="create-song-2" aria-label="Play Ambient Synth Track" role="button" tabindex="0">
-                        <div class="portfolio-card-bg" style="background-image: url('assets/hero-bg.png');"></div>
-                        <div class="portfolio-card-overlay"></div>
-                        <div class="portfolio-card-icon">
-                            <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
-                        </div>
-                        <div class="portfolio-card-content">
-                            <span class="portfolio-badge">Song</span>
-                            <h4 class="portfolio-title">Ambient Synth Track</h4>
-                            <div class="portfolio-wave">
-                                <div class="portfolio-wave-bar"></div>
-                                <div class="portfolio-wave-bar"></div>
-                                <div class="portfolio-wave-bar"></div>
-                                <div class="portfolio-wave-bar"></div>
-                                <div class="portfolio-wave-bar"></div>
+                        
+                        <!-- Panel Portfolio: BUILD -->
+                        <div class="panel-portfolio">
+                            <h4 class="portfolio-section-title">BUILD PORTFOLIO</h4>
+                            <div class="portfolio-grid">
+                                <div class="portfolio-card" data-type="image" data-src="assets/funnel_building.png" aria-label="View Client Portal Design Mockup" role="button" tabindex="0">
+                                    <div class="portfolio-card-bg" style="background-image: url('assets/funnel_building.png');"></div>
+                                    <div class="portfolio-card-overlay"></div>
+                                    <div class="portfolio-card-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                                    </div>
+                                    <div class="portfolio-card-content">
+                                        <span class="portfolio-badge">Image</span>
+                                        <h4 class="portfolio-title">Client Portal Design</h4>
+                                    </div>
+                                </div>
+                                <div class="portfolio-card" data-type="video" data-src="assets/videos/I.mp4" aria-label="Play Platform Logic Video" role="button" tabindex="0">
+                                    <div class="portfolio-card-bg" style="background-image: url('assets/accessible_ai.png');"></div>
+                                    <div class="portfolio-card-overlay"></div>
+                                    <div class="portfolio-card-icon">
+                                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
+                                    </div>
+                                    <div class="portfolio-card-content">
+                                        <span class="portfolio-badge">Video</span>
+                                        <h4 class="portfolio-title">Platform Logic Demo</h4>
+                                    </div>
+                                </div>
+                                <div class="portfolio-card" data-type="audio" data-id="build-audio-3" aria-label="Play Automation Pulse Audio" role="button" tabindex="0">
+                                    <div class="portfolio-card-bg" style="background-image: url('assets/articulated_inspiration.jpg');"></div>
+                                    <div class="portfolio-card-overlay"></div>
+                                    <div class="portfolio-card-icon">
+                                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
+                                    </div>
+                                    <div class="portfolio-card-content">
+                                        <span class="portfolio-badge">Audio</span>
+                                        <h4 class="portfolio-title">Automation Pulse</h4>
+                                        <div class="portfolio-wave">
+                                            <div class="portfolio-wave-bar"></div>
+                                            <div class="portfolio-wave-bar"></div>
+                                            <div class="portfolio-wave-bar"></div>
+                                            <div class="portfolio-wave-bar"></div>
+                                            <div class="portfolio-wave-bar"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="portfolio-card" data-type="song" data-id="build-song-4" aria-label="Play Cybernetic Rhythm Song" role="button" tabindex="0">
+                                    <div class="portfolio-card-bg" style="background-image: url('assets/hero-bg.png');"></div>
+                                    <div class="portfolio-card-overlay"></div>
+                                    <div class="portfolio-card-icon">
+                                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
+                                    </div>
+                                    <div class="portfolio-card-content">
+                                        <span class="portfolio-badge">Song</span>
+                                        <h4 class="portfolio-title">Cybernetic Rhythm</h4>
+                                        <div class="portfolio-wave">
+                                            <div class="portfolio-wave-bar"></div>
+                                            <div class="portfolio-wave-bar"></div>
+                                            <div class="portfolio-wave-bar"></div>
+                                            <div class="portfolio-wave-bar"></div>
+                                            <div class="portfolio-wave-bar"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="portfolio-card" data-type="image" data-src="assets/accessible_ai.png" aria-label="View Workflow Diagram Preview" role="button" tabindex="0">
+                                    <div class="portfolio-card-bg" style="background-image: url('assets/accessible_ai.png');"></div>
+                                    <div class="portfolio-card-overlay"></div>
+                                    <div class="portfolio-card-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                                    </div>
+                                    <div class="portfolio-card-content">
+                                        <span class="portfolio-badge">Image</span>
+                                        <h4 class="portfolio-title">Workflow Schema</h4>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- Item 4: Image -->
-                    <div class="portfolio-card" data-type="image" data-src="assets/ai_content.png" aria-label="View Brand Graphics Mockup" role="button" tabindex="0">
-                        <div class="portfolio-card-bg" style="background-image: url('assets/ai_content.png');"></div>
-                        <div class="portfolio-card-overlay"></div>
-                        <div class="portfolio-card-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
-                        </div>
-                        <div class="portfolio-card-content">
-                            <span class="portfolio-badge">Image</span>
-                            <h4 class="portfolio-title">Brand Graphics</h4>
-                        </div>
-                    </div>
-                    <!-- Item 5: Image -->
-                    <div class="portfolio-card" data-type="image" data-src="assets/book_cover_mockup.png" aria-label="View Book Cover Mockup" role="button" tabindex="0">
-                        <div class="portfolio-card-bg" style="background-image: url('assets/book_cover_mockup.png');"></div>
-                        <div class="portfolio-card-overlay"></div>
-                        <div class="portfolio-card-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
-                        </div>
-                        <div class="portfolio-card-content">
-                            <span class="portfolio-badge">Image</span>
-                            <h4 class="portfolio-title">Book Cover Mockup</h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Section 2: BUILD -->
-    <section class="section bg-navy-light text-white" style="padding: 6rem 0; border-bottom: 1px solid rgba(0, 209, 193, 0.1);">
-        <div class="container">
-            <div class="grid-2" style="align-items: center; gap: 60px;">
-                
-                <!-- Left Column: Card 02 -->
-                <div class="card" style="background: var(--color-navy); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: 50px 30px 40px 30px; text-align: center; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; position: relative; margin-top: 30px; max-width: 380px; width: 100%; margin-left: auto; margin-right: auto; color: white;">
-                    <!-- Circle Icon -->
-                    <div style="width: 80px; height: 80px; background-color: var(--color-navy); border-radius: 50%; display: flex; justify-content: center; align-items: center; position: absolute; top: -40px; left: calc(50% - 40px); border: 4px solid var(--color-navy-light); box-shadow: 0 8px 20px rgba(0,0,0,0.15);">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
-                            <line x1="8" y1="21" x2="16" y2="21" />
-                            <line x1="12" y1="17" x2="12" y2="21" />
-                            <line x1="6" y1="8" x2="10" y2="8" />
-                            <circle cx="6" cy="12" r="1" />
-                            <circle cx="10" cy="12" r="1" />
-                        </svg>
-                    </div>
-                    
-                    <div style="margin-top: 15px;">
-                        <span style="color: var(--color-teal); font-size: 1.25rem; font-weight: 700; display: block; margin-bottom: 5px; font-family: var(--font-heading);">02</span>
-                        <h2 style="font-size: 1.75rem; color: white; font-weight: 800; letter-spacing: 0.05em; margin-bottom: 12px; text-transform: uppercase;">BUILD</h2>
-                        <div style="width: 40px; height: 2.5px; background: var(--color-teal); margin: 0 auto 10px auto; opacity: 0.8;"></div>
-                        <p style="color: var(--color-gray-light); font-size: 0.98rem; line-height: 1.6; margin-bottom: 10px; font-weight: 500;">
-                            Websites, funnels, and digital solutions that grow your business and automate success.
-                        </p>
-                    </div>
-                    
-                    <div style="margin-top: 10px;">
-                        <a href="#/contact?interest=Build" class="btn btn-teal" style="width: 100%;">CONTACT ME</a>
                     </div>
                 </div>
 
-                <!-- Right Column: Text Expansion -->
-                <div style="padding-left: 10px;">
-                    <span class="section-tag text-teal" style="font-size: 0.85rem; letter-spacing: 0.12em; display: inline-block; margin-bottom: 10px;">Websites & Digital Ecosystems</span>
-                    <h2 style="color: white; font-size: 2.2rem; font-weight: 800; margin-bottom: 15px; font-family: var(--font-heading);">WEBSITES, FUNNELS & SOLUTIONS</h2>
-                    <p style="font-size: 1.15rem; line-height: 1.7; color: var(--color-gray-light); margin-bottom: 25px;">
-                        I construct modern web architectures, landing pages, and lead workflows. Using AI-assisted programming tools, I design responsive templates that connect with visitors and support clean automation pipelines.
-                    </p>
-                    
-                    <ul style="list-style: none; padding-left: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
-                        <li style="display: flex; gap: 12px; align-items: flex-start;">
-                            <span style="color: var(--color-teal); font-size: 1.3rem; line-height: 1;">💻</span>
-                            <div>
-                                <h4 style="font-size: 1.05rem; font-weight: 700; color: white; margin-bottom: 4px;">Web Development</h4>
-                                <p style="font-size: 0.95rem; color: var(--color-gray-light); margin: 0; line-height: 1.5;">Designing and deploying modern web portals, clean layouts, and functional portfolios.</p>
-                            </div>
-                        </li>
-                        <li style="display: flex; gap: 12px; align-items: flex-start;">
-                            <span style="color: var(--color-teal); font-size: 1.3rem; line-height: 1;">🚀</span>
-                            <div>
-                                <h4 style="font-size: 1.05rem; font-weight: 700; color: white; margin-bottom: 4px;">Funnels & Landing Pages</h4>
-                                <p style="font-size: 0.95rem; color: var(--color-gray-light); margin: 0; line-height: 1.5;">Building structured multi-page pathways and lead captures that turn clicks into active queries.</p>
-                            </div>
-                        </li>
-                        <li style="display: flex; gap: 12px; align-items: flex-start;">
-                            <span style="color: var(--color-teal); font-size: 1.3rem; line-height: 1;">⚙️</span>
-                            <div>
-                                <h4 style="font-size: 1.05rem; font-weight: 700; color: white; margin-bottom: 4px;">Workflow Automation</h4>
-                                <p style="font-size: 0.95rem; color: var(--color-gray-light); margin: 0; line-height: 1.5;">Connecting tools and automating administrative tasks using AI to save valuable hours.</p>
-                            </div>
-                        </li>
-                        <li style="display: flex; gap: 12px; align-items: flex-start;">
-                            <span style="color: var(--color-teal); font-size: 1.3rem; line-height: 1;">🔒</span>
-                            <div>
-                                <h4 style="font-size: 1.05rem; font-weight: 700; color: white; margin-bottom: 4px;">Membership Platforms</h4>
-                                <p style="font-size: 0.95rem; color: var(--color-gray-light); margin: 0; line-height: 1.5;">Setting up membership vaults, lesson portals, and automated digital course areas.</p>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-
-            </div>
-
-            <!-- Section 2 Portfolio -->
-            <div class="services-portfolio-section">
-                <div class="portfolio-title-wrapper text-center">
-                    <span class="section-tag text-teal" style="font-size: 0.8rem; letter-spacing: 0.1em; display: inline-block; margin-bottom: 8px;">BUILD PORTFOLIO</span>
-                    <h3 style="font-family: var(--font-heading); font-size: 1.6rem; color: var(--color-white); font-weight: 800; margin: 0; text-transform: uppercase;">Featured Development Work</h3>
-                </div>
-                <div class="portfolio-grid">
-                    <!-- Item 1: Image -->
-                    <div class="portfolio-card" data-type="image" data-src="assets/funnel_building.png" aria-label="View Client Portal Design Mockup" role="button" tabindex="0">
-                        <div class="portfolio-card-bg" style="background-image: url('assets/funnel_building.png');"></div>
-                        <div class="portfolio-card-overlay"></div>
-                        <div class="portfolio-card-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
-                        </div>
-                        <div class="portfolio-card-content">
-                            <span class="portfolio-badge">Image</span>
-                            <h4 class="portfolio-title">Client Portal Design</h4>
-                        </div>
+                <!-- Panel 3: OVERCOME -->
+                <div class="accordion-panel" data-panel="overcome" tabindex="0" role="tab" aria-expanded="false" aria-label="03 OVERCOME, click to expand">
+                    <div class="panel-trigger">
+                        <span class="panel-num">03</span>
+                        <h3 class="panel-vertical-title">OVERCOME</h3>
                     </div>
-                    <!-- Item 2: Video -->
-                    <div class="portfolio-card" data-type="video" data-src="assets/videos/I.mp4" aria-label="Play Platform Logic Video" role="button" tabindex="0">
-                        <div class="portfolio-card-bg" style="background-image: url('assets/accessible_ai.png');"></div>
-                        <div class="portfolio-card-overlay"></div>
-                        <div class="portfolio-card-icon">
-                            <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
-                        </div>
-                        <div class="portfolio-card-content">
-                            <span class="portfolio-badge">Video</span>
-                            <h4 class="portfolio-title">Platform Logic Demo</h4>
-                        </div>
-                    </div>
-                    <!-- Item 3: Audio -->
-                    <div class="portfolio-card" data-type="audio" data-id="build-audio-3" aria-label="Play Automation Pulse Audio" role="button" tabindex="0">
-                        <div class="portfolio-card-bg" style="background-image: url('assets/articulated_inspiration.png');"></div>
-                        <div class="portfolio-card-overlay"></div>
-                        <div class="portfolio-card-icon">
-                            <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
-                        </div>
-                        <div class="portfolio-card-content">
-                            <span class="portfolio-badge">Audio</span>
-                            <h4 class="portfolio-title">Automation Pulse</h4>
-                            <div class="portfolio-wave">
-                                <div class="portfolio-wave-bar"></div>
-                                <div class="portfolio-wave-bar"></div>
-                                <div class="portfolio-wave-bar"></div>
-                                <div class="portfolio-wave-bar"></div>
-                                <div class="portfolio-wave-bar"></div>
+                    <div class="panel-content" id="panel-content-overcome" role="tabpanel">
+                        <div class="panel-content-inner">
+                            <div class="panel-text-side">
+                                <span class="panel-subtitle">Resilience & Mindset Coaching</span>
+                                <h2 class="panel-title">OVERCOME</h2>
+                                <p class="panel-desc">
+                                    I work directly with individuals to shift their perspective and reframe their limitations. Through mindset coaching and constraint-based problem solving, we establish customized habits to convert physical or mental barriers into growth pathways.
+                                </p>
+                                <ul class="panel-bullets">
+                                    <li>
+                                        <span class="bullet-emoji">🌱</span>
+                                        <div>
+                                            <h4>Personal Growth</h4>
+                                            <p>Developing actionable goals and personal strategies to build consistent creative momentum.</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <span class="bullet-emoji">🧩</span>
+                                        <div>
+                                            <h4>Constraint-Based Strategy</h4>
+                                            <p>Reframing physical limitations or tight boundaries as structured design constraints for creation.</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <span class="bullet-emoji">🗣️</span>
+                                        <div>
+                                            <h4>Speaking & Workshops</h4>
+                                            <p>Hosting presentations and active workshops showing the intersection of resilience and AI capability.</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <span class="bullet-emoji">🤝</span>
+                                        <div>
+                                            <h4>Adaptability Consulting</h4>
+                                            <p>Setting up customized voice commands, adaptive workspaces, and productivity hacks.</p>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <div class="panel-cta">
+                                    <a href="#/contact?interest=Overcome" class="btn btn-teal">CONTACT ME</a>
+                                </div>
+                            </div>
+                            <div class="panel-visual-side">
+                                <img src="assets/ring_anyway_coaching.png" alt="Resilience Mindset & Coaching" class="panel-main-img">
                             </div>
                         </div>
-                    </div>
-                    <!-- Item 4: Song -->
-                    <div class="portfolio-card" data-type="song" data-id="build-song-4" aria-label="Play Cybernetic Rhythm Song" role="button" tabindex="0">
-                        <div class="portfolio-card-bg" style="background-image: url('assets/hero-bg.png');"></div>
-                        <div class="portfolio-card-overlay"></div>
-                        <div class="portfolio-card-icon">
-                            <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
-                        </div>
-                        <div class="portfolio-card-content">
-                            <span class="portfolio-badge">Song</span>
-                            <h4 class="portfolio-title">Cybernetic Rhythm</h4>
-                            <div class="portfolio-wave">
-                                <div class="portfolio-wave-bar"></div>
-                                <div class="portfolio-wave-bar"></div>
-                                <div class="portfolio-wave-bar"></div>
-                                <div class="portfolio-wave-bar"></div>
-                                <div class="portfolio-wave-bar"></div>
+                        
+                        <!-- Panel Portfolio: OVERCOME -->
+                        <div class="panel-portfolio">
+                            <h4 class="portfolio-section-title">OVERCOME PORTFOLIO</h4>
+                            <div class="portfolio-grid">
+                                <div class="portfolio-card" data-type="video" data-src="assets/videos/N.mp4" aria-label="Play Keynote Snippet Video" role="button" tabindex="0">
+                                    <div class="portfolio-card-bg" style="background-image: url('assets/timeline-6.png');"></div>
+                                    <div class="portfolio-card-overlay"></div>
+                                    <div class="portfolio-card-icon">
+                                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
+                                    </div>
+                                    <div class="portfolio-card-content">
+                                        <span class="portfolio-badge">Video</span>
+                                        <h4 class="portfolio-title">Keynote Speech Snippet</h4>
+                                    </div>
+                                </div>
+                                <div class="portfolio-card" data-type="audio" data-id="overcome-audio-5" aria-label="Play Resilience Mindset Audio" role="button" tabindex="0">
+                                    <div class="portfolio-card-bg" style="background-image: url('assets/speaker_1_sheet.png');"></div>
+                                    <div class="portfolio-card-overlay"></div>
+                                    <div class="portfolio-card-icon">
+                                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
+                                    </div>
+                                    <div class="portfolio-card-content">
+                                        <span class="portfolio-badge">Audio</span>
+                                        <h4 class="portfolio-title">Mindset Quote</h4>
+                                        <div class="portfolio-wave">
+                                            <div class="portfolio-wave-bar"></div>
+                                            <div class="portfolio-wave-bar"></div>
+                                            <div class="portfolio-wave-bar"></div>
+                                            <div class="portfolio-wave-bar"></div>
+                                            <div class="portfolio-wave-bar"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="portfolio-card" data-type="song" data-id="overcome-song-6" aria-label="Play Adaptive Path Song" role="button" tabindex="0">
+                                    <div class="portfolio-card-bg" style="background-image: url('assets/timeline-2.png');"></div>
+                                    <div class="portfolio-card-overlay"></div>
+                                    <div class="portfolio-card-icon">
+                                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
+                                    </div>
+                                    <div class="portfolio-card-content">
+                                        <span class="portfolio-badge">Song</span>
+                                        <h4 class="portfolio-title">Adaptive Path Song</h4>
+                                        <div class="portfolio-wave">
+                                            <div class="portfolio-wave-bar"></div>
+                                            <div class="portfolio-wave-bar"></div>
+                                            <div class="portfolio-wave-bar"></div>
+                                            <div class="portfolio-wave-bar"></div>
+                                            <div class="portfolio-wave-bar"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="portfolio-card" data-type="image" data-src="assets/speaker_1_sheet.png" aria-label="View Keynote Speaker One-Sheet PDF Mockup" role="button" tabindex="0">
+                                    <div class="portfolio-card-bg" style="background-image: url('assets/speaker_1_sheet.png');"></div>
+                                    <div class="portfolio-card-overlay"></div>
+                                    <div class="portfolio-card-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                                    </div>
+                                    <div class="portfolio-card-content">
+                                        <span class="portfolio-badge">Image</span>
+                                        <h4 class="portfolio-title">Keynote One-Sheet</h4>
+                                    </div>
+                                </div>
+                                <div class="portfolio-card" data-type="image" data-src="assets/ring_anyway_coaching.png" aria-label="View Coaching Success Blueprint Design" role="button" tabindex="0">
+                                    <div class="portfolio-card-bg" style="background-image: url('assets/ring_anyway_coaching.png');"></div>
+                                    <div class="portfolio-card-overlay"></div>
+                                    <div class="portfolio-card-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                                    </div>
+                                    <div class="portfolio-card-content">
+                                        <span class="portfolio-badge">Image</span>
+                                        <h4 class="portfolio-title">Coaching Blueprint</h4>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- Item 5: Image -->
-                    <div class="portfolio-card" data-type="image" data-src="assets/accessible_ai.png" aria-label="View Workflow Diagram Preview" role="button" tabindex="0">
-                        <div class="portfolio-card-bg" style="background-image: url('assets/accessible_ai.png');"></div>
-                        <div class="portfolio-card-overlay"></div>
-                        <div class="portfolio-card-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
-                        </div>
-                        <div class="portfolio-card-content">
-                            <span class="portfolio-badge">Image</span>
-                            <h4 class="portfolio-title">Workflow Schema</h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Section 3: OVERCOME -->
-    <section class="section" style="background-color: var(--color-white); padding: 6rem 0 3.5rem 0;">
-        <div class="container">
-            <div class="grid-2" style="align-items: center; gap: 60px; margin-bottom: 60px;">
-                
-                <!-- Left Column: Card 03 -->
-                <div class="card" style="background: white; border: 1px solid var(--color-gray-border); border-radius: var(--radius-md); padding: 50px 30px 40px 30px; text-align: center; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; position: relative; margin-top: 30px; max-width: 380px; width: 100%; margin-left: auto; margin-right: auto;">
-                    <!-- Circle Icon -->
-                    <div style="width: 80px; height: 80px; background-color: var(--color-navy); border-radius: 50%; display: flex; justify-content: center; align-items: center; position: absolute; top: -40px; left: calc(50% - 40px); border: 4px solid var(--color-white); box-shadow: 0 8px 20px rgba(0,0,0,0.08);">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M4 22L12 2l8 20H4z" />
-                            <path d="M12 2v10" stroke-width="1.2" />
-                            <path d="M12 5h4l-2 2 2 2h-4" fill="var(--color-teal)" />
-                        </svg>
-                    </div>
-                    
-                    <div style="margin-top: 15px;">
-                        <span style="color: var(--color-teal); font-size: 1.25rem; font-weight: 700; display: block; margin-bottom: 5px; font-family: var(--font-heading);">03</span>
-                        <h2 style="font-size: 1.75rem; color: var(--color-navy); font-weight: 800; letter-spacing: 0.05em; margin-bottom: 12px; text-transform: uppercase;">OVERCOME</h2>
-                        <div style="width: 40px; height: 2.5px; background: var(--color-teal); margin: 0 auto 10px auto; opacity: 0.8;"></div>
-                        <p style="color: var(--color-gray-steel); font-size: 0.98rem; line-height: 1.6; margin-bottom: 10px; font-weight: 500;">
-                            Coaching and strategies to help you win despite the odds and reach your fullest potential.
-                        </p>
-                    </div>
-                    
-                    <div style="margin-top: 10px;">
-                        <a href="#/contact?interest=Overcome" class="btn btn-teal" style="width: 100%;">CONTACT ME</a>
                     </div>
                 </div>
 
-                <!-- Right Column: Text Expansion -->
-                <div style="padding-left: 10px;">
-                    <span class="section-tag text-teal" style="font-size: 0.85rem; letter-spacing: 0.12em; display: inline-block; margin-bottom: 10px;">Resilience & Mindset Coaching</span>
-                    <h2 style="color: var(--color-navy); font-size: 2.2rem; font-weight: 800; margin-bottom: 15px; font-family: var(--font-heading);">WINNING DESPITE THE ODDS</h2>
-                    <p style="font-size: 1.15rem; line-height: 1.7; color: var(--color-gray-steel); margin-bottom: 25px;">
-                        I work directly with individuals to shift their perspective and reframe their limitations. Through mindset coaching and constraint-based problem solving, we establish customized habits to convert physical or mental barriers into growth pathways.
-                    </p>
-                    
-                    <ul style="list-style: none; padding-left: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
-                        <li style="display: flex; gap: 12px; align-items: flex-start;">
-                            <span style="color: var(--color-teal); font-size: 1.3rem; line-height: 1;">🌱</span>
-                            <div>
-                                <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--color-navy); margin-bottom: 4px;">Personal Growth</h4>
-                                <p style="font-size: 0.95rem; color: var(--color-gray-steel); margin: 0; line-height: 1.5;">Developing actionable goals and personal strategies to build consistent creative momentum.</p>
-                            </div>
-                        </li>
-                        <li style="display: flex; gap: 12px; align-items: flex-start;">
-                            <span style="color: var(--color-teal); font-size: 1.3rem; line-height: 1;">🧩</span>
-                            <div>
-                                <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--color-navy); margin-bottom: 4px;">Constraint-Based Strategy</h4>
-                                <p style="font-size: 0.95rem; color: var(--color-gray-steel); margin: 0; line-height: 1.5;">Reframing physical limitations or tight boundaries as structured design constraints for creation.</p>
-                            </div>
-                        </li>
-                        <li style="display: flex; gap: 12px; align-items: flex-start;">
-                            <span style="color: var(--color-teal); font-size: 1.3rem; line-height: 1;">🗣️</span>
-                            <div>
-                                <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--color-navy); margin-bottom: 4px;">Speaking & Workshops</h4>
-                                <p style="font-size: 0.95rem; color: var(--color-gray-steel); margin: 0; line-height: 1.5;">Hosting presentations and active workshops showing the intersection of resilience and AI capability.</p>
-                            </div>
-                        </li>
-                        <li style="display: flex; gap: 12px; align-items: flex-start;">
-                            <span style="color: var(--color-teal); font-size: 1.3rem; line-height: 1;">🤝</span>
-                            <div>
-                                <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--color-navy); margin-bottom: 4px;">Adaptability Consulting</h4>
-                                <p style="font-size: 0.95rem; color: var(--color-gray-steel); margin: 0; line-height: 1.5;">Setting up customized voice commands, adaptive workspaces, and productivity hacks.</p>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-
-            </div>
-
-            <!-- Section 3 Portfolio -->
-            <div class="services-portfolio-section">
-                <div class="portfolio-title-wrapper text-center">
-                    <span class="section-tag text-teal" style="font-size: 0.8rem; letter-spacing: 0.1em; display: inline-block; margin-bottom: 8px;">OVERCOME PORTFOLIO</span>
-                    <h3 style="font-family: var(--font-heading); font-size: 1.6rem; color: var(--color-navy); font-weight: 800; margin: 0; text-transform: uppercase;">Featured Speaking & Coaching</h3>
-                </div>
-                <div class="portfolio-grid">
-                    <!-- Item 1: Video -->
-                    <div class="portfolio-card" data-type="video" data-src="assets/videos/N.mp4" aria-label="Play Keynote Snippet Video" role="button" tabindex="0">
-                        <div class="portfolio-card-bg" style="background-image: url('assets/timeline-6.png');"></div>
-                        <div class="portfolio-card-overlay"></div>
-                        <div class="portfolio-card-icon">
-                            <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
-                        </div>
-                        <div class="portfolio-card-content">
-                            <span class="portfolio-badge">Video</span>
-                            <h4 class="portfolio-title">Keynote Speech Snippet</h4>
-                        </div>
-                    </div>
-                    <!-- Item 2: Audio -->
-                    <div class="portfolio-card" data-type="audio" data-id="overcome-audio-5" aria-label="Play Resilience Mindset Audio" role="button" tabindex="0">
-                        <div class="portfolio-card-bg" style="background-image: url('assets/speaker_1_sheet.png');"></div>
-                        <div class="portfolio-card-overlay"></div>
-                        <div class="portfolio-card-icon">
-                            <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
-                        </div>
-                        <div class="portfolio-card-content">
-                            <span class="portfolio-badge">Audio</span>
-                            <h4 class="portfolio-title">Mindset Quote</h4>
-                            <div class="portfolio-wave">
-                                <div class="portfolio-wave-bar"></div>
-                                <div class="portfolio-wave-bar"></div>
-                                <div class="portfolio-wave-bar"></div>
-                                <div class="portfolio-wave-bar"></div>
-                                <div class="portfolio-wave-bar"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Item 3: Song -->
-                    <div class="portfolio-card" data-type="song" data-id="overcome-song-6" aria-label="Play Adaptive Path Song" role="button" tabindex="0">
-                        <div class="portfolio-card-bg" style="background-image: url('assets/timeline-2.png');"></div>
-                        <div class="portfolio-card-overlay"></div>
-                        <div class="portfolio-card-icon">
-                            <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
-                        </div>
-                        <div class="portfolio-card-content">
-                            <span class="portfolio-badge">Song</span>
-                            <h4 class="portfolio-title">Adaptive Path Song</h4>
-                            <div class="portfolio-wave">
-                                <div class="portfolio-wave-bar"></div>
-                                <div class="portfolio-wave-bar"></div>
-                                <div class="portfolio-wave-bar"></div>
-                                <div class="portfolio-wave-bar"></div>
-                                <div class="portfolio-wave-bar"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Item 4: Image -->
-                    <div class="portfolio-card" data-type="image" data-src="assets/speaker_1_sheet.png" aria-label="View Keynote Speaker One-Sheet PDF Mockup" role="button" tabindex="0">
-                        <div class="portfolio-card-bg" style="background-image: url('assets/speaker_1_sheet.png');"></div>
-                        <div class="portfolio-card-overlay"></div>
-                        <div class="portfolio-card-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
-                        </div>
-                        <div class="portfolio-card-content">
-                            <span class="portfolio-badge">Image</span>
-                            <h4 class="portfolio-title">Keynote One-Sheet</h4>
-                        </div>
-                    </div>
-                    <!-- Item 5: Image -->
-                    <div class="portfolio-card" data-type="image" data-src="assets/ring_anyway_coaching.png" aria-label="View Coaching Success Blueprint Design" role="button" tabindex="0">
-                        <div class="portfolio-card-bg" style="background-image: url('assets/ring_anyway_coaching.png');"></div>
-                        <div class="portfolio-card-overlay"></div>
-                        <div class="portfolio-card-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
-                        </div>
-                        <div class="portfolio-card-content">
-                            <span class="portfolio-badge">Image</span>
-                            <h4 class="portfolio-title">Coaching Blueprint</h4>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <!-- Bottom Logo/M-Divider -->
@@ -1287,24 +1214,24 @@ Router.register('/speaking', () => `
                     <form id="speaking-inquiry-form" class="speaking-form">
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="speaking-name">Name</label>
+                                <label for="speaking-name">Name: <span class="contact-asterisk">*</span></label>
                                 <input type="text" id="speaking-name" class="form-control" required>
                             </div>
                             <div class="form-group">
-                                <label for="speaking-email">Email</label>
+                                <label for="speaking-email">Email: <span class="contact-asterisk">*</span></label>
                                 <input type="email" id="speaking-email" class="form-control" required>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="event-name">Event Name</label>
+                            <label for="event-name">Event Name: <span class="contact-asterisk">*</span></label>
                             <input type="text" id="event-name" class="form-control" required>
                         </div>
                         <div class="form-group">
-                            <label for="event-location">Location / Virtual</label>
+                            <label for="event-location">Location / Virtual: <span class="contact-asterisk">*</span></label>
                             <input type="text" id="event-location" placeholder="e.g. St. Louis, MO or Zoom" class="form-control" required>
                         </div>
                         <div class="form-group">
-                            <label for="speaking-message">Message</label>
+                            <label for="speaking-message">Message: <span class="contact-asterisk">*</span></label>
                             <textarea id="speaking-message" class="form-control" placeholder="Provide any details about the speaking request..." required></textarea>
                         </div>
                         <button type="submit" class="btn btn-teal" style="width: 100%;">Submit Speaking Inquiry</button>
@@ -1554,37 +1481,57 @@ Router.register('/chelloai', () => `
                         It represents me in conversations, answering questions and sharing resources to help visitors understand my perspective.
                     </p>
                     <p style="margin-bottom: 20px;">
-                        Select a preset topic on the simulator to see how ChelloAI acts as a typing hand and narrative companion.
+                        Select a preset topic on the simulator to see how ChelloAI acts as a typing hand, or start an interactive video session to speak directly with my Live Avatar companion.
                     </p>
-                    <div style="display: flex; gap: 10px;">
-                        <a href="https://www.accessibleaim.com" target="_blank" rel="noopener noreferrer" class="btn btn-teal">Build Your Own Companion</a>
+                    <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                        <button id="start-avatar-btn" class="btn btn-teal" style="display: flex; align-items: center; gap: 8px;">
+                            <span style="font-size: 1.1rem;">🎙️</span> Talk to Live Avatar
+                        </button>
+                        <a href="https://www.accessibleaim.com" target="_blank" rel="noopener noreferrer" class="btn btn-outline-teal">Build Your Own Companion</a>
                     </div>
                 </div>
                 
-                <!-- Chat Window Simulator Container -->
-                <div class="chat-window">
-                    <div class="chat-header">
-                        <div class="chat-avatar-wrapper">
-                            <img src="assets/chello_ai_avatar.png" alt="ChelloAI Avatar" class="chat-avatar">
-                            <div class="avatar-status-dot"></div>
+                <!-- Right Column: Companion Display Wrapper -->
+                <div class="companion-display-wrapper" style="position: relative; width: 100%; min-height: 480px; display: flex; flex-direction: column;">
+                    <!-- Static Chat Simulator (Visible by default) -->
+                    <div class="chat-window" id="companion-chat-window" style="width: 100%; display: flex; flex-direction: column; flex: 1;">
+                        <div class="chat-header">
+                            <div class="chat-avatar-wrapper">
+                                <img src="assets/chello_ai_avatar.png" alt="ChelloAI Avatar" class="chat-avatar">
+                                <div class="avatar-status-dot"></div>
+                            </div>
+                            <div class="chat-header-info">
+                                <h4>ChelloAI</h4>
+                                <p>Voice & Concept Amplifier</p>
+                            </div>
                         </div>
-                        <div class="chat-header-info">
-                            <h4>ChelloAI</h4>
-                            <p>Voice & Concept Amplifier</p>
+                        
+                        <div class="chat-messages" id="chat-messages" style="flex: 1; min-height: 200px; max-height: 300px; overflow-y: auto;">
+                            <!-- Initial message -->
+                            <div class="message-bubble incoming">
+                                Hello! I am ChelloAI, my digital companion. Select any question below to explore my stories and tools.
+                            </div>
+                        </div>
+                        
+                        <div class="chat-suggestions">
+                            <p class="chat-suggestions-title">Select a topic to ask:</p>
+                            <div class="suggestions-grid" id="chat-suggestions-grid">
+                                <!-- Pre-baked buttons dynamically load here -->
+                            </div>
                         </div>
                     </div>
-                    
-                    <div class="chat-messages" id="chat-messages">
-                        <!-- Initial message -->
-                        <div class="message-bubble incoming">
-                            Hello! I am ChelloAI, my digital companion. Select any question below to explore my stories and tools.
+
+                    <!-- Live Avatar Container (Hidden by default) -->
+                    <div id="companion-avatar-container" style="display: none; width: 100%; min-height: 480px; border-radius: var(--radius-md); overflow: hidden; background: var(--color-navy); border: 2px solid var(--color-teal); box-shadow: var(--shadow-lg); flex-direction: column; flex: 1;">
+                        <div class="avatar-header" style="background: var(--color-navy-dark); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0, 209, 193, 0.15);">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div style="width: 10px; height: 10px; background: #0ad8ad; border-radius: 50%; box-shadow: 0 0 10px #0ad8ad; animation: pulse 2s infinite;"></div>
+                                <h4 style="margin: 0; color: white; font-size: 1.1rem; font-family: var(--font-heading);">ChelloAI Live Session</h4>
+                            </div>
+                            <button id="stop-avatar-btn" style="background: rgba(255, 74, 74, 0.15); border: 1px solid rgba(255, 74, 74, 0.3); color: #ff7474; padding: 6px 14px; border-radius: 6px; font-size: 0.85rem; cursor: pointer; transition: var(--transition-fast); font-weight: 500;">End Session</button>
                         </div>
-                    </div>
-                    
-                    <div class="chat-suggestions">
-                        <p class="chat-suggestions-title">Select a topic to ask:</p>
-                        <div class="suggestions-grid" id="chat-suggestions-grid">
-                            <!-- Pre-baked buttons dynamically load here -->
+                        <div id="avatar-iframe-target" style="flex: 1; display: flex; align-items: center; justify-content: center; position: relative; background: #000; min-height: 380px;">
+                            <!-- Iframe dynamically loaded here -->
                         </div>
                     </div>
                 </div>
@@ -1623,7 +1570,7 @@ Router.register('/chelloai', () => `
 
                 <!-- Right Column: Visual Representation -->
                 <div style="text-align: center;">
-                    <img src="assets/articulated_inspiration.png" alt="Articulated Inspiration visualization" class="articulated-img">
+                    <img src="assets/articulated_inspiration.jpg" alt="Articulated Inspiration visualization" class="articulated-img">
                 </div>
 
             </div>
@@ -1808,11 +1755,11 @@ Router.register('/contact', () => {
                     <div class="contact-card-custom" style="padding: 40px 30px; border-radius: var(--radius-md); box-shadow: var(--shadow-lg); border: 1px solid var(--color-gray-border);">
                         <form id="contact-page-form">
                             <div class="contact-form-group">
-                                <label for="contact-name" class="contact-label">NAME <span class="contact-asterisk">*</span></label>
+                                <label for="contact-name" class="contact-label">NAME: <span class="contact-asterisk">*</span></label>
                                 <input type="text" id="contact-name" class="contact-input" required placeholder="e.g. John Doe">
                             </div>
                             <div class="contact-form-group">
-                                <label for="contact-email" class="contact-label">EMAIL <span class="contact-asterisk">*</span></label>
+                                <label for="contact-email" class="contact-label">EMAIL: <span class="contact-asterisk">*</span></label>
                                 <input type="email" id="contact-email" class="contact-input" required>
                             </div>
                             <div class="contact-form-group">
@@ -1863,12 +1810,12 @@ Router.register('/contact', () => {
 `;
 });
 
-// 14. Resources Page Template
-Router.register('/resources', () => `
+// 14. Free Gifts Page Template
+Router.register('/free-gifts', () => `
     <div class="page-intro">
         <div class="container text-center">
             <span class="section-tag text-teal">Tools</span>
-            <h1 style="color: white;">Free Resources</h1>
+            <h1 style="color: white;">Free Gifts</h1>
             <p class="section-desc" style="color: var(--color-gray-light);">
                 Worksheets, prompt templates, and PDF guides to help you reframe obstacles and build your projects.
             </p>
@@ -1882,19 +1829,19 @@ Router.register('/resources', () => `
                     <span class="section-tag">PDF Worksheet</span>
                     <h3>W.I.N. Reframe Matrix</h3>
                     <p>A step-by-step reflection grid to list your active constraints and construct a custom action plan.</p>
-                    <a href="#/resources" class="btn btn-outline-teal" onclick="alert('Downloading W.I.N. Reframe Matrix PDF'); return false;" style="margin-top: 15px;">Download PDF</a>
+                    <a href="#/free-gifts" class="btn btn-outline-teal" onclick="alert('Downloading W.I.N. Reframe Matrix PDF'); return false;" style="margin-top: 15px;">Download PDF</a>
                 </div>
                 <div class="card">
                     <span class="section-tag">Prompt Cheat Sheet</span>
                     <h3>AI Accessibility Commands</h3>
                     <p>My core templates for configuring AI writing assistants to act as efficient transcription guides.</p>
-                    <a href="#/resources" class="btn btn-outline-teal" onclick="alert('Downloading AI Accessibility Commands Prompt Guide'); return false;" style="margin-top: 15px;">Download Guide</a>
+                    <a href="#/free-gifts" class="btn btn-outline-teal" onclick="alert('Downloading AI Accessibility Commands Prompt Guide'); return false;" style="margin-top: 15px;">Download Guide</a>
                 </div>
                 <div class="card">
                     <span class="section-tag">Checklist</span>
                     <h3>Digital Flow Audit</h3>
                     <p>A simple check sheet to audit your landing pages for ADA accessibility and speed friction blocks.</p>
-                    <a href="#/resources" class="btn btn-outline-teal" onclick="alert('Downloading Digital Flow Audit Checklist'); return false;" style="margin-top: 15px;">Download Checklist</a>
+                    <a href="#/free-gifts" class="btn btn-outline-teal" onclick="alert('Downloading Digital Flow Audit Checklist'); return false;" style="margin-top: 15px;">Download Checklist</a>
                 </div>
             </div>
         </div>
@@ -2023,6 +1970,131 @@ Router.register('/accessibility-statement', () => `
                     </div>
                     <button type="submit" class="btn btn-teal">Submit Accessibility Feedback</button>
                 </form>
+            </div>
+        </div>
+    </section>
+`);
+
+// 18. Resources Page Template
+Router.register('/resources', () => `
+    <div class="page-intro">
+        <div class="container text-center">
+            <span class="section-tag text-teal">Growth Hub</span>
+            <h1 style="color: white;">Resources</h1>
+            <p class="section-desc" style="color: var(--color-gray-light); max-width: 800px; margin: 0 auto;">
+                These are the exact tools, books, and resources that have helped me grow—personally, professionally, and spiritually. Each one has played a part in my journey. Use what speaks to you—and take one step closer to the life you're building.
+            </p>
+        </div>
+    </div>
+    
+    <section class="section bg-white">
+        <div class="container">
+            <!-- Section 1: Limitations to Liberation -->
+            <div style="margin-bottom: 50px;">
+                <h2 class="text-navy" style="margin-bottom: 5px;">Limitations to Liberation Initiatives</h2>
+                <p style="color: var(--color-gray-medium); margin-bottom: 15px;">Key projects and sources focused on disability advocacy, accessibility, and personal agency.</p>
+                <div style="height: 2px; width: 60px; background: var(--color-teal); margin-top: 10px; margin-bottom: 25px;"></div>
+                
+                <div class="grid-3">
+                    <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+                        <div>
+                            <span class="section-tag text-teal" style="margin-bottom: 10px; display: inline-block;">Sources</span>
+                            <h3 style="margin-bottom: 10px;">Coming Soon</h3>
+                            <p style="font-size: 0.95rem; color: var(--color-gray-medium); margin-bottom: 20px;">Documentation, references, and sources for Limitation to Liberation.</p>
+                        </div>
+                        <button class="btn btn-outline-teal" disabled style="width: 100%; opacity: 0.6; cursor: not-allowed;">Coming Soon</button>
+                    </div>
+                    
+                    <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+                        <div>
+                            <span class="section-tag text-teal" style="margin-bottom: 10px; display: inline-block;">Read Now</span>
+                            <h3 style="margin-bottom: 10px;">Book Website</h3>
+                            <p style="font-size: 0.95rem; color: var(--color-gray-medium); margin-bottom: 20px;">Get your copy of "Limitations to Liberation" and begin turning constraints into creative agency.</p>
+                        </div>
+                        <a href="https://www.limitationstoliberation.com/" target="_blank" rel="noopener noreferrer" class="btn btn-outline-teal" style="width: 100%; text-align: center;">Learn More</a>
+                    </div>
+                    
+                    <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+                        <div>
+                            <span class="section-tag text-teal" style="margin-bottom: 10px; display: inline-block;">Accessible AIM</span>
+                            <h3 style="margin-bottom: 10px;">AI Accessibility</h3>
+                            <p style="font-size: 0.95rem; color: var(--color-gray-medium); margin-bottom: 20px;">Learn how we are building an accessible world through AI-powered advocacy and solutions.</p>
+                        </div>
+                        <a href="https://www.accessibleaim.com/" target="_blank" rel="noopener noreferrer" class="btn btn-outline-teal" style="width: 100%; text-align: center;">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Section 2: Digital Marketing -->
+            <div style="margin-bottom: 50px;">
+                <h2 class="text-navy" style="margin-bottom: 5px;">Digital Marketing Tools</h2>
+                <p style="color: var(--color-gray-medium); margin-bottom: 15px;">The professional platforms and systems I use to build pages, launch funnels, and organize digital momentum.</p>
+                <div style="height: 2px; width: 60px; background: var(--color-teal); margin-top: 10px; margin-bottom: 25px;"></div>
+                
+                <div class="grid-3">
+                    <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+                        <div>
+                            <span class="section-tag text-teal" style="margin-bottom: 10px; display: inline-block;">Platform</span>
+                            <h3 style="margin-bottom: 10px;">ClickFunnels</h3>
+                            <p style="font-size: 0.95rem; color: var(--color-gray-medium); margin-bottom: 20px;">The ultimate platform for building high-converting landing pages, sales pipelines, and websites.</p>
+                        </div>
+                        <a href="https://www.clickfunnels.com/signup-flow-new-plans?aff=marchello-sciortino" target="_blank" rel="noopener noreferrer" class="btn btn-outline-teal" style="width: 100%; text-align: center;">Learn More</a>
+                    </div>
+                    
+                    <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+                        <div>
+                            <span class="section-tag text-teal" style="margin-bottom: 10px; display: inline-block;">Training</span>
+                            <h3 style="margin-bottom: 10px;">One Funnel Away</h3>
+                            <p style="font-size: 0.95rem; color: var(--color-gray-medium); margin-bottom: 20px;">The training system that guides you step-by-step through launching your online funnel.</p>
+                        </div>
+                        <a href="https://www.onefunnelaway.com/?aff=marchello-sciortino" target="_blank" rel="noopener noreferrer" class="btn btn-outline-teal" style="width: 100%; text-align: center;">Learn More</a>
+                    </div>
+                    
+                    <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+                        <div>
+                            <span class="section-tag text-teal" style="margin-bottom: 10px; display: inline-block;">Templates</span>
+                            <h3 style="margin-bottom: 10px;">PLR Funnels</h3>
+                            <p style="font-size: 0.95rem; color: var(--color-gray-medium); margin-bottom: 20px;">Ready-to-use private label rights funnels to accelerate your digital launch speed.</p>
+                        </div>
+                        <a href="https://www.plrfunnels.com/plr?aff=marchello-sciortino" target="_blank" rel="noopener noreferrer" class="btn btn-outline-teal" style="width: 100%; text-align: center;">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Section 3: Recommended Books -->
+            <div style="margin-bottom: 20px;">
+                <h2 class="text-navy" style="margin-bottom: 5px;">Recommended Books</h2>
+                <p style="color: var(--color-gray-medium); margin-bottom: 15px;">Essential literature that helped shape my business mindset and marketing strategies.</p>
+                <div style="height: 2px; width: 60px; background: var(--color-teal); margin-top: 10px; margin-bottom: 25px;"></div>
+                
+                <div class="grid-3">
+                    <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+                        <div>
+                            <span class="section-tag text-teal" style="margin-bottom: 10px; display: inline-block;">Marketing</span>
+                            <h3 style="margin-bottom: 10px;">DotCom Secrets</h3>
+                            <p style="font-size: 0.95rem; color: var(--color-gray-medium); margin-bottom: 20px;">The playbook for building a repeatable online sales system to grow any company.</p>
+                        </div>
+                        <a href="https://www.dotcomsecrets.com/?aff=d0960bf47d9b1ccc93da0b5cc9cf2d5a7bd719a1780f0a7f83d7b7bdce30c52b" target="_blank" rel="noopener noreferrer" class="btn btn-outline-teal" style="width: 100%; text-align: center;">Learn More</a>
+                    </div>
+                    
+                    <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+                        <div>
+                            <span class="section-tag text-teal" style="margin-bottom: 10px; display: inline-block;">Influence</span>
+                            <h3 style="margin-bottom: 10px;">Expert Secrets</h3>
+                            <p style="font-size: 0.95rem; color: var(--color-gray-medium); margin-bottom: 20px;">The guide to building a community of people who will pay you for your advice.</p>
+                        </div>
+                        <a href="https://www.expertsecrets.com/?aff=d0960bf47d9b1ccc93da0b5cc9cf2d5a7bd719a1780f0a7f83d7b7bdce30c52b" target="_blank" rel="noopener noreferrer" class="btn btn-outline-teal" style="width: 100%; text-align: center;">Learn More</a>
+                    </div>
+                    
+                    <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+                        <div>
+                            <span class="section-tag text-teal" style="margin-bottom: 10px; display: inline-block;">Traffic</span>
+                            <h3 style="margin-bottom: 10px;">Traffic Secrets</h3>
+                            <p style="font-size: 0.95rem; color: var(--color-gray-medium); margin-bottom: 20px;">The strategies for finding your dream customers and directing them to your products.</p>
+                        </div>
+                        <a href="https://trafficsecrets.com/thebook-5" target="_blank" rel="noopener noreferrer" class="btn btn-outline-teal" style="width: 100%; text-align: center;">Learn More</a>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
