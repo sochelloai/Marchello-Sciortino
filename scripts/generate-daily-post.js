@@ -134,6 +134,56 @@ function downloadFile(url, destPath, redirectCount = 0) {
     });
 }
 
+// Helper to make Gemini API requests with transient error retries (503, 429, 500)
+async function callGeminiWithRetry(geminiUrl, promptSystem, maxRetries = 3) {
+    let delay = 2000;
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+        try {
+            const res = await postJson(geminiUrl, {}, {
+                contents: [
+                    {
+                        parts: [
+                            { text: promptSystem }
+                        ]
+                    }
+                ],
+                generationConfig: {
+                    responseMimeType: "application/json",
+                    responseSchema: {
+                        type: "object",
+                        properties: {
+                            title: { type: "string" },
+                            desc: { type: "string" },
+                            tag: { 
+                                type: "string", 
+                                enum: ["Story Notes", "AI and Accessibility", "Lessons From Limitation", "Tools I Use", "Daily Inspiration"]
+                            },
+                            body: { type: "string" },
+                            image_prompt: { type: "string" }
+                        },
+                        required: ["title", "desc", "tag", "body", "image_prompt"]
+                    }
+                }
+            });
+            return res;
+        } catch (apiErr) {
+            const isTransient = apiErr.message && (
+                apiErr.message.includes("503") || 
+                apiErr.message.includes("429") || 
+                apiErr.message.includes("500") || 
+                apiErr.message.includes("UNAVAILABLE")
+            );
+            if (isTransient && attempt < maxRetries) {
+                console.warn(`Warning: Gemini API call failed with transient error: ${apiErr.message}. Retrying in ${delay}ms (Attempt ${attempt}/${maxRetries})...`);
+                await new Promise(resolve => setTimeout(resolve, delay));
+                delay *= 2;
+            } else {
+                throw apiErr;
+            }
+        }
+    }
+}
+
 async function run() {
     try {
         // Step 1: Query Gemini API to write the post
@@ -167,106 +217,40 @@ You must return a raw JSON object containing exactly these fields (no markdown w
 
         console.log("Calling Gemini API...");
         let geminiRes;
-        let usedModel = "gemini-3.5-flash";
-        try {
-            const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${usedModel}:generateContent?key=${GEMINI_API_KEY}`;
-            geminiRes = await postJson(geminiUrl, {}, {
-                contents: [
-                    {
-                        parts: [
-                            { text: promptSystem }
-                        ]
-                    }
-                ],
-                generationConfig: {
-                    responseMimeType: "application/json",
-                    responseSchema: {
-                        type: "object",
-                        properties: {
-                            title: { type: "string" },
-                            desc: { type: "string" },
-                            tag: { 
-                                type: "string", 
-                                enum: ["Story Notes", "AI and Accessibility", "Lessons From Limitation", "Tools I Use", "Daily Inspiration"]
-                            },
-                            body: { type: "string" },
-                            image_prompt: { type: "string" }
-                        },
-                        required: ["title", "desc", "tag", "body", "image_prompt"]
-                    }
-                }
-            });
-        } catch (apiErr) {
-            // Check if the error indicates a 404 Model Not Found
-            if (apiErr.message && apiErr.message.includes("404")) {
-                console.warn(`Warning: Model "${usedModel}" was not found or is not supported. Attempting fallback to "gemini-1.5-flash"...`);
-                usedModel = "gemini-1.5-flash";
-                try {
-                    const fallbackUrl = `https://generativelanguage.googleapis.com/v1beta/models/${usedModel}:generateContent?key=${GEMINI_API_KEY}`;
-                    geminiRes = await postJson(fallbackUrl, {}, {
-                        contents: [
-                            {
-                                parts: [
-                                    { text: promptSystem }
-                                ]
-                            }
-                        ],
-                        generationConfig: {
-                            responseMimeType: "application/json",
-                            responseSchema: {
-                                type: "object",
-                                properties: {
-                                    title: { type: "string" },
-                                    desc: { type: "string" },
-                                    tag: { 
-                                        type: "string", 
-                                        enum: ["Story Notes", "AI and Accessibility", "Lessons From Limitation", "Tools I Use", "Daily Inspiration"]
-                                    },
-                                    body: { type: "string" },
-                                    image_prompt: { type: "string" }
-                                },
-                                required: ["title", "desc", "tag", "body", "image_prompt"]
-                            }
-                        }
-                    });
-                } catch (fallbackErr) {
-                    console.error("Gemini API Fallback Model request failed:", fallbackErr.message);
-                    try {
-                        console.log("Running diagnostics: Fetching available models for this API key...");
-                        const diagUrl = `https://generativelanguage.googleapis.com/v1beta/models?key=${GEMINI_API_KEY}`;
-                        const modelsList = await getJson(diagUrl);
-                        console.log("Available models returned by API:");
-                        if (modelsList && modelsList.models) {
-                            modelsList.models.forEach(m => {
-                                console.log(`- ${m.name} (supports: ${m.supportedMethods ? m.supportedMethods.join(', ') : 'none'})`);
-                            });
-                        } else {
-                            console.log(JSON.stringify(modelsList, null, 2));
-                        }
-                    } catch (diagErr) {
-                        console.error("Diagnostics failed to fetch model list:", diagErr.message);
-                    }
-                    throw fallbackErr;
-                }
-            } else {
-                console.error("Gemini API HTTP request failed:", apiErr.message);
-                try {
-                    console.log("Running diagnostics: Fetching available models for this API key...");
-                    const diagUrl = `https://generativelanguage.googleapis.com/v1beta/models?key=${GEMINI_API_KEY}`;
-                    const modelsList = await getJson(diagUrl);
-                    console.log("Available models returned by API:");
-                    if (modelsList && modelsList.models) {
-                        modelsList.models.forEach(m => {
-                            console.log(`- ${m.name} (supports: ${m.supportedMethods ? m.supportedMethods.join(', ') : 'none'})`);
-                        });
-                    } else {
-                        console.log(JSON.stringify(modelsList, null, 2));
-                    }
-                } catch (diagErr) {
-                    console.error("Diagnostics failed to fetch model list:", diagErr.message);
-                }
-                throw apiErr;
+        const candidateModels = ["gemini-3.5-flash", "gemini-2.5-flash", "gemini-flash-latest"];
+        let lastError = null;
+
+        for (const modelName of candidateModels) {
+            try {
+                console.log(`Attempting generation with model: "${modelName}"...`);
+                const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${GEMINI_API_KEY}`;
+                geminiRes = await callGeminiWithRetry(geminiUrl, promptSystem);
+                console.log(`Successfully generated content using model: "${modelName}"`);
+                break; // Succeeded, exit loop
+            } catch (err) {
+                console.warn(`Warning: Model "${modelName}" failed: ${err.message}`);
+                lastError = err;
             }
+        }
+
+        if (!geminiRes) {
+            console.error("All Gemini candidate models failed.");
+            try {
+                console.log("Running diagnostics: Fetching available models for this API key...");
+                const diagUrl = `https://generativelanguage.googleapis.com/v1beta/models?key=${GEMINI_API_KEY}`;
+                const modelsList = await getJson(diagUrl);
+                console.log("Available models returned by API:");
+                if (modelsList && modelsList.models) {
+                    modelsList.models.forEach(m => {
+                        console.log(`- ${m.name} (supports: ${m.supportedMethods ? m.supportedMethods.join(', ') : 'none'})`);
+                    });
+                } else {
+                    console.log(JSON.stringify(modelsList, null, 2));
+                }
+            } catch (diagErr) {
+                console.error("Diagnostics failed to fetch model list:", diagErr.message);
+            }
+            throw lastError || new Error("Failed to generate content with any Gemini model.");
         }
 
         if (!geminiRes || !geminiRes.candidates || geminiRes.candidates.length === 0) {
