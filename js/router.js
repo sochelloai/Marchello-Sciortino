@@ -1459,7 +1459,7 @@ Router.register('/speaking', () => `
 
 // 8. ChelloAI Page Template
 Router.register('/chelloai', () => `
-    <div class="page-intro">
+    <div class="page-intro chello-ai-hero">
         <div class="container text-center">
             <span class="section-tag text-teal">Digital Companion</span>
             <h1 style="color: white;">ChelloAI Partner</h1>
