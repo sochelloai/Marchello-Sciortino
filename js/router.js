@@ -1471,7 +1471,7 @@ Router.register('/chelloai', () => `
     
     <!-- Section 1: Intro Copy (Centered) -->
     <section class="section bg-white" style="padding: 4.5rem 0 3rem 0;">
-        <div class="container" style="max-width: 850px; text-align: center;">
+        <div class="container" style="text-align: center;">
             <h2 class="text-navy" style="font-size: 2.2rem; margin-bottom: var(--spacing-sm);">A Bridge for Connection</h2>
             <p style="font-size: 1.15rem; line-height: 1.7; color: var(--color-gray-medium); margin-bottom: var(--spacing-sm);">
                 Because typing can take me hours and my physical speech has changed, I developed ChelloAI. This partner is trained directly on my personal rules, writings, memories, and voice settings.
@@ -1496,7 +1496,7 @@ Router.register('/chelloai', () => `
 
     <!-- Section 2: Live Avatar Companion (Centered in its own section, centered in a large row) -->
     <section id="live-avatar-section" class="section bg-navy-light" style="border-top: 1px solid rgba(0, 209, 193, 0.1); border-bottom: 1px solid rgba(0, 209, 193, 0.1); padding: 5rem 0;">
-        <div class="container" style="max-width: 900px; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+        <div class="container" style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
             
             <div class="text-center" style="margin-bottom: var(--spacing-md); max-width: 600px;">
                 <span class="section-tag text-teal" style="display: block; margin-bottom: 8px;">Real-Time Voice Twin</span>
@@ -1543,7 +1543,7 @@ Router.register('/chelloai', () => `
 
     <!-- Section 3: Interactive Chat Simulator (Centered in own section, centered in a large row) -->
     <section id="chat-simulator-section" class="section bg-white" style="padding: 5rem 0; border-bottom: 1px solid var(--color-gray-border);">
-        <div class="container" style="max-width: 900px; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+        <div class="container" style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
             
             <div class="text-center" style="margin-bottom: var(--spacing-lg); max-width: 600px;">
                 <span class="section-tag" style="display: block; margin-bottom: 8px;">Text Assistant</span>
