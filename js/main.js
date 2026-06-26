@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Clean up parallax and timeline listeners when page transitions
         cleanupHeroParallax();
         cleanupTimelineScroll();
+        cleanupWinScrollSequence();
         
         // Clean up lightbox overlay when page transitions
         if (typeof SpeakingGalleryLightbox !== 'undefined') {
@@ -48,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
             Hub.init();
         } else if (page === 'mission' || page === 'aim') {
             WinCardsEffect.init();
+            initWinScrollSequence();
         } else if (page === 'speaking') {
             SpeakingGalleryLightbox.init();
             if (typeof ServicesPortfolio !== 'undefined') {
@@ -421,9 +423,7 @@ const WinCardsEffect = {
         const cards = document.querySelectorAll('.win-card-wrapper');
         cards.forEach(card => {
             const tiltContainer = card.querySelector('.win-card-tilt');
-            const flipCard = card.querySelector('.win-flip-card');
-            
-            if (!tiltContainer || !flipCard) return;
+            if (!tiltContainer) return;
 
             // Hover (3D Tilt & Glare Coordinate calculations)
             card.addEventListener('mouseenter', () => {
@@ -436,22 +436,13 @@ const WinCardsEffect = {
             card.addEventListener('mousemove', (e) => this.handleMouseMove(e, card, tiltContainer));
             
             card.addEventListener('mouseleave', () => {
+                const slide = card.closest('.win-snap-slide');
+                const isSlideActive = slide && slide.classList.contains('is-active');
                 const video = card.querySelector('.win-card-video');
-                if (video) {
+                if (video && !isSlideActive) {
                     video.pause();
                 }
                 this.handleMouseLeave(tiltContainer);
-            });
-            
-            // Interaction (Click to Flip)
-            card.addEventListener('click', () => this.toggleFlip(flipCard));
-            
-            // Accessibility (Keypress Space or Enter to Flip)
-            card.addEventListener('keydown', (e) => {
-                if (e.key === ' ' || e.key === 'Enter') {
-                    e.preventDefault(); // Stop page scrolling on Spacebar
-                    this.toggleFlip(flipCard);
-                }
             });
         });
     },
@@ -459,12 +450,6 @@ const WinCardsEffect = {
     handleMouseMove(e, wrapper, tiltContainer) {
         // Accessibility check: disable tilt when animations are paused
         if (document.documentElement.classList.contains('accessibility-paused-animations')) {
-            return;
-        }
-
-        // Disable tilt when the card is flipped
-        const flipCard = wrapper.querySelector('.win-flip-card');
-        if (flipCard && flipCard.classList.contains('is-flipped')) {
             return;
         }
 
@@ -489,43 +474,123 @@ const WinCardsEffect = {
     handleMouseLeave(tiltContainer) {
         // Reset tilt transformation back to initial state
         tiltContainer.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
-    },
-    
-    toggleFlip(flipCard) {
-        flipCard.classList.toggle('is-flipped');
-        
-        // Update accessibility attributes
-        const isFlipped = flipCard.classList.contains('is-flipped');
-        const wrapper = flipCard.closest('.win-card-wrapper');
-        if (wrapper) {
-            // Reset tilt transform on flip to prevent card from staying tilted
-            const tiltContainer = wrapper.querySelector('.win-card-tilt');
-            if (tiltContainer) {
-                tiltContainer.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
-            }
-            
-            // Handle video playback on flip to save resources and prevent audio/bleed bugs
-            const video = wrapper.querySelector('.win-card-video');
-            if (video) {
-                if (isFlipped) {
-                    video.pause();
-                } else if (wrapper.matches(':hover')) {
-                    video.play().catch(err => console.log('Video play interrupted:', err));
-                }
-            }
-
-            const letter = wrapper.getAttribute('data-card');
-            const term = letter === 'W' ? 'Warrior Story' : (letter === 'I' ? 'Inspiring Impact' : 'Nurturing Outcomes');
-            wrapper.setAttribute('aria-label', `${term}, click to reveal details. Currently showing ${isFlipped ? 'details (flipped)' : 'front face'}.`);
-            
-            // Dynamically update tooltip content for paused animation state
-            const tooltip = wrapper.querySelector('.win-card-tooltip');
-            if (tooltip) {
-                tooltip.textContent = isFlipped ? 'Click to Return (Animations Paused)' : 'Click to Flip (Animations Paused)';
-            }
-        }
     }
 };
+
+let winScrollListener = null;
+
+/**
+ * initWinScrollSequence - Sets up scroll-linked sequencing animation,
+ * sidebar step bullet tracking, and video auto-playback.
+ */
+function initWinScrollSequence() {
+    const container = document.querySelector('.scroll-snap-container');
+    const wrapperOuter = document.querySelector('.win-framework-container');
+    if (!container || !wrapperOuter) return;
+
+    const slides = container.querySelectorAll('.win-snap-slide');
+    const steps = wrapperOuter.querySelectorAll('.win-indicator-step');
+    const progressFill = wrapperOuter.querySelector('.win-indicator-progress');
+
+    // Handle dot indicators click scroll navigation
+    steps.forEach((step, index) => {
+        step.addEventListener('click', () => {
+            if (slides[index]) {
+                const slideTop = slides[index].offsetTop;
+                container.scrollTo({
+                    top: slideTop,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+
+    const handleScroll = () => {
+        const animationsPaused = document.documentElement.classList.contains('accessibility-paused-animations');
+        if (animationsPaused) {
+            // Under accessibility paused animations, just activate everything
+            slides.forEach(slide => {
+                slide.classList.add('is-active');
+                const video = slide.querySelector('.win-card-video');
+                if (video && video.paused) {
+                    video.play().catch(e => {});
+                }
+            });
+            steps.forEach(step => step.classList.add('active-step'));
+            if (progressFill) progressFill.style.setProperty('--win-progress', '100%');
+            return;
+        }
+
+        const scrollTop = container.scrollTop;
+        const scrollHeight = container.scrollHeight - container.clientHeight;
+        
+        // Calculate progress percentage
+        let progress = 0;
+        if (scrollHeight > 0) {
+            progress = (scrollTop / scrollHeight) * 100;
+        }
+        if (progressFill) {
+            progressFill.style.setProperty('--win-progress', `${progress}%`);
+        }
+
+        // Determine which slide is active (snap container centers viewport)
+        const containerHeight = container.clientHeight;
+        const centerOffset = containerHeight / 2;
+        let activeIndex = 0;
+
+        slides.forEach((slide, index) => {
+            const slideTop = slide.offsetTop - container.offsetTop;
+            const slideBottom = slideTop + slide.clientHeight;
+            const viewportCenter = scrollTop + centerOffset;
+
+            if (viewportCenter >= slideTop && viewportCenter < slideBottom) {
+                activeIndex = index;
+            }
+        });
+
+        // Update active class on slides and steps, handle videos
+        slides.forEach((slide, index) => {
+            const video = slide.querySelector('.win-card-video');
+            if (index === activeIndex) {
+                slide.classList.add('is-active');
+                if (video && video.paused) {
+                    video.play().catch(err => console.log('Auto-play video interrupted:', err));
+                }
+            } else {
+                slide.classList.remove('is-active');
+                if (video && !video.paused) {
+                    video.pause();
+                }
+            }
+        });
+
+        steps.forEach((step, index) => {
+            if (index === activeIndex) {
+                step.classList.add('active-step');
+            } else {
+                step.classList.remove('active-step');
+            }
+        });
+    };
+
+    winScrollListener = handleScroll;
+    container.addEventListener('scroll', winScrollListener, { passive: true });
+    
+    // Listen to resize to recompute scroll position
+    window.addEventListener('resize', handleScroll);
+
+    // Initial frame update
+    handleScroll();
+}
+
+function cleanupWinScrollSequence() {
+    const container = document.querySelector('.scroll-snap-container');
+    if (container && winScrollListener) {
+        container.removeEventListener('scroll', winScrollListener);
+    }
+    window.removeEventListener('resize', winScrollListener);
+    winScrollListener = null;
+}
 
 let timelineScrollListener = null;
 

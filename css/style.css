@@ -1571,30 +1571,12 @@ textarea.form-control {
     transition: transform 0.1s ease;
 }
 
-.win-flip-card {
+.win-card {
     position: relative;
     width: 100%;
-    height: 400px;
-    transform-style: preserve-3d;
-    transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+    height: 450px;
     border-radius: 1.25rem;
-}
-
-.win-flip-card.is-flipped {
-    transform: rotateY(180deg);
-}
-
-.win-flip-card-front,
-.win-flip-card-back {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    border-radius: 1.25rem;
-    padding: 2.2rem 1.5rem;
+    padding: 2.5rem 1.8rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -1602,16 +1584,12 @@ textarea.form-control {
     text-align: center;
     border: 1px solid rgba(255, 255, 255, 0.08);
     overflow: hidden;
-}
-
-.win-flip-card-front {
     background: linear-gradient(180deg, rgba(22, 32, 51, 0.95) 0%, rgba(10, 15, 26, 0.98) 100%);
     color: var(--color-white);
-    justify-content: center;
 }
 
-/* Ambient background light radial effect on front */
-.win-flip-card-front::before {
+/* Ambient background light radial effect on card */
+.win-card::before {
     content: '';
     position: absolute;
     top: -20%;
@@ -1624,32 +1602,11 @@ textarea.form-control {
     transition: transform 0.7s ease;
 }
 
-.win-card-wrapper:hover .win-flip-card-front::before {
+.win-card-wrapper:hover .win-card::before {
     transform: scale(1.12);
 }
 
-.win-flip-card-back {
-    background: linear-gradient(180deg, rgba(13, 19, 31, 0.98) 0%, rgba(3, 5, 10, 1) 100%);
-    color: var(--color-white);
-    transform: rotateY(180deg);
-    border-color: rgba(var(--accent-rgb), 0.25);
-}
-
-/* Subtle accent bottom glow for the back of cards */
-.win-flip-card-back::before {
-    content: '';
-    position: absolute;
-    bottom: -20%;
-    right: -20%;
-    width: 140%;
-    height: 140%;
-    background: radial-gradient(circle at 50% 85%, rgba(var(--accent-rgb), 0.1) 0%, transparent 60%);
-    pointer-events: none;
-    z-index: 0;
-}
-
-.win-flip-card-front > *:not(.glare-card-glare):not(.glare-card-rainbow):not(.win-card-video):not(.flip-prompt),
-.win-flip-card-back > *:not(.flip-prompt) {
+.win-card > *:not(.glare-card-glare):not(.glare-card-rainbow):not(.win-card-video) {
     position: relative;
     z-index: 5;
 }
@@ -1663,7 +1620,7 @@ textarea.form-control {
     height: 100%;
     object-fit: cover;
     z-index: 1 !important;
-    opacity: 0.65;
+    opacity: 0.45;
     pointer-events: none;
     transition: opacity 0.5s ease;
     backface-visibility: hidden;
@@ -1671,7 +1628,7 @@ textarea.form-control {
 }
 
 .win-card-wrapper:hover .win-card-video {
-    opacity: 0.85;
+    opacity: 0.75;
 }
 
 /* Badge pill style at top of cards */
@@ -1687,6 +1644,8 @@ textarea.form-control {
     color: var(--accent-hex);
     transition: all 0.3s ease;
     user-select: none;
+    margin-bottom: var(--spacing-sm);
+    transform: translateZ(25px);
 }
 
 .win-card-wrapper:hover .win-badge {
@@ -1695,15 +1654,7 @@ textarea.form-control {
     box-shadow: 0 0 8px rgba(var(--accent-rgb), 0.15);
 }
 
-.win-flip-card-back .win-badge {
-    position: absolute;
-    top: 2.2rem;
-    left: 50%;
-    transform: translateX(-50%) translateZ(25px);
-}
-
-.win-content-front,
-.win-content-back {
+.win-card-content {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1729,18 +1680,6 @@ textarea.form-control {
     text-shadow: 0 0 35px rgba(var(--accent-rgb), 0.6);
 }
 
-.win-letter-back {
-    font-family: 'Oswald', 'Outfit', sans-serif;
-    font-size: 2.8rem;
-    font-weight: 800;
-    line-height: 1;
-    color: var(--accent-hex);
-    margin-bottom: var(--spacing-sm);
-    display: block;
-    user-select: none;
-    text-shadow: 0 0 15px rgba(var(--accent-rgb), 0.3);
-}
-
 .win-card-title {
     font-family: 'Outfit', sans-serif;
     font-size: 1.6rem;
@@ -1758,25 +1697,17 @@ textarea.form-control {
     transform: translateZ(20px);
 }
 
-.win-back-heading {
-    font-family: 'Outfit', sans-serif;
-    font-size: 1.35rem;
-    color: var(--color-white);
-    margin-bottom: var(--spacing-xs);
-    font-weight: 700;
-    transform: translateZ(30px);
-}
-
 .win-divider {
     width: 45px;
     height: 2px;
     background-color: var(--accent-hex);
-    margin: var(--spacing-xs) auto var(--spacing-md) auto;
+    margin: var(--spacing-sm) auto var(--spacing-sm) auto;
     border-radius: 2px;
     box-shadow: 0 0 8px rgba(var(--accent-rgb), 0.4);
+    transform: translateZ(30px);
 }
 
-.win-back-text {
+.win-card-description {
     font-size: 1.02rem;
     line-height: 1.6;
     color: var(--color-gray-light);
@@ -1786,20 +1717,20 @@ textarea.form-control {
 }
 
 /* Glare & Rainbow layers specifically for WIN cards */
-.win-flip-card-front .glare-card-glare,
-.win-flip-card-front .glare-card-rainbow {
+.win-card .glare-card-glare,
+.win-card .glare-card-rainbow {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 1;
+    z-index: 2;
     opacity: 0;
     transition: opacity 0.35s ease;
 }
 
-.win-flip-card-front .glare-card-glare {
+.win-card .glare-card-glare {
     background: radial-gradient(
         circle 200px at var(--glare-x, 50%) var(--glare-y, 50%),
         rgba(255, 255, 255, 0.15) 0%,
@@ -1809,7 +1740,7 @@ textarea.form-control {
     mix-blend-mode: overlay;
 }
 
-.win-flip-card-front .glare-card-rainbow {
+.win-card .glare-card-rainbow {
     background: radial-gradient(
         circle 300px at var(--glare-x, 50%) var(--glare-y, 50%),
         rgba(10, 216, 173, 0.12) 0%,  /* Teal */
@@ -1825,38 +1756,141 @@ textarea.form-control {
     opacity: 1;
 }
 
-.flip-prompt {
-    position: absolute;
-    bottom: 2.2rem;
-    left: 50%;
-    right: auto;
-    transform: translateX(-50%) translateZ(20px);
-    width: max-content;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--accent-hex);
-    transition: color 0.2s ease, opacity 0.2s ease;
-    opacity: 0.8;
-    z-index: 5;
+/* Scroll Snap Slide Active Animations */
+.win-snap-slide {
+    opacity: 0.35;
+    transform: scale(0.96);
+    transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.win-card-wrapper:hover .flip-prompt {
+.win-snap-slide.is-active {
     opacity: 1;
+    transform: scale(1);
+}
+
+.win-snap-slide .win-card-wrapper {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1) 0.15s, transform 0.8s cubic-bezier(0.25, 1, 0.5, 1) 0.15s;
+}
+
+.win-snap-slide.is-active .win-card-wrapper {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* W.I.N. Vertical Scroll Indicator */
+.win-scroll-indicator {
+    position: absolute;
+    right: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+}
+
+.win-indicator-track {
+    position: absolute;
+    top: 10px;
+    bottom: 10px;
+    width: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 1px;
+    z-index: 1;
+}
+
+.win-indicator-progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--win-progress, 0%);
+    background: linear-gradient(to bottom, var(--color-teal), var(--color-gold));
+    border-radius: 1px;
+    transition: height 0.1s ease;
+}
+
+.win-indicator-step {
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: transparent;
+    border: none;
+    padding: 0;
+    border-radius: 50%;
+}
+
+.win-indicator-step:focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 4px;
+}
+
+.win-indicator-step .step-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+.win-indicator-step:hover .step-dot {
+    background: rgba(255, 255, 255, 0.8);
+    transform: scale(1.3);
+}
+
+.win-indicator-step.active-step .step-dot {
+    background: var(--color-teal);
+    box-shadow: 0 0 10px var(--color-teal);
+    transform: scale(1.5);
+}
+
+.win-indicator-step[data-step="2"].active-step .step-dot {
+    background: #37b1ff;
+    box-shadow: 0 0 10px #37b1ff;
+}
+
+.win-indicator-step[data-step="3"].active-step .step-dot {
+    background: var(--color-gold);
+    box-shadow: 0 0 10px var(--color-gold);
+}
+
+.win-indicator-step .step-label {
+    position: absolute;
+    right: 35px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    opacity: 0;
+    transform: translateX(10px);
+    transition: all 0.3s ease;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.win-indicator-step:hover .step-label,
+.win-indicator-step.active-step .step-label {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.win-indicator-step.active-step .step-label {
     color: var(--color-white);
 }
 
-.flip-prompt-icon {
-    width: 16px;
-    height: 16px;
-    transition: transform 0.4s ease;
-}
-
-.win-card-wrapper:hover .flip-prompt-icon {
-    transform: rotate(180deg);
+@media (max-width: 768px) {
+    .win-scroll-indicator {
+        display: none;
+    }
 }
 
 /* Accessibility Settings Pauses Support */
@@ -1876,7 +1910,7 @@ html.accessibility-paused-animations .win-card-tilt {
     transform: none !important;
 }
 
-html.accessibility-paused-animations .win-flip-card {
+html.accessibility-paused-animations .win-card {
     transition: none !important;
 }
 
@@ -1887,59 +1921,27 @@ html.accessibility-paused-animations .win-letter {
     text-shadow: none !important;
 }
 
-html.accessibility-paused-animations .win-flip-card-front::before,
-html.accessibility-paused-animations .win-flip-card-back::before,
-html.accessibility-paused-animations .win-flip-card-front .glare-card-glare,
-html.accessibility-paused-animations .win-flip-card-front .glare-card-rainbow {
+html.accessibility-paused-animations .win-card::before,
+html.accessibility-paused-animations .win-card .glare-card-glare,
+html.accessibility-paused-animations .win-card .glare-card-rainbow {
     display: none !important;
 }
 
-html.accessibility-paused-animations .flip-prompt-icon {
-    transition: none !important;
-    transform: none !important;
-}
-
-/* WIN Card Tooltip (Visible ONLY when accessibility pause-animations is active) */
-.win-card-tooltip {
-    position: absolute;
-    top: -45px;
-    left: 50%;
-    transform: translateX(-50%) translateY(10px);
-    background-color: var(--color-navy-dark);
-    color: var(--color-gold);
-    border: 1px solid var(--color-gold);
-    padding: 6px 14px;
-    border-radius: var(--radius-sm);
-    font-size: 0.82rem;
-    font-weight: 600;
-    white-space: nowrap;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    z-index: 100;
-    box-shadow: var(--shadow-md);
-    transition: opacity 0.22s cubic-bezier(0.4, 0, 0.2, 1), transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.22s;
-}
-
-.win-card-tooltip::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 50%;
-    transform: translateX(-50%) rotate(45deg);
-    width: 8px;
-    height: 8px;
-    background-color: var(--color-navy-dark);
-    border-right: 1px solid var(--color-gold);
-    border-bottom: 1px solid var(--color-gold);
-}
-
-/* Trigger display of tooltip only when animations are paused on html root */
-html.accessibility-paused-animations .win-card-wrapper:hover .win-card-tooltip,
-html.accessibility-paused-animations .win-card-wrapper:focus-within .win-card-tooltip {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(-50%) translateY(0);
+/* Prefers Reduced Motion overrides */
+@media (prefers-reduced-motion: reduce) {
+    .win-snap-slide {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+    .win-snap-slide .win-card-wrapper {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+    .win-scroll-indicator {
+        display: none !important;
+    }
 }
 
 /* ==========================================================================
