@@ -988,138 +988,160 @@ Router.register('/mission', () => `
     </section>
 
     <!-- Dynamic W.I.N. Framework Section -->
-    <section class="section bg-navy win-section" style="border-top: 1px solid rgba(10, 216, 173, 0.1); border-bottom: 1px solid rgba(10, 216, 173, 0.1); position: relative; overflow: hidden; padding-bottom: 0;">
-        <div class="container">
-            <span class="section-tag text-teal text-center" style="display: block; margin: 0 auto 10px auto;">Framework</span>
-            <h2 class="text-center" style="color: white; margin-bottom: var(--spacing-lg);">The W.I.N. Framework</h2>
-            <div class="win-grid" style="margin-top: 0;">
-            <!-- Card 1: W -->
-            <div class="win-card-wrapper" data-card="W" tabindex="0" role="button" aria-label="Warrior Story, click to reveal details">
-                <div class="win-card-tooltip">Click to Flip (Animations Paused)</div>
-                <div class="win-card-tilt">
-                    <div class="win-flip-card">
-                        <!-- Front -->
-                        <div class="win-flip-card-front">
-                            <video class="win-card-video" src="assets/videos/W.mp4" loop muted playsinline preload="auto"></video>
-                            <div class="glare-card-glare"></div>
-                            <div class="glare-card-rainbow"></div>
-                            <div class="win-content-front">
-                                <span class="win-letter">W</span>
-                                <h3 class="win-card-title">Warrior Story</h3>
-                                <p class="win-card-teaser">Acknowledge your constraints.</p>
-                            </div>
-                            <div class="flip-prompt">
-                                <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
-                                </svg>
-                                <span>Click to Flip</span>
-                            </div>
-                        </div>
-                        <!-- Back -->
-                        <div class="win-flip-card-back">
-                            <span class="win-badge">Details</span>
-                            <div class="win-content-back">
-                                <span class="win-letter-back">W</span>
-                                <h4 class="win-back-heading">Warrior Story</h4>
-                                <div class="win-divider"></div>
-                                <p class="win-back-text">Acknowledge your limits as parameters to design around.</p>
-                            </div>
-                            <div class="flip-prompt">
-                                <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
-                                </svg>
-                                <span>Click to Return</span>
-                            </div>
-                        </div>
-                    </div>
+    <section class="win-section scroll-snap-container" style="border-top: 1px solid rgba(10, 216, 173, 0.1); border-bottom: 1px solid rgba(10, 216, 173, 0.1); position: relative; overflow: hidden; background-color: var(--color-navy);">
+        
+        <!-- Slide 1: Introduction -->
+        <div class="win-snap-slide win-intro-slide">
+            <div class="container text-center">
+                <span class="section-tag text-teal" style="display: block; margin-bottom: 10px;">Framework</span>
+                <h2 style="color: white; margin-bottom: var(--spacing-md); font-size: clamp(2rem, 5vw, 3rem); font-family: var(--font-heading); font-weight: 800;">The W.I.N. Framework</h2>
+                <p style="color: var(--color-gray-light); max-width: 650px; margin: 0 auto 30px auto; line-height: 1.6; font-size: clamp(1rem, 2vw, 1.15rem);">
+                    A daily system to reframe limitations as parameters, focus on high-value digital execution, and automate consistent progress.
+                </p>
+                <div style="color: var(--color-teal); font-size: 0.9rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;">
+                    Scroll to explore <br>
+                    <span style="font-size: 1.5rem; display: inline-block; margin-top: 5px; animation: bounce 1.5s infinite;">↓</span>
                 </div>
             </div>
+        </div>
 
-            <!-- Card 2: I -->
-            <div class="win-card-wrapper" data-card="I" tabindex="0" role="button" aria-label="Inspiring Impact, click to reveal details">
-                <div class="win-card-tooltip">Click to Flip (Animations Paused)</div>
-                <div class="win-card-tilt">
-                    <div class="win-flip-card">
-                        <!-- Front -->
-                        <div class="win-flip-card-front">
-                            <video class="win-card-video" src="assets/videos/I.mp4" loop muted playsinline preload="auto"></video>
-                            <div class="glare-card-glare"></div>
-                            <div class="glare-card-rainbow"></div>
-                            <div class="win-content-front">
-                                <span class="win-letter">I</span>
-                                <h3 class="win-card-title">Inspiring Impact</h3>
-                                <p class="win-card-teaser">Focus on high-value execution.</p>
+        <!-- Slide 2: Warrior Story -->
+        <div class="win-snap-slide">
+            <div class="container" style="display: flex; justify-content: center; align-items: center;">
+                <div class="win-card-wrapper" data-card="W" tabindex="0" role="button" aria-label="Warrior Story, click to reveal details">
+                    <div class="win-card-tooltip">Click to Flip (Animations Paused)</div>
+                    <div class="win-card-tilt">
+                        <div class="win-flip-card">
+                            <!-- Front -->
+                            <div class="win-flip-card-front">
+                                <video class="win-card-video" src="assets/videos/W.mp4" loop muted playsinline preload="auto"></video>
+                                <div class="glare-card-glare"></div>
+                                <div class="glare-card-rainbow"></div>
+                                <div class="win-content-front">
+                                    <span class="win-letter">W</span>
+                                    <h3 class="win-card-title">Warrior Story</h3>
+                                    <p class="win-card-teaser">Acknowledge your constraints.</p>
+                                </div>
+                                <div class="flip-prompt">
+                                    <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                                    </svg>
+                                    <span>Click to Flip</span>
+                                </div>
                             </div>
-                            <div class="flip-prompt">
-                                <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
-                                </svg>
-                                <span>Click to Flip</span>
-                            </div>
-                        </div>
-                        <!-- Back -->
-                        <div class="win-flip-card-back">
-                            <span class="win-badge">Details</span>
-                            <div class="win-content-back">
-                                <span class="win-letter-back">I</span>
-                                <h4 class="win-back-heading">Inspiring Impact</h4>
-                                <div class="win-divider"></div>
-                                <p class="win-back-text">Build digital projects that show what is possible with limited energy.</p>
-                            </div>
-                            <div class="flip-prompt">
-                                <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
-                                </svg>
-                                <span>Click to Return</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 3: N -->
-            <div class="win-card-wrapper" data-card="N" tabindex="0" role="button" aria-label="Nurturing Outcomes, click to reveal details">
-                <div class="win-card-tooltip">Click to Flip (Animations Paused)</div>
-                <div class="win-card-tilt">
-                    <div class="win-flip-card">
-                        <!-- Front -->
-                        <div class="win-flip-card-front">
-                            <video class="win-card-video" src="assets/videos/N.mp4" loop muted playsinline preload="auto"></video>
-                            <div class="glare-card-glare"></div>
-                            <div class="glare-card-rainbow"></div>
-                            <div class="win-content-front">
-                                <span class="win-letter">N</span>
-                                <h3 class="win-card-title">Nurturing Outcomes</h3>
-                                <p class="win-card-teaser">Build steady daily progress.</p>
-                            </div>
-                            <div class="flip-prompt">
-                                <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
-                                </svg>
-                                <span>Click to Flip</span>
-                            </div>
-                        </div>
-                        <!-- Back -->
-                        <div class="win-flip-card-back">
-                            <span class="win-badge">Details</span>
-                            <div class="win-content-back">
-                                <span class="win-letter-back">N</span>
-                                <h4 class="win-back-heading">Nurturing Outcomes</h4>
-                                <div class="win-divider"></div>
-                                <p class="win-back-text">Use AI tools and automation to handle repetitive tasks and save your energy.</p>
-                            </div>
-                            <div class="flip-prompt">
-                                <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
-                                </svg>
-                                <span>Click to Return</span>
+                            <!-- Back -->
+                            <div class="win-flip-card-back">
+                                <span class="win-badge">Details</span>
+                                <div class="win-content-back">
+                                    <span class="win-letter-back">W</span>
+                                    <h4 class="win-back-heading">Warrior Story</h4>
+                                    <div class="win-divider"></div>
+                                    <p class="win-back-text">Acknowledge your limits as parameters to design around.</p>
+                                </div>
+                                <div class="flip-prompt">
+                                    <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                                    </svg>
+                                    <span>Click to Return</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+
+        <!-- Slide 3: Inspiring Impact -->
+        <div class="win-snap-slide">
+            <div class="container" style="display: flex; justify-content: center; align-items: center;">
+                <div class="win-card-wrapper" data-card="I" tabindex="0" role="button" aria-label="Inspiring Impact, click to reveal details">
+                    <div class="win-card-tooltip">Click to Flip (Animations Paused)</div>
+                    <div class="win-card-tilt">
+                        <div class="win-flip-card">
+                            <!-- Front -->
+                            <div class="win-flip-card-front">
+                                <video class="win-card-video" src="assets/videos/I.mp4" loop muted playsinline preload="auto"></video>
+                                <div class="glare-card-glare"></div>
+                                <div class="glare-card-rainbow"></div>
+                                <div class="win-content-front">
+                                    <span class="win-letter">I</span>
+                                    <h3 class="win-card-title">Inspiring Impact</h3>
+                                    <p class="win-card-teaser">Focus on high-value execution.</p>
+                                </div>
+                                <div class="flip-prompt">
+                                    <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                                    </svg>
+                                    <span>Click to Flip</span>
+                                </div>
+                            </div>
+                            <!-- Back -->
+                            <div class="win-flip-card-back">
+                                <span class="win-badge">Details</span>
+                                <div class="win-content-back">
+                                    <span class="win-letter-back">I</span>
+                                    <h4 class="win-back-heading">Inspiring Impact</h4>
+                                    <div class="win-divider"></div>
+                                    <p class="win-back-text">Build digital projects that show what is possible with limited energy.</p>
+                                </div>
+                                <div class="flip-prompt">
+                                    <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                                    </svg>
+                                    <span>Click to Return</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Nurturing Outcomes -->
+        <div class="win-snap-slide">
+            <div class="container" style="display: flex; justify-content: center; align-items: center;">
+                <div class="win-card-wrapper" data-card="N" tabindex="0" role="button" aria-label="Nurturing Outcomes, click to reveal details">
+                    <div class="win-card-tooltip">Click to Flip (Animations Paused)</div>
+                    <div class="win-card-tilt">
+                        <div class="win-flip-card">
+                            <!-- Front -->
+                            <div class="win-flip-card-front">
+                                <video class="win-card-video" src="assets/videos/N.mp4" loop muted playsinline preload="auto"></video>
+                                <div class="glare-card-glare"></div>
+                                <div class="glare-card-rainbow"></div>
+                                <div class="win-content-front">
+                                    <span class="win-letter">N</span>
+                                    <h3 class="win-card-title">Nurturing Outcomes</h3>
+                                    <p class="win-card-teaser">Build steady daily progress.</p>
+                                </div>
+                                <div class="flip-prompt">
+                                    <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                                    </svg>
+                                    <span>Click to Flip</span>
+                                </div>
+                            </div>
+                            <!-- Back -->
+                            <div class="win-flip-card-back">
+                                <span class="win-badge">Details</span>
+                                <div class="win-content-back">
+                                    <span class="win-letter-back">N</span>
+                                    <h4 class="win-back-heading">Nurturing Outcomes</h4>
+                                    <div class="win-divider"></div>
+                                    <p class="win-back-text">Use AI tools and automation to handle repetitive tasks and save your energy.</p>
+                                </div>
+                                <div class="flip-prompt">
+                                    <svg class="flip-prompt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                                    </svg>
+                                    <span>Click to Return</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <section class="section bg-white">

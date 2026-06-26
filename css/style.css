@@ -1444,6 +1444,56 @@ textarea.form-control {
     background-color: var(--color-navy);
 }
 
+.scroll-snap-container {
+    height: 100vh;
+    height: 100dvh;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+.win-snap-slide {
+    min-height: 100vh;
+    min-height: 100dvh;
+    scroll-snap-align: start;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 120px 20px 60px 20px;
+    width: 100%;
+    position: relative;
+}
+
+.win-intro-slide {
+    background: radial-gradient(circle at 50% 50%, rgba(10, 216, 173, 0.08) 0%, transparent 70%);
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(5px); }
+}
+
+/* Reduced Motion Fallback */
+@media (prefers-reduced-motion: reduce) {
+    .scroll-snap-container {
+        scroll-snap-type: none !important;
+        height: auto !important;
+        overflow-y: visible !important;
+        scroll-behavior: auto !important;
+    }
+    .win-snap-slide {
+        min-height: auto !important;
+        scroll-snap-align: none !important;
+        padding: 80px 20px !important;
+    }
+    @keyframes bounce {
+        0%, 100% { transform: none !important; }
+        50% { transform: none !important; }
+    }
+}
+
 .win-grid {
     display: flex;
     justify-content: center;
