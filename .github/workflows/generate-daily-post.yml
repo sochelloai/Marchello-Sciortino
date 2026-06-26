@@ -5,6 +5,12 @@ on:
     # Run every day at 12:00 PM UTC (equivalent to 7:00 AM Central Time)
     - cron: '0 12 * * *'
   workflow_dispatch: # Allows manual trigger on demand
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/generate-daily-post.yml'
+      - 'scripts/generate-daily-post.js'
 
 jobs:
   generate-post:
