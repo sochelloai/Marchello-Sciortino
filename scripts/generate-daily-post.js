@@ -116,7 +116,6 @@ function downloadFile(url, destPath, redirectCount = 0) {
 async function run() {
     try {
         // Step 1: Query Gemini API to write the post
-        const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${GEMINI_API_KEY}`;
         const promptSystem = `You are Marchello Sciortino, a resilient entrepreneur, keynote speaker, and faith-driven innovator who lives with Friedrich's ataxia (a progressive neuromuscular condition).
 Your voice is deeply personal, resilient, faith-filled, and technological.
 Write a daily blog post for today: ${todayDateStr}.
@@ -147,7 +146,9 @@ You must return a raw JSON object containing exactly these fields (no markdown w
 
         console.log("Calling Gemini API...");
         let geminiRes;
+        let usedModel = "gemini-1.5-pro";
         try {
+            const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${usedModel}:generateContent?key=${GEMINI_API_KEY}`;
             geminiRes = await postJson(geminiUrl, {}, {
                 contents: [
                     {
@@ -175,8 +176,46 @@ You must return a raw JSON object containing exactly these fields (no markdown w
                 }
             });
         } catch (apiErr) {
-            console.error("Gemini API HTTP request failed:", apiErr.message);
-            throw apiErr;
+            // Check if the error indicates a 404 Model Not Found
+            if (apiErr.message && apiErr.message.includes("404")) {
+                console.warn(`Warning: Model "${usedModel}" was not found or is not supported. Attempting fallback to "gemini-1.5-flash"...`);
+                usedModel = "gemini-1.5-flash";
+                try {
+                    const fallbackUrl = `https://generativelanguage.googleapis.com/v1beta/models/${usedModel}:generateContent?key=${GEMINI_API_KEY}`;
+                    geminiRes = await postJson(fallbackUrl, {}, {
+                        contents: [
+                            {
+                                parts: [
+                                    { text: promptSystem }
+                                ]
+                            }
+                        ],
+                        generationConfig: {
+                            responseMimeType: "application/json",
+                            responseSchema: {
+                                type: "object",
+                                properties: {
+                                    title: { type: "string" },
+                                    desc: { type: "string" },
+                                    tag: { 
+                                        type: "string", 
+                                        enum: ["Story Notes", "AI and Accessibility", "Lessons From Limitation", "Tools I Use", "Daily Inspiration"]
+                                    },
+                                    body: { type: "string" },
+                                    image_prompt: { type: "string" }
+                                },
+                                required: ["title", "desc", "tag", "body", "image_prompt"]
+                            }
+                        }
+                    });
+                } catch (fallbackErr) {
+                    console.error("Gemini API Fallback Model request failed:", fallbackErr.message);
+                    throw fallbackErr;
+                }
+            } else {
+                console.error("Gemini API HTTP request failed:", apiErr.message);
+                throw apiErr;
+            }
         }
 
         if (!geminiRes || !geminiRes.candidates || geminiRes.candidates.length === 0) {
