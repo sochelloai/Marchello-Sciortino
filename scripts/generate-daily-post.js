@@ -193,7 +193,7 @@ Your writing must strictly follow these instructions:
    - Middle: Lesson learned, shift in perspective (treating limitations as simple design parameters).
    - Takeaway: A practical, actionable challenge or reflection.
    - Closing: Hopeful, uplifting note.
-3. Length: 300 - 500 words. Paced with short, powerful sentences.
+3. Length: 200 - 400 words. Paced with short, powerful sentences.
 4. Word Restrictions:
    - NEVER use corporate jargon: "unlock", "empower", "optimize", "leverage", "synergy", "game-changer", "dive deep".
    - NEVER use clichés: "mindset is everything", "never give up".
