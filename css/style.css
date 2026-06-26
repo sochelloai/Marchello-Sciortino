@@ -1076,12 +1076,21 @@ html.accessibility-paused-animations .timeline-row:has(.bullet-gold) .timeline-y
 
 .chello-ai-hero {
     background: linear-gradient(180deg, rgba(4, 15, 24, 0.45) 0%, rgba(4, 15, 24, 0.95) 100%), url('../assets/chello-ai-sketch.jpg') no-repeat center center / cover;
-    min-height: 100vh;
+    width: 100%;
+    aspect-ratio: 16 / 9;
     display: flex;
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
-    padding: 110px 0 60px 0;
+    padding: 110px var(--spacing-md) 60px var(--spacing-md);
+}
+
+@media (max-width: 768px) {
+    .chello-ai-hero {
+        aspect-ratio: auto;
+        min-height: 380px;
+        padding-top: 100px;
+    }
 }
 
 .card {
