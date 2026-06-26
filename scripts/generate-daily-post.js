@@ -308,14 +308,14 @@ You must return a raw JSON object containing exactly these fields (no markdown w
         console.log(`Tag: ${generatedArticle.tag}`);
         console.log(`Image Prompt: "${generatedArticle.image_prompt}"`);
 
-        // Step 2: Query OpenAI DALL-E 3 API to generate the image
-        console.log("Calling OpenAI DALL-E 3 API...");
+        // Step 2: Query OpenAI GPT Image API to generate the image
+        console.log("Calling OpenAI GPT Image API...");
         const openaiUrl = "https://api.openai.com/v1/images/generations";
         const openaiHeaders = {
             "Authorization": `Bearer ${OPENAI_API_KEY}`
         };
-        const dallEBody = {
-            model: "dall-e-3",
+        const imageBody = {
+            model: "gpt-image-2",
             prompt: generatedArticle.image_prompt + " minimal professional editorial style, atmospheric visual metaphor, cinematic lighting, no text, no captions.",
             n: 1,
             size: "1024x1024"
@@ -323,32 +323,32 @@ You must return a raw JSON object containing exactly these fields (no markdown w
 
         let openaiRes;
         try {
-            openaiRes = await postJson(openaiUrl, openaiHeaders, dallEBody);
+            openaiRes = await postJson(openaiUrl, openaiHeaders, imageBody);
         } catch (apiErr) {
-            // Check if model dall-e-3 doesn't exist or is not supported
-            if (apiErr.message && (apiErr.message.includes("does not exist") || apiErr.message.includes("dall-e-3"))) {
-                console.warn("Warning: OpenAI model 'dall-e-3' is not available on this API key. Attempting fallback to 'dall-e-2'...");
-                const dallE2Body = {
-                    model: "dall-e-2",
+            // Check if model gpt-image-2 doesn't exist or is not supported
+            if (apiErr.message && (apiErr.message.includes("does not exist") || apiErr.message.includes("gpt-image-2"))) {
+                console.warn("Warning: OpenAI model 'gpt-image-2' is not available on this API key. Attempting fallback to 'gpt-image-1.5'...");
+                const fallbackBody = {
+                    model: "gpt-image-1.5",
                     prompt: generatedArticle.image_prompt + " minimal professional editorial style, atmospheric visual metaphor, cinematic lighting, no text, no captions.",
                     n: 1,
                     size: "1024x1024"
                 };
                 try {
-                    openaiRes = await postJson(openaiUrl, openaiHeaders, dallE2Body);
+                    openaiRes = await postJson(openaiUrl, openaiHeaders, fallbackBody);
                 } catch (fallbackErr) {
-                    console.error("OpenAI DALL-E 2 API HTTP request failed:", fallbackErr.message);
+                    console.error("OpenAI GPT Image 1.5 API HTTP request failed:", fallbackErr.message);
                     throw fallbackErr;
                 }
             } else {
-                console.error("OpenAI DALL-E 3 API HTTP request failed:", apiErr.message);
+                console.error("OpenAI GPT Image 2 API HTTP request failed:", apiErr.message);
                 throw apiErr;
             }
         }
 
         if (!openaiRes || !openaiRes.data || openaiRes.data.length === 0 || !openaiRes.data[0].url) {
-            console.error("OpenAI DALL-E 3 returned an invalid response structure:", JSON.stringify(openaiRes, null, 2));
-            throw new Error("No image URL returned from OpenAI DALL-E 3 API.");
+            console.error("OpenAI GPT Image API returned an invalid response structure:", JSON.stringify(openaiRes, null, 2));
+            throw new Error("No image URL returned from OpenAI GPT Image API.");
         }
 
         const imageUrl = openaiRes.data[0].url;
