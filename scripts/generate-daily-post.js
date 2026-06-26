@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const http = require('http');
 
 // Read API keys from environment
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
@@ -8,10 +9,12 @@ const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
 if (!GEMINI_API_KEY) {
     console.error("Error: GEMINI_API_KEY is not defined in the environment.");
+    console.error("-> To fix this on GitHub Actions, navigate to Settings -> Secrets and variables -> Actions in your repository, and create a Repository Secret named GEMINI_API_KEY.");
     process.exit(1);
 }
 if (!OPENAI_API_KEY) {
     console.error("Error: OPENAI_API_KEY is not defined in the environment.");
+    console.error("-> To fix this on GitHub Actions, navigate to Settings -> Secrets and variables -> Actions in your repository, and create a Repository Secret named OPENAI_API_KEY.");
     process.exit(1);
 }
 
@@ -67,7 +70,11 @@ function postJson(url, headers, body) {
             res.on('data', (chunk) => data += chunk);
             res.on('end', () => {
                 if (res.statusCode >= 200 && res.statusCode < 300) {
-                    resolve(JSON.parse(data));
+                    try {
+                        resolve(JSON.parse(data));
+                    } catch (parseErr) {
+                        reject(new Error(`HTTP ${res.statusCode}: Failed to parse JSON response. Raw content: ${data}`));
+                    }
                 } else {
                     reject(new Error(`HTTP ${res.statusCode}: ${data}`));
                 }
@@ -80,10 +87,18 @@ function postJson(url, headers, body) {
     });
 }
 
-// Helper to download binary files
-function downloadFile(url, destPath) {
+// Helper to download binary files with redirect-following support
+function downloadFile(url, destPath, redirectCount = 0) {
+    if (redirectCount > 5) {
+        return Promise.reject(new Error("Too many redirects (max 5)"));
+    }
     return new Promise((resolve, reject) => {
-        https.get(url, (res) => {
+        const client = url.startsWith('https') ? https : http;
+        client.get(url, (res) => {
+            if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+                resolve(downloadFile(res.headers.location, destPath, redirectCount + 1));
+                return;
+            }
             if (res.statusCode !== 200) {
                 reject(new Error(`Failed to download: HTTP ${res.statusCode}`));
                 return;
@@ -131,21 +146,73 @@ You must return a raw JSON object containing exactly these fields (no markdown w
 }`;
 
         console.log("Calling Gemini API...");
-        const geminiRes = await postJson(geminiUrl, {}, {
-            contents: [
-                {
-                    parts: [
-                        { text: promptSystem }
-                    ]
+        let geminiRes;
+        try {
+            geminiRes = await postJson(geminiUrl, {}, {
+                contents: [
+                    {
+                        parts: [
+                            { text: promptSystem }
+                        ]
+                    }
+                ],
+                generationConfig: {
+                    responseMimeType: "application/json",
+                    responseSchema: {
+                        type: "object",
+                        properties: {
+                            title: { type: "string" },
+                            desc: { type: "string" },
+                            tag: { 
+                                type: "string", 
+                                enum: ["Story Notes", "AI and Accessibility", "Lessons From Limitation", "Tools I Use", "Daily Inspiration"]
+                            },
+                            body: { type: "string" },
+                            image_prompt: { type: "string" }
+                        },
+                        required: ["title", "desc", "tag", "body", "image_prompt"]
+                    }
                 }
-            ],
-            generationConfig: {
-                responseMimeType: "application/json"
-            }
-        });
+            });
+        } catch (apiErr) {
+            console.error("Gemini API HTTP request failed:", apiErr.message);
+            throw apiErr;
+        }
 
-        const rawText = geminiRes.candidates[0].content.parts[0].text;
-        const generatedArticle = JSON.parse(rawText.trim());
+        if (!geminiRes || !geminiRes.candidates || geminiRes.candidates.length === 0) {
+            console.error("Gemini API returned an empty or invalid response:", JSON.stringify(geminiRes, null, 2));
+            throw new Error("No candidates returned from Gemini API. This can happen if content safety filters are triggered.");
+        }
+
+        const candidate = geminiRes.candidates[0];
+        if (candidate.finishReason && candidate.finishReason !== "STOP") {
+            console.warn(`Warning: Gemini generation finished with status: ${candidate.finishReason}. Safety or recitation filters may have restricted the output.`);
+        }
+
+        if (!candidate.content || !candidate.content.parts || candidate.content.parts.length === 0 || !candidate.content.parts[0].text) {
+            console.error("Gemini candidate is missing content parts text:", JSON.stringify(candidate, null, 2));
+            throw new Error(`Invalid response structure from Gemini. Finish reason: ${candidate.finishReason}`);
+        }
+
+        const rawText = candidate.content.parts[0].text;
+        let cleanedText = rawText.trim();
+        
+        // Strip markdown code block wrapping if present
+        if (cleanedText.startsWith("```")) {
+            cleanedText = cleanedText.replace(/^```(json)?\s*/i, "");
+            cleanedText = cleanedText.replace(/\s*```$/, "");
+            cleanedText = cleanedText.trim();
+        }
+
+        let generatedArticle;
+        try {
+            generatedArticle = JSON.parse(cleanedText);
+        } catch (parseErr) {
+            console.error("Failed to parse Gemini output as JSON.");
+            console.error("Raw Gemini output was:", rawText);
+            console.error("Cleaned text was:", cleanedText);
+            throw new Error(`JSON parsing error: ${parseErr.message}`);
+        }
 
         console.log(`Generated Article Title: "${generatedArticle.title}"`);
         console.log(`Tag: ${generatedArticle.tag}`);
@@ -164,9 +231,21 @@ You must return a raw JSON object containing exactly these fields (no markdown w
             size: "1024x1024"
         };
 
-        const openaiRes = await postJson(openaiUrl, openaiHeaders, dallEBody);
+        let openaiRes;
+        try {
+            openaiRes = await postJson(openaiUrl, openaiHeaders, dallEBody);
+        } catch (apiErr) {
+            console.error("OpenAI DALL-E 3 API HTTP request failed:", apiErr.message);
+            throw apiErr;
+        }
+
+        if (!openaiRes || !openaiRes.data || openaiRes.data.length === 0 || !openaiRes.data[0].url) {
+            console.error("OpenAI DALL-E 3 returned an invalid response structure:", JSON.stringify(openaiRes, null, 2));
+            throw new Error("No image URL returned from OpenAI DALL-E 3 API.");
+        }
+
         const imageUrl = openaiRes.data[0].url;
-        console.log(`Image generated at URL: ${imageUrl}`);
+        console.log(`Image generated successfully.`);
 
         // Step 3: Download image and write locally
         const blogAssetsDir = path.join(__dirname, '..', 'assets', 'blog');
