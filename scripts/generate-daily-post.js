@@ -306,6 +306,7 @@ You must return a raw JSON object containing exactly these fields (no markdown w
         };
 
         let openaiRes;
+        let relativeImageSrc = "";
         try {
             openaiRes = await postJson(openaiUrl, openaiHeaders, imageBody);
         } catch (apiErr) {
@@ -322,35 +323,38 @@ You must return a raw JSON object containing exactly these fields (no markdown w
                     openaiRes = await postJson(openaiUrl, openaiHeaders, fallbackBody);
                 } catch (fallbackErr) {
                     console.error("OpenAI GPT Image 1.5 API HTTP request failed:", fallbackErr.message);
-                    throw fallbackErr;
                 }
             } else {
-                console.error("OpenAI GPT Image 2 API HTTP request failed:", apiErr.message);
-                throw apiErr;
+                console.error("OpenAI GPT Image API HTTP request failed:", apiErr.message);
             }
         }
 
-        if (!openaiRes || !openaiRes.data || openaiRes.data.length === 0 || !openaiRes.data[0].url) {
-            console.error("OpenAI GPT Image API returned an invalid response structure:", JSON.stringify(openaiRes, null, 2));
-            throw new Error("No image URL returned from OpenAI GPT Image API.");
+        if (openaiRes && openaiRes.data && openaiRes.data.length > 0 && openaiRes.data[0].url) {
+            const imageUrl = openaiRes.data[0].url;
+            console.log(`Image generated successfully.`);
+
+            // Step 3: Download image and write locally
+            const blogAssetsDir = path.join(__dirname, '..', 'assets', 'blog');
+            if (!fs.existsSync(blogAssetsDir)) {
+                fs.mkdirSync(blogAssetsDir, { recursive: true });
+            }
+
+            const localImageName = `${articleId}.png`;
+            const localImagePath = path.join(blogAssetsDir, localImageName);
+            relativeImageSrc = `assets/blog/${localImageName}`;
+
+            try {
+                console.log(`Downloading image to: ${localImagePath}`);
+                await downloadFile(imageUrl, localImagePath);
+                console.log("Image download complete.");
+            } catch (downloadErr) {
+                console.error("Failed to download generated image. Falling back to default banner:", downloadErr.message);
+                relativeImageSrc = "assets/timeline-4.png";
+            }
+        } else {
+            console.warn("Warning: Failed to generate custom image via OpenAI API. Falling back to default banner...");
+            relativeImageSrc = "assets/timeline-4.png";
         }
-
-        const imageUrl = openaiRes.data[0].url;
-        console.log(`Image generated successfully.`);
-
-        // Step 3: Download image and write locally
-        const blogAssetsDir = path.join(__dirname, '..', 'assets', 'blog');
-        if (!fs.existsSync(blogAssetsDir)) {
-            fs.mkdirSync(blogAssetsDir, { recursive: true });
-        }
-
-        const localImageName = `${articleId}.png`;
-        const localImagePath = path.join(blogAssetsDir, localImageName);
-        const relativeImageSrc = `assets/blog/${localImageName}`;
-
-        console.log(`Downloading image to: ${localImagePath}`);
-        await downloadFile(imageUrl, localImagePath);
-        console.log("Image download complete.");
 
         // Step 4: Load articles.json, append new post, write back
         const articlesJsonPath = path.join(__dirname, '..', 'data', 'articles.json');
