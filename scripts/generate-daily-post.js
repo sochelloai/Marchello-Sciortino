@@ -193,7 +193,7 @@ Your writing must strictly follow these instructions:
    - Middle: Lesson learned, shift in perspective (treating limitations as simple design parameters).
    - Takeaway: A practical, actionable challenge or reflection.
    - Closing: Hopeful, uplifting note.
-3. Length: 400 - 800 words. Paced with short, powerful sentences.
+3. Length: 300 - 500 words. Paced with short, powerful sentences.
 4. Word Restrictions:
    - NEVER use corporate jargon: "unlock", "empower", "optimize", "leverage", "synergy", "game-changer", "dive deep".
    - NEVER use clichés: "mindset is everything", "never give up".
@@ -336,11 +336,11 @@ You must return a raw JSON object containing exactly these fields (no markdown w
                 console.log("Image write complete.");
             } catch (writeErr) {
                 console.error("Failed to write generated image. Falling back to default banner:", writeErr.message);
-                relativeImageSrc = "assets/timeline-4.png";
+                relativeImageSrc = "assets/antigravity-fallback.png";
             }
         } else {
             console.warn("Warning: Failed to generate custom image via Gemini. Falling back to default banner...");
-            relativeImageSrc = "assets/timeline-4.png";
+            relativeImageSrc = "assets/antigravity-fallback.png";
         }
 
         // Step 4: Load articles.json, append new post, write back
