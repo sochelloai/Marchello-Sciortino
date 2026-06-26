@@ -5,16 +5,10 @@ const http = require('http');
 
 // Read API keys from environment
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
 if (!GEMINI_API_KEY) {
     console.error("Error: GEMINI_API_KEY is not defined in the environment.");
     console.error("-> To fix this on GitHub Actions, navigate to Settings -> Secrets and variables -> Actions in your repository, and create a Repository Secret named GEMINI_API_KEY.");
-    process.exit(1);
-}
-if (!OPENAI_API_KEY) {
-    console.error("Error: OPENAI_API_KEY is not defined in the environment.");
-    console.error("-> To fix this on GitHub Actions, navigate to Settings -> Secrets and variables -> Actions in your repository, and create a Repository Secret named OPENAI_API_KEY.");
     process.exit(1);
 }
 
@@ -292,48 +286,41 @@ You must return a raw JSON object containing exactly these fields (no markdown w
         console.log(`Tag: ${generatedArticle.tag}`);
         console.log(`Image Prompt: "${generatedArticle.image_prompt}"`);
 
-        // Step 2: Query OpenAI GPT Image API to generate the image
-        console.log("Calling OpenAI GPT Image API...");
-        const openaiUrl = "https://api.openai.com/v1/images/generations";
-        const openaiHeaders = {
-            "Authorization": `Bearer ${OPENAI_API_KEY}`
-        };
+        // Step 2: Query Gemini API to generate the image
+        console.log("Calling Gemini Image API...");
+        const geminiImageUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent?key=${GEMINI_API_KEY}`;
         const imageBody = {
-            model: "gpt-image-2",
-            prompt: generatedArticle.image_prompt + " minimal professional editorial style, atmospheric visual metaphor, cinematic lighting, no text, no captions.",
-            n: 1,
-            size: "1024x1024"
+            contents: [
+                {
+                    parts: [
+                        {
+                            text: generatedArticle.image_prompt + " minimal professional editorial style, atmospheric visual metaphor, cinematic lighting, no text, no captions."
+                        }
+                    ]
+                }
+            ],
+            generationConfig: {
+                responseMimeType: "image/png"
+            }
         };
 
-        let openaiRes;
+        let imageBuffer = null;
         let relativeImageSrc = "";
         try {
-            openaiRes = await postJson(openaiUrl, openaiHeaders, imageBody);
-        } catch (apiErr) {
-            // Check if model gpt-image-2 doesn't exist or is not supported
-            if (apiErr.message && (apiErr.message.includes("does not exist") || apiErr.message.includes("gpt-image-2"))) {
-                console.warn("Warning: OpenAI model 'gpt-image-2' is not available on this API key. Attempting fallback to 'gpt-image-1.5'...");
-                const fallbackBody = {
-                    model: "gpt-image-1.5",
-                    prompt: generatedArticle.image_prompt + " minimal professional editorial style, atmospheric visual metaphor, cinematic lighting, no text, no captions.",
-                    n: 1,
-                    size: "1024x1024"
-                };
-                try {
-                    openaiRes = await postJson(openaiUrl, openaiHeaders, fallbackBody);
-                } catch (fallbackErr) {
-                    console.error("OpenAI GPT Image 1.5 API HTTP request failed:", fallbackErr.message);
-                }
+            const imageRes = await postJson(geminiImageUrl, {}, imageBody);
+            const part = imageRes?.candidates?.[0]?.content?.parts?.[0];
+            if (part && part.inlineData && part.inlineData.data) {
+                imageBuffer = Buffer.from(part.inlineData.data, 'base64');
+                console.log(`Image generated successfully via Gemini.`);
             } else {
-                console.error("OpenAI GPT Image API HTTP request failed:", apiErr.message);
+                console.error("Gemini Image API returned an invalid response structure:", JSON.stringify(imageRes, null, 2));
             }
+        } catch (apiErr) {
+            console.error("Gemini Image API HTTP request failed:", apiErr.message);
         }
 
-        if (openaiRes && openaiRes.data && openaiRes.data.length > 0 && openaiRes.data[0].url) {
-            const imageUrl = openaiRes.data[0].url;
-            console.log(`Image generated successfully.`);
-
-            // Step 3: Download image and write locally
+        if (imageBuffer) {
+            // Step 3: Write image locally
             const blogAssetsDir = path.join(__dirname, '..', 'assets', 'blog');
             if (!fs.existsSync(blogAssetsDir)) {
                 fs.mkdirSync(blogAssetsDir, { recursive: true });
@@ -344,15 +331,15 @@ You must return a raw JSON object containing exactly these fields (no markdown w
             relativeImageSrc = `assets/blog/${localImageName}`;
 
             try {
-                console.log(`Downloading image to: ${localImagePath}`);
-                await downloadFile(imageUrl, localImagePath);
-                console.log("Image download complete.");
-            } catch (downloadErr) {
-                console.error("Failed to download generated image. Falling back to default banner:", downloadErr.message);
+                console.log(`Writing image to: ${localImagePath}`);
+                fs.writeFileSync(localImagePath, imageBuffer);
+                console.log("Image write complete.");
+            } catch (writeErr) {
+                console.error("Failed to write generated image. Falling back to default banner:", writeErr.message);
                 relativeImageSrc = "assets/timeline-4.png";
             }
         } else {
-            console.warn("Warning: Failed to generate custom image via OpenAI API. Falling back to default banner...");
+            console.warn("Warning: Failed to generate custom image via Gemini. Falling back to default banner...");
             relativeImageSrc = "assets/timeline-4.png";
         }
 
