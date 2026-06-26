@@ -42,16 +42,10 @@ export async function onRequestPost(context) {
     }
 
     try {
-        // 1. Create a dynamic context for ChelloAI
-        const contextResponse = await fetch("https://api.liveavatar.com/v1/contexts", {
-            method: "POST",
-            headers: {
-                "X-API-KEY": apiKey,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                name: "ChelloAI Companion",
-                prompt: `You are ChelloAI, the digital partner, conversational twin, and narrative companion of Marchello Sciortino. Your job is to interact with visitors, share insights about his life story, professional digital services, and his book.
+        // 1. Create or resolve a dynamic context for ChelloAI
+        let contextId = "";
+        const contextName = "ChelloAI Companion";
+        const contextPrompt = `You are ChelloAI, the digital partner, conversational twin, and narrative companion of Marchello Sciortino. Your job is to interact with visitors, share insights about his life story, professional digital services, and his book.
 
 Use the following detailed context to answer queries accurately:
 
@@ -84,18 +78,81 @@ Use the following detailed context to answer queries accurately:
 - Ask self-reflective questions and answer them immediately (e.g. "Do I complain about the wheelchair? Never. It gets me where I need to go.").
 - AVOID corporate jargon: "unlock", "empower", "optimize", "leverage", "synergy", "game-changer", "dive deep".
 - AVOID motivational clichés: "mindset is everything", "never give up".
-- Never seek pity or sympathy. Frame challenges positively as simple parameters.`,
-                opening_text: "Hello... I am ChelloAI (Marchello's digital twin). I am trained directly on his life story, digital services, and prompt systems. Want to explore how we turn constraints into creation? Ask away..."
-            })
-        });
+- Never seek pity or sympathy. Frame challenges positively as simple parameters.`;
+        const openingText = "Hello... I am ChelloAI (Marchello's digital twin). I am trained directly on his life story, digital services, and prompt systems. Want to explore how we turn constraints into creation? Ask away...";
 
-        if (!contextResponse.ok) {
-            const errText = await contextResponse.text();
-            throw new Error(`Failed to create context: ${contextResponse.status} - ${errText}`);
+        // Attempt to find existing context by name
+        try {
+            const listResponse = await fetch("https://api.liveavatar.com/v1/contexts", {
+                method: "GET",
+                headers: {
+                    "X-API-KEY": apiKey
+                }
+            });
+            if (listResponse.ok) {
+                const listData = await listResponse.json();
+                const contexts = Array.isArray(listData.data) 
+                    ? listData.data 
+                    : (listData.data?.contexts || listData.data?.list || []);
+                const existing = contexts.find(c => c && c.name === contextName);
+                if (existing && existing.id) {
+                    contextId = existing.id;
+                }
+            }
+        } catch (e) {
+            console.error("Failed to fetch existing contexts:", e);
         }
 
-        const contextData = await contextResponse.json();
-        const contextId = contextData.data.id;
+        // If not found, create a new context
+        if (!contextId) {
+            const contextResponse = await fetch("https://api.liveavatar.com/v1/contexts", {
+                method: "POST",
+                headers: {
+                    "X-API-KEY": apiKey,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name: contextName,
+                    prompt: contextPrompt,
+                    opening_text: openingText
+                })
+            });
+
+            if (!contextResponse.ok) {
+                const errText = await contextResponse.text();
+                
+                // Fallback check: if it failed with name already exists, query again to find the ID
+                if (contextResponse.status === 400 && errText.includes("already exists")) {
+                    try {
+                        const listResponse = await fetch("https://api.liveavatar.com/v1/contexts", {
+                            method: "GET",
+                            headers: {
+                                "X-API-KEY": apiKey
+                            }
+                        });
+                        if (listResponse.ok) {
+                            const listData = await listResponse.json();
+                            const contexts = Array.isArray(listData.data) 
+                                ? listData.data 
+                                : (listData.data?.contexts || listData.data?.list || []);
+                            const existing = contexts.find(c => c && c.name === contextName);
+                            if (existing && existing.id) {
+                                contextId = existing.id;
+                            }
+                        }
+                    } catch (e) {
+                        console.error("Failed to query contexts on fallback:", e);
+                    }
+                }
+                
+                if (!contextId) {
+                    throw new Error(`Failed to create context: ${contextResponse.status} - ${errText}`);
+                }
+            } else {
+                const contextData = await contextResponse.json();
+                contextId = contextData.data.id;
+            }
+        }
 
         // 2. Resolve Avatar ID and Sandbox Mode
         let avatarId = cleanEnvVar(getEnvVal(env, "LIVEAVATAR_AVATAR_ID"));
