@@ -138,10 +138,15 @@ Use the following detailed context to answer queries accurately:
                             const existing = contexts.find(c => c && c.name === contextName);
                             if (existing && existing.id) {
                                 contextId = existing.id;
+                            } else {
+                                throw new Error(`Context "${contextName}" already exists, but list query did not contain it. Raw list response: ${JSON.stringify(listData)}`);
                             }
+                        } else {
+                            const listErrText = await listResponse.text();
+                            throw new Error(`Context "${contextName}" already exists, but list query failed with status ${listResponse.status}: ${listErrText}`);
                         }
                     } catch (e) {
-                        console.error("Failed to query contexts on fallback:", e);
+                        throw new Error(`Context "${contextName}" already exists, but failed to query existing contexts: ${e.message}`);
                     }
                 }
                 
