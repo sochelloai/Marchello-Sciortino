@@ -41,7 +41,8 @@ jobs:
           git config --local user.name "GitHub Action Bot"
           
           # Stage changes
-          git add data/articles.json assets/blog/
+          git add data/articles.json
+          git add assets/blog/ 2>/dev/null || true
           
           # Check if there are changes staged for commit
           if git diff --cached --quiet; then
