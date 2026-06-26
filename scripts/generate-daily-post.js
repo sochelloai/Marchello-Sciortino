@@ -146,7 +146,7 @@ You must return a raw JSON object containing exactly these fields (no markdown w
 
         console.log("Calling Gemini API...");
         let geminiRes;
-        let usedModel = "gemini-1.5-pro";
+        let usedModel = "gemini-3.5-flash";
         try {
             const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${usedModel}:generateContent?key=${GEMINI_API_KEY}`;
             geminiRes = await postJson(geminiUrl, {}, {
