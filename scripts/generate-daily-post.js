@@ -87,6 +87,27 @@ function postJson(url, headers, body) {
     });
 }
 
+// Helper to make HTTPS GET requests with promise
+function getJson(url) {
+    return new Promise((resolve, reject) => {
+        https.get(url, (res) => {
+            let data = '';
+            res.on('data', (chunk) => data += chunk);
+            res.on('end', () => {
+                if (res.statusCode >= 200 && res.statusCode < 300) {
+                    try {
+                        resolve(JSON.parse(data));
+                    } catch (parseErr) {
+                        reject(new Error(`HTTP ${res.statusCode}: Failed to parse JSON response. Raw content: ${data}`));
+                    }
+                } else {
+                    reject(new Error(`HTTP ${res.statusCode}: ${data}`));
+                }
+            });
+        }).on('error', reject);
+    });
+}
+
 // Helper to download binary files with redirect-following support
 function downloadFile(url, destPath, redirectCount = 0) {
     if (redirectCount > 5) {
@@ -210,10 +231,40 @@ You must return a raw JSON object containing exactly these fields (no markdown w
                     });
                 } catch (fallbackErr) {
                     console.error("Gemini API Fallback Model request failed:", fallbackErr.message);
+                    try {
+                        console.log("Running diagnostics: Fetching available models for this API key...");
+                        const diagUrl = `https://generativelanguage.googleapis.com/v1beta/models?key=${GEMINI_API_KEY}`;
+                        const modelsList = await getJson(diagUrl);
+                        console.log("Available models returned by API:");
+                        if (modelsList && modelsList.models) {
+                            modelsList.models.forEach(m => {
+                                console.log(`- ${m.name} (supports: ${m.supportedMethods ? m.supportedMethods.join(', ') : 'none'})`);
+                            });
+                        } else {
+                            console.log(JSON.stringify(modelsList, null, 2));
+                        }
+                    } catch (diagErr) {
+                        console.error("Diagnostics failed to fetch model list:", diagErr.message);
+                    }
                     throw fallbackErr;
                 }
             } else {
                 console.error("Gemini API HTTP request failed:", apiErr.message);
+                try {
+                    console.log("Running diagnostics: Fetching available models for this API key...");
+                    const diagUrl = `https://generativelanguage.googleapis.com/v1beta/models?key=${GEMINI_API_KEY}`;
+                    const modelsList = await getJson(diagUrl);
+                    console.log("Available models returned by API:");
+                    if (modelsList && modelsList.models) {
+                        modelsList.models.forEach(m => {
+                            console.log(`- ${m.name} (supports: ${m.supportedMethods ? m.supportedMethods.join(', ') : 'none'})`);
+                        });
+                    } else {
+                        console.log(JSON.stringify(modelsList, null, 2));
+                    }
+                } catch (diagErr) {
+                    console.error("Diagnostics failed to fetch model list:", diagErr.message);
+                }
                 throw apiErr;
             }
         }
