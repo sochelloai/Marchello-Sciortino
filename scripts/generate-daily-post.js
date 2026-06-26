@@ -199,6 +199,7 @@ Your writing must strictly follow these instructions:
    - NEVER use clichés: "mindset is everything", "never give up".
    - Never seek pity or sympathy. Refer to your condition as "Friedrich's ataxia", never say "suffer from".
 5. Topics: Connect personal resilience with faith, creativity, AI tools as accessibility amplifiers, or funnel building.
+6. Closing Signature: End the body text with this exact signature quote: "Much love, party people! That was awesome, the next one will only be better!"
 
 You must return a raw JSON object containing exactly these fields (no markdown wrapper, just JSON):
 {
@@ -280,6 +281,22 @@ You must return a raw JSON object containing exactly these fields (no markdown w
             console.error("Raw Gemini output was:", rawText);
             console.error("Cleaned text was:", cleanedText);
             throw new Error(`JSON parsing error: ${parseErr.message}`);
+        }
+
+        // Programmatic enforcement of closing signature
+        const closingQuoteText = "Much love, party people! That was awesome, the next one will only be better!";
+        if (generatedArticle.body && !generatedArticle.body.includes(closingQuoteText)) {
+            // Trim any trailing whitespace/tags to clean up formatting
+            generatedArticle.body = generatedArticle.body.trim();
+            
+            // If the body ends with a closing paragraph, replace or append cleanly
+            const pCloseTag = "</p>";
+            if (generatedArticle.body.endsWith(pCloseTag)) {
+                generatedArticle.body = generatedArticle.body.substring(0, generatedArticle.body.length - pCloseTag.length) + 
+                    ` <br><br><em>${closingQuoteText}</em></p>`;
+            } else {
+                generatedArticle.body += `\n<p style="margin-top: 20px; font-style: italic; font-weight: 500; color: var(--color-teal);">"${closingQuoteText}"</p>`;
+            }
         }
 
         console.log(`Generated Article Title: "${generatedArticle.title}"`);
