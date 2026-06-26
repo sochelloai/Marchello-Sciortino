@@ -131,7 +131,20 @@ const Chat = {
             });
 
             if (!response.ok) {
-                throw new Error(`Server API returned error ${response.status}`);
+                let errorMsg = `Server API returned error ${response.status}`;
+                try {
+                    const errData = await response.json();
+                    if (errData && errData.message) {
+                        errorMsg = errData.message;
+                        if (errData.debugEnv && errData.debugEnv.LIVEAVATAR_API_KEY) {
+                            const keyInfo = errData.debugEnv.LIVEAVATAR_API_KEY;
+                            errorMsg += ` (Key: ${keyInfo.configured ? 'Configured, len=' + keyInfo.length + ', prefix=' + keyInfo.prefix + '...' : 'Not Configured'})`;
+                        }
+                    }
+                } catch (e) {
+                    // Fallback if not JSON
+                }
+                throw new Error(errorMsg);
             }
 
             const data = await response.json();
@@ -150,32 +163,18 @@ const Chat = {
                 this.iframeTarget.insertAdjacentHTML('beforeend', `
                     <div id="avatar-sandbox-alert" style="color: white; text-align: center; max-width: 450px; padding: 25px; font-family: var(--font-body); display: flex; flex-direction: column; align-items: center; gap: 15px; z-index: 10; margin: 0 auto;">
                         <span style="font-size: 2.2rem; filter: drop-shadow(0 0 10px rgba(10, 216, 173, 0.4));">🤖</span>
-                        <h4 style="margin: 0; color: var(--color-teal); font-size: 1.25rem; font-family: var(--font-heading); font-weight: 600;">Sandbox Mode Dev Alert</h4>
+                        <h4 style="margin: 0; color: var(--color-teal); font-size: 1.25rem; font-family: var(--font-heading); font-weight: 600;">LiveAvatar Key Required</h4>
                         <p style="font-size: 0.95rem; color: var(--color-gray-light); line-height: 1.5; margin: 0;">
-                            LiveAvatar API Key is not configured yet. Set up the key in your local settings to enable context streams.
+                            LiveAvatar API Key is not configured yet. Configure the key in Cloudflare Pages (for production) or in your local settings to initialize the avatar session.
                         </p>
                         <p style="font-size: 0.85rem; color: var(--color-gray-steel); line-height: 1.45; margin: 0; text-align: left; background: rgba(255,255,255,0.05); padding: 12px 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); width: 100%;">
-                            <strong>Setup Instructions:</strong><br>
+                            <strong>Local Setup Instructions:</strong><br>
                             1. Open <code>.dev.vars</code> in the project root.<br>
                             2. Add your key: <code>LIVEAVATAR_API_KEY="your_api_key_here"</code>.<br>
                             3. Restart the wrangler dev server.
                         </p>
-                        <button id="load-sandbox-demo-btn" class="btn btn-teal" style="width: 100%; padding: 10px; font-size: 0.9rem;">Test Free Sandbox Demo Iframe</button>
                     </div>
                 `);
-
-                // Allow loading the default sandbox demo iframe directly (requires no auth on iframe link)
-                const sandboxDemoBtn = document.getElementById('load-sandbox-demo-btn');
-                if (sandboxDemoBtn) {
-                    sandboxDemoBtn.addEventListener('click', () => {
-                        const alertDiv = document.getElementById('avatar-sandbox-alert');
-                        if (alertDiv) alertDiv.remove();
-                        
-                        this.iframeTarget.insertAdjacentHTML('beforeend', `
-                            <iframe src="https://embed.liveavatar.com/v1/65f9e3c9-d48b-4118-b73a-4ae2e3cbb8f0" allow="microphone" title="LiveAvatar Sandbox Demo" style="width: 100%; height: 100%; min-height: 440px; border: none;"></iframe>
-                        `);
-                    });
-                }
             } else {
                 throw new Error(data.message || "Failed to initialize LiveAvatar session.");
             }

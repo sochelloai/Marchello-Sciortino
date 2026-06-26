@@ -165,10 +165,36 @@ Use the following detailed context to answer queries accurately:
         });
 
     } catch (err) {
+        console.error("Error in create-avatar-embed:", err);
+        
+        // Safely gather environment variable metadata for troubleshooting without leaking secrets
+        const debugEnv = {};
+        if (env) {
+            for (const key of Object.keys(env)) {
+                const val = env[key];
+                if (val) {
+                    const str = String(val);
+                    debugEnv[key] = {
+                        configured: true,
+                        length: str.length,
+                        prefix: str.substring(0, Math.min(4, str.length)),
+                        suffix: str.substring(Math.max(0, str.length - 4))
+                    };
+                } else {
+                    debugEnv[key] = {
+                        configured: false,
+                        length: 0
+                    };
+                }
+            }
+        }
+
         return new Response(JSON.stringify({
             success: false,
             error: "LiveAvatar API Error",
-            message: err.message
+            message: err.message,
+            stack: err.stack,
+            debugEnv
         }), {
             status: 500,
             headers: {
