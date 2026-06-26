@@ -992,9 +992,7 @@ Router.register('/mission', () => `
         <div class="container">
             <span class="section-tag text-teal text-center" style="display: block; margin: 0 auto 10px auto;">Framework</span>
             <h2 class="text-center" style="color: white; margin-bottom: var(--spacing-lg);">The W.I.N. Framework</h2>
-        </div>
-        
-        <div class="win-grid">
+            <div class="win-grid" style="margin-top: 0;">
             <!-- Card 1: W -->
             <div class="win-card-wrapper" data-card="W" tabindex="0" role="button" aria-label="Warrior Story, click to reveal details">
                 <div class="win-card-tooltip">Click to Flip (Animations Paused)</div>
@@ -1121,6 +1119,7 @@ Router.register('/mission', () => `
                 </div>
             </div>
         </div>
+    </div>
     </section>
 
     <section class="section bg-white">
