@@ -420,60 +420,8 @@ function cleanupHeroParallax() {
  */
 const WinCardsEffect = {
     init() {
-        const cards = document.querySelectorAll('.win-card-wrapper');
-        cards.forEach(card => {
-            const tiltContainer = card.querySelector('.win-card-tilt');
-            if (!tiltContainer) return;
-
-            // Hover (3D Tilt & Glare Coordinate calculations)
-            card.addEventListener('mouseenter', () => {
-                const video = card.querySelector('.win-card-video');
-                if (video) {
-                    video.play().catch(err => console.log('Video play interrupted:', err));
-                }
-            });
-            
-            card.addEventListener('mousemove', (e) => this.handleMouseMove(e, card, tiltContainer));
-            
-            card.addEventListener('mouseleave', () => {
-                const slide = card.closest('.win-snap-slide');
-                const isSlideActive = slide && slide.classList.contains('is-active');
-                const video = card.querySelector('.win-card-video');
-                if (video && !isSlideActive) {
-                    video.pause();
-                }
-                this.handleMouseLeave(tiltContainer);
-            });
-        });
-    },
-    
-    handleMouseMove(e, wrapper, tiltContainer) {
-        // Accessibility check: disable tilt when animations are paused
-        if (document.documentElement.classList.contains('accessibility-paused-animations')) {
-            return;
-        }
-
-        const rect = wrapper.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        
-        // Calculate percentages for radial glare overlay
-        const pctX = (x / rect.width) * 100;
-        const pctY = (y / rect.height) * 100;
-        
-        wrapper.style.setProperty('--glare-x', `${pctX}%`);
-        wrapper.style.setProperty('--glare-y', `${pctY}%`);
-        
-        // Calculate tilt rotation (-6 to 6 degrees max to be subtle but noticeable)
-        const tiltX = -((y / rect.height) - 0.5) * 12;
-        const tiltY = ((x / rect.width) - 0.5) * 12;
-        
-        tiltContainer.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.02)`;
-    },
-    
-    handleMouseLeave(tiltContainer) {
-        // Reset tilt transformation back to initial state
-        tiltContainer.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+        // Hover animations and videos on cards are removed as requested.
+        return;
     }
 };
 
@@ -481,114 +429,111 @@ let winScrollListener = null;
 
 /**
  * initWinScrollSequence - Sets up scroll-linked sequencing animation,
- * sidebar step bullet tracking, and video auto-playback.
+ * sidebar step bullet tracking, and card opacity/scale interpolation on scroll.
  */
 function initWinScrollSequence() {
-    const container = document.querySelector('.scroll-snap-container');
-    if (!container) return;
+    const outer = document.querySelector('.win-scroll-trigger-section');
+    const inner = document.querySelector('.win-sticky-container');
+    if (!outer || !inner) return;
 
-    const slides = container.querySelectorAll('.win-snap-slide');
-    const steps = document.querySelectorAll('.win-scroll-indicator-inline .win-indicator-step');
-    const progressFill = document.querySelector('.win-scroll-indicator-inline .win-indicator-progress');
+    const cards = inner.querySelectorAll('.win-card-wrapper');
+    const steps = inner.querySelectorAll('.win-scroll-indicator-inline .win-indicator-step');
+    const progressFill = inner.querySelector('.win-scroll-indicator-inline .win-indicator-progress');
 
-    // Handle dot indicators click scroll navigation
+    // Handle dot indicators click to scroll window to target active state offsets
     steps.forEach((step, index) => {
-        step.addEventListener('click', () => {
-            if (slides[index]) {
-                const slideTop = slides[index].offsetTop - container.offsetTop;
-                container.scrollTo({
-                    top: slideTop,
-                    behavior: 'smooth'
-                });
-            }
+        step.addEventListener('click', (e) => {
+            e.preventDefault();
+            const rect = outer.getBoundingClientRect();
+            const scrollTop = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+            const totalScrollableHeight = outer.offsetHeight - window.innerHeight;
+            
+            // Map index to progress values: Step 0 -> 0.0, Step 1 -> 0.45, Step 2 -> 0.85
+            let targetProgress = 0;
+            if (index === 0) targetProgress = 0;
+            if (index === 1) targetProgress = 0.45;
+            if (index === 2) targetProgress = 0.85;
+
+            const targetTop = rect.top + scrollTop + (totalScrollableHeight * targetProgress);
+            
+            // Standard scrollTo will scroll smoothly because html { scroll-behavior: smooth; } is active in CSS.
+            // This is robust against headless browser smooth-scroll option bugs.
+            window.scrollTo(0, targetTop);
         });
     });
 
     const handleScroll = () => {
         const animationsPaused = document.documentElement.classList.contains('accessibility-paused-animations');
+        const track = inner.querySelector('.win-right-scroll-col');
+
         if (animationsPaused) {
-            // Under accessibility paused animations, just activate everything
-            slides.forEach(slide => {
-                slide.classList.add('is-active');
-                const video = slide.querySelector('.win-card-video');
-                if (video && video.paused) {
-                    video.play().catch(e => {});
-                }
-            });
+            // Under accessibility paused animations, reset track translations
+            if (track) {
+                track.style.transform = 'none';
+                track.style.position = 'relative';
+            }
             steps.forEach(step => step.classList.add('active-step'));
             if (progressFill) progressFill.style.setProperty('--win-progress', '100%');
             return;
         }
 
-        const scrollTop = container.scrollTop;
-        const scrollHeight = container.scrollHeight - container.clientHeight;
-        
-        // Calculate progress percentage
-        let progress = 0;
-        if (scrollHeight > 0) {
-            progress = (scrollTop / scrollHeight) * 100;
-        }
+        const rect = outer.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+
+        // Skip calculations if the outer container is out of view
+        if (rect.top > viewportHeight || rect.bottom < 0) return;
+
+        const totalScrollableHeight = rect.height - viewportHeight;
+        let progress = -rect.top / totalScrollableHeight;
+        progress = Math.max(0, Math.min(1, progress));
+
+        // Update progress line custom CSS variable
         if (progressFill) {
-            progressFill.style.setProperty('--win-progress', `${progress}%`);
+            progressFill.style.setProperty('--win-progress', `${progress * 100}%`);
         }
 
-        // Determine which slide is active (snap container centers viewport)
-        const containerHeight = container.clientHeight;
-        const centerOffset = containerHeight / 2;
+        // Determine active step index
         let activeIndex = 0;
+        if (progress < 0.33) {
+            activeIndex = 0;
+        } else if (progress < 0.66) {
+            activeIndex = 1;
+        } else {
+            activeIndex = 2;
+        }
 
-        slides.forEach((slide, index) => {
-            const slideTop = slide.offsetTop - container.offsetTop;
-            const slideBottom = slideTop + slide.clientHeight;
-            const viewportCenter = scrollTop + centerOffset;
-
-            if (viewportCenter >= slideTop && viewportCenter < slideBottom) {
-                activeIndex = index;
-            }
-        });
-
-        // Update active class on slides and steps, handle videos
-        slides.forEach((slide, index) => {
-            const video = slide.querySelector('.win-card-video');
-            if (index === activeIndex) {
-                slide.classList.add('is-active');
-                if (video && video.paused) {
-                    video.play().catch(err => console.log('Auto-play video interrupted:', err));
-                }
-            } else {
-                slide.classList.remove('is-active');
-                if (video && !video.paused) {
-                    video.pause();
-                }
-            }
-        });
-
-        steps.forEach((step, index) => {
-            if (index === activeIndex) {
+        steps.forEach((step, idx) => {
+            if (idx === activeIndex) {
                 step.classList.add('active-step');
             } else {
                 step.classList.remove('active-step');
             }
         });
+
+        // Translate sliding track to lock active card in view
+        // Card height is 460px and gap is 40px, so translation step is 500px
+        if (track) {
+            const cardHeight = 460;
+            const gap = 40;
+            const translateY = -activeIndex * (cardHeight + gap);
+            track.style.transform = `translate3d(0, ${translateY}px, 0)`;
+        }
     };
 
     winScrollListener = handleScroll;
-    container.addEventListener('scroll', winScrollListener, { passive: true });
-    
-    // Listen to resize to recompute scroll position
+    window.addEventListener('scroll', winScrollListener, { passive: true });
     window.addEventListener('resize', handleScroll);
 
-    // Initial frame update
+    // Initial frame run
     handleScroll();
 }
 
 function cleanupWinScrollSequence() {
-    const container = document.querySelector('.scroll-snap-container');
-    if (container && winScrollListener) {
-        container.removeEventListener('scroll', winScrollListener);
+    if (winScrollListener) {
+        window.removeEventListener('scroll', winScrollListener);
+        window.removeEventListener('resize', winScrollListener);
+        winScrollListener = null;
     }
-    window.removeEventListener('resize', winScrollListener);
-    winScrollListener = null;
 }
 
 let timelineScrollListener = null;

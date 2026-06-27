@@ -381,8 +381,16 @@ Router.register('/home', () => `
 
 // 2. Story Page Template
 Router.register('/story', () => `
-    <div class="page-intro">
-        <div class="container text-center">
+    <div class="page-intro" style="position: relative; overflow: hidden;">
+        <!-- Curved background gold lines using inline SVG -->
+        <svg style="position: absolute; left: 0; top: 0; height: 100%; width: 220px; pointer-events: none; opacity: 0.25;" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path d="M -10,0 Q 20,40 100,50 M -10,15 Q 20,55 100,65 M -10,30 Q 20,70 100,80 M -10,45 Q 20,85 100,95 M -10,60 Q 20,100 100,110" fill="none" stroke="var(--color-teal)" stroke-width="0.3" />
+        </svg>
+        <svg style="position: absolute; right: 0; top: 0; height: 100%; width: 220px; pointer-events: none; opacity: 0.25;" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path d="M 110,0 Q 80,40 0,50 M 110,15 Q 80,55 0,65 M 110,30 Q 80,70 0,80 M 110,45 Q 80,85 0,95 M 110,60 Q 80,100 0,110" fill="none" stroke="var(--color-teal)" stroke-width="0.3" />
+        </svg>
+        
+        <div class="container text-center" style="position: relative; z-index: 2;">
             <span class="section-tag text-teal">Timeline</span>
             <h1 style="color: white;">My Journey</h1>
             <p class="section-desc" style="color: var(--color-gray-light);">
@@ -988,103 +996,99 @@ Router.register('/mission', () => `
     </section>
 
     <!-- Dynamic W.I.N. Framework Section -->
-    <section class="win-section scroll-snap-container" style="border-top: 1px solid rgba(10, 216, 173, 0.1); border-bottom: 1px solid rgba(10, 216, 173, 0.1); position: relative; overflow-y: auto; background-color: var(--color-navy);">
-        <div class="container win-two-col-container">
+    <section class="win-scroll-trigger-section" style="position: relative; height: 300vh; background-color: var(--color-navy); border-top: 1px solid rgba(10, 216, 173, 0.1); border-bottom: 1px solid rgba(10, 216, 173, 0.1);">
+        
+        <!-- Sticky inner container: height 100vh -->
+        <div class="win-sticky-container" style="position: sticky; top: 0; height: 100vh; height: 100dvh; display: flex; align-items: center; justify-content: center; overflow: hidden; width: 100%;">
             
-            <!-- Left Sticky Column -->
-            <div class="win-left-sticky-col">
-                <span class="section-tag text-teal" style="display: block; margin-bottom: 10px;">Framework</span>
-                <h2 style="color: white; margin-bottom: var(--spacing-md); font-size: clamp(2rem, 3.5vw, 3rem); font-family: var(--font-heading); font-weight: 800; text-align: left;">The W.I.N. Framework</h2>
-                <p style="color: var(--color-gray-light); line-height: 1.6; font-size: 1.05rem; margin-bottom: 40px; text-align: left; max-width: 360px;">
-                    A daily system to reframe limitations as parameters, focus on high-value digital execution, and automate consistent progress.
-                </p>
+            <div class="container win-two-col-container">
                 
-                <!-- Vertical Scroll Indicator Dot Matrix -->
-                <div class="win-scroll-indicator-inline" aria-hidden="true">
-                    <div class="win-indicator-track">
-                        <div class="win-indicator-progress"></div>
+                <!-- Left Sticky Column -->
+                <div class="win-left-sticky-col">
+                    <span class="section-tag text-teal" style="display: block; margin-bottom: 10px;">Framework</span>
+                    <h2 style="color: white; margin-bottom: var(--spacing-md); font-size: clamp(2rem, 3.5vw, 3rem); font-family: var(--font-heading); font-weight: 800; text-align: left;">The W.I.N. Framework</h2>
+                    <p style="color: var(--color-gray-light); line-height: 1.6; font-size: 1.05rem; margin-bottom: 40px; text-align: left; max-width: 360px;">
+                        A daily system to reframe limitations as parameters, focus on high-value digital execution, and automate consistent progress.
+                    </p>
+                    
+                    <!-- Vertical Scroll Indicator Dot Matrix -->
+                    <div class="win-scroll-indicator-inline" aria-hidden="true">
+                        <div class="win-indicator-track">
+                            <div class="win-indicator-progress"></div>
+                        </div>
+                        <button class="win-indicator-step active-step" data-step="0" aria-label="Warrior Story">
+                            <span class="step-dot"></span>
+                            <span class="step-label">W: Warrior Story</span>
+                        </button>
+                        <button class="win-indicator-step" data-step="1" aria-label="Inspiring Impact">
+                            <span class="step-dot"></span>
+                            <span class="step-label">I: Inspiring Impact</span>
+                        </button>
+                        <button class="win-indicator-step" data-step="2" aria-label="Nurturing Outcomes">
+                            <span class="step-dot"></span>
+                            <span class="step-label">N: Nurturing Outcomes</span>
+                        </button>
                     </div>
-                    <button class="win-indicator-step active-step" data-step="0" aria-label="Warrior Story">
-                        <span class="step-dot"></span>
-                        <span class="step-label">W: Warrior Story</span>
-                    </button>
-                    <button class="win-indicator-step" data-step="1" aria-label="Inspiring Impact">
-                        <span class="step-dot"></span>
-                        <span class="step-label">I: Inspiring Impact</span>
-                    </button>
-                    <button class="win-indicator-step" data-step="2" aria-label="Nurturing Outcomes">
-                        <span class="step-dot"></span>
-                        <span class="step-label">N: Nurturing Outcomes</span>
-                    </button>
                 </div>
+
+                <!-- Right Viewport Wrapper (Frame for vertical slider) -->
+                <div class="win-right-viewport">
+                    
+                    <!-- Sliding cards track -->
+                    <div class="win-right-scroll-col">
+                        
+                        <!-- Card 1: Warrior Story -->
+                        <div class="win-card-wrapper" data-card="W" tabindex="0" aria-label="Warrior Story: Acknowledge your constraints. Detail: Acknowledge your limitations fully as design parameters rather than roadblocks.">
+                            <div class="win-card-tilt">
+                                <div class="win-card">
+                                    <div class="win-card-content">
+                                        <span class="win-badge">Phase W</span>
+                                        <span class="win-letter">W</span>
+                                        <h3 class="win-card-title">Warrior Story</h3>
+                                        <p class="win-card-teaser">Acknowledge your constraints.</p>
+                                        <div class="win-divider"></div>
+                                        <p class="win-card-description">Acknowledge your limitations fully as design parameters rather than roadblocks. Accept your reality today, map out your boundary conditions, and design a strategic path around them. By shifting from pity to parameter-based execution, we redirect our focus toward what can actually be built.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 2: Inspiring Impact -->
+                        <div class="win-card-wrapper" data-card="I" tabindex="0" aria-label="Inspiring Impact: Focus on high-value execution. Detail: Identify the highest-value digital outcomes you can produce within your coordinates.">
+                            <div class="win-card-tilt">
+                                <div class="win-card">
+                                    <div class="win-card-content">
+                                        <span class="win-badge">Phase I</span>
+                                        <span class="win-letter">I</span>
+                                        <h3 class="win-card-title">Inspiring Impact</h3>
+                                        <p class="win-card-teaser">Focus on high-value execution.</p>
+                                        <div class="win-divider"></div>
+                                        <p class="win-card-description">Identify the highest-value digital outcomes you can produce within your coordinates. Do not waste energy on busywork. Focus on producing high-impact assets—like custom web design, logic-driven systems, or copy—that prove what is possible when constraint meets deliberate creativity.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 3: Nurturing Outcomes -->
+                        <div class="win-card-wrapper" data-card="N" tabindex="0" aria-label="Nurturing Outcomes: Build steady daily progress. Detail: Establish consistent systems to protect your energy while maintaining progress.">
+                            <div class="win-card-tilt">
+                                <div class="win-card">
+                                    <div class="win-card-content">
+                                        <span class="win-badge">Phase N</span>
+                                        <span class="win-letter">N</span>
+                                        <h3 class="win-card-title">Nurturing Outcomes</h3>
+                                        <p class="win-card-teaser">Build steady daily progress.</p>
+                                        <div class="win-divider"></div>
+                                        <p class="win-card-description">Establish consistent systems to protect your energy while maintaining progress. Integrate modern AI tools, voice-to-text transcription, and automated workflows to handle the repetitive, manual tasks. Nurture your projects through slow, daily increments—making sure every ounce of coordination you expend goes directly to high-value creation.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
             </div>
-
-            <!-- Right Scroll Snapping Column -->
-            <div class="win-right-scroll-col">
-                <!-- Slide 1: Warrior Story -->
-                <div class="win-snap-slide" data-slide-index="0">
-                    <div class="win-card-wrapper" data-card="W" tabindex="0" aria-label="Warrior Story: Acknowledge your constraints. Detail: Acknowledge your limits as parameters to design around.">
-                        <div class="win-card-tilt">
-                            <div class="win-card">
-                                <video class="win-card-video" src="assets/videos/W.mp4" loop muted playsinline preload="auto"></video>
-                                <div class="glare-card-glare"></div>
-                                <div class="glare-card-rainbow"></div>
-                                <div class="win-card-content">
-                                    <span class="win-badge">Phase W</span>
-                                    <span class="win-letter">W</span>
-                                    <h3 class="win-card-title">Warrior Story</h3>
-                                    <p class="win-card-teaser">Acknowledge your constraints.</p>
-                                    <div class="win-divider"></div>
-                                    <p class="win-card-description">Acknowledge your limits as parameters to design around.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Slide 2: Inspiring Impact -->
-                <div class="win-snap-slide" data-slide-index="1">
-                    <div class="win-card-wrapper" data-card="I" tabindex="0" aria-label="Inspiring Impact: Focus on high-value execution. Detail: Build digital projects that show what is possible with limited energy.">
-                        <div class="win-card-tilt">
-                            <div class="win-card">
-                                <video class="win-card-video" src="assets/videos/I.mp4" loop muted playsinline preload="auto"></video>
-                                <div class="glare-card-glare"></div>
-                                <div class="glare-card-rainbow"></div>
-                                <div class="win-card-content">
-                                    <span class="win-badge">Phase I</span>
-                                    <span class="win-letter">I</span>
-                                    <h3 class="win-card-title">Inspiring Impact</h3>
-                                    <p class="win-card-teaser">Focus on high-value execution.</p>
-                                    <div class="win-divider"></div>
-                                    <p class="win-card-description">Build digital projects that show what is possible with limited energy.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Slide 3: Nurturing Outcomes -->
-                <div class="win-snap-slide" data-slide-index="2">
-                    <div class="win-card-wrapper" data-card="N" tabindex="0" aria-label="Nurturing Outcomes: Build steady daily progress. Detail: Use AI tools and automation to handle repetitive tasks and save your energy.">
-                        <div class="win-card-tilt">
-                            <div class="win-card">
-                                <video class="win-card-video" src="assets/videos/N.mp4" loop muted playsinline preload="auto"></video>
-                                <div class="glare-card-glare"></div>
-                                <div class="glare-card-rainbow"></div>
-                                <div class="win-card-content">
-                                    <span class="win-badge">Phase N</span>
-                                    <span class="win-letter">N</span>
-                                    <h3 class="win-card-title">Nurturing Outcomes</h3>
-                                    <p class="win-card-teaser">Build steady daily progress.</p>
-                                    <div class="win-divider"></div>
-                                    <p class="win-card-description">Use AI tools and automation to handle repetitive tasks and save your energy.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </section>
 
@@ -1144,8 +1148,16 @@ Router.register('/brain', () => `
 
 // 5. Speaking Page Template
 Router.register('/speaking', () => `
-    <div class="page-intro">
-        <div class="container text-center">
+    <div class="page-intro" style="position: relative; overflow: hidden;">
+        <!-- Curved background gold lines using inline SVG -->
+        <svg style="position: absolute; left: 0; top: 0; height: 100%; width: 220px; pointer-events: none; opacity: 0.25;" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path d="M -10,0 Q 20,40 100,50 M -10,15 Q 20,55 100,65 M -10,30 Q 20,70 100,80 M -10,45 Q 20,85 100,95 M -10,60 Q 20,100 100,110" fill="none" stroke="var(--color-teal)" stroke-width="0.3" />
+        </svg>
+        <svg style="position: absolute; right: 0; top: 0; height: 100%; width: 220px; pointer-events: none; opacity: 0.25;" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path d="M 110,0 Q 80,40 0,50 M 110,15 Q 80,55 0,65 M 110,30 Q 80,70 0,80 M 110,45 Q 80,85 0,95 M 110,60 Q 80,100 0,110" fill="none" stroke="var(--color-teal)" stroke-width="0.3" />
+        </svg>
+        
+        <div class="container text-center" style="position: relative; z-index: 2;">
             <span class="section-tag text-teal">Keynotes</span>
             <h1 style="color: white;">Speaking & Keynotes</h1>
             <p class="section-desc" style="color: var(--color-gray-light);">
@@ -1424,8 +1436,16 @@ Router.register('/speaking', () => `
 
 // 8. ChelloAI Page Template
 Router.register('/chelloai', () => `
-    <div class="page-intro chello-ai-hero">
-        <div class="container text-center">
+    <div class="page-intro chello-ai-hero" style="position: relative; overflow: hidden; border-bottom: 2px solid var(--color-teal);">
+        <!-- Curved background gold lines using inline SVG -->
+        <svg style="position: absolute; left: 0; top: 0; height: 100%; width: 220px; pointer-events: none; opacity: 0.25;" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path d="M -10,0 Q 20,40 100,50 M -10,15 Q 20,55 100,65 M -10,30 Q 20,70 100,80 M -10,45 Q 20,85 100,95 M -10,60 Q 20,100 100,110" fill="none" stroke="var(--color-teal)" stroke-width="0.3" />
+        </svg>
+        <svg style="position: absolute; right: 0; top: 0; height: 100%; width: 220px; pointer-events: none; opacity: 0.25;" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path d="M 110,0 Q 80,40 0,50 M 110,15 Q 80,55 0,65 M 110,30 Q 80,70 0,80 M 110,45 Q 80,85 0,95 M 110,60 Q 80,100 0,110" fill="none" stroke="var(--color-teal)" stroke-width="0.3" />
+        </svg>
+        
+        <div class="container text-center" style="position: relative; z-index: 2;">
             <span class="section-tag text-teal">Digital Companion</span>
             <h1 style="color: white;">ChelloAI Partner</h1>
             <p class="section-desc" style="color: var(--color-gray-light);">
@@ -1740,8 +1760,16 @@ Router.register('/contact', () => {
     }
 
     return `
-    <div class="page-intro">
-        <div class="container text-center">
+    <div class="page-intro" style="position: relative; overflow: hidden;">
+        <!-- Curved background gold lines using inline SVG -->
+        <svg style="position: absolute; left: 0; top: 0; height: 100%; width: 220px; pointer-events: none; opacity: 0.25;" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path d="M -10,0 Q 20,40 100,50 M -10,15 Q 20,55 100,65 M -10,30 Q 20,70 100,80 M -10,45 Q 20,85 100,95 M -10,60 Q 20,100 100,110" fill="none" stroke="var(--color-teal)" stroke-width="0.3" />
+        </svg>
+        <svg style="position: absolute; right: 0; top: 0; height: 100%; width: 220px; pointer-events: none; opacity: 0.25;" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path d="M 110,0 Q 80,40 0,50 M 110,15 Q 80,55 0,65 M 110,30 Q 80,70 0,80 M 110,45 Q 80,85 0,95 M 110,60 Q 80,100 0,110" fill="none" stroke="var(--color-teal)" stroke-width="0.3" />
+        </svg>
+        
+        <div class="container text-center" style="position: relative; z-index: 2;">
             <span class="section-tag text-teal">Connect</span>
             <h1 style="color: white;">Start a Conversation</h1>
             <p class="section-desc" style="color: var(--color-gray-light);">

@@ -1757,41 +1757,34 @@ textarea.form-control {
 }
 
 /* Scroll Snap Slide Active Animations */
-.win-snap-slide {
-    opacity: 0.35;
-    transform: scale(0.96);
-    transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+/* W.I.N. Sticky Scroll Showcase */
+.win-scroll-trigger-section {
+    position: relative;
+    height: 300vh;
+    background-color: var(--color-navy);
 }
 
-.win-snap-slide.is-active {
-    opacity: 1;
-    transform: scale(1);
+.win-sticky-container {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    width: 100%;
 }
 
-.win-snap-slide .win-card-wrapper {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1) 0.15s, transform 0.8s cubic-bezier(0.25, 1, 0.5, 1) 0.15s;
-}
-
-.win-snap-slide.is-active .win-card-wrapper {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* /* W.I.N. Two-Column Sticky Showcase */
 .win-two-col-container {
     display: flex;
     gap: var(--spacing-lg);
     position: relative;
     width: 100%;
+    align-items: center;
 }
 
 .win-left-sticky-col {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    height: 100dvh;
     width: 40%;
     display: flex;
     flex-direction: column;
@@ -1800,10 +1793,22 @@ textarea.form-control {
     z-index: 10;
 }
 
-.win-right-scroll-col {
+.win-right-viewport {
     width: 60%;
+    position: relative;
+    height: 460px;
+    overflow: hidden;
+}
+
+.win-right-scroll-col {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
     display: flex;
     flex-direction: column;
+    gap: 40px;
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.3, 1);
 }
 
 /* W.I.N. Inline Scroll Indicator */
@@ -1907,18 +1912,36 @@ textarea.form-control {
     color: var(--color-white);
 }
 
+/* Wide card overrides for expanded descriptions */
+.win-card-wrapper {
+    width: 100%;
+    max-width: 500px;
+    display: block;
+    text-align: left;
+    position: relative; /* layout relative inside stack track */
+    margin: 0 auto;
+    border-radius: 1.25rem;
+    transition: none !important;
+}
+
 /* Stacking for tablet & mobile responsiveness */
 @media (max-width: 992px) {
+    .win-scroll-trigger-section {
+        height: auto !important;
+    }
+    .win-sticky-container {
+        position: relative !important;
+        height: auto !important;
+        overflow: visible !important;
+        padding: 60px 0 !important;
+    }
     .win-two-col-container {
         flex-direction: column;
         gap: var(--spacing-sm);
     }
     .win-left-sticky-col {
-        position: relative !important;
-        top: 0 !important;
-        height: auto !important;
         width: 100% !important;
-        padding: 80px 20px 20px 20px !important;
+        padding: 0 20px !important;
         align-items: center !important;
     }
     .win-left-sticky-col h2,
@@ -1929,13 +1952,32 @@ textarea.form-control {
     .win-scroll-indicator-inline {
         display: none !important;
     }
+    .win-right-viewport {
+        width: 100% !important;
+        height: auto !important;
+        overflow: visible !important;
+    }
     .win-right-scroll-col {
         width: 100% !important;
+        height: auto !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 30px !important;
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        transform: none !important;
+        transition: none !important;
+        padding: 0 20px !important;
     }
-    .win-snap-slide {
-        min-height: 85vh !important;
-        min-height: 85dvh !important;
-        padding: 40px 0 !important;
+    .win-card-wrapper {
+        position: relative !important;
+        opacity: 1 !important;
+        transform: none !important;
+        pointer-events: auto !important;
+        max-width: 100% !important;
+        left: auto !important;
+        top: auto !important;
     }
 }
 
@@ -1975,32 +2017,49 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
 
 /* Prefers Reduced Motion overrides */
 @media (prefers-reduced-motion: reduce) {
-    .win-left-sticky-col {
-        position: relative !important;
-        top: 0 !important;
+    .win-scroll-trigger-section {
         height: auto !important;
+    }
+    .win-sticky-container {
+        position: relative !important;
+        height: auto !important;
+        overflow: visible !important;
+        padding: 60px 0 !important;
+    }
+    .win-two-col-container {
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+    .win-left-sticky-col {
         width: 100% !important;
-        padding: 80px 20px 20px 20px !important;
         align-items: center !important;
     }
     .win-left-sticky-col h2,
     .win-left-sticky-col p {
         text-align: center !important;
     }
+    .win-right-viewport {
+        width: 100% !important;
+        height: auto !important;
+        overflow: visible !important;
+    }
     .win-right-scroll-col {
         width: 100% !important;
-    }
-    .win-snap-slide {
-        opacity: 1 !important;
+        height: auto !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 30px !important;
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
         transform: none !important;
         transition: none !important;
-        min-height: auto !important;
-        padding: 40px 0 !important;
     }
-    .win-snap-slide .win-card-wrapper {
+    .win-card-wrapper {
+        position: relative !important;
         opacity: 1 !important;
         transform: none !important;
-        transition: none !important;
+        pointer-events: auto !important;
     }
     .win-scroll-indicator-inline {
         display: none !important;
