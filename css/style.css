@@ -1779,30 +1779,57 @@ textarea.form-control {
     transform: translateY(0);
 }
 
-/* W.I.N. Vertical Scroll Indicator */
-.win-scroll-indicator {
-    position: absolute;
-    right: 40px;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 100;
+/* /* W.I.N. Two-Column Sticky Showcase */
+.win-two-col-container {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 25px;
+    gap: var(--spacing-lg);
+    position: relative;
+    width: 100%;
 }
 
-.win-indicator-track {
+.win-left-sticky-col {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100dvh;
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    z-index: 10;
+}
+
+.win-right-scroll-col {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* W.I.N. Inline Scroll Indicator */
+.win-scroll-indicator-inline {
+    position: relative;
+    margin-top: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    width: 100%;
+    max-width: 320px;
+    padding-left: 20px; /* space for track */
+}
+
+.win-scroll-indicator-inline .win-indicator-track {
     position: absolute;
+    left: 5px;
     top: 10px;
     bottom: 10px;
     width: 2px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.15);
     border-radius: 1px;
     z-index: 1;
 }
 
-.win-indicator-progress {
+.win-scroll-indicator-inline .win-indicator-progress {
     position: absolute;
     top: 0;
     left: 0;
@@ -1813,83 +1840,102 @@ textarea.form-control {
     transition: height 0.1s ease;
 }
 
-.win-indicator-step {
+.win-scroll-indicator-inline .win-indicator-step {
     position: relative;
     z-index: 2;
     cursor: pointer;
     display: flex;
     align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
+    justify-content: flex-start;
+    gap: 15px;
     background: transparent;
     border: none;
     padding: 0;
-    border-radius: 50%;
+    width: 100%;
+    text-align: left;
 }
 
-.win-indicator-step:focus-visible {
+.win-scroll-indicator-inline .win-indicator-step:focus-visible {
     outline: 2px solid var(--color-teal);
     outline-offset: 4px;
 }
 
-.win-indicator-step .step-dot {
+.win-scroll-indicator-inline .win-indicator-step .step-dot {
     width: 8px;
     height: 8px;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.3);
     transition: all 0.3s ease;
+    flex-shrink: 0;
+    margin-left: -18px; /* align with track */
+    z-index: 3;
 }
 
-.win-indicator-step:hover .step-dot {
+.win-scroll-indicator-inline .win-indicator-step:hover .step-dot {
     background: rgba(255, 255, 255, 0.8);
     transform: scale(1.3);
 }
 
-.win-indicator-step.active-step .step-dot {
+.win-scroll-indicator-inline .win-indicator-step.active-step .step-dot {
     background: var(--color-teal);
     box-shadow: 0 0 10px var(--color-teal);
     transform: scale(1.5);
 }
 
-.win-indicator-step[data-step="2"].active-step .step-dot {
+.win-scroll-indicator-inline .win-indicator-step[data-step="1"].active-step .step-dot {
     background: #37b1ff;
     box-shadow: 0 0 10px #37b1ff;
 }
 
-.win-indicator-step[data-step="3"].active-step .step-dot {
+.win-scroll-indicator-inline .win-indicator-step[data-step="2"].active-step .step-dot {
     background: var(--color-gold);
     box-shadow: 0 0 10px var(--color-gold);
 }
 
-.win-indicator-step .step-label {
-    position: absolute;
-    right: 35px;
+.win-scroll-indicator-inline .win-indicator-step .step-label {
     font-size: 0.72rem;
     font-weight: 700;
     color: rgba(255, 255, 255, 0.5);
     text-transform: uppercase;
     letter-spacing: 0.15em;
-    opacity: 0;
-    transform: translateX(10px);
-    transition: all 0.3s ease;
-    pointer-events: none;
+    transition: color 0.3s ease;
     white-space: nowrap;
 }
 
-.win-indicator-step:hover .step-label,
-.win-indicator-step.active-step .step-label {
-    opacity: 1;
-    transform: translateX(0);
-}
-
-.win-indicator-step.active-step .step-label {
+.win-scroll-indicator-inline .win-indicator-step:hover .step-label,
+.win-scroll-indicator-inline .win-indicator-step.active-step .step-label {
     color: var(--color-white);
 }
 
-@media (max-width: 768px) {
-    .win-scroll-indicator {
-        display: none;
+/* Stacking for tablet & mobile responsiveness */
+@media (max-width: 992px) {
+    .win-two-col-container {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+    .win-left-sticky-col {
+        position: relative !important;
+        top: 0 !important;
+        height: auto !important;
+        width: 100% !important;
+        padding: 80px 20px 20px 20px !important;
+        align-items: center !important;
+    }
+    .win-left-sticky-col h2,
+    .win-left-sticky-col p {
+        text-align: center !important;
+        max-width: 100% !important;
+    }
+    .win-scroll-indicator-inline {
+        display: none !important;
+    }
+    .win-right-scroll-col {
+        width: 100% !important;
+    }
+    .win-snap-slide {
+        min-height: 85vh !important;
+        min-height: 85dvh !important;
+        padding: 40px 0 !important;
     }
 }
 
@@ -1929,17 +1975,34 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
 
 /* Prefers Reduced Motion overrides */
 @media (prefers-reduced-motion: reduce) {
+    .win-left-sticky-col {
+        position: relative !important;
+        top: 0 !important;
+        height: auto !important;
+        width: 100% !important;
+        padding: 80px 20px 20px 20px !important;
+        align-items: center !important;
+    }
+    .win-left-sticky-col h2,
+    .win-left-sticky-col p {
+        text-align: center !important;
+    }
+    .win-right-scroll-col {
+        width: 100% !important;
+    }
     .win-snap-slide {
         opacity: 1 !important;
         transform: none !important;
         transition: none !important;
+        min-height: auto !important;
+        padding: 40px 0 !important;
     }
     .win-snap-slide .win-card-wrapper {
         opacity: 1 !important;
         transform: none !important;
         transition: none !important;
     }
-    .win-scroll-indicator {
+    .win-scroll-indicator-inline {
         display: none !important;
     }
 }

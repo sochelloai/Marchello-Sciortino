@@ -485,18 +485,17 @@ let winScrollListener = null;
  */
 function initWinScrollSequence() {
     const container = document.querySelector('.scroll-snap-container');
-    const wrapperOuter = document.querySelector('.win-framework-container');
-    if (!container || !wrapperOuter) return;
+    if (!container) return;
 
     const slides = container.querySelectorAll('.win-snap-slide');
-    const steps = wrapperOuter.querySelectorAll('.win-indicator-step');
-    const progressFill = wrapperOuter.querySelector('.win-indicator-progress');
+    const steps = document.querySelectorAll('.win-scroll-indicator-inline .win-indicator-step');
+    const progressFill = document.querySelector('.win-scroll-indicator-inline .win-indicator-progress');
 
     // Handle dot indicators click scroll navigation
     steps.forEach((step, index) => {
         step.addEventListener('click', () => {
             if (slides[index]) {
-                const slideTop = slides[index].offsetTop;
+                const slideTop = slides[index].offsetTop - container.offsetTop;
                 container.scrollTo({
                     top: slideTop,
                     behavior: 'smooth'
