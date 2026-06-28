@@ -1,63 +1,86 @@
 /**
- * Router Module - Handles client-side hash routing for the SPA.
+ * Router Module - Handles client-side history routing for the SPA.
  */
 const Router = {
     routes: {},
     currentPage: null,
 
     init() {
-        // Register window hash change listener
-        window.addEventListener('hashchange', () => this.handleRouting());
+        // Handle browser navigation (back/forward)
+        window.addEventListener('popstate', () => this.handleRouting());
 
-        // Handle initial page load
-        window.addEventListener('load', () => {
-            if (!window.location.hash) {
-                window.location.hash = '#/home';
-            } else {
-                this.handleRouting();
+        // Global link click interceptor for clean history routing
+        document.addEventListener('click', (e) => {
+            const link = e.target.closest('a');
+            if (!link) return;
+
+            const href = link.getAttribute('href');
+            if (!href) return;
+
+            // Intercept internal routes (starting with / but not //)
+            if (href.startsWith('/') && !href.startsWith('//')) {
+                // Let links with target="_blank" behave normally
+                if (link.target === '_blank') return;
+
+                e.preventDefault();
+                this.navigate(href);
             }
         });
+
+        // Handle initial page load
+        if (document.readyState === 'complete') {
+            this.handleRouting();
+        } else {
+            window.addEventListener('load', () => this.handleRouting());
+        }
     },
 
     register(route, templateFn) {
         this.routes[route] = templateFn;
     },
 
-    handleRouting() {
-        const hash = window.location.hash;
+    navigate(route) {
+        history.pushState(null, '', route);
+        this.handleRouting(route);
+    },
 
-        // If hash is empty or just #, set to #/home
-        if (!hash || hash === '#') {
-            window.location.hash = '#/home';
-            return;
+    handleRouting(route) {
+        // If route is not provided, read pathname and search from location
+        let currentPath = route || (window.location.pathname + window.location.search);
+        
+        // Split route path from query parameters
+        let pathOnly = currentPath.split('?')[0];
+
+        // Redirect root or index.html to /home
+        if (pathOnly === '/' || pathOnly === '/index.html' || pathOnly === '') {
+            pathOnly = '/home';
+            // Preserve query string if any
+            const search = currentPath.includes('?') ? '?' + currentPath.split('?')[1] : '';
+            history.replaceState(null, '', '/home' + search);
         }
 
-        // If it's a page anchor or skip-link (doesn't start with #/), let browser handle it
-        if (!hash.startsWith('#/')) {
-            return;
-        }
-
-        const route = this.parseRoute(hash);
-
-        if (route === '/book') {
-            window.location.hash = '#/home';
+        if (pathOnly === '/book') {
+            const search = currentPath.includes('?') ? '?' + currentPath.split('?')[1] : '';
+            history.replaceState(null, '', '/home' + search);
             window.open('https://www.limitationstoliberation.com/', '_blank');
             return;
         }
 
         // Match route or redirect to home
-        const templateFn = this.routes[route] || this.routes['/home'];
+        const templateFn = this.routes[pathOnly] || this.routes['/home'];
 
         if (templateFn) {
             // Update current page
-            this.currentPage = route.substring(1); // strip leading slash
+            this.currentPage = pathOnly.substring(1); // strip leading slash
 
             // Execute template builder
             const html = templateFn();
 
             // Ingest to app container
             const app = document.getElementById('app');
-            app.innerHTML = html;
+            if (app) {
+                app.innerHTML = html;
+            }
 
             // Update document title dynamically for SEO
             const titles = {
@@ -79,10 +102,10 @@ const Router = {
                 '/terms': "Terms of Service | Marchello Sciortino",
                 '/accessibility-statement': "Accessibility Statement | Marchello Sciortino"
             };
-            document.title = titles[route] || "Marchello Sciortino";
+            document.title = titles[pathOnly] || "Marchello Sciortino";
 
             // Post-rendering actions
-            this.updateNavLinks(hash);
+            this.updateNavLinks(pathOnly);
             this.resetFocus();
 
             // Dispatch page load event for submodules
@@ -91,21 +114,12 @@ const Router = {
         }
     },
 
-    parseRoute(hash) {
-        // Simple router logic: hash like '#/story?interest=Create' -> '/story'
-        let route = hash.replace('#', '');
-        if (route.includes('?')) {
-            route = route.split('?')[0];
-        }
-        if (route === '') route = '/home';
-        return route;
-    },
-
-    updateNavLinks(hash) {
+    updateNavLinks(route) {
         const navLinks = document.querySelectorAll('.nav-link');
-        const cleanHash = hash.split('?')[0];
+        const cleanRoute = route.split('?')[0];
         navLinks.forEach(link => {
-            if (link.getAttribute('href') === cleanHash) {
+            const href = link.getAttribute('href');
+            if (href === cleanRoute || href === '#' + cleanRoute) {
                 link.classList.add('active');
             } else {
                 link.classList.remove('active');
@@ -155,7 +169,7 @@ Router.register('/home', () => `
                 I help people reframe daily constraints, adapt through changes, and use AI as an accessibility bridge to build creative outcomes and professional momentum.
             </p>
             <div class="hero-ctas">
-                <a href="#/services" class="btn btn-teal">MY SERVICES</a>
+                <a href="/services" class="btn btn-teal">MY SERVICES</a>
                 <a href="https://www.accessibleaim.com" target="_blank" rel="noopener noreferrer" class="btn btn-outline-white">EXPLORE ACCESSIBLE AIM</a>
             </div>
         </div>
@@ -334,7 +348,7 @@ Router.register('/home', () => `
                     <span class="section-tag">Keynotes</span>
                     <h3 class="card-title">Keynote Speaking</h3>
                     <p>Delivering practical, no-fluff perspectives on resilience and adaptation for motivational, educational, and faith-driven events.</p>
-                    <a href="#/speaking" class="text-teal">Speaking Details &rarr;</a>
+                    <a href="/speaking" class="text-teal">Speaking Details &rarr;</a>
                 </div>
                 <div class="card">
                     <span class="section-tag">Literature</span>
@@ -591,7 +605,7 @@ Router.register('/services', () => `
                                     </li>
                                 </ul>
                                 <div class="panel-cta">
-                                    <a href="#/contact?interest=Create" class="btn btn-teal">CONTACT ME</a>
+                                    <a href="/contact?interest=Create" class="btn btn-teal">CONTACT ME</a>
                                 </div>
                             </div>
                             <div class="panel-visual-side">
@@ -722,7 +736,7 @@ Router.register('/services', () => `
                                     </li>
                                 </ul>
                                 <div class="panel-cta">
-                                    <a href="#/contact?interest=Build" class="btn btn-teal">CONTACT ME</a>
+                                    <a href="/contact?interest=Build" class="btn btn-teal">CONTACT ME</a>
                                 </div>
                             </div>
                             <div class="panel-visual-side">
@@ -853,7 +867,7 @@ Router.register('/services', () => `
                                     </li>
                                 </ul>
                                 <div class="panel-cta">
-                                    <a href="#/contact?interest=Overcome" class="btn btn-teal">CONTACT ME</a>
+                                    <a href="/contact?interest=Overcome" class="btn btn-teal">CONTACT ME</a>
                                 </div>
                             </div>
                             <div class="panel-visual-side">
@@ -1705,7 +1719,7 @@ Router.register('/impact', () => `
             <div class="card bg-navy" style="padding: var(--spacing-lg); text-align: center; color: white;">
                 <h3 style="color: white; margin-bottom: 10px;">Want to share your story?</h3>
                 <p style="color: var(--color-gray-steel); margin-bottom: 20px;">If you have heard me speak or read my articles, let me know how the W.I.N. model helped you.</p>
-                <a href="#/contact" class="btn btn-teal">Write to Me</a>
+                <a href="/contact" class="btn btn-teal">Write to Me</a>
             </div>
         </div>
     </section>
@@ -1747,11 +1761,10 @@ Router.register('/hub', () => Router.routes['/marchellos-blog']());
 
 // 13. Contact Page Template
 Router.register('/contact', () => {
-    // Read query parameter from current hash
-    const hash = window.location.hash;
+    // Read query parameter from current URL
+    const queryStr = window.location.search;
     let selectedInterest = 'Connect'; // default
-    if (hash.includes('?')) {
-        const queryStr = hash.split('?')[1];
+    if (queryStr) {
         const params = new URLSearchParams(queryStr);
         const interestParam = params.get('interest');
         if (['Connect', 'Create', 'Build', 'Overcome'].includes(interestParam)) {
@@ -1867,19 +1880,19 @@ Router.register('/free-gifts', () => `
                     <span class="section-tag">PDF Worksheet</span>
                     <h3>W.I.N. Reframe Matrix</h3>
                     <p>A step-by-step reflection grid to list your active constraints and construct a custom action plan.</p>
-                    <a href="#/free-gifts" class="btn btn-outline-teal" onclick="alert('Downloading W.I.N. Reframe Matrix PDF'); return false;" style="margin-top: 15px;">Download PDF</a>
+                    <a href="/free-gifts" class="btn btn-outline-teal" onclick="alert('Downloading W.I.N. Reframe Matrix PDF'); return false;" style="margin-top: 15px;">Download PDF</a>
                 </div>
                 <div class="card">
                     <span class="section-tag">Prompt Cheat Sheet</span>
                     <h3>AI Accessibility Commands</h3>
                     <p>My core templates for configuring AI writing assistants to act as efficient transcription guides.</p>
-                    <a href="#/free-gifts" class="btn btn-outline-teal" onclick="alert('Downloading AI Accessibility Commands Prompt Guide'); return false;" style="margin-top: 15px;">Download Guide</a>
+                    <a href="/free-gifts" class="btn btn-outline-teal" onclick="alert('Downloading AI Accessibility Commands Prompt Guide'); return false;" style="margin-top: 15px;">Download Guide</a>
                 </div>
                 <div class="card">
                     <span class="section-tag">Checklist</span>
                     <h3>Digital Flow Audit</h3>
                     <p>A simple check sheet to audit your landing pages for ADA accessibility and speed friction blocks.</p>
-                    <a href="#/free-gifts" class="btn btn-outline-teal" onclick="alert('Downloading Digital Flow Audit Checklist'); return false;" style="margin-top: 15px;">Download Checklist</a>
+                    <a href="/free-gifts" class="btn btn-outline-teal" onclick="alert('Downloading Digital Flow Audit Checklist'); return false;" style="margin-top: 15px;">Download Checklist</a>
                 </div>
             </div>
         </div>
