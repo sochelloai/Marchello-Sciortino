@@ -480,7 +480,7 @@ Router.register('/home', () => `
                     <div class="timeline-col timeline-content-right">
                         <div class="timeline-year">Warrior Story</div>
                         <div class="timeline-card">
-                            <p>To me, being a warrior means focusing on what I can still create rather than what I have lost. I adjusted my plans and built a career in digital design, creating websites, funnels, and systems online.</p>
+                            <p>Everything changed when I shifted my perspective from what I had lost to what I could still create. That mindset revealed purpose, strengthened my faith, unlocked opportunities, and transformed how I live, lead, serve, every day.</p>
                         </div>
                     </div>
                 </div>
