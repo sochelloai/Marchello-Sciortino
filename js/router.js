@@ -445,7 +445,7 @@ Router.register('/home', () => `
                     <div class="timeline-col timeline-content-left">
                         <div class="timeline-year">Losing Mobility</div>
                         <div class="timeline-card">
-                            <p>When I was 14 years old, I was diagnosed with Friedreich's Ataxia, a rare progressive neuromuscular disease. From that moment on, my mobility slowly began to disappear. First came the loss of balance, then the falls became more frequent, and simple movements that most people never think twice about became daily challenges. Year after year, I watched my independence slip away until I eventually lost the ability to walk and became a full-time manual wheelchair user. Losing mobility wasn't a single moment. It was a gradual process that changed nearly every part of my daily life.</p>
+                            <p>At 14, I was diagnosed with Friedreich's Ataxia, a progressive neuromuscular disease. Over time, I lost my balance, strength, coordination, and eventually my ability to walk, becoming a full-time manual wheelchair user, forever changing my life.</p>
                         </div>
                     </div>
                     <div class="timeline-col timeline-center">
