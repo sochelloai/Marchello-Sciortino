@@ -54,6 +54,7 @@ function postJson(url, headers, body) {
             hostname: u.hostname,
             path: u.pathname + u.search,
             method: 'POST',
+            timeout: 180000, // 3 minutes timeout in milliseconds
             headers: {
                 ...headers,
                 'Content-Type': 'application/json'
@@ -74,6 +75,11 @@ function postJson(url, headers, body) {
                     reject(new Error(`HTTP ${res.statusCode}: ${data}`));
                 }
             });
+        });
+
+        req.on('timeout', () => {
+            req.destroy();
+            reject(new Error(`Request timed out after 3 minutes (180000ms).`));
         });
 
         req.on('error', reject);
