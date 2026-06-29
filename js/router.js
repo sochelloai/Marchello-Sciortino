@@ -1981,7 +1981,7 @@ Router.register('/contact', () => {
     </div>
     
     <section class="section bg-white">
-        <div class="container" style="max-width: 1000px;">
+        <div class="container">
             <div class="grid-2" style="align-items: center; gap: var(--spacing-lg);">
                 <!-- Left Column: Picture of Marchello -->
                 <div class="contact-image-column" style="text-align: center;">
