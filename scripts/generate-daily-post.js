@@ -5,6 +5,7 @@ const http = require('http');
 
 // Read API keys from environment
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
 if (!GEMINI_API_KEY) {
     console.error("Error: GEMINI_API_KEY is not defined in the environment.");
@@ -153,9 +154,30 @@ async function callGeminiWithRetry(geminiUrl, promptSystem, maxRetries = 3) {
                                 enum: ["Story Notes", "AI and Accessibility", "Lessons From Limitation", "Tools I Use", "Daily Inspiration"]
                             },
                             body: { type: "string" },
-                            image_prompt: { type: "string" }
+                            image_prompt: { type: "string" },
+                            meta_title: { type: "string" },
+                            meta_description: { type: "string" },
+                            url_slug: { type: "string" },
+                            primary_keyword: { type: "string" },
+                            secondary_keywords: {
+                                type: "array",
+                                items: { type: "string" }
+                            },
+                            search_intent_classification: { type: "string" },
+                            suggested_internal_links: {
+                                type: "array",
+                                items: { type: "string" }
+                            },
+                            image_alt_text: { type: "string" },
+                            social_sharing_title: { type: "string" },
+                            social_sharing_description: { type: "string" }
                         },
-                        required: ["title", "desc", "tag", "body", "image_prompt"]
+                        required: [
+                            "title", "desc", "tag", "body", "image_prompt",
+                            "meta_title", "meta_description", "url_slug", "primary_keyword",
+                            "secondary_keywords", "search_intent_classification", "suggested_internal_links",
+                            "image_alt_text", "social_sharing_title", "social_sharing_description"
+                        ]
                     }
                 }
             });
@@ -180,19 +202,67 @@ async function callGeminiWithRetry(geminiUrl, promptSystem, maxRetries = 3) {
 
 async function run() {
     try {
+        // Load articles.json first to serve as context for non-repetition
+        const articlesJsonPath = path.join(__dirname, '..', 'data', 'articles.json');
+        let articles = [];
+        
+        if (fs.existsSync(articlesJsonPath)) {
+            try {
+                const rawJson = fs.readFileSync(articlesJsonPath, 'utf8');
+                articles = JSON.parse(rawJson);
+            } catch (err) {
+                console.error("Failed to parse articles.json, starting with empty array:", err.message);
+            }
+        }
+
+        // Get the last 5 posts for diversity context (newest first)
+        const recentPosts = articles.slice(-5).reverse();
+        let recentPostsContext = "";
+        if (recentPosts.length > 0) {
+            recentPostsContext = recentPosts.map((post, idx) => {
+                return `Post ${idx + 1}:
+- Title: "${post.title}"
+- Description: "${post.desc}"
+- Tag: "${post.tag}"
+- Date: "${post.date}"`;
+            }).join("\n\n");
+        } else {
+            recentPostsContext = "None (this is the first post)";
+        }
+
         // Step 1: Query Gemini API to write the post
         const promptSystem = `You are Marchello Sciortino, a resilient entrepreneur, keynote speaker, and faith-driven innovator who lives with Friedrich's ataxia (a progressive neuromuscular condition).
 Your voice is deeply personal, resilient, faith-filled, and technological.
 Write a daily blog post for today: ${todayDateStr}.
 The theme for this month is: ${currentMonthTheme}.
 
+CRITICAL - BLOG CONTENT DIVERSITY RULE (AVOID REPETITION):
+To ensure every automated daily blog post feels fresh, unique, and timely, you MUST NOT repeat themes, stories, or lessons from recent posts. Avoid repetitive time-based themes or references (such as end-of-the-month reflections, midyear momentum, weekly or Monday motivation, seasonal transitions, holidays, or similar calendar topics) on consecutive days. Each post must introduce a new perspective, lesson, story, insight, or real-world application that provides readers with a genuinely different experience from previous posts.
+
+Here are details of the most recent blog posts:
+${recentPostsContext}
+
+SEARCH OPTIMIZATION STANDARDS (SEO/GEO):
+Every blog post must be optimized for search engine discoverability (Google, AI-powered search engines, voice assistants, and Generative Engine Optimization).
+1. Primary Keyword: Focus on a specific primary keyword related to the post's topic (e.g. "AI transcription hacks", "design constraints", "resilient mindset").
+2. Body Structure:
+   - Headings: Use semantic heading tags (<h2> and <h3>, NOT <h1>) naturally containing keywords to break up content.
+   - Intro: Write an engaging introduction that immediately addresses the search intent and contains the primary keyword.
+   - Formatting: Use short, punchy paragraphs (2-3 sentences), bulleted or numbered lists, blockquotes, or bold text for scannability.
+   - FAQ: Include a short Frequently Asked Questions section at the end of the body (formatted with <h3> tags for questions and <p> for answers) if appropriate, to match featured snippet formats.
+   - Internal Links: Incorporate 1-2 natural internal links in the HTML body. You may ONLY link to the following paths/slugs:
+     - "/story" (My Story / Timeline)
+     - "/services" (Keynotes, Creative AI, Web Building Services)
+     - "/speaking" (Booking info)
+     - "/chelloai" (ChelloAI helper)
+     - Specific article IDs from the recent posts list above (e.g. "/hub" or linking to previous article IDs like "acceptance", "skydiving", "avatar", "win-matrix").
+     Format links as: <a href="/services">services</a>. Do NOT include domain names in internal links.
+   - External Links: Include natural links to authoritative resources when relevant (e.g., <a href="https://www.limitationstoliberation.com/" target="_blank">"Limitations to Liberation" book</a> or <a href="https://www.accessibleaim.com/" target="_blank">Accessible AIM</a>).
+   - Strong Conclusion: Conclude with a clear call-to-action (CTA) and contextual links.
+
 Your writing must strictly follow these instructions:
 1. Tone: Honest, encouraging, conversational, and direct. Avoid sounding corporate, overly polished, or preachy.
-2. Structure: 
-   - Opening: A personal story, observation, or current event/calendar observance for today.
-   - Middle: Lesson learned, shift in perspective (treating limitations as simple design parameters).
-   - Takeaway: A practical, actionable challenge or reflection.
-   - Closing: Hopeful, uplifting note.
+2. Structure: Follow the search optimization guidelines while preserving the narrative structure (Opening personal story, Middle lesson/perspective shifting, Takeaway action challenge, and Closing hopeful note).
 3. Length: 200 - 400 words. Paced with short, powerful sentences.
 4. Word Restrictions:
    - NEVER use corporate jargon: "unlock", "empower", "optimize", "leverage", "synergy", "game-changer", "dive deep".
@@ -203,11 +273,21 @@ Your writing must strictly follow these instructions:
 
 You must return a raw JSON object containing exactly these fields (no markdown wrapper, just JSON):
 {
-  "title": "A compelling, distinct title for the post",
+  "title": "A unique, keyword-rich title focused on the primary search intent",
   "desc": "A one-sentence summary of the daily lesson",
   "tag": "Choose exactly one: 'Story Notes', 'AI and Accessibility', 'Lessons From Limitation', 'Tools I Use', 'Daily Inspiration'",
-  "body": "HTML formatted body content (using paragraphs <p>, blockquotes <blockquote>, lists, bold text. Do not output markdown inside the body string, only HTML).",
-  "image_prompt": "A detailed, descriptive prompt for DALL-E 3 to generate a premium featured image. The image should be an emotionally compelling, cinematic visual metaphor (no text, minimal professional portrait style, rich colors/lighting, symbolic and clean) representing the theme of the article."
+  "body": "HTML formatted body content matching the heading hierarchy, list formatting, FAQ, and internal/external links instructions above. Do not output markdown inside the body string, only HTML.",
+  "image_prompt": "A detailed, descriptive prompt for generating a premium featured image representing the theme.",
+  "meta_title": "A compelling meta title designed to maximize click-through rate",
+  "meta_description": "A compelling meta description designed to maximize click-through rate (under 160 characters)",
+  "url_slug": "A clean, URL-safe slug containing the primary keyword (lowercase, hyphen-separated)",
+  "primary_keyword": "The primary keyword targeted by this post",
+  "secondary_keywords": ["2-3 related phrases or semantic keyword variations"],
+  "search_intent_classification": "e.g., Informational, Transactional, Navigational",
+  "suggested_internal_links": ["List of suggested internal links from this post"],
+  "image_alt_text": "Descriptive, keyword-aligned alt text for the featured image",
+  "social_sharing_title": "Optimized headline for social platforms",
+  "social_sharing_description": "Engaging summary for social platforms"
 }`;
 
         console.log("Calling Gemini API...");
@@ -303,37 +383,61 @@ You must return a raw JSON object containing exactly these fields (no markdown w
         console.log(`Tag: ${generatedArticle.tag}`);
         console.log(`Image Prompt: "${generatedArticle.image_prompt}"`);
 
-        // Step 2: Query Gemini API to generate the image
-        console.log("Calling Gemini Image API...");
-        const geminiImageUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent?key=${GEMINI_API_KEY}`;
-        const imageBody = {
-            contents: [
-                {
-                    parts: [
-                        {
-                            text: generatedArticle.image_prompt + " minimal professional editorial style, atmospheric visual metaphor, cinematic lighting, no text, no captions."
-                        }
-                    ]
-                }
-            ],
-            generationConfig: {
-                responseMimeType: "image/png"
-            }
-        };
-
+        // Step 2: Generate the image (Try OpenAI DALL-E 3 first, then Google Imagen 3)
         let imageBuffer = null;
         let relativeImageSrc = "";
-        try {
-            const imageRes = await postJson(geminiImageUrl, {}, imageBody);
-            const part = imageRes?.candidates?.[0]?.content?.parts?.[0];
-            if (part && part.inlineData && part.inlineData.data) {
-                imageBuffer = Buffer.from(part.inlineData.data, 'base64');
-                console.log(`Image generated successfully via Gemini.`);
-            } else {
-                console.error("Gemini Image API returned an invalid response structure:", JSON.stringify(imageRes, null, 2));
+        const imagePromptText = generatedArticle.image_prompt + " minimal professional editorial style, atmospheric visual metaphor, cinematic lighting, no text, no captions.";
+
+        if (OPENAI_API_KEY) {
+            console.log("Calling OpenAI DALL-E 3 API...");
+            try {
+                const openaiUrl = "https://api.openai.com/v1/images/generations";
+                const headers = {
+                    "Authorization": `Bearer ${OPENAI_API_KEY}`
+                };
+                const body = {
+                    model: "dall-e-3",
+                    prompt: imagePromptText,
+                    n: 1,
+                    size: "1024x1024",
+                    response_format: "b64_json"
+                };
+                const res = await postJson(openaiUrl, headers, body);
+                const b64Data = res?.data?.[0]?.b64_json;
+                if (b64Data) {
+                    imageBuffer = Buffer.from(b64Data, 'base64');
+                    console.log("Image generated successfully via OpenAI DALL-E 3.");
+                } else {
+                    console.error("OpenAI response did not contain image data:", JSON.stringify(res, null, 2));
+                }
+            } catch (openaiErr) {
+                console.error("OpenAI DALL-E 3 image generation failed:", openaiErr.message);
             }
-        } catch (apiErr) {
-            console.error("Gemini Image API HTTP request failed:", apiErr.message);
+        } else {
+            console.log("Skipping OpenAI DALL-E 3: OPENAI_API_KEY not found in environment.");
+        }
+
+        if (!imageBuffer) {
+            console.log("Attempting fallback image generation via Google Imagen 3...");
+            try {
+                const geminiImageUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:generateImages?key=${GEMINI_API_KEY}`;
+                const imageBody = {
+                    prompt: imagePromptText,
+                    numberOfImages: 1,
+                    outputMimeType: "image/png",
+                    aspectRatio: "1:1"
+                };
+                const res = await postJson(geminiImageUrl, {}, imageBody);
+                const b64Data = res?.generatedImages?.[0]?.image?.imageBytes;
+                if (b64Data) {
+                    imageBuffer = Buffer.from(b64Data, 'base64');
+                    console.log("Image generated successfully via Google Imagen 3.");
+                } else {
+                    console.error("Google Imagen 3 response did not contain imageBytes:", JSON.stringify(res, null, 2));
+                }
+            } catch (imagenErr) {
+                console.error("Google Imagen 3 image generation failed:", imagenErr.message);
+            }
         }
 
         if (imageBuffer) {
@@ -343,7 +447,8 @@ You must return a raw JSON object containing exactly these fields (no markdown w
                 fs.mkdirSync(blogAssetsDir, { recursive: true });
             }
 
-            const localImageName = `${articleId}.png`;
+            const imageSlug = sanitizeId(generatedArticle.url_slug || articleId);
+            const localImageName = `${imageSlug}.png`;
             const localImagePath = path.join(blogAssetsDir, localImageName);
             relativeImageSrc = `assets/blog/${localImageName}`;
 
@@ -356,19 +461,11 @@ You must return a raw JSON object containing exactly these fields (no markdown w
                 relativeImageSrc = "assets/antigravity-fallback.png";
             }
         } else {
-            console.warn("Warning: Failed to generate custom image via Gemini. Falling back to default banner...");
+            console.warn("Warning: Failed to generate custom image. Falling back to default banner...");
             relativeImageSrc = "assets/antigravity-fallback.png";
         }
 
-        // Step 4: Load articles.json, append new post, write back
-        const articlesJsonPath = path.join(__dirname, '..', 'data', 'articles.json');
-        let articles = [];
-        
-        if (fs.existsSync(articlesJsonPath)) {
-            const rawJson = fs.readFileSync(articlesJsonPath, 'utf8');
-            articles = JSON.parse(rawJson);
-        }
-
+        // Step 4: Append new post and write back
         const newPost = {
             id: articleId,
             title: generatedArticle.title,
@@ -376,7 +473,18 @@ You must return a raw JSON object containing exactly these fields (no markdown w
             desc: generatedArticle.desc,
             date: todayDateStr,
             image: relativeImageSrc,
-            body: generatedArticle.body
+            body: generatedArticle.body,
+            // SEO and Discovery Assets
+            meta_title: generatedArticle.meta_title,
+            meta_description: generatedArticle.meta_description,
+            url_slug: generatedArticle.url_slug,
+            primary_keyword: generatedArticle.primary_keyword,
+            secondary_keywords: generatedArticle.secondary_keywords || [],
+            search_intent_classification: generatedArticle.search_intent_classification,
+            suggested_internal_links: generatedArticle.suggested_internal_links || [],
+            image_alt_text: generatedArticle.image_alt_text,
+            social_sharing_title: generatedArticle.social_sharing_title,
+            social_sharing_description: generatedArticle.social_sharing_description
         };
 
         // Remove any existing post with the same ID (safeguard for multiple runs on same day)
