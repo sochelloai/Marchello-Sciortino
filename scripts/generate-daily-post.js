@@ -404,14 +404,29 @@ You must return a raw JSON object containing exactly these fields (no markdown w
                     model: "dall-e-3",
                     prompt: imagePromptText,
                     n: 1,
-                    size: "1024x1024",
-                    response_format: "b64_json"
+                    size: "1024x1024"
                 };
                 const res = await postJson(openaiUrl, headers, body);
                 const b64Data = res?.data?.[0]?.b64_json;
+                const imageUrl = res?.data?.[0]?.url;
+                
                 if (b64Data) {
                     imageBuffer = Buffer.from(b64Data, 'base64');
-                    console.log("Image generated successfully via OpenAI DALL-E 3.");
+                    console.log("Image generated successfully via OpenAI DALL-E 3 (base64).");
+                } else if (imageUrl) {
+                    console.log(`Downloading generated image from: ${imageUrl}`);
+                    const blogAssetsDir = path.join(__dirname, '..', 'assets', 'blog');
+                    if (!fs.existsSync(blogAssetsDir)) {
+                        fs.mkdirSync(blogAssetsDir, { recursive: true });
+                    }
+                    const imageSlug = sanitizeId(generatedArticle.url_slug || articleId);
+                    const localImageName = `${imageSlug}.png`;
+                    const localImagePath = path.join(blogAssetsDir, localImageName);
+                    
+                    await downloadFile(imageUrl, localImagePath);
+                    imageBuffer = fs.readFileSync(localImagePath);
+                    relativeImageSrc = `assets/blog/${localImageName}`;
+                    console.log("Image downloaded and written successfully via OpenAI DALL-E 3.");
                 } else {
                     console.error("OpenAI response did not contain image data:", JSON.stringify(res, null, 2));
                 }
@@ -453,7 +468,34 @@ You must return a raw JSON object containing exactly these fields (no markdown w
         }
 
         if (!imageBuffer) {
-            console.log("Attempting fallback image generation via Google Imagen 3...");
+            console.log("Attempting image generation via Google Imagen 3 (:predict)...");
+            try {
+                const geminiImageUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${GEMINI_API_KEY}`;
+                const imageBody = {
+                    instances: [
+                        { prompt: imagePromptText }
+                    ],
+                    parameters: {
+                        sampleCount: 1,
+                        outputMimeType: "image/png",
+                        aspectRatio: "1:1"
+                    }
+                };
+                const res = await postJson(geminiImageUrl, {}, imageBody);
+                const b64Data = res?.predictions?.[0]?.bytesBase64Encoded || res?.predictions?.[0]?.image?.imageBytes;
+                if (b64Data) {
+                    imageBuffer = Buffer.from(b64Data, 'base64');
+                    console.log("Image generated successfully via Google Imagen 3 (:predict).");
+                } else {
+                    console.error("Google Imagen 3 (:predict) response did not contain image data:", JSON.stringify(res, null, 2));
+                }
+            } catch (imagenErr) {
+                console.error("Google Imagen 3 (:predict) image generation failed:", imagenErr.message);
+            }
+        }
+
+        if (!imageBuffer) {
+            console.log("Attempting legacy fallback image generation via Google Imagen 3 (:generateImages)...");
             try {
                 const geminiImageUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:generateImages?key=${GEMINI_API_KEY}`;
                 const imageBody = {
@@ -466,33 +508,35 @@ You must return a raw JSON object containing exactly these fields (no markdown w
                 const b64Data = res?.generatedImages?.[0]?.image?.imageBytes;
                 if (b64Data) {
                     imageBuffer = Buffer.from(b64Data, 'base64');
-                    console.log("Image generated successfully via Google Imagen 3.");
+                    console.log("Image generated successfully via Google Imagen 3 (:generateImages).");
                 } else {
-                    console.error("Google Imagen 3 response did not contain imageBytes:", JSON.stringify(res, null, 2));
+                    console.error("Google Imagen 3 (:generateImages) response did not contain imageBytes:", JSON.stringify(res, null, 2));
                 }
             } catch (imagenErr) {
-                console.error("Google Imagen 3 image generation failed:", imagenErr.message);
+                console.error("Google Imagen 3 (:generateImages) image generation failed:", imagenErr.message);
             }
         }
 
         if (imageBuffer) {
-            // Step 3: Write image locally
-            const blogAssetsDir = path.join(__dirname, '..', 'assets', 'blog');
-            if (!fs.existsSync(blogAssetsDir)) {
-                fs.mkdirSync(blogAssetsDir, { recursive: true });
-            }
+            if (!relativeImageSrc) {
+                // Step 3: Write image locally if not already downloaded and saved
+                const blogAssetsDir = path.join(__dirname, '..', 'assets', 'blog');
+                if (!fs.existsSync(blogAssetsDir)) {
+                    fs.mkdirSync(blogAssetsDir, { recursive: true });
+                }
 
-            const imageSlug = sanitizeId(generatedArticle.url_slug || articleId);
-            const localImageName = `${imageSlug}.png`;
-            const localImagePath = path.join(blogAssetsDir, localImageName);
-            relativeImageSrc = `assets/blog/${localImageName}`;
+                const imageSlug = sanitizeId(generatedArticle.url_slug || articleId);
+                const localImageName = `${imageSlug}.png`;
+                const localImagePath = path.join(blogAssetsDir, localImageName);
+                relativeImageSrc = `assets/blog/${localImageName}`;
 
-            try {
-                console.log(`Writing image to: ${localImagePath}`);
-                fs.writeFileSync(localImagePath, imageBuffer);
-                console.log("Image write complete.");
-            } catch (writeErr) {
-                throw new Error(`CRITICAL: Failed to write generated image to disk: ${writeErr.message}. Aborting post generation.`);
+                try {
+                    console.log(`Writing image to: ${localImagePath}`);
+                    fs.writeFileSync(localImagePath, imageBuffer);
+                    console.log("Image write complete.");
+                } catch (writeErr) {
+                    throw new Error(`CRITICAL: Failed to write generated image to disk: ${writeErr.message}. Aborting post generation.`);
+                }
             }
         } else {
             throw new Error("CRITICAL: Failed to generate a custom featured image using DALL-E 3, Gemini 2.5 Flash Image, or Google Imagen. Aborting post generation to avoid placeholder fallback images.");
