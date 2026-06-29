@@ -363,20 +363,19 @@ You must return a raw JSON object containing exactly these fields (no markdown w
             throw new Error(`JSON parsing error: ${parseErr.message}`);
         }
 
-        // Programmatic enforcement of closing signature
-        const closingQuoteText = "Much love, party people! That was awesome, the next one will only be better!";
-        if (generatedArticle.body && !generatedArticle.body.includes(closingQuoteText)) {
-            // Trim any trailing whitespace/tags to clean up formatting
-            generatedArticle.body = generatedArticle.body.trim();
+        // Programmatic enforcement of closing signature (bold, italicized, in quotes)
+        if (generatedArticle.body) {
+            // Clean any existing signatures or forms of it in the body to avoid double signatures
+            const signatureCleanRegex = /<p[^>]*>\s*(<strong>|<em>|"|'|“|”)*\s*Much\s*love,?\s*party\s*people!.*?(<\/strong>|<\/em>|"|'|“|”)*\s*<\/p>/gi;
+            generatedArticle.body = generatedArticle.body.replace(signatureCleanRegex, "");
             
-            // If the body ends with a closing paragraph, replace or append cleanly
-            const pCloseTag = "</p>";
-            if (generatedArticle.body.endsWith(pCloseTag)) {
-                generatedArticle.body = generatedArticle.body.substring(0, generatedArticle.body.length - pCloseTag.length) + 
-                    ` <br><br><em>${closingQuoteText}</em></p>`;
-            } else {
-                generatedArticle.body += `\n<p style="margin-top: 20px; font-style: italic; font-weight: 500; color: var(--color-teal);">"${closingQuoteText}"</p>`;
-            }
+            // Also replace naked references if any
+            const nakedRegex = /"??Much\s*love,?\s*party\s*people!.*?better!"??/gi;
+            generatedArticle.body = generatedArticle.body.replace(nakedRegex, "");
+            
+            generatedArticle.body = generatedArticle.body.trim();
+            // Append the exact signature formatted as bold, italicized, and in quotation marks
+            generatedArticle.body += `\n<p style="margin-top: 20px; color: var(--color-teal);"><strong><em>"Much love, party people! That was awesome, the next one will only be better!"</em></strong></p>`;
         }
 
         console.log(`Generated Article Title: "${generatedArticle.title}"`);

@@ -163,14 +163,37 @@ const Hub = {
         if (modal && title && body) {
             tag.textContent = art.tag;
             title.textContent = art.title;
+            
+            // Build shareable link URL
+            const shareUrl = encodeURIComponent(window.location.origin + '/hub?article=' + art.id);
+            const shareTitle = encodeURIComponent(art.title);
+            
             body.innerHTML = `
-                <div style="font-size:0.9rem; color:var(--color-gray-steel); margin-bottom:15px;">Published: ${art.date}</div>
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 15px; border-bottom: 1px solid var(--color-gray-border); padding-bottom: 10px;">
+                    <div style="font-size:0.9rem; color:var(--color-gray-steel);">Published: ${art.date}</div>
+                    
+                    <!-- Social Share Button Container -->
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 0.75rem; color: var(--color-gray-steel); font-family: var(--font-body); font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;">Share:</span>
+                        <a href="https://twitter.com/intent/tweet?url=${shareUrl}&text=${shareTitle}" target="_blank" rel="noopener noreferrer" class="share-btn" style="display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--color-gray-border); color: var(--color-navy); transition: var(--transition-fast); text-decoration: none;" title="Share on X (Twitter)">
+                            <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        </a>
+                        <a href="https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}" target="_blank" rel="noopener noreferrer" class="share-btn" style="display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--color-gray-border); color: var(--color-navy); transition: var(--transition-fast); text-decoration: none;" title="Share on LinkedIn">
+                            <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                        </a>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u=${shareUrl}" target="_blank" rel="noopener noreferrer" class="share-btn" style="display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--color-gray-border); color: var(--color-navy); transition: var(--transition-fast); text-decoration: none;" title="Share on Facebook">
+                            <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
+                        </a>
+                        <button id="copy-share-link" class="share-btn" style="display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--color-gray-border); color: var(--color-navy); background: transparent; cursor: pointer; transition: var(--transition-fast);" title="Copy Link">
+                            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                        </button>
+                    </div>
+                </div>
                 ${art.image ? `
                 <div style="width:100%; max-height:380px; overflow:hidden; border-radius:var(--radius-md); margin-bottom:20px; border:1px solid var(--color-gray-border);">
                     <img src="${art.image}" alt="${art.title}" style="width:100%; max-height:380px; object-fit:cover;">
                 </div>
                 ` : ''}
-                <div class="detail-divider" style="margin-bottom: 20px;"></div>
                 <div class="blog-body-html" style="line-height: 1.7; font-size: 1.05rem;">
                     ${art.body}
                 </div>
@@ -181,6 +204,28 @@ const Hub = {
             
             const closeBtn = modal.querySelector('.modal-close-btn');
             if (closeBtn) closeBtn.focus();
+
+            // Set up Copy to Clipboard logic
+            setTimeout(() => {
+                const copyBtn = document.getElementById('copy-share-link');
+                if (copyBtn) {
+                    copyBtn.addEventListener('click', async () => {
+                        try {
+                            const fullUrl = window.location.origin + '/hub?article=' + art.id;
+                            await navigator.clipboard.writeText(fullUrl);
+                            
+                            // Visual feedback (check icon)
+                            const originalHtml = copyBtn.innerHTML;
+                            copyBtn.innerHTML = `<span style="font-size:0.75rem; color:var(--color-teal); font-weight:bold;">&check;</span>`;
+                            setTimeout(() => {
+                                copyBtn.innerHTML = originalHtml;
+                            }, 2000);
+                        } catch (err) {
+                            console.error("Failed to copy link:", err);
+                        }
+                    });
+                }
+            }, 50);
         }
     }
 };

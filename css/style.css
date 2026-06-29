@@ -3526,4 +3526,13 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     }
 }
 
-
+/* Social Share Buttons */
+.share-btn {
+    transition: all 0.2s ease-in-out;
+}
+.share-btn:hover {
+    color: var(--color-teal) !important;
+    border-color: var(--color-teal) !important;
+    background-color: rgba(10, 216, 173, 0.05) !important;
+    transform: translateY(-2px);
+}
