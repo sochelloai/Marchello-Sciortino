@@ -395,6 +395,9 @@ You must return a raw JSON object containing exactly these fields (no markdown w
 
         if (OPENAI_API_KEY) {
             const openaiCandidates = [
+                { model: "gpt-image-2" },
+                { model: "gpt-image-1.5" },
+                { model: "gpt-image-1" },
                 { model: "dall-e-3" },
                 { model: "dall-e-2" },
                 {} // No model specified (defaults to endpoint standard)
