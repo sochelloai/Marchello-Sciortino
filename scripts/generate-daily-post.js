@@ -486,12 +486,10 @@ You must return a raw JSON object containing exactly these fields (no markdown w
                 fs.writeFileSync(localImagePath, imageBuffer);
                 console.log("Image write complete.");
             } catch (writeErr) {
-                console.error("Failed to write generated image. Falling back to default banner:", writeErr.message);
-                relativeImageSrc = "assets/antigravity-fallback.png";
+                throw new Error(`CRITICAL: Failed to write generated image to disk: ${writeErr.message}. Aborting post generation.`);
             }
         } else {
-            console.warn("Warning: Failed to generate custom image. Falling back to default banner...");
-            relativeImageSrc = "assets/antigravity-fallback.png";
+            throw new Error("CRITICAL: Failed to generate a custom featured image using DALL-E 3, Gemini 2.5 Flash Image, or Google Imagen. Aborting post generation to avoid placeholder fallback images.");
         }
 
         // Step 4: Append new post and write back
