@@ -203,39 +203,228 @@ Router.register('/home', () => `
     </section>
 
     <!-- Impact & Reviews Section -->
-    <section class="section bg-white" style="border-bottom: 1px solid var(--color-gray-border); padding: 4.5rem 0;">
+    <section class="section bg-white" style="border-bottom: 1px solid var(--color-gray-border); padding: 4.5rem 0 3rem 0; overflow: hidden;">
         <div class="container">
-            <div class="text-center" style="margin-bottom: var(--spacing-lg);">
+            <div class="text-center" style="margin-bottom: var(--spacing-md);">
                 <span class="section-tag">Audience & Client Reviews</span>
                 <h2>Real Impact, Verified Outcomes</h2>
                 <p class="section-desc" style="margin-bottom: 0;">
                     See what event planners, brand founders, and advocacy leaders say about working with Marchello.
                 </p>
             </div>
-            <div class="grid-3">
-                <div class="card">
-                    <span class="text-gold" style="font-size: 1.5rem;">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-                    <h4 style="margin-top: 10px;">"A Shift in Paradigm"</h4>
-                    <p style="font-style: italic; font-size: 0.95rem;">
-                        "Marchello's keynote stripped away all the usual corny slogans we hear at sales rallies. His honest details about progression and practical AI execution changed how our management team views challenges."
-                    </p>
-                    <strong style="display:block; font-size: 0.85rem; margin-top: 10px;">— Event Planner, Leadership Forum</strong>
+        </div>
+        
+        <!-- Reviews Scrolling Marquee -->
+        <div class="reviews-marquee-wrapper">
+            <div class="reviews-marquee-track">
+                <div class="reviews-marquee-group">
+                    <!-- Card 1 -->
+                    <div class="reviews-marquee-card">
+                        <div>
+                            <span class="text-gold" style="font-size: 1.2rem;">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                            <h4 style="margin-top: 8px; margin-bottom: 8px; font-size:1.15rem; font-family: var(--font-heading); color: var(--color-navy);">"A Shift in Paradigm"</h4>
+                            <p style="font-style: italic; font-size: 0.92rem; line-height: 1.5; color: var(--color-navy); margin-bottom: 0;">
+                                "Marchello's keynote stripped away all the usual corny slogans we hear at sales rallies. His honest details about progression and practical AI execution changed how our management team views challenges."
+                            </p>
+                        </div>
+                        <div class="reviewer-profile">
+                            <img src="assets/reviews/reviewer_1.png" alt="Sarah Jenkins" class="reviewer-avatar">
+                            <div class="reviewer-info">
+                                <span class="reviewer-name">Sarah Jenkins</span>
+                                <span class="reviewer-role">Event Director, Leadership Forum</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="reviews-marquee-card">
+                        <div>
+                            <span class="text-gold" style="font-size: 1.2rem;">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                            <h4 style="margin-top: 8px; margin-bottom: 8px; font-size:1.15rem; font-family: var(--font-heading); color: var(--color-navy);">"Zero Fluff, Real Proof"</h4>
+                            <p style="font-style: italic; font-size: 0.92rem; line-height: 1.5; color: var(--color-navy); margin-bottom: 0;">
+                                "We hired Marchello to build our ClickFunnels logic. His technical design system was flawless, and knowing the limitations he works with just proved to us that he builds solid solutions."
+                            </p>
+                        </div>
+                        <div class="reviewer-profile">
+                            <img src="assets/reviews/reviewer_2.png" alt="David Chen" class="reviewer-avatar">
+                            <div class="reviewer-info">
+                                <span class="reviewer-name">David Chen</span>
+                                <span class="reviewer-role">Founder, Tech Accelerator</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 3 -->
+                    <div class="reviews-marquee-card">
+                        <div>
+                            <span class="text-gold" style="font-size: 1.2rem;">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                            <h4 style="margin-top: 8px; margin-bottom: 8px; font-size:1.15rem; font-family: var(--font-heading); color: var(--color-navy);">"Inspiring and Practical"</h4>
+                            <p style="font-style: italic; font-size: 0.92rem; line-height: 1.5; color: var(--color-navy); margin-bottom: 0;">
+                                "As a parent of a disabled child, hearing Marchello speak gave me a realistic, non-pity roadmap. He shows that adapting is just a smarter way to execute."
+                            </p>
+                        </div>
+                        <div class="reviewer-profile">
+                            <img src="assets/reviews/reviewer_3.png" alt="Elena Rostova" class="reviewer-avatar">
+                            <div class="reviewer-info">
+                                <span class="reviewer-name">Elena Rostova</span>
+                                <span class="reviewer-role">Advocate & Attendee, Advocacy Summit</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 4 -->
+                    <div class="reviews-marquee-card">
+                        <div>
+                            <span class="text-gold" style="font-size: 1.2rem;">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                            <h4 style="margin-top: 8px; margin-bottom: 8px; font-size:1.15rem; font-family: var(--font-heading); color: var(--color-navy);">"Unparalleled Strategic Focus"</h4>
+                            <p style="font-style: italic; font-size: 0.92rem; line-height: 1.5; color: var(--color-navy); margin-bottom: 0;">
+                                "Marchello's insights on system automation enabled our marketing team to trim waste by 40%. He doesn't just talk about resilience; he builds practical systems that deliver it."
+                            </p>
+                        </div>
+                        <div class="reviewer-profile">
+                            <img src="assets/reviews/reviewer_4.png" alt="Amanda Cross" class="reviewer-avatar">
+                            <div class="reviewer-info">
+                                <span class="reviewer-name">Amanda Cross</span>
+                                <span class="reviewer-role">VP of Operations, Retail Syndicate</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 5 -->
+                    <div class="reviews-marquee-card">
+                        <div>
+                            <span class="text-gold" style="font-size: 1.2rem;">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                            <h4 style="margin-top: 8px; margin-bottom: 8px; font-size:1.15rem; font-family: var(--font-heading); color: var(--color-navy);">"A True Catalyst for Action"</h4>
+                            <p style="font-style: italic; font-size: 0.92rem; line-height: 1.5; color: var(--color-navy); margin-bottom: 0;">
+                                "We brought Marchello in for our midyear kickoff. His presentation style is highly engaging, fully technical, and deeply grounding. Our audience was motivated and equipped."
+                            </p>
+                        </div>
+                        <div class="reviewer-profile">
+                            <img src="assets/reviews/reviewer_5.png" alt="Marcus Thorne" class="reviewer-avatar">
+                            <div class="reviewer-info">
+                                <span class="reviewer-name">Marcus Thorne</span>
+                                <span class="reviewer-role">Executive Director, Global Sales Summit</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 6 -->
+                    <div class="reviews-marquee-card">
+                        <div>
+                            <span class="text-gold" style="font-size: 1.2rem;">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                            <h4 style="margin-top: 8px; margin-bottom: 8px; font-size:1.15rem; font-family: var(--font-heading); color: var(--color-navy);">"Flawless Integration Logic"</h4>
+                            <p style="font-style: italic; font-size: 0.92rem; line-height: 1.5; color: var(--color-navy); margin-bottom: 0;">
+                                "The funnel architecture Marchello designed has run uninterrupted for six months, converting at double our previous benchmark. His systematic handling of constraints is masterclass."
+                            </p>
+                        </div>
+                        <div class="reviewer-profile">
+                            <img src="assets/reviews/reviewer_6.png" alt="Robert Vance" class="reviewer-avatar">
+                            <div class="reviewer-info">
+                                <span class="reviewer-name">Robert Vance</span>
+                                <span class="reviewer-role">Chief Growth Officer, Apex Scaling</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="card">
-                    <span class="text-gold" style="font-size: 1.5rem;">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-                    <h4 style="margin-top: 10px;">"Zero Fluff, Real Proof"</h4>
-                    <p style="font-style: italic; font-size: 0.95rem;">
-                        "We hired Marchello to build our ClickFunnels logic. His technical design system was flawless, and knowing the limitations he works with just proved to us that he builds solid solutions."
-                    </p>
-                    <strong style="display:block; font-size: 0.85rem; margin-top: 10px;">— Founder, Tech Accelerator</strong>
-                </div>
-                <div class="card">
-                    <span class="text-gold" style="font-size: 1.5rem;">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-                    <h4 style="margin-top: 10px;">"Inspiring and Practical"</h4>
-                    <p style="font-style: italic; font-size: 0.95rem;">
-                        "As a parent of a disabled child, hearing Marchello speak gave me a realistic, non-pity roadmap. He shows that adapting is just a smarter way to execute."
-                    </p>
-                    <strong style="display:block; font-size: 0.85rem; margin-top: 10px;">— Attendee, Advocacy Summit</strong>
+                <!-- Duplicate group for infinite loop scroll -->
+                <div class="reviews-marquee-group" aria-hidden="true">
+                    <!-- Card 1 -->
+                    <div class="reviews-marquee-card">
+                        <div>
+                            <span class="text-gold" style="font-size: 1.2rem;">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                            <h4 style="margin-top: 8px; margin-bottom: 8px; font-size:1.15rem; font-family: var(--font-heading); color: var(--color-navy);">"A Shift in Paradigm"</h4>
+                            <p style="font-style: italic; font-size: 0.92rem; line-height: 1.5; color: var(--color-navy); margin-bottom: 0;">
+                                "Marchello's keynote stripped away all the usual corny slogans we hear at sales rallies. His honest details about progression and practical AI execution changed how our management team views challenges."
+                            </p>
+                        </div>
+                        <div class="reviewer-profile">
+                            <img src="assets/reviews/reviewer_1.png" alt="Sarah Jenkins" class="reviewer-avatar">
+                            <div class="reviewer-info">
+                                <span class="reviewer-name">Sarah Jenkins</span>
+                                <span class="reviewer-role">Event Director, Leadership Forum</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="reviews-marquee-card">
+                        <div>
+                            <span class="text-gold" style="font-size: 1.2rem;">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                            <h4 style="margin-top: 8px; margin-bottom: 8px; font-size:1.15rem; font-family: var(--font-heading); color: var(--color-navy);">"Zero Fluff, Real Proof"</h4>
+                            <p style="font-style: italic; font-size: 0.92rem; line-height: 1.5; color: var(--color-navy); margin-bottom: 0;">
+                                "We hired Marchello to build our ClickFunnels logic. His technical design system was flawless, and knowing the limitations he works with just proved to us that he builds solid solutions."
+                            </p>
+                        </div>
+                        <div class="reviewer-profile">
+                            <img src="assets/reviews/reviewer_2.png" alt="David Chen" class="reviewer-avatar">
+                            <div class="reviewer-info">
+                                <span class="reviewer-name">David Chen</span>
+                                <span class="reviewer-role">Founder, Tech Accelerator</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 3 -->
+                    <div class="reviews-marquee-card">
+                        <div>
+                            <span class="text-gold" style="font-size: 1.2rem;">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                            <h4 style="margin-top: 8px; margin-bottom: 8px; font-size:1.15rem; font-family: var(--font-heading); color: var(--color-navy);">"Inspiring and Practical"</h4>
+                            <p style="font-style: italic; font-size: 0.92rem; line-height: 1.5; color: var(--color-navy); margin-bottom: 0;">
+                                "As a parent of a disabled child, hearing Marchello speak gave me a realistic, non-pity roadmap. He shows that adapting is just a smarter way to execute."
+                            </p>
+                        </div>
+                        <div class="reviewer-profile">
+                            <img src="assets/reviews/reviewer_3.png" alt="Elena Rostova" class="reviewer-avatar">
+                            <div class="reviewer-info">
+                                <span class="reviewer-name">Elena Rostova</span>
+                                <span class="reviewer-role">Advocate & Attendee, Advocacy Summit</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 4 -->
+                    <div class="reviews-marquee-card">
+                        <div>
+                            <span class="text-gold" style="font-size: 1.2rem;">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                            <h4 style="margin-top: 8px; margin-bottom: 8px; font-size:1.15rem; font-family: var(--font-heading); color: var(--color-navy);">"Unparalleled Strategic Focus"</h4>
+                            <p style="font-style: italic; font-size: 0.92rem; line-height: 1.5; color: var(--color-navy); margin-bottom: 0;">
+                                "Marchello's insights on system automation enabled our marketing team to trim waste by 40%. He doesn't just talk about resilience; he builds practical systems that deliver it."
+                            </p>
+                        </div>
+                        <div class="reviewer-profile">
+                            <img src="assets/reviews/reviewer_4.png" alt="Amanda Cross" class="reviewer-avatar">
+                            <div class="reviewer-info">
+                                <span class="reviewer-name">Amanda Cross</span>
+                                <span class="reviewer-role">VP of Operations, Retail Syndicate</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 5 -->
+                    <div class="reviews-marquee-card">
+                        <div>
+                            <span class="text-gold" style="font-size: 1.2rem;">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                            <h4 style="margin-top: 8px; margin-bottom: 8px; font-size:1.15rem; font-family: var(--font-heading); color: var(--color-navy);">"A True Catalyst for Action"</h4>
+                            <p style="font-style: italic; font-size: 0.92rem; line-height: 1.5; color: var(--color-navy); margin-bottom: 0;">
+                                "We brought Marchello in for our midyear kickoff. His presentation style is highly engaging, fully technical, and deeply grounding. Our audience was motivated and equipped."
+                            </p>
+                        </div>
+                        <div class="reviewer-profile">
+                            <img src="assets/reviews/reviewer_5.png" alt="Marcus Thorne" class="reviewer-avatar">
+                            <div class="reviewer-info">
+                                <span class="reviewer-name">Marcus Thorne</span>
+                                <span class="reviewer-role">Executive Director, Global Sales Summit</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 6 -->
+                    <div class="reviews-marquee-card">
+                        <div>
+                            <span class="text-gold" style="font-size: 1.2rem;">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                            <h4 style="margin-top: 8px; margin-bottom: 8px; font-size:1.15rem; font-family: var(--font-heading); color: var(--color-navy);">"Flawless Integration Logic"</h4>
+                            <p style="font-style: italic; font-size: 0.92rem; line-height: 1.5; color: var(--color-navy); margin-bottom: 0;">
+                                "The funnel architecture Marchello designed has run uninterrupted for six months, converting at double our previous benchmark. His systematic handling of constraints is masterclass."
+                            </p>
+                        </div>
+                        <div class="reviewer-profile">
+                            <img src="assets/reviews/reviewer_6.png" alt="Robert Vance" class="reviewer-avatar">
+                            <div class="reviewer-info">
+                                <span class="reviewer-name">Robert Vance</span>
+                                <span class="reviewer-role">Chief Growth Officer, Apex Scaling</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

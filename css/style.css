@@ -3536,3 +3536,98 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     background-color: rgba(10, 216, 173, 0.05) !important;
     transform: translateY(-2px);
 }
+
+/* Reviews Scrolling Marquee (Right to Left) */
+.reviews-marquee-wrapper {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    padding: 20px 0;
+}
+.reviews-marquee-wrapper::before,
+.reviews-marquee-wrapper::after {
+    position: absolute;
+    top: 0;
+    width: 150px;
+    height: 100%;
+    content: "";
+    z-index: 2;
+    pointer-events: none;
+}
+.reviews-marquee-wrapper::before {
+    left: 0;
+    background: linear-gradient(to right, var(--color-pure-white) 15%, transparent 100%);
+}
+.reviews-marquee-wrapper::after {
+    right: 0;
+    background: linear-gradient(to left, var(--color-pure-white) 15%, transparent 100%);
+}
+.reviews-marquee-track {
+    display: flex;
+    width: max-content;
+    animation: reviews-marquee-scroll 45s linear infinite;
+}
+.reviews-marquee-track:hover {
+    animation-play-state: paused;
+}
+.reviews-marquee-group {
+    display: flex;
+    gap: 30px;
+    padding-right: 30px;
+}
+.reviews-marquee-card {
+    flex-shrink: 0;
+    width: 380px;
+    background: var(--color-pure-white);
+    border: 1px solid var(--color-gray-border);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.reviews-marquee-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--color-teal) !important;
+}
+.reviewer-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 15px;
+    border-top: 1px solid var(--color-gray-border);
+    padding-top: 12px;
+}
+.reviewer-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--color-teal);
+}
+.reviewer-info {
+    display: flex;
+    flex-direction: column;
+}
+.reviewer-name {
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--color-navy);
+}
+.reviewer-role {
+    font-size: 0.78rem;
+    color: var(--color-gray-steel);
+}
+
+@keyframes reviews-marquee-scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
