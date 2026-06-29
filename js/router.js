@@ -1985,7 +1985,7 @@ Router.register('/contact', () => {
             <div class="grid-2" style="align-items: center; gap: var(--spacing-lg);">
                 <!-- Left Column: Picture of Marchello -->
                 <div class="contact-image-column" style="text-align: center;">
-                    <img src="assets/contact_hero.png" alt="Marchello Sciortino" style="width: 100%; max-width: 400px; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); border: 1px solid var(--color-gray-border); margin-bottom: 20px; object-fit: cover;">
+                    <img src="assets/contact_hero.png" alt="Marchello Sciortino" style="width: 100%; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); border: 1px solid var(--color-gray-border); margin-bottom: 20px; object-fit: cover;">
                     <h3 style="color: var(--color-navy); margin-bottom: 6px; font-family: var(--font-heading); font-weight: 800; text-transform: uppercase; letter-spacing: 0.02em;">Marchello Sciortino</h3>
                     <p style="color: var(--color-teal); font-weight: 700; font-family: var(--font-heading); font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0;">Creativity. Technology. Determination.</p>
                 </div>
