@@ -64,28 +64,27 @@
     },
     {
         "id": "daily-june-29-2026",
-        "title": "Hands-Free AI Dictation: Write and Code Without Typing",
-        "tag": "AI and Accessibility",
-        "desc": "How using advanced voice tools and custom AI workflows allows me to write, code, and build businesses entirely hands-free.",
+        "title": "Faith-Driven Entrepreneurship: Building Business with Higher Purpose",
+        "tag": "Daily Inspiration",
+        "desc": "How aligning your daily business goals with faith and service keeps you grounded through physical limitations.",
         "date": "June 29, 2026",
         "image": "assets/antigravity-fallback.png",
-        "body": "<h2>Finding Your Voice When Your Hands Fight Back</h2><p>Living with Friedrich's ataxia means typing is a slow battle. My fingers don't always hit the keys I want them to, and coding or writing can quickly become exhausting. But instead of letting that slow me down, I shifted to using voice tools and generative intelligence to do the heavy lifting.</p><p>With the right setup, hands free AI dictation becomes more than a convenience. It becomes your primary engine for creation, allowing you to turn thoughts into clean code or formatted text in seconds.</p><h3>My Daily Hands-Free Tech Stack</h3><p>Here is the exact setup I use to stay productive without touching a keyboard:</p><ul><li><strong>Whisper API:</strong> For ultra-accurate voice-to-text transcription that captures every word even with dysarthria.</li><li><strong>Custom GPTs:</strong> I use these to clean up the transcriptions, removing filler words and formatting the output into clean emails or blog posts.</li><li><strong>My Custom Assistant:</strong> I built the <a href=\"/chelloai\">ChelloAI</a> tool to streamline these workflows for quick execution.</li></ul><h3>How to Get Started with Voice-First Creation</h3><p>First, stop trying to speak perfectly. AI transcription excels at understanding context. Speak naturally, let your thoughts flow, and let the AI clean up the rough edges later. If you want to see how these workflows can scale your business, check out my <a href=\"/services\">creative AI services</a>.</p><p>For more insights on building accessible systems, you can also explore tools listed on <a href=\"https://www.accessibleaim.com/\" target=\"_blank\">Accessible AIM</a>.</p><h3>Frequently Asked Questions</h3><h3>Can voice dictation handle speech speech impediments?</h3><p>Yes. Advanced neural models learn your speech patterns over time, making them highly effective for conditions like Friedrich's ataxia.</p><h3>Do I need expensive hardware for this?</h3><p>No, a decent USB microphone and standard cloud-based AI tools are all you need to get started.</p><p>Much love, party people! That was awesome, the next one will only be better!</p>",
-        "meta_title": "Hands-Free AI Dictation: Dictation Hacks for Accessibility",
-        "meta_description": "Discover how hands-free AI dictation tools help navigate physical limitations to write, code, and create content efficiently.",
-        "url_slug": "hands-free-ai-dictation",
-        "primary_keyword": "hands free AI dictation",
+        "body": "<h2>Building Beyond Yourself with Faith-Driven Entrepreneurship</h2><p>Starting a business when your body fights you every step of the way requires a unique fuel. I find that fuel in my faith. As someone living with Friedrich's ataxia, physical energy fluctuates wildly. Some days my coordination is completely off, and my speech is slurred. Yet, the work goes on. This isn't about raw willpower; it is about anchoring my work in a higher purpose.</p><p>When we build projects, shape ideas, or seek <a href=\"/services\">services</a> that align with our calling, our daily grind transforms from a struggle into a mission.</p><h3>The Shift From Control to Trust</h3><p>In business, we often try to control every outcome. But physical limits force us to surrender that control. I realized that my business is not mine alone—it is a co-creation. If you are struggling to find direction today, pause and ask yourself what you are building for.</p><p>Today's challenge: Write down one goal that serves others more than your ego. Aligning your strategy with service is the core of true growth. You can read more about navigating these challenges in the <a href=\"https://www.limitationstoliberation.com/\" target=\"_blank\">Limitations to Liberation book</a> to see how boundaries can shape a stronger vision.</p><h3>Frequently Asked Questions</h3><h3>What is faith-driven entrepreneurship?</h3><p>It is the practice of running a business with spiritual values as the core foundation, prioritizing impact and trust over sheer control.</p><h3>How do you manage Friedrich's ataxia while running a business?</h3><p>I rely on smart tools, clear design parameters, and a team-first mindset to keep moving forward when my physical strength is limited.</p><p>Much love, party people! That was awesome, the next one will only be better!</p>",
+        "meta_title": "Faith-Driven Entrepreneurship: Navigating Business and Disability",
+        "meta_description": "Discover how faith-driven entrepreneurship transforms daily business struggles into purposeful growth, even when navigating physical limits.",
+        "url_slug": "faith-driven-entrepreneurship",
+        "primary_keyword": "faith-driven entrepreneurship",
         "secondary_keywords": [
-            "speech to text accessibility",
-            "assistive technology tools",
-            "voice command coding"
+            "business and faith",
+            "resilient entrepreneur",
+            "purposeful business growth"
         ],
         "search_intent_classification": "Informational",
         "suggested_internal_links": [
-            "/chelloai",
             "/services"
         ],
-        "image_alt_text": "A sleek studio microphone with glowing digital waves symbolizing voice transcription technology",
-        "social_sharing_title": "How I Code and Write Hands-Free Using AI Dictation",
-        "social_sharing_description": "Ditching the keyboard. Here is the hands-free AI tech stack I use to build businesses with Friedrich's ataxia."
+        "image_alt_text": "A serene workspace highlighting faith-driven entrepreneurship tools",
+        "social_sharing_title": "Building on Solid Ground: Faith-Driven Entrepreneurship",
+        "social_sharing_description": "How shifting your focus from control to trust changes the way you build your business."
     }
 ]
