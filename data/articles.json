@@ -1,1 +1,28 @@
-[]
+[
+    {
+        "id": "daily-june-29-2026",
+        "title": "How Accessible Voice Dictation Keeps My Creative Momentum Alive",
+        "tag": "AI and Accessibility",
+        "desc": "Learn how I use adaptive speech-to-text technology to overcome physical fatigue and keep creating.",
+        "date": "June 29, 2026",
+        "image": "assets/antigravity-fallback.png",
+        "body": "<h2>The Midyear Shift to a Hands-Free Workflow</h2><p>June is fading, and my hands get tired faster these days due to Friedrich's ataxia. But the drive to build and share doesn't stop. Instead of fighting physical friction, I leaned heavily into <strong>accessible voice dictation</strong> to keep my creative momentum alive.</p><p>If typing feels like running a marathon in deep sand, you change how you run. For me, that meant pairing modern speech-to-text tools with my daily routine. I do not let physical limits dictate my output. You can read more about how I navigate these transitions on my <a href=\"/story\">story page</a>.</p><h2>Finding Freedom in Voice Tech</h2><p>It is about adaptive creativity, not defeat. Using AI to transcribe my thoughts isn't a cheat code; it is an amplification of my voice. It allows me to keep my focus exactly where it belongs: on the message God put in my heart. I discuss these practical systems in my book <a href=\"https://www.limitationstoliberation.com/\" target=\"_blank\">Limitations to Liberation</a>.</p><p>If you need help setting up adaptive setups for your own brand, feel free to check out my <a href=\"/services\">creative AI services</a>.</p><h3>Frequently Asked Questions</h3><h3>What is the best tool for accessible voice dictation?</h3><p>I use advanced AI transcription tools that adapt to my specific speech patterns, bypassing the limitations of traditional software.</p><h3>How do you manage vocal fatigue?</h3><p>I break my dictation sessions into short, high-energy blocks of five to ten minutes, keeping my voice rested and clear.</p>\n<p style=\"margin-top: 20px; color: var(--color-teal);\"><strong><em>\"Much love, party people! That was awesome, the next one will only be better!\"</em></strong></p>",
+        "meta_title": "Accessible Voice Dictation: Keeping My Momentum Alive | Marchello Sciortino",
+        "meta_description": "Discover how accessible voice dictation keeps my writing consistent despite physical challenges. Learn to adapt your workflow today.",
+        "url_slug": "accessible-voice-dictation-workflow",
+        "primary_keyword": "accessible voice dictation",
+        "secondary_keywords": [
+            "speech to text tools",
+            "assistive technology",
+            "adaptive workflow"
+        ],
+        "search_intent_classification": "Informational",
+        "suggested_internal_links": [
+            "/story",
+            "/services"
+        ],
+        "image_alt_text": "A sleek microphone next to a laptop displaying digital audio waveforms in a warm, sunlit office.",
+        "social_sharing_title": "How Accessible Voice Dictation Keeps My Creative Momentum Alive",
+        "social_sharing_description": "Instead of fighting physical limits, I adapted. Here is how speech-to-text technology keeps my hands-free workflow consistent."
+    }
+]
