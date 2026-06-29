@@ -3235,7 +3235,7 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
    Services Horizontal Accordion
    ========================================================================== */
 .services-accordion-section {
-    background-color: var(--color-navy-dark);
+    background-color: var(--color-white);
     padding: 6rem 0;
 }
 
