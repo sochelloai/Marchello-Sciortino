@@ -723,7 +723,7 @@ Router.register('/story', () => `
 `);
 
 Router.register('/services', () => `
-    <div class="services-header" style="position: relative; padding: 7.5rem 0 5rem 0; text-align: center; overflow: hidden; background: linear-gradient(to right, rgba(7, 24, 39, 0.95) 0%, rgba(7, 24, 39, 0.75) 60%, rgba(7, 24, 39, 0.5) 100%), url('assets/hero-bg.png?v=3') no-repeat center center / cover; border-bottom: 2px solid var(--color-teal);">
+    <div class="services-header" style="position: relative; padding: 7.5rem 0 5rem 0; text-align: center; overflow: hidden; background: var(--color-navy); border-bottom: 2px solid var(--color-teal);">
         <!-- Curved background gold lines using inline SVG -->
         <svg style="position: absolute; left: 0; top: 0; height: 100%; width: 220px; pointer-events: none; opacity: 0.25;" viewBox="0 0 100 100" preserveAspectRatio="none">
             <path d="M -10,0 Q 20,40 100,50 M -10,15 Q 20,55 100,65 M -10,30 Q 20,70 100,80 M -10,45 Q 20,85 100,95 M -10,60 Q 20,100 100,110" fill="none" stroke="var(--color-teal)" stroke-width="0.3" />
