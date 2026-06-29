@@ -394,126 +394,199 @@ You must return a raw JSON object containing exactly these fields (no markdown w
         const imagePromptText = generatedArticle.image_prompt + " minimal professional editorial style, atmospheric visual metaphor, cinematic lighting, no text, no captions.";
 
         if (OPENAI_API_KEY) {
-            console.log("Calling OpenAI DALL-E 3 API...");
-            try {
-                const openaiUrl = "https://api.openai.com/v1/images/generations";
-                const headers = {
-                    "Authorization": `Bearer ${OPENAI_API_KEY}`
-                };
-                const body = {
-                    model: "dall-e-3",
-                    prompt: imagePromptText,
-                    n: 1,
-                    size: "1024x1024"
-                };
-                const res = await postJson(openaiUrl, headers, body);
-                const b64Data = res?.data?.[0]?.b64_json;
-                const imageUrl = res?.data?.[0]?.url;
-                
-                if (b64Data) {
-                    imageBuffer = Buffer.from(b64Data, 'base64');
-                    console.log("Image generated successfully via OpenAI DALL-E 3 (base64).");
-                } else if (imageUrl) {
-                    console.log(`Downloading generated image from: ${imageUrl}`);
-                    const blogAssetsDir = path.join(__dirname, '..', 'assets', 'blog');
-                    if (!fs.existsSync(blogAssetsDir)) {
-                        fs.mkdirSync(blogAssetsDir, { recursive: true });
-                    }
-                    const imageSlug = sanitizeId(generatedArticle.url_slug || articleId);
-                    const localImageName = `${imageSlug}.png`;
-                    const localImagePath = path.join(blogAssetsDir, localImageName);
+            const openaiCandidates = [
+                { model: "dall-e-3" },
+                { model: "dall-e-2" },
+                {} // No model specified (defaults to endpoint standard)
+            ];
+
+            for (const candidate of openaiCandidates) {
+                console.log(`Calling OpenAI DALL-E API with model options: ${JSON.stringify(candidate)}...`);
+                try {
+                    const openaiUrl = "https://api.openai.com/v1/images/generations";
+                    const headers = {
+                        "Authorization": `Bearer ${OPENAI_API_KEY}`
+                    };
+                    const body = {
+                        prompt: imagePromptText,
+                        n: 1,
+                        size: "1024x1024",
+                        ...candidate
+                    };
+                    const res = await postJson(openaiUrl, headers, body);
+                    const b64Data = res?.data?.[0]?.b64_json;
+                    const imageUrl = res?.data?.[0]?.url;
                     
-                    await downloadFile(imageUrl, localImagePath);
-                    imageBuffer = fs.readFileSync(localImagePath);
-                    relativeImageSrc = `assets/blog/${localImageName}`;
-                    console.log("Image downloaded and written successfully via OpenAI DALL-E 3.");
-                } else {
-                    console.error("OpenAI response did not contain image data:", JSON.stringify(res, null, 2));
+                    if (b64Data) {
+                        imageBuffer = Buffer.from(b64Data, 'base64');
+                        console.log("Image generated successfully via OpenAI DALL-E (base64).");
+                        break;
+                    } else if (imageUrl) {
+                        console.log(`Downloading generated image from: ${imageUrl}`);
+                        const blogAssetsDir = path.join(__dirname, '..', 'assets', 'blog');
+                        if (!fs.existsSync(blogAssetsDir)) {
+                            fs.mkdirSync(blogAssetsDir, { recursive: true });
+                        }
+                        const imageSlug = sanitizeId(generatedArticle.url_slug || articleId);
+                        const localImageName = `${imageSlug}.png`;
+                        const localImagePath = path.join(blogAssetsDir, localImageName);
+                        
+                        await downloadFile(imageUrl, localImagePath);
+                        imageBuffer = fs.readFileSync(localImagePath);
+                        relativeImageSrc = `assets/blog/${localImageName}`;
+                        console.log("Image downloaded and written successfully via OpenAI DALL-E.");
+                        break;
+                    } else {
+                        console.warn("OpenAI response did not contain image data.");
+                    }
+                } catch (openaiErr) {
+                    console.warn(`OpenAI candidate attempt failed: ${openaiErr.message}`);
                 }
-            } catch (openaiErr) {
-                console.error("OpenAI DALL-E 3 image generation failed:", openaiErr.message);
             }
         } else {
-            console.log("Skipping OpenAI DALL-E 3: OPENAI_API_KEY not found in environment.");
+            console.log("Skipping OpenAI DALL-E: OPENAI_API_KEY not found in environment.");
         }
 
-        if (!imageBuffer) {
-            console.log("Attempting image generation via Google Gemini 2.5 Flash Image...");
+        if (!imageBuffer && GEMINI_API_KEY) {
+            console.log("Attempting Google image generation...");
+            
+            // 1. Fetch available models from Google AI Studio to adapt programmatically
+            let availableModels = [];
             try {
-                const geminiImageUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent?key=${GEMINI_API_KEY}`;
-                const imageBody = {
-                    contents: [
-                        {
-                            parts: [
-                                { text: imagePromptText }
-                            ]
+                console.log("Querying ModelService.ListModels for enabled models...");
+                const modelsList = await getJson(`https://generativelanguage.googleapis.com/v1beta/models?key=${GEMINI_API_KEY}`);
+                if (modelsList && modelsList.models) {
+                    availableModels = modelsList.models;
+                }
+            } catch (err) {
+                console.warn("Could not retrieve models list for auto-detection:", err.message);
+            }
+
+            // 2. Identify candidate image models in the list
+            const imageModels = availableModels.filter(m => 
+                m.name.includes("imagen") || 
+                m.name.includes("image") || 
+                (m.supportedMethods && m.supportedMethods.some(method => method.toLowerCase().includes("image")))
+            );
+
+            if (imageModels.length > 0) {
+                console.log(`Detected ${imageModels.length} image generation models on this key:`);
+                imageModels.forEach(m => console.log(`- ${m.name} (methods: ${m.supportedMethods.join(', ')})`));
+
+                for (const model of imageModels) {
+                    console.log(`Attempting image generation using auto-detected model: "${model.name}"...`);
+                    
+                    // Attempt based on supported methods
+                    const methods = model.supportedMethods.map(m => m.split('/').pop() || m);
+                    
+                    if (methods.includes("generateContent")) {
+                        try {
+                            console.log(`Calling generateContent on "${model.name}"...`);
+                            const url = `https://generativelanguage.googleapis.com/v1beta/${model.name}:generateContent?key=${GEMINI_API_KEY}`;
+                            const body = {
+                                contents: [{ parts: [{ text: imagePromptText }] }],
+                                generationConfig: { responseModalities: ["TEXT", "IMAGE"] }
+                            };
+                            const res = await postJson(url, {}, body);
+                            const part = res?.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
+                            const b64 = part?.inlineData?.data;
+                            if (b64) {
+                                imageBuffer = Buffer.from(b64, 'base64');
+                                console.log(`Image generated successfully via "${model.name}" (generateContent).`);
+                                break;
+                            }
+                        } catch (err) {
+                            console.warn(`Auto-detected method generateContent failed for "${model.name}": ${err.message}`);
                         }
-                    ],
-                    generationConfig: {
-                        responseModalities: ["TEXT", "IMAGE"]
                     }
-                };
-                const res = await postJson(geminiImageUrl, {}, imageBody);
-                const part = res?.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
-                const b64Data = part?.inlineData?.data;
-                if (b64Data) {
-                    imageBuffer = Buffer.from(b64Data, 'base64');
-                    console.log("Image generated successfully via Google Gemini 2.5 Flash Image.");
-                } else {
-                    console.error("Google Gemini 2.5 Flash Image response did not contain inlineData:", JSON.stringify(res, null, 2));
-                }
-            } catch (geminiImgErr) {
-                console.error("Google Gemini 2.5 Flash Image generation failed:", geminiImgErr.message);
-            }
-        }
-
-        if (!imageBuffer) {
-            console.log("Attempting image generation via Google Imagen 3 (:predict)...");
-            try {
-                const geminiImageUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${GEMINI_API_KEY}`;
-                const imageBody = {
-                    instances: [
-                        { prompt: imagePromptText }
-                    ],
-                    parameters: {
-                        sampleCount: 1,
-                        outputMimeType: "image/png",
-                        aspectRatio: "1:1"
+                    
+                    if (methods.includes("predict")) {
+                        try {
+                            console.log(`Calling predict on "${model.name}"...`);
+                            const url = `https://generativelanguage.googleapis.com/v1beta/${model.name}:predict?key=${GEMINI_API_KEY}`;
+                            const body = {
+                                instances: [{ prompt: imagePromptText }],
+                                parameters: { sampleCount: 1, outputMimeType: "image/png", aspectRatio: "1:1" }
+                            };
+                            const res = await postJson(url, {}, body);
+                            const b64 = res?.predictions?.[0]?.bytesBase64Encoded || res?.predictions?.[0]?.image?.imageBytes;
+                            if (b64) {
+                                imageBuffer = Buffer.from(b64, 'base64');
+                                console.log(`Image generated successfully via "${model.name}" (predict).`);
+                                break;
+                            }
+                        } catch (err) {
+                            console.warn(`Auto-detected method predict failed for "${model.name}": ${err.message}`);
+                        }
                     }
-                };
-                const res = await postJson(geminiImageUrl, {}, imageBody);
-                const b64Data = res?.predictions?.[0]?.bytesBase64Encoded || res?.predictions?.[0]?.image?.imageBytes;
-                if (b64Data) {
-                    imageBuffer = Buffer.from(b64Data, 'base64');
-                    console.log("Image generated successfully via Google Imagen 3 (:predict).");
-                } else {
-                    console.error("Google Imagen 3 (:predict) response did not contain image data:", JSON.stringify(res, null, 2));
-                }
-            } catch (imagenErr) {
-                console.error("Google Imagen 3 (:predict) image generation failed:", imagenErr.message);
-            }
-        }
 
-        if (!imageBuffer) {
-            console.log("Attempting legacy fallback image generation via Google Imagen 3 (:generateImages)...");
-            try {
-                const geminiImageUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:generateImages?key=${GEMINI_API_KEY}`;
-                const imageBody = {
-                    prompt: imagePromptText,
-                    numberOfImages: 1,
-                    outputMimeType: "image/png",
-                    aspectRatio: "1:1"
-                };
-                const res = await postJson(geminiImageUrl, {}, imageBody);
-                const b64Data = res?.generatedImages?.[0]?.image?.imageBytes;
-                if (b64Data) {
-                    imageBuffer = Buffer.from(b64Data, 'base64');
-                    console.log("Image generated successfully via Google Imagen 3 (:generateImages).");
-                } else {
-                    console.error("Google Imagen 3 (:generateImages) response did not contain imageBytes:", JSON.stringify(res, null, 2));
+                    if (methods.includes("generateImages")) {
+                        try {
+                            console.log(`Calling generateImages on "${model.name}"...`);
+                            const url = `https://generativelanguage.googleapis.com/v1beta/${model.name}:generateImages?key=${GEMINI_API_KEY}`;
+                            const body = {
+                                prompt: imagePromptText,
+                                numberOfImages: 1,
+                                outputMimeType: "image/png",
+                                aspectRatio: "1:1"
+                            };
+                            const res = await postJson(url, {}, body);
+                            const b64 = res?.generatedImages?.[0]?.image?.imageBytes;
+                            if (b64) {
+                                imageBuffer = Buffer.from(b64, 'base64');
+                                console.log(`Image generated successfully via "${model.name}" (generateImages).`);
+                                break;
+                            }
+                        } catch (err) {
+                            console.warn(`Auto-detected method generateImages failed for "${model.name}": ${err.message}`);
+                        }
+                    }
                 }
-            } catch (imagenErr) {
-                console.error("Google Imagen 3 (:generateImages) image generation failed:", imagenErr.message);
+            }
+
+            // 3. If auto-detection yielded nothing or failed, use static fallback candidates
+            if (!imageBuffer) {
+                console.log("No auto-detected models succeeded. Attempting static fallback candidates...");
+                const staticCandidates = [
+                    {
+                        name: "imagen-3.0-generate-002",
+                        method: "predict",
+                        url: `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${GEMINI_API_KEY}`,
+                        body: { instances: [{ prompt: imagePromptText }], parameters: { sampleCount: 1, outputMimeType: "image/png", aspectRatio: "1:1" } },
+                        parser: res => res?.predictions?.[0]?.bytesBase64Encoded || res?.predictions?.[0]?.image?.imageBytes
+                    },
+                    {
+                        name: "imagen-3.0-generate-002",
+                        method: "generateImages",
+                        url: `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:generateImages?key=${GEMINI_API_KEY}`,
+                        body: { prompt: imagePromptText, numberOfImages: 1, outputMimeType: "image/png", aspectRatio: "1:1" },
+                        parser: res => res?.generatedImages?.[0]?.image?.imageBytes
+                    },
+                    {
+                        name: "gemini-2.5-flash-image",
+                        method: "generateContent",
+                        url: `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent?key=${GEMINI_API_KEY}`,
+                        body: { contents: [{ parts: [{ text: imagePromptText }] }], generationConfig: { responseModalities: ["TEXT", "IMAGE"] } },
+                        parser: res => res?.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData?.data
+                    }
+                ];
+
+                for (const cand of staticCandidates) {
+                    console.log(`Attempting static fallback model: "${cand.name}" via "${cand.method}"...`);
+                    try {
+                        const res = await postJson(cand.url, {}, cand.body);
+                        const b64 = cand.parser(res);
+                        if (b64) {
+                            imageBuffer = Buffer.from(b64, 'base64');
+                            console.log(`Image generated successfully via static fallback: "${cand.name}" (${cand.method}).`);
+                            break;
+                        } else {
+                            console.warn(`Response from static candidate "${cand.name}" did not parse correctly.`);
+                        }
+                    } catch (candErr) {
+                        console.warn(`Static candidate "${cand.name}" (${cand.method}) failed: ${candErr.message}`);
+                    }
+                }
             }
         }
 
