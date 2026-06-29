@@ -277,7 +277,7 @@ You must return a raw JSON object containing exactly these fields (no markdown w
   "desc": "A one-sentence summary of the daily lesson",
   "tag": "Choose exactly one: 'Story Notes', 'AI and Accessibility', 'Lessons From Limitation', 'Tools I Use', 'Daily Inspiration'",
   "body": "HTML formatted body content matching the heading hierarchy, list formatting, FAQ, and internal/external links instructions above. Do not output markdown inside the body string, only HTML.",
-  "image_prompt": "A detailed, descriptive prompt for generating a premium featured image representing the theme.",
+  "image_prompt": "A detailed, descriptive prompt for generating a premium featured image representing the theme. CRITICAL: The prompt must be purely symbolic and abstract (e.g. pathways, geometric shapes, light, keys, clean desks). DO NOT mention any medical terms, diseases, or physical limitations (such as Friedrich's ataxia or wheelchairs) to prevent safety filters from blocking the generation.",
   "meta_title": "A compelling meta title designed to maximize click-through rate",
   "meta_description": "A compelling meta description designed to maximize click-through rate (under 160 characters)",
   "url_slug": "A clean, URL-safe slug containing the primary keyword (lowercase, hyphen-separated)",
@@ -414,6 +414,36 @@ You must return a raw JSON object containing exactly these fields (no markdown w
             }
         } else {
             console.log("Skipping OpenAI DALL-E 3: OPENAI_API_KEY not found in environment.");
+        }
+
+        if (!imageBuffer) {
+            console.log("Attempting image generation via Google Gemini 2.5 Flash Image...");
+            try {
+                const geminiImageUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent?key=${GEMINI_API_KEY}`;
+                const imageBody = {
+                    contents: [
+                        {
+                            parts: [
+                                { text: imagePromptText }
+                            ]
+                        }
+                    ],
+                    generationConfig: {
+                        responseModalities: ["TEXT", "IMAGE"]
+                    }
+                };
+                const res = await postJson(geminiImageUrl, {}, imageBody);
+                const part = res?.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
+                const b64Data = part?.inlineData?.data;
+                if (b64Data) {
+                    imageBuffer = Buffer.from(b64Data, 'base64');
+                    console.log("Image generated successfully via Google Gemini 2.5 Flash Image.");
+                } else {
+                    console.error("Google Gemini 2.5 Flash Image response did not contain inlineData:", JSON.stringify(res, null, 2));
+                }
+            } catch (geminiImgErr) {
+                console.error("Google Gemini 2.5 Flash Image generation failed:", geminiImgErr.message);
+            }
         }
 
         if (!imageBuffer) {
