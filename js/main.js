@@ -99,6 +99,13 @@ function setupGlobalModals() {
         const closeModalFn = () => {
             modal.classList.remove('active');
             modal.setAttribute('aria-hidden', 'true');
+            
+            // Clear the article query parameter on close to restore clean main page path
+            if (modal.id === 'detail-modal') {
+                const urlWithoutParams = window.location.pathname;
+                history.pushState(null, '', urlWithoutParams);
+            }
+            
             // If stopping audio on modal close (fallback helper)
             if (modal.id === 'detail-modal' && typeof Music !== 'undefined') {
                 // Return focus to active trigger

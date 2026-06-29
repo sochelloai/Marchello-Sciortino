@@ -61,6 +61,23 @@ const Hub = {
             this.renderFilters();
             this.renderArticles();
             this.bindEvents();
+
+            // Check for article query parameter to auto-open modal on direct links or history pop
+            const urlParams = new URLSearchParams(window.location.search);
+            const articleIdParam = urlParams.get('article');
+            if (articleIdParam) {
+                const matchedArticle = this.articles.find(art => art.id === articleIdParam || art.url_slug === articleIdParam);
+                if (matchedArticle) {
+                    this.showArticleDetail(matchedArticle);
+                }
+            } else {
+                // Ensure detail modal is closed if navigating away via back/forward
+                const modal = document.getElementById('detail-modal');
+                if (modal && modal.classList.contains('active')) {
+                    modal.classList.remove('active');
+                    modal.setAttribute('aria-hidden', 'true');
+                }
+            }
         }
     },
 
@@ -140,9 +157,13 @@ const Hub = {
                 </div>
             `;
             
-            // Clicking card opens full article in detail modal
+            // Clicking card opens full article in detail modal and updates URL slug
             const readBtn = card.querySelector('button');
-            const openModalFn = () => this.showArticleDetail(art);
+            const openModalFn = () => {
+                const articleSlug = art.url_slug || art.id;
+                history.pushState(null, '', `${window.location.pathname}?article=${articleSlug}`);
+                this.showArticleDetail(art);
+            };
             
             readBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -164,8 +185,8 @@ const Hub = {
             tag.textContent = art.tag;
             title.textContent = art.title;
             
-            // Build shareable link URL
-            const shareUrl = encodeURIComponent(window.location.origin + '/hub?article=' + art.id);
+            // Build shareable link URL using url_slug if present
+            const shareUrl = encodeURIComponent(window.location.origin + '/hub?article=' + (art.url_slug || art.id));
             const shareTitle = encodeURIComponent(art.title);
             
             body.innerHTML = `
