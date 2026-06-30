@@ -1649,8 +1649,8 @@ Router.register('/chelloai', () => `
         </svg>
         
         <div class="container text-center" style="position: relative; z-index: 2;">
-            <span class="section-tag text-teal">Digital Companion</span>
-            <h1 style="color: white;">ChelloAI Partner</h1>
+            <span class="section-tag text-teal">When I Simply Can't</span>
+            <h1 style="color: white;">Meet ChelloAI</h1>
             <p class="section-desc" style="color: var(--color-gray-light);">
                 Technology amplifies my voice. Interact with ChelloAI, my custom conversational companion.
             </p>
