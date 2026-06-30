@@ -221,6 +221,13 @@ async function run() {
             }
         }
 
+        // Check if an article with today's ID already exists
+        const exists = articles.some(a => a.id === articleId);
+        if (exists) {
+            console.log(`Article with ID '${articleId}' already exists for today (${todayDateStr}). Skipping generation to avoid duplicate runs and content overwrites.`);
+            return;
+        }
+
         // Get the last 5 posts for diversity context (newest first)
         const recentPosts = articles.slice(-5).reverse();
         let recentPostsContext = "";
@@ -283,7 +290,7 @@ You must return a raw JSON object containing exactly these fields (no markdown w
   "desc": "A one-sentence summary of the daily lesson",
   "tag": "Choose exactly one: 'Story Notes', 'AI and Accessibility', 'Lessons From Limitation', 'Tools I Use', 'Daily Inspiration'",
   "body": "HTML formatted body content matching the heading hierarchy, list formatting, FAQ, and internal/external links instructions above. Do not output markdown inside the body string, only HTML.",
-  "image_prompt": "A detailed, descriptive prompt for generating a premium featured image representing the theme. CRITICAL: The prompt must be purely symbolic and abstract (e.g. pathways, geometric shapes, light, keys, clean desks). DO NOT mention any medical terms, diseases, or physical limitations (such as Friedrich's ataxia or wheelchairs) to prevent safety filters from blocking the generation.",
+  "image_prompt": "A detailed descriptive prompt for generating a premium featured image representing the article's theme. The prompt must strictly follow the Marchello Brand Image Style Guide: it must be a purely symbolic visual metaphor (e.g., using pathways, bridges, expanding circles, rising forms, connected nodes, or geometric structures) rather than literal people or scenes. It must communicate optimism, hope, and human potential. Do NOT mention any medical terms, diseases, physical limitations, or wheelchairs to avoid safety filters. Do NOT request text, logos, watermarks, or UI elements.",
   "meta_title": "A compelling meta title designed to maximize click-through rate",
   "meta_description": "A compelling meta description designed to maximize click-through rate (under 160 characters)",
   "url_slug": "A clean, URL-safe slug containing the primary keyword (lowercase, hyphen-separated)",
@@ -391,7 +398,18 @@ You must return a raw JSON object containing exactly these fields (no markdown w
         // Step 2: Generate the image (Try OpenAI DALL-E 3 first, then Google Imagen 3)
         let imageBuffer = null;
         let relativeImageSrc = "";
-        const imagePromptText = generatedArticle.image_prompt + " minimal professional editorial style, atmospheric visual metaphor, cinematic lighting, no text, no captions.";
+        // Define unified Marchello Brand Image Style Guide parameters
+        const brandStyleInstructions = [
+            "Style: Premium abstract conceptual artwork, geometric composition, layered symbolism, flowing dimensional shapes, modern visual storytelling, sophisticated artistic balance, museum-quality digital illustration, contemporary brand design, editorial artwork, generous negative space, crisp details.",
+            "Mood: optimistic, hopeful, communicating possibility, momentum, faith, resilience, growth, confidence, creativity, human potential, calm determination.",
+            "Color Palette: deep navy blue background, rich teal gradients, vibrant turquoise highlights, with warm orange and golden amber accents, soft glowing white light.",
+            "Geometry: circles, hexagons, polygon networks, dynamic pathways, glass-like structures, architectural balance, dimensional depth.",
+            "Lighting: cinematic volumetric light beams, soft glowing edges, internal glow, ambient illumination.",
+            "Textures & Surfaces: frosted glass, crystal, acrylic, metallic gradients, transparent layers, depth fog.",
+            "Quality Standards: ultra-high-resolution, clean luxury aesthetic, no clutter, no stock-photo appearance, strictly no text, no captions, no logos, no watermarks, no borders, no UI elements."
+        ].join(" ");
+
+        const imagePromptText = `${generatedArticle.image_prompt}. ${brandStyleInstructions}`;
 
         if (OPENAI_API_KEY) {
             const openaiCandidates = [

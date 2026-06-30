@@ -4,6 +4,8 @@ on:
   schedule:
     # Run every day at 12:00 PM UTC (equivalent to 7:00 AM Central Time)
     - cron: '0 12 * * *'
+    # Backup run every day at 3:00 PM UTC (equivalent to 10:00 AM Central Time)
+    - cron: '0 15 * * *'
   workflow_dispatch: # Allows manual trigger on demand
   push:
     branches:
