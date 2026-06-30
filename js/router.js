@@ -1639,7 +1639,7 @@ Router.register('/speaking', () => `
 
 // 8. ChelloAI Page Template
 Router.register('/chelloai', () => `
-    <div class="page-intro chello-ai-hero" style="position: relative; overflow: hidden; border-bottom: 2px solid var(--color-teal);">
+    <div class="page-intro" style="position: relative; overflow: hidden;">
         <!-- Curved background gold lines using inline SVG -->
         <svg style="position: absolute; left: 0; top: 0; height: 100%; width: 220px; pointer-events: none; opacity: 0.25;" viewBox="0 0 100 100" preserveAspectRatio="none">
             <path d="M -10,0 Q 20,40 100,50 M -10,15 Q 20,55 100,65 M -10,30 Q 20,70 100,80 M -10,45 Q 20,85 100,95 M -10,60 Q 20,100 100,110" fill="none" stroke="var(--color-teal)" stroke-width="0.3" />
