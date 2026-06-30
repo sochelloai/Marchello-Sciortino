@@ -835,15 +835,15 @@ Router.register('/services', () => `
                                         </div>
                                     </div>
                                 </div>
-                                <div class="portfolio-card" data-type="song" data-id="create-song-2" aria-label="Play Ambient Synth Track" role="button" tabindex="0">
-                                    <div class="portfolio-card-bg" style="background-image: url('assets/hero-bg.png');"></div>
+                                <div class="portfolio-card" data-type="song" data-id="create-song-2" aria-label="Play Chosen Anyway" role="button" tabindex="0">
+                                    <div class="portfolio-card-bg" style="background-image: url('assets/chosen-anyway.png');"></div>
                                     <div class="portfolio-card-overlay"></div>
                                     <div class="portfolio-card-icon">
                                         <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
                                     </div>
                                     <div class="portfolio-card-content">
                                         <span class="portfolio-badge">Song</span>
-                                        <h4 class="portfolio-title">Ambient Synth Track</h4>
+                                        <h4 class="portfolio-title">Chosen Anyway</h4>
                                         <div class="portfolio-wave">
                                             <div class="portfolio-wave-bar"></div>
                                             <div class="portfolio-wave-bar"></div>

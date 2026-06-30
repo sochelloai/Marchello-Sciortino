@@ -9,11 +9,12 @@ const ServicesPortfolio = {
     gainNode: null,
     playingAudioId: null,
     playbackInterval: null,
+    audioElement: null,
 
     // Audio tracks definition for live synthesized audio feedback
     tracks: {
         'create-audio-1': { freq: 440, type: 'triangle', melody: [440, 554, 659, 880, 659, 554] },
-        'create-song-2': { freq: 220, type: 'sine', melody: [220, 277, 329, 440, 329, 277] },
+        'create-song-2': { src: 'assets/chosen-anyway.mp3' },
         'build-audio-3': { freq: 261.63, type: 'triangle', melody: [261.63, 329.63, 392.00, 523.25] },
         'build-song-4': { freq: 130.81, type: 'sawtooth', melody: [130.81, 164.81, 196.00, 261.63] },
         'overcome-audio-5': { freq: 196, type: 'sine', melody: [196, 246.94, 293.66, 392, 293.66] },
@@ -188,6 +189,22 @@ const ServicesPortfolio = {
         const track = this.tracks[id];
         if (!track) return;
 
+        // If the track is a real audio file (MP3)
+        if (track.src) {
+            this.audioElement = new Audio(track.src);
+            this.audioElement.volume = 0.5;
+            this.audioElement.addEventListener('ended', () => {
+                this.stopAudio();
+            });
+            this.audioElement.play().catch(e => {
+                console.error("Audio playback failed:", e.message);
+            });
+            this.playingAudioId = id;
+            card.classList.add('playing');
+            card.setAttribute('aria-label', `Pause ${card.querySelector('.portfolio-title').textContent}`);
+            return;
+        }
+
         // 1. Initialize Browser AudioContext if needed
         if (!this.audioCtx) {
             this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -238,6 +255,14 @@ const ServicesPortfolio = {
 
     stopAudio() {
         if (!this.playingAudioId) return;
+
+        if (this.audioElement) {
+            try {
+                this.audioElement.pause();
+                this.audioElement.currentTime = 0;
+            } catch (e) {}
+            this.audioElement = null;
+        }
 
         const activeCard = document.querySelector(`.portfolio-card[data-id="${this.playingAudioId}"]`);
         if (activeCard) {
