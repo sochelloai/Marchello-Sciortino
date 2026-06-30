@@ -51,27 +51,27 @@ const Router = {
         // Split route path from query parameters
         let pathOnly = currentPath.split('?')[0];
 
-        // Redirect root or index.html to /home
-        if (pathOnly === '/' || pathOnly === '/index.html' || pathOnly === '') {
-            pathOnly = '/home';
+        // Redirect /home or /index.html to /
+        if (pathOnly === '/home' || pathOnly === '/index.html' || pathOnly === '') {
+            pathOnly = '/';
             // Preserve query string if any
             const search = currentPath.includes('?') ? '?' + currentPath.split('?')[1] : '';
-            history.replaceState(null, '', '/home' + search);
+            history.replaceState(null, '', '/' + search);
         }
 
         if (pathOnly === '/book') {
             const search = currentPath.includes('?') ? '?' + currentPath.split('?')[1] : '';
-            history.replaceState(null, '', '/home' + search);
+            history.replaceState(null, '', '/' + search);
             window.open('https://www.limitationstoliberation.com/', '_blank');
             return;
         }
 
-        // Match route or redirect to home
-        const templateFn = this.routes[pathOnly] || this.routes['/home'];
+        // Match route or redirect to home (/)
+        const templateFn = this.routes[pathOnly] || this.routes['/'];
 
         if (templateFn) {
             // Update current page
-            this.currentPage = pathOnly.substring(1); // strip leading slash
+            this.currentPage = pathOnly === '/' ? 'home' : pathOnly.substring(1); // strip leading slash
 
             // Execute template builder
             const html = templateFn();
@@ -84,7 +84,7 @@ const Router = {
 
             // Update document title dynamically for SEO
             const titles = {
-                '/home': "Marchello Sciortino | Official Digital Hub",
+                '/': "Marchello Sciortino | Official Digital Hub",
                 '/story': "My Story | Marchello Sciortino",
                 '/services': "Services | Marchello Sciortino",
                 '/mission': "The Mission | Marchello Sciortino",
@@ -144,7 +144,7 @@ const Router = {
 // ==========================================================================
 
 // 1. Home Page Template
-Router.register('/home', () => `
+Router.register('/', () => `
     <!-- Cinematic Hero -->
     <section class="hero-sec">
         <!-- Animated Grain Overlay -->
