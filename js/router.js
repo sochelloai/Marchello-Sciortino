@@ -1657,27 +1657,48 @@ Router.register('/chelloai', () => `
         </div>
     </div>
     
-    <!-- Section 1: Intro Copy (Centered) -->
-    <section class="section bg-white" style="padding: 4.5rem 0 3rem 0;">
-        <div class="container" style="text-align: center;">
-            <h2 class="text-navy" style="font-size: 2.2rem; margin-bottom: var(--spacing-sm);">A Bridge for Connection</h2>
-            <p style="font-size: 1.15rem; line-height: 1.7; color: var(--color-gray-medium); margin-bottom: var(--spacing-sm);">
-                Because typing can take me hours and my physical speech has changed, I developed ChelloAI. This partner is trained directly on my personal rules, writings, memories, and voice settings.
-            </p>
-            <p style="font-size: 1.15rem; line-height: 1.7; color: var(--color-gray-medium); margin-bottom: var(--spacing-sm);">
-                It represents me in conversations, answering questions and sharing resources to help visitors understand my perspective.
-            </p>
-            <p style="font-size: 1.15rem; line-height: 1.7; color: var(--color-gray-steel); margin-bottom: var(--spacing-lg); font-weight: 500;">
-                Speak directly with my Live Avatar companion below, or use the interactive chat simulator to ask preset questions.
-            </p>
-            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
-                <button id="start-avatar-btn" class="btn btn-teal" style="display: flex; align-items: center; gap: 8px; padding: 12px 24px; font-size: 1rem;">
-                    <span style="font-size: 1.1rem;">🎙️</span> Talk to Live Avatar
-                </button>
-                <button id="scroll-to-simulator-btn" class="btn btn-outline-teal" style="padding: 12px 24px; font-size: 1rem;">
-                    💬 Try Chat Simulator
-                </button>
-                <a href="https://www.accessibleaim.com" target="_blank" rel="noopener noreferrer" class="btn btn-outline-white" style="background: var(--color-navy); color: white; border: 1px solid var(--color-navy); padding: 12px 24px; font-size: 1rem; transition: var(--transition-fast);">Build Your Own Companion</a>
+    <!-- Section 1: Two-Column Intro Copy -->
+    <section class="section bg-white" style="padding: 5rem 0 3rem 0;">
+        <div class="container">
+            <div class="grid-2" style="align-items: center; gap: var(--spacing-lg);">
+                
+                <!-- Left Column: Full-Width Image -->
+                <div style="width: 100%;">
+                    <img src="assets/chello-ai-twin.png" alt="ChelloAI Conversational Partner" style="width: 100%; height: auto; border-radius: var(--radius-md); box-shadow: var(--shadow-md); border: 1px solid rgba(10, 216, 173, 0.15); display: block;">
+                </div>
+                
+                <!-- Right Column: Text & CTAs -->
+                <div>
+                    <span class="section-tag text-teal" style="display: inline-block; margin-bottom: 8px;">Abridge Connection</span>
+                    <h2 class="text-navy" style="font-size: 2.2rem; margin-bottom: var(--spacing-sm);">A Bridge for Connection</h2>
+                    
+                    <p style="font-size: 1.15rem; line-height: 1.7; color: var(--color-gray-medium); margin-bottom: var(--spacing-sm);">
+                        Because typing can take me hours and my physical speech has changed due to Friedrich's ataxia, I developed <strong>ChelloAI</strong>. This partner is trained directly on my personal rules, writings, memories, and voice settings.
+                    </p>
+                    
+                    <p style="font-size: 1.15rem; line-height: 1.7; color: var(--color-gray-medium); margin-bottom: var(--spacing-sm);">
+                        It acts as an abridged bridge for connection, representing me in conversations and answering questions about my story and design services to help visitors understand my perspective without delay.
+                    </p>
+                    
+                    <p style="font-size: 1.15rem; line-height: 1.7; color: var(--color-gray-medium); margin-bottom: var(--spacing-sm);">
+                        Creating ChelloAI has unlocked incredible benefits for my digital creations: it acts as a persistent digital twin that preserves my coordination energy, assists with communication flow, and enables me to build and share resources more efficiently.
+                    </p>
+                    
+                    <p style="font-size: 1.15rem; line-height: 1.7; color: var(--color-gray-steel); margin-bottom: var(--spacing-lg); font-weight: 500;">
+                        Speak directly with my Live Avatar companion below, or use the interactive chat simulator to ask preset questions.
+                    </p>
+                    
+                    <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: flex-start;">
+                        <button id="start-avatar-btn" class="btn btn-teal" style="display: flex; align-items: center; gap: 8px; padding: 12px 24px; font-size: 1rem;">
+                            <span style="font-size: 1.1rem;">🎙️</span> Talk to Live Avatar
+                        </button>
+                        <button id="scroll-to-simulator-btn" class="btn btn-outline-teal" style="padding: 12px 24px; font-size: 1rem;">
+                            💬 Try Chat Simulator
+                        </button>
+                        <a href="https://www.accessibleaim.com" target="_blank" rel="noopener noreferrer" class="btn btn-outline-white" style="background: var(--color-navy); color: white; border: 1px solid var(--color-navy); padding: 12px 24px; font-size: 1rem; transition: var(--transition-fast);">Build Your Own Companion</a>
+                    </div>
+                </div>
+                
             </div>
         </div>
     </section>
