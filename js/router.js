@@ -929,7 +929,7 @@ Router.register('/services', () => `
                                 </div>
                             </div>
                             <div class="panel-visual-side">
-                                <img src="assets/funnel_building.png" alt="Websites & Funnels Building" class="panel-main-img">
+                                <img src="assets/web-and-funnel-building.png" alt="Websites & Funnels Building" class="panel-main-img">
                             </div>
                         </div>
                         
