@@ -1664,7 +1664,7 @@ Router.register('/chelloai', () => `
                 
                 <!-- Left Column: Full-Width Image -->
                 <div style="width: 100%;">
-                    <img src="assets/chello-ai-twin.png" alt="ChelloAI Conversational Partner" style="width: 100%; height: auto; border-radius: var(--radius-md); box-shadow: var(--shadow-md); border: 1px solid rgba(10, 216, 173, 0.15); display: block;">
+                    <img src="assets/chello-ai-twin.png" alt="ChelloAI Conversational Partner" style="width: 100%; height: auto; display: block; filter: drop-shadow(0 15px 30px rgba(7, 24, 39, 0.3)) drop-shadow(0 0 12px rgba(10, 216, 173, 0.15));">
                 </div>
                 
                 <!-- Right Column: Text & CTAs -->
