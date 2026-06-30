@@ -798,7 +798,7 @@ Router.register('/services', () => `
                                 </div>
                             </div>
                             <div class="panel-visual-side">
-                                <img src="assets/ai_content.png" alt="AI Content Creation" class="panel-main-img">
+                                <img src="assets/ai-content-creation.jpg" alt="AI Content Creation" class="panel-main-img">
                             </div>
                         </div>
                         
