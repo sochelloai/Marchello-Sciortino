@@ -1669,7 +1669,7 @@ Router.register('/chelloai', () => `
                 
                 <!-- Right Column: Text & CTAs -->
                 <div>
-                    <span class="section-tag text-teal" style="display: inline-block; margin-bottom: 8px;">Abridge Connection</span>
+                    <span class="section-tag text-teal" style="display: inline-block; margin-bottom: 8px;">My Digital Companion</span>
                     <h2 class="text-navy" style="font-size: 2.2rem; margin-bottom: var(--spacing-sm);">A Bridge for Connection</h2>
                     
                     <p style="font-size: 1.15rem; line-height: 1.7; color: var(--color-gray-medium); margin-bottom: var(--spacing-sm);">
@@ -1677,7 +1677,7 @@ Router.register('/chelloai', () => `
                     </p>
                     
                     <p style="font-size: 1.15rem; line-height: 1.7; color: var(--color-gray-medium); margin-bottom: var(--spacing-sm);">
-                        It acts as an abridged bridge for connection, representing me in conversations and answering questions about my story and design services to help visitors understand my perspective without delay.
+                        It acts as a bridge for connection, representing me in conversations and answering questions about my story and design services to help visitors understand my perspective without delay.
                     </p>
                     
                     <p style="font-size: 1.15rem; line-height: 1.7; color: var(--color-gray-medium); margin-bottom: var(--spacing-sm);">
