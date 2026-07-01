@@ -684,9 +684,9 @@ Router.register('/story', () => `
                 <!-- Row 5: Card Left, Image Right -->
                 <div class="timeline-row">
                     <div class="timeline-col timeline-content-left">
-                        <div class="timeline-year">Discovering Digital Marketing & AI</div>
+                        <div class="timeline-year">Finding the Design Path & Faith</div>
                         <div class="timeline-card">
-                            <p>Manual labor was out of the question... so I took my mind to the digital world. I earned my ClickFunnels certification and designed layout systems for partners. When typing became a slow, exhausting nightmare, I discovered AI tools. They acts as my typing speed... letting me build clean code and write stories without physical limits.</p>
+                            <p>I have always been a faith-filled, God-loving guy... searching for clarity that I was on God's design path. I looked for signs and confirmation (and believe me, I asked for very specific, impossible signs—sometimes multiple times a day). Was I just drifting in the dark? Answer: No, I was being prepared for a different pulpit. I chose to live up to this path by helping others share their unique stories and perspective with faith and dedication to God.</p>
                         </div>
                     </div>
                     <div class="timeline-col timeline-center">
@@ -695,16 +695,16 @@ Router.register('/story', () => `
                     </div>
                     <div class="timeline-col timeline-content-right">
                         <div class="timeline-image-placeholder">
-                            <img src="assets/timeline-5.png" alt="Using AI and digital marketing as creative tools" class="timeline-img">
+                            <img src="assets/timeline-faith.png" alt="Finding God's design path and walking by faith" class="timeline-img">
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Row 6: Image Left, Card Right -->
                 <div class="timeline-row">
                     <div class="timeline-col timeline-content-left">
                         <div class="timeline-image-placeholder">
-                            <img src="assets/timeline-6.png" alt="Keynote speaking on resilience and adaptive legacy" class="timeline-img">
+                            <img src="assets/timeline-5.png" alt="Using AI and digital marketing as creative tools" class="timeline-img">
                         </div>
                     </div>
                     <div class="timeline-col timeline-center">
@@ -712,9 +712,28 @@ Router.register('/story', () => `
                         <div class="timeline-bullet bullet-gold"></div>
                     </div>
                     <div class="timeline-col timeline-content-right">
+                        <div class="timeline-year">Discovering Digital Marketing & AI</div>
+                        <div class="timeline-card">
+                            <p>Manual labor was out of the question... so I took my mind to the digital world. I earned my ClickFunnels certification and designed layout systems for partners. When typing became a slow, exhausting nightmare, I discovered AI tools. They acts as my typing speed... letting me build clean code and write stories without physical limits.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Row 7: Card Left, Image Right -->
+                <div class="timeline-row">
+                    <div class="timeline-col timeline-content-left">
                         <div class="timeline-year">Today - Writing the Legacy</div>
                         <div class="timeline-card">
                             <p>My physical parameters keep shifting... yet my purpose stays firm. I build websites, write stories, and share keynotes about adapting to constraints. God gave us the creativity to design pathways around our limits... and I am using my remaining abilities to create a lasting legacy for those I love.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-col timeline-center">
+                        <div class="timeline-bar-line"></div>
+                        <div class="timeline-bullet bullet-teal"></div>
+                    </div>
+                    <div class="timeline-col timeline-content-right">
+                        <div class="timeline-image-placeholder">
+                            <img src="assets/timeline-6.png" alt="Keynote speaking on resilience and adaptive legacy" class="timeline-img">
                         </div>
                     </div>
                 </div>
