@@ -2402,10 +2402,10 @@ Router.register('/accessible-aim', () => `
                     <span class="section-tag">Accessible AIM Teaser</span>
                     <h2 style="color: var(--color-navy); font-size: 2rem; margin-bottom: 5px;">A Brand New Way to Build by Voice</h2>
                     <p style="font-size: 1.05rem; line-height: 1.6; color: var(--color-gray-steel);">
-                        The Accessible AIM (Articulated Inspiration Method) program is a practical, step-by-step training system designed to help individuals with physical constraints discover how AI can act as a bridge for creation. 
+                        Accessible AIM is designed for anyone facing a constraint—whether physical, mental, or circumstantial. We teach you to rise above obstacles by putting faith and perspective first, combining guidance with the helpful reality of artificial intelligence.
                     </p>
                     <p style="font-size: 1.05rem; line-height: 1.6; color: var(--color-gray-steel);">
-                        Instead of struggling with typing fatigue or manual coordinate limits, you will learn to construct custom speech-to-text workflows, design smart voice-prompt structures, and establish daily automation systems that translate your concepts into active web, writing, and design outcomes. We focus on showing you how to adapt your tools so you can keep building.
+                        By learning to use AI to amplify your creative expression online, you can build an inspiring digital presence free from the limitations that try to convince you success is out of reach.
                     </p>
                     
                     <!-- Social Proof Section -->
