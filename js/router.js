@@ -2384,21 +2384,6 @@ Router.register('/accessible-aim', () => `
         </div>
     </div>
     
-    <!-- Motto Section -->
-    <section class="aim-motto-section">
-        <div class="container">
-            <div class="aim-motto-divider-container">
-                <div class="aim-motto-line"></div>
-                <img src="assets/aim-logo.png" alt="Accessible AIM Logo" class="aim-motto-logo">
-                <div class="aim-motto-line"></div>
-            </div>
-            <div class="aim-motto-text">
-                <h3 class="aim-motto-title-navy">CREATIVITY. TECHNOLOGY. DETERMINATION.</h3>
-                <h3 class="aim-motto-title-teal">UNLOCKING POSSIBILITIES. DELIVERING RESULTS.</h3>
-            </div>
-        </div>
-    </section>
-    
     <section class="aim-showcase-section">
         <div class="container">
             <div class="aim-grid">
@@ -2440,6 +2425,21 @@ Router.register('/accessible-aim', () => `
                         <button type="submit" class="aim-submit-btn">Join the waitlist</button>
                     </form>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Motto Section -->
+    <section class="aim-motto-section">
+        <div class="container">
+            <div class="aim-motto-divider-container">
+                <div class="aim-motto-line"></div>
+                <img src="assets/aim-logo.png" alt="Accessible AIM Logo" class="aim-motto-logo">
+                <div class="aim-motto-line"></div>
+            </div>
+            <div class="aim-motto-text">
+                <h3 class="aim-motto-title-navy">CREATIVITY. TECHNOLOGY. DETERMINATION.</h3>
+                <h3 class="aim-motto-title-teal">UNLOCKING POSSIBILITIES. DELIVERING RESULTS.</h3>
             </div>
         </div>
     </section>
