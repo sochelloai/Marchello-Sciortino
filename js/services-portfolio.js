@@ -24,47 +24,45 @@ const ServicesPortfolio = {
     init() {
         this.cleanup();
         this.bindEvents();
-        this.initAccordion();
+        this.initTabs();
     },
 
-    initAccordion() {
-        const panels = document.querySelectorAll('.accordion-panel');
-        panels.forEach(panel => {
-            const handleExpand = () => {
-                if (panel.classList.contains('active')) return;
-                panels.forEach(p => {
-                    p.classList.remove('active');
-                    p.setAttribute('aria-expanded', 'false');
-                    const num = p.querySelector('.panel-num') ? p.querySelector('.panel-num').textContent : '';
-                    const title = p.querySelector('.panel-vertical-title') ? p.querySelector('.panel-vertical-title').textContent : '';
-                    p.setAttribute('aria-label', `${num} ${title}, click to expand`);
+    initTabs() {
+        const tabBtns = document.querySelectorAll('.services-tab-btn');
+        const panels = document.querySelectorAll('.services-panel');
+        
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetTab = btn.getAttribute('data-tab');
+                
+                // Update tabs active state
+                tabBtns.forEach(b => {
+                    b.classList.remove('active');
+                    b.setAttribute('aria-selected', 'false');
                 });
-                panel.classList.add('active');
-                panel.setAttribute('aria-expanded', 'true');
-                const num = panel.querySelector('.panel-num') ? panel.querySelector('.panel-num').textContent : '';
-                const title = panel.querySelector('.panel-vertical-title') ? panel.querySelector('.panel-vertical-title').textContent : '';
-                panel.setAttribute('aria-label', `${num} ${title}, currently expanded`);
-            };
-
-            panel.addEventListener('click', (e) => {
-                if (panel.classList.contains('active') && !e.target.closest('.panel-trigger')) {
-                    return;
-                }
-                if (window.innerWidth <= 768 && panel.classList.contains('active') && e.target.closest('.panel-trigger')) {
-                    panel.classList.remove('active');
-                    panel.setAttribute('aria-expanded', 'false');
-                    const num = panel.querySelector('.panel-num') ? panel.querySelector('.panel-num').textContent : '';
-                    const title = panel.querySelector('.panel-vertical-title') ? panel.querySelector('.panel-vertical-title').textContent : '';
-                    panel.setAttribute('aria-label', `${num} ${title}, click to expand`);
-                    return;
-                }
-                handleExpand();
+                btn.classList.add('active');
+                btn.setAttribute('aria-selected', 'true');
+                
+                // Stop any running synthesizers/audio when switching tabs
+                this.stopAudio();
+                
+                // Update panels active state
+                panels.forEach(p => {
+                    if (p.id === `panel-${targetTab}`) {
+                        p.style.display = 'block';
+                        p.classList.add('active');
+                    } else {
+                        p.style.display = 'none';
+                        p.classList.remove('active');
+                    }
+                });
             });
-
-            panel.addEventListener('keydown', (e) => {
+            
+            // Allow keyboard activation
+            btn.addEventListener('keydown', (e) => {
                 if (e.key === ' ' || e.key === 'Enter') {
                     e.preventDefault();
-                    handleExpand();
+                    btn.click();
                 }
             });
         });
