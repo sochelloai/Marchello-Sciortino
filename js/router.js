@@ -743,405 +743,396 @@ Router.register('/services', () => `
             </p>
         </div>
     </div>
-
-    <!-- Accordion Section: CREATE, BUILD, OVERCOME -->
-    <section class="services-accordion-section">
+    <!-- Tabbed Services Section -->
+    <section class="services-tabs-section" style="padding: 6rem 0; background-color: var(--color-white);">
         <div class="container">
-            <div class="services-accordion" role="tablist" aria-label="Our Services">
+            
+            <!-- Three-column Row of Buttons (Tabs) -->
+            <div class="services-tabs" role="tablist" aria-label="Our Services">
+                <button class="services-tab-btn active" data-tab="create" role="tab" aria-selected="true" aria-controls="panel-create" tabindex="0">
+                    <span class="tab-num">01</span>
+                    <span class="tab-title">CREATE</span>
+                </button>
+                <button class="services-tab-btn" data-tab="build" role="tab" aria-selected="false" aria-controls="panel-build" tabindex="0">
+                    <span class="tab-num">02</span>
+                    <span class="tab-title">BUILD</span>
+                </button>
+                <button class="services-tab-btn" data-tab="overcome" role="tab" aria-selected="false" aria-controls="panel-overcome" tabindex="0">
+                    <span class="tab-num">03</span>
+                    <span class="tab-title">OVERCOME</span>
+                </button>
+            </div>
+            
+            <!-- Panels Container -->
+            <div class="services-panels">
                 
                 <!-- Panel 1: CREATE -->
-                <div class="accordion-panel active" data-panel="create" tabindex="0" role="tab" aria-expanded="true" aria-label="01 CREATE, currently expanded">
-                    <div class="panel-trigger">
-                        <span class="panel-num">01</span>
-                        <h3 class="panel-vertical-title">CREATE</h3>
-                    </div>
-                    <div class="panel-content" id="panel-content-create" role="tabpanel">
-                        <div class="panel-content-inner">
-                            <div class="panel-text-side">
-                                <span class="panel-subtitle">AI-Powered Creative Strategy</span>
-                                <h2 class="panel-title">CREATE</h2>
-                                <p class="panel-desc">
-                                    I use generative AI systems to build customized visual and written creative outputs. Whether you need audio loops, copy packages, or digital graphics, I construct systems that turn raw ideas into active assets.
-                                </p>
-                                <ul class="panel-bullets">
-                                    <li>
-                                        <span class="bullet-emoji">💡</span>
-                                        <div>
-                                            <h4>Custom Images & Video</h4>
-                                            <p>Generating custom graphics, promotional videos, and interactive visual content with AI models.</p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <span class="bullet-emoji">🎵</span>
-                                        <div>
-                                            <h4>Songs & Brand Jingles</h4>
-                                            <p>Crafting distinct background tunes, melodies, and custom jingles to enrich your message.</p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <span class="bullet-emoji">✍️</span>
-                                        <div>
-                                            <h4>Assisted Writing & Copy</h4>
-                                            <p>Writing books, storytelling, and copy scripting using structured AI prompts and voice-dictated editing.</p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <span class="bullet-emoji">🧠</span>
-                                        <div>
-                                            <h4>Creative AI Consulting</h4>
-                                            <p>Consulting on customized prompt setups and configurations to simplify your daily writing workflow.</p>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <div class="panel-cta">
-                                    <a href="/contact?interest=Create" class="btn btn-teal">CONTACT ME</a>
-                                </div>
-                            </div>
-                            <div class="panel-visual-side">
-                                <img src="assets/ai-content-creation.jpg" alt="AI Content Creation" class="panel-main-img">
+                <div id="panel-create" class="services-panel active" role="tabpanel" aria-labelledby="tab-create">
+                    <div class="panel-content-inner">
+                        <div class="panel-text-side">
+                            <span class="panel-subtitle">AI-Powered Creative Strategy</span>
+                            <h2 class="panel-title">CREATE</h2>
+                            <p class="panel-desc">
+                                I utilize generative AI to produce custom visual, audio, and written assets. I turn raw concepts into production-ready digital materials.
+                            </p>
+                            <ul class="panel-bullets">
+                                <li>
+                                    <span class="bullet-emoji">💡</span>
+                                    <div>
+                                        <h4>Custom Visuals</h4>
+                                        <p>Graphics and promotional video content.</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <span class="bullet-emoji">🎵</span>
+                                    <div>
+                                        <h4>Audio & Jingles</h4>
+                                        <p>Distinct melodies and theme loops.</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <span class="bullet-emoji">✍️</span>
+                                    <div>
+                                        <h4>Dictated Copy</h4>
+                                        <p>AI-assisted storytelling and copywriting.</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <span class="bullet-emoji">🧠</span>
+                                    <div>
+                                        <h4>Prompt Workflows</h4>
+                                        <p>Custom consulting to streamline creative output.</p>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="panel-cta">
+                                <a href="/contact?interest=Create" class="btn btn-teal">CONTACT ME</a>
                             </div>
                         </div>
                         
-                        <!-- Panel Portfolio: CREATE -->
-                        <div class="panel-portfolio">
-                            <h4 class="portfolio-section-title">CREATE PORTFOLIO</h4>
-                            <div class="portfolio-grid">
-                                <div class="portfolio-card" data-type="video" data-src="assets/videos/W.mp4" aria-label="Play AI Promo Video" role="button" tabindex="0">
-                                    <div class="portfolio-card-bg" style="background-image: url('assets/ai_content.png');"></div>
-                                    <div class="portfolio-card-overlay"></div>
-                                    <div class="portfolio-card-icon">
-                                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
-                                    </div>
-                                    <div class="portfolio-card-content">
-                                        <span class="portfolio-badge">Video</span>
-                                        <h4 class="portfolio-title">AI Promo Video</h4>
+                        <div class="panel-visual-side">
+                            <img src="assets/ai-content-creation.jpg" alt="AI Content Creation" class="panel-main-img">
+                        </div>
+                    </div>
+                    
+                    <!-- Portfolio Grid: CREATE -->
+                    <div class="panel-portfolio">
+                        <h4 class="portfolio-section-title">CREATE PORTFOLIO</h4>
+                        <div class="portfolio-grid">
+                            <div class="portfolio-card" data-type="video" data-src="assets/videos/W.mp4" aria-label="Play AI Promo Video" role="button" tabindex="0">
+                                <div class="portfolio-card-bg" style="background-image: url('assets/ai-content-creation.jpg');"></div>
+                                <div class="portfolio-card-overlay"></div>
+                                <div class="portfolio-card-icon">
+                                    <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
+                                </div>
+                                <div class="portfolio-card-content">
+                                    <span class="portfolio-badge">Video</span>
+                                    <h4 class="portfolio-title">AI Promo Video</h4>
+                                </div>
+                            </div>
+                            <div class="portfolio-card" data-type="audio" data-id="create-audio-1" aria-label="Play Brand Jingle Audio" role="button" tabindex="0">
+                                <div class="portfolio-card-bg" style="background-image: url('assets/articulated_inspiration.jpg');"></div>
+                                <div class="portfolio-card-overlay"></div>
+                                <div class="portfolio-card-icon">
+                                    <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
+                                </div>
+                                <div class="portfolio-card-content">
+                                    <span class="portfolio-badge">Audio</span>
+                                    <h4 class="portfolio-title">Commercial Jingle</h4>
+                                    <div class="portfolio-wave">
+                                        <div class="portfolio-wave-bar"></div>
+                                        <div class="portfolio-wave-bar"></div>
+                                        <div class="portfolio-wave-bar"></div>
+                                        <div class="portfolio-wave-bar"></div>
+                                        <div class="portfolio-wave-bar"></div>
                                     </div>
                                 </div>
-                                <div class="portfolio-card" data-type="audio" data-id="create-audio-1" aria-label="Play Brand Jingle Audio" role="button" tabindex="0">
-                                    <div class="portfolio-card-bg" style="background-image: url('assets/articulated_inspiration.jpg');"></div>
-                                    <div class="portfolio-card-overlay"></div>
-                                    <div class="portfolio-card-icon">
-                                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
-                                    </div>
-                                    <div class="portfolio-card-content">
-                                        <span class="portfolio-badge">Audio</span>
-                                        <h4 class="portfolio-title">Commercial Jingle</h4>
-                                        <div class="portfolio-wave">
-                                            <div class="portfolio-wave-bar"></div>
-                                            <div class="portfolio-wave-bar"></div>
-                                            <div class="portfolio-wave-bar"></div>
-                                            <div class="portfolio-wave-bar"></div>
-                                            <div class="portfolio-wave-bar"></div>
-                                        </div>
+                            </div>
+                            <div class="portfolio-card" data-type="song" data-id="create-song-2" aria-label="Play Chosen Anyway" role="button" tabindex="0">
+                                <div class="portfolio-card-bg" style="background-image: url('assets/chosen-anyway.png');"></div>
+                                <div class="portfolio-card-overlay"></div>
+                                <div class="portfolio-card-icon">
+                                    <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
+                                </div>
+                                <div class="portfolio-card-content">
+                                    <span class="portfolio-badge">Song</span>
+                                    <h4 class="portfolio-title">Chosen Anyway</h4>
+                                    <div class="portfolio-wave">
+                                        <div class="portfolio-wave-bar"></div>
+                                        <div class="portfolio-wave-bar"></div>
+                                        <div class="portfolio-wave-bar"></div>
+                                        <div class="portfolio-wave-bar"></div>
+                                        <div class="portfolio-wave-bar"></div>
                                     </div>
                                 </div>
-                                <div class="portfolio-card" data-type="song" data-id="create-song-2" aria-label="Play Chosen Anyway" role="button" tabindex="0">
-                                    <div class="portfolio-card-bg" style="background-image: url('assets/chosen-anyway.png');"></div>
-                                    <div class="portfolio-card-overlay"></div>
-                                    <div class="portfolio-card-icon">
-                                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
-                                    </div>
-                                    <div class="portfolio-card-content">
-                                        <span class="portfolio-badge">Song</span>
-                                        <h4 class="portfolio-title">Chosen Anyway</h4>
-                                        <div class="portfolio-wave">
-                                            <div class="portfolio-wave-bar"></div>
-                                            <div class="portfolio-wave-bar"></div>
-                                            <div class="portfolio-wave-bar"></div>
-                                            <div class="portfolio-wave-bar"></div>
-                                            <div class="portfolio-wave-bar"></div>
-                                        </div>
-                                    </div>
+                            </div>
+                            <div class="portfolio-card" data-type="image" data-src="assets/book_cover_mockup.png" aria-label="View Book Cover Mockup" role="button" tabindex="0">
+                                <div class="portfolio-card-bg" style="background-image: url('assets/book_cover_mockup.png');"></div>
+                                <div class="portfolio-card-overlay"></div>
+                                <div class="portfolio-card-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
                                 </div>
-                                <div class="portfolio-card" data-type="image" data-src="assets/ai_content.png" aria-label="View Brand Graphics Mockup" role="button" tabindex="0">
-                                    <div class="portfolio-card-bg" style="background-image: url('assets/ai_content.png');"></div>
-                                    <div class="portfolio-card-overlay"></div>
-                                    <div class="portfolio-card-icon">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
-                                    </div>
-                                    <div class="portfolio-card-content">
-                                        <span class="portfolio-badge">Image</span>
-                                        <h4 class="portfolio-title">Brand Graphics</h4>
-                                    </div>
-                                </div>
-                                <div class="portfolio-card" data-type="image" data-src="assets/book_cover_mockup.png" aria-label="View Book Cover Mockup" role="button" tabindex="0">
-                                    <div class="portfolio-card-bg" style="background-image: url('assets/book_cover_mockup.png');"></div>
-                                    <div class="portfolio-card-overlay"></div>
-                                    <div class="portfolio-card-icon">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
-                                    </div>
-                                    <div class="portfolio-card-content">
-                                        <span class="portfolio-badge">Image</span>
-                                        <h4 class="portfolio-title">Book Cover Mockup</h4>
-                                    </div>
+                                <div class="portfolio-card-content">
+                                    <span class="portfolio-badge">Image</span>
+                                    <h4 class="portfolio-title">Book Cover Mockup</h4>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
+                
                 <!-- Panel 2: BUILD -->
-                <div class="accordion-panel" data-panel="build" tabindex="0" role="tab" aria-expanded="false" aria-label="02 BUILD, click to expand">
-                    <div class="panel-trigger">
-                        <span class="panel-num">02</span>
-                        <h3 class="panel-vertical-title">BUILD</h3>
-                    </div>
-                    <div class="panel-content" id="panel-content-build" role="tabpanel">
-                        <div class="panel-content-inner">
-                            <div class="panel-text-side">
-                                <span class="panel-subtitle">Websites & Digital Ecosystems</span>
-                                <h2 class="panel-title">BUILD</h2>
-                                <p class="panel-desc">
-                                    I construct modern web architectures, landing pages, and lead workflows. Using AI-assisted programming tools, I design responsive templates that connect with visitors and support clean automation pipelines.
-                                </p>
-                                <ul class="panel-bullets">
-                                    <li>
-                                        <span class="bullet-emoji">💻</span>
-                                        <div>
-                                            <h4>Web Development</h4>
-                                            <p>Designing and deploying modern web portals, clean layouts, and functional portfolios.</p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <span class="bullet-emoji">🚀</span>
-                                        <div>
-                                            <h4>Funnels & Landing Pages</h4>
-                                            <p>Building structured multi-page pathways and lead captures that turn clicks into active queries.</p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <span class="bullet-emoji">⚙️</span>
-                                        <div>
-                                            <h4>Workflow Automation</h4>
-                                            <p>Connecting tools and automating administrative tasks using AI to save valuable hours.</p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <span class="bullet-emoji">🔒</span>
-                                        <div>
-                                            <h4>Membership Platforms</h4>
-                                            <p>Setting up membership vaults, lesson portals, and automated digital course areas.</p>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <div class="panel-cta">
-                                    <a href="/contact?interest=Build" class="btn btn-teal">CONTACT ME</a>
-                                </div>
-                            </div>
-                            <div class="panel-visual-side">
-                                <img src="assets/web-and-funnel-building.png" alt="Websites & Funnels Building" class="panel-main-img">
+                <div id="panel-build" class="services-panel" role="tabpanel" aria-labelledby="tab-build" style="display: none;">
+                    <div class="panel-content-inner">
+                        <div class="panel-text-side">
+                            <span class="panel-subtitle">Websites & Digital Ecosystems</span>
+                            <h2 class="panel-title">BUILD</h2>
+                            <p class="panel-desc">
+                                I build responsive web architectures, landing pages, and automated backend pipelines to connect platforms and drive engagement.
+                            </p>
+                            <ul class="panel-bullets">
+                                <li>
+                                    <span class="bullet-emoji">💻</span>
+                                    <div>
+                                        <h4>Web Portals</h4>
+                                        <p>Clean layouts and functional digital portfolios.</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <span class="bullet-emoji">🚀</span>
+                                    <div>
+                                        <h4>Conversion Funnels</h4>
+                                        <p>Structured landing pages and lead captures.</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <span class="bullet-emoji">⚙️</span>
+                                    <div>
+                                        <h4>Automation Flows</h4>
+                                        <p>System integrations to save administrative time.</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <span class="bullet-emoji">🔒</span>
+                                    <div>
+                                        <h4>Member Vaults</h4>
+                                        <p>Protected course portals and lesson hubs.</p>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="panel-cta">
+                                <a href="/contact?interest=Build" class="btn btn-teal">CONTACT ME</a>
                             </div>
                         </div>
                         
-                        <!-- Panel Portfolio: BUILD -->
-                        <div class="panel-portfolio">
-                            <h4 class="portfolio-section-title">BUILD PORTFOLIO</h4>
-                            <div class="portfolio-grid">
-                                <div class="portfolio-card" data-type="image" data-src="assets/funnel_building.png" aria-label="View Client Portal Design Mockup" role="button" tabindex="0">
-                                    <div class="portfolio-card-bg" style="background-image: url('assets/funnel_building.png');"></div>
-                                    <div class="portfolio-card-overlay"></div>
-                                    <div class="portfolio-card-icon">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
-                                    </div>
-                                    <div class="portfolio-card-content">
-                                        <span class="portfolio-badge">Image</span>
-                                        <h4 class="portfolio-title">Client Portal Design</h4>
+                        <div class="panel-visual-side">
+                            <img src="assets/web-and-funnel-building.png" alt="Websites & Funnels Building" class="panel-main-img">
+                        </div>
+                    </div>
+                    
+                    <!-- Portfolio Grid: BUILD -->
+                    <div class="panel-portfolio">
+                        <h4 class="portfolio-section-title">BUILD PORTFOLIO</h4>
+                        <div class="portfolio-grid">
+                            <div class="portfolio-card" data-type="image" data-src="assets/funnel_building.png" aria-label="View Client Portal Design Mockup" role="button" tabindex="0">
+                                <div class="portfolio-card-bg" style="background-image: url('assets/funnel_building.png');"></div>
+                                <div class="portfolio-card-overlay"></div>
+                                <div class="portfolio-card-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                                </div>
+                                <div class="portfolio-card-content">
+                                    <span class="portfolio-badge">Image</span>
+                                    <h4 class="portfolio-title">Client Portal Design</h4>
+                                </div>
+                            </div>
+                            <div class="portfolio-card" data-type="video" data-src="assets/videos/I.mp4" aria-label="Play Platform Logic Video" role="button" tabindex="0">
+                                <div class="portfolio-card-bg" style="background-image: url('assets/accessible_ai.png');"></div>
+                                <div class="portfolio-card-overlay"></div>
+                                <div class="portfolio-card-icon">
+                                    <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
+                                </div>
+                                <div class="portfolio-card-content">
+                                    <span class="portfolio-badge">Video</span>
+                                    <h4 class="portfolio-title">Platform Logic Demo</h4>
+                                </div>
+                            </div>
+                            <div class="portfolio-card" data-type="audio" data-id="build-audio-3" aria-label="Play Automation Pulse Audio" role="button" tabindex="0">
+                                <div class="portfolio-card-bg" style="background-image: url('assets/articulated_inspiration.jpg');"></div>
+                                <div class="portfolio-card-overlay"></div>
+                                <div class="portfolio-card-icon">
+                                    <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
+                                </div>
+                                <div class="portfolio-card-content">
+                                    <span class="portfolio-badge">Audio</span>
+                                    <h4 class="portfolio-title">Automation Pulse</h4>
+                                    <div class="portfolio-wave">
+                                        <div class="portfolio-wave-bar"></div>
+                                        <div class="portfolio-wave-bar"></div>
+                                        <div class="portfolio-wave-bar"></div>
+                                        <div class="portfolio-wave-bar"></div>
+                                        <div class="portfolio-wave-bar"></div>
                                     </div>
                                 </div>
-                                <div class="portfolio-card" data-type="video" data-src="assets/videos/I.mp4" aria-label="Play Platform Logic Video" role="button" tabindex="0">
-                                    <div class="portfolio-card-bg" style="background-image: url('assets/accessible_ai.png');"></div>
-                                    <div class="portfolio-card-overlay"></div>
-                                    <div class="portfolio-card-icon">
-                                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
-                                    </div>
-                                    <div class="portfolio-card-content">
-                                        <span class="portfolio-badge">Video</span>
-                                        <h4 class="portfolio-title">Platform Logic Demo</h4>
+                            </div>
+                            <div class="portfolio-card" data-type="song" data-id="build-song-4" aria-label="Play Cybernetic Rhythm Song" role="button" tabindex="0">
+                                <div class="portfolio-card-bg" style="background-image: url('assets/hero-bg.png');"></div>
+                                <div class="portfolio-card-overlay"></div>
+                                <div class="portfolio-card-icon">
+                                    <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
+                                </div>
+                                <div class="portfolio-card-content">
+                                    <span class="portfolio-badge">Song</span>
+                                    <h4 class="portfolio-title">Cybernetic Rhythm</h4>
+                                    <div class="portfolio-wave">
+                                        <div class="portfolio-wave-bar"></div>
+                                        <div class="portfolio-wave-bar"></div>
+                                        <div class="portfolio-wave-bar"></div>
+                                        <div class="portfolio-wave-bar"></div>
+                                        <div class="portfolio-wave-bar"></div>
                                     </div>
                                 </div>
-                                <div class="portfolio-card" data-type="audio" data-id="build-audio-3" aria-label="Play Automation Pulse Audio" role="button" tabindex="0">
-                                    <div class="portfolio-card-bg" style="background-image: url('assets/articulated_inspiration.jpg');"></div>
-                                    <div class="portfolio-card-overlay"></div>
-                                    <div class="portfolio-card-icon">
-                                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
-                                    </div>
-                                    <div class="portfolio-card-content">
-                                        <span class="portfolio-badge">Audio</span>
-                                        <h4 class="portfolio-title">Automation Pulse</h4>
-                                        <div class="portfolio-wave">
-                                            <div class="portfolio-wave-bar"></div>
-                                            <div class="portfolio-wave-bar"></div>
-                                            <div class="portfolio-wave-bar"></div>
-                                            <div class="portfolio-wave-bar"></div>
-                                            <div class="portfolio-wave-bar"></div>
-                                        </div>
-                                    </div>
+                            </div>
+                            <div class="portfolio-card" data-type="image" data-src="assets/accessible_ai.png" aria-label="View Workflow Diagram Preview" role="button" tabindex="0">
+                                <div class="portfolio-card-bg" style="background-image: url('assets/accessible_ai.png');"></div>
+                                <div class="portfolio-card-overlay"></div>
+                                <div class="portfolio-card-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
                                 </div>
-                                <div class="portfolio-card" data-type="song" data-id="build-song-4" aria-label="Play Cybernetic Rhythm Song" role="button" tabindex="0">
-                                    <div class="portfolio-card-bg" style="background-image: url('assets/hero-bg.png');"></div>
-                                    <div class="portfolio-card-overlay"></div>
-                                    <div class="portfolio-card-icon">
-                                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
-                                    </div>
-                                    <div class="portfolio-card-content">
-                                        <span class="portfolio-badge">Song</span>
-                                        <h4 class="portfolio-title">Cybernetic Rhythm</h4>
-                                        <div class="portfolio-wave">
-                                            <div class="portfolio-wave-bar"></div>
-                                            <div class="portfolio-wave-bar"></div>
-                                            <div class="portfolio-wave-bar"></div>
-                                            <div class="portfolio-wave-bar"></div>
-                                            <div class="portfolio-wave-bar"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="portfolio-card" data-type="image" data-src="assets/accessible_ai.png" aria-label="View Workflow Diagram Preview" role="button" tabindex="0">
-                                    <div class="portfolio-card-bg" style="background-image: url('assets/accessible_ai.png');"></div>
-                                    <div class="portfolio-card-overlay"></div>
-                                    <div class="portfolio-card-icon">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
-                                    </div>
-                                    <div class="portfolio-card-content">
-                                        <span class="portfolio-badge">Image</span>
-                                        <h4 class="portfolio-title">Workflow Schema</h4>
-                                    </div>
+                                <div class="portfolio-card-content">
+                                    <span class="portfolio-badge">Image</span>
+                                    <h4 class="portfolio-title">Workflow Schema</h4>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
+                
                 <!-- Panel 3: OVERCOME -->
-                <div class="accordion-panel" data-panel="overcome" tabindex="0" role="tab" aria-expanded="false" aria-label="03 OVERCOME, click to expand">
-                    <div class="panel-trigger">
-                        <span class="panel-num">03</span>
-                        <h3 class="panel-vertical-title">OVERCOME</h3>
-                    </div>
-                    <div class="panel-content" id="panel-content-overcome" role="tabpanel">
-                        <div class="panel-content-inner">
-                            <div class="panel-text-side">
-                                <span class="panel-subtitle">Resilience & Mindset Coaching</span>
-                                <h2 class="panel-title">OVERCOME</h2>
-                                <p class="panel-desc">
-                                    I work directly with individuals to shift their perspective and reframe their limitations. Through mindset coaching and constraint-based problem solving, we establish customized habits to convert physical or mental barriers into growth pathways.
-                                </p>
-                                <ul class="panel-bullets">
-                                    <li>
-                                        <span class="bullet-emoji">🌱</span>
-                                        <div>
-                                            <h4>Personal Growth</h4>
-                                            <p>Developing actionable goals and personal strategies to build consistent creative momentum.</p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <span class="bullet-emoji">🧩</span>
-                                        <div>
-                                            <h4>Constraint-Based Strategy</h4>
-                                            <p>Reframing physical limitations or tight boundaries as structured design constraints for creation.</p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <span class="bullet-emoji">🗣️</span>
-                                        <div>
-                                            <h4>Speaking & Workshops</h4>
-                                            <p>Hosting presentations and active workshops showing the intersection of resilience and AI capability.</p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <span class="bullet-emoji">🤝</span>
-                                        <div>
-                                            <h4>Adaptability Consulting</h4>
-                                            <p>Setting up customized voice commands, adaptive workspaces, and productivity hacks.</p>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <div class="panel-cta">
-                                    <a href="/contact?interest=Overcome" class="btn btn-teal">CONTACT ME</a>
-                                </div>
-                            </div>
-                            <div class="panel-visual-side">
-                                <img src="assets/ring_anyway_coaching.png" alt="Resilience Mindset & Coaching" class="panel-main-img">
+                <div id="panel-overcome" class="services-panel" role="tabpanel" aria-labelledby="tab-overcome" style="display: none;">
+                    <div class="panel-content-inner">
+                        <div class="panel-text-side">
+                            <span class="panel-subtitle">Resilience & Mindset Coaching</span>
+                            <h2 class="panel-title">OVERCOME</h2>
+                            <p class="panel-desc">
+                                I partner with creators to transform limitations into advantages. Through mindset coaching and custom workflows, we turn barriers into clear progress.
+                            </p>
+                            <ul class="panel-bullets">
+                                <li>
+                                    <span class="bullet-emoji">🌱</span>
+                                    <div>
+                                        <h4>Creative Momentum</h4>
+                                        <p>Actionable goals and personal habits.</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <span class="bullet-emoji">🧩</span>
+                                    <div>
+                                        <h4>Constraint Strategy</h4>
+                                        <p>Using limits as rules for creative design.</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <span class="bullet-emoji">🗣️</span>
+                                    <div>
+                                        <h4>Speaking & Events</h4>
+                                        <p>Resilience workshops and capability talks.</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <span class="bullet-emoji">🤝</span>
+                                    <div>
+                                        <h4>Adaptive Workspaces</h4>
+                                        <p>Voice commands and custom accessibility setups.</p>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="panel-cta">
+                                <a href="/contact?interest=Overcome" class="btn btn-teal">CONTACT ME</a>
                             </div>
                         </div>
                         
-                        <!-- Panel Portfolio: OVERCOME -->
-                        <div class="panel-portfolio">
-                            <h4 class="portfolio-section-title">OVERCOME PORTFOLIO</h4>
-                            <div class="portfolio-grid">
-                                <div class="portfolio-card" data-type="video" data-src="assets/videos/N.mp4" aria-label="Play Keynote Snippet Video" role="button" tabindex="0">
-                                    <div class="portfolio-card-bg" style="background-image: url('assets/timeline-6.png');"></div>
-                                    <div class="portfolio-card-overlay"></div>
-                                    <div class="portfolio-card-icon">
-                                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
-                                    </div>
-                                    <div class="portfolio-card-content">
-                                        <span class="portfolio-badge">Video</span>
-                                        <h4 class="portfolio-title">Keynote Speech Snippet</h4>
+                        <div class="panel-visual-side">
+                            <img src="assets/ring_anyway_coaching.png" alt="Resilience Mindset & Coaching" class="panel-main-img">
+                        </div>
+                    </div>
+                    
+                    <!-- Portfolio Grid: OVERCOME -->
+                    <div class="panel-portfolio">
+                        <h4 class="portfolio-section-title">OVERCOME PORTFOLIO</h4>
+                        <div class="portfolio-grid">
+                            <div class="portfolio-card" data-type="video" data-src="assets/videos/N.mp4" aria-label="Play Keynote Speech Video" role="button" tabindex="0">
+                                <div class="portfolio-card-bg" style="background-image: url('assets/timeline-6.png');"></div>
+                                <div class="portfolio-card-overlay"></div>
+                                <div class="portfolio-card-icon">
+                                    <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
+                                </div>
+                                <div class="portfolio-card-content">
+                                    <span class="portfolio-badge">Video</span>
+                                    <h4 class="portfolio-title">Keynote Speech Snippet</h4>
+                                </div>
+                            </div>
+                            <div class="portfolio-card" data-type="audio" data-id="overcome-audio-5" aria-label="Play Mindset Quote Audio" role="button" tabindex="0">
+                                <div class="portfolio-card-bg" style="background-image: url('assets/speaker_1_sheet.png');"></div>
+                                <div class="portfolio-card-overlay"></div>
+                                <div class="portfolio-card-icon">
+                                    <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
+                                </div>
+                                <div class="portfolio-card-content">
+                                    <span class="portfolio-badge">Audio</span>
+                                    <h4 class="portfolio-title">Mindset Quote</h4>
+                                    <div class="portfolio-wave">
+                                        <div class="portfolio-wave-bar"></div>
+                                        <div class="portfolio-wave-bar"></div>
+                                        <div class="portfolio-wave-bar"></div>
+                                        <div class="portfolio-wave-bar"></div>
+                                        <div class="portfolio-wave-bar"></div>
                                     </div>
                                 </div>
-                                <div class="portfolio-card" data-type="audio" data-id="overcome-audio-5" aria-label="Play Resilience Mindset Audio" role="button" tabindex="0">
-                                    <div class="portfolio-card-bg" style="background-image: url('assets/speaker_1_sheet.png');"></div>
-                                    <div class="portfolio-card-overlay"></div>
-                                    <div class="portfolio-card-icon">
-                                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
-                                    </div>
-                                    <div class="portfolio-card-content">
-                                        <span class="portfolio-badge">Audio</span>
-                                        <h4 class="portfolio-title">Mindset Quote</h4>
-                                        <div class="portfolio-wave">
-                                            <div class="portfolio-wave-bar"></div>
-                                            <div class="portfolio-wave-bar"></div>
-                                            <div class="portfolio-wave-bar"></div>
-                                            <div class="portfolio-wave-bar"></div>
-                                            <div class="portfolio-wave-bar"></div>
-                                        </div>
+                            </div>
+                            <div class="portfolio-card" data-type="song" data-id="overcome-song-6" aria-label="Play Adaptive Path Song" role="button" tabindex="0">
+                                <div class="portfolio-card-bg" style="background-image: url('assets/timeline-2.png');"></div>
+                                <div class="portfolio-card-overlay"></div>
+                                <div class="portfolio-card-icon">
+                                    <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
+                                </div>
+                                <div class="portfolio-card-content">
+                                    <span class="portfolio-badge">Song</span>
+                                    <h4 class="portfolio-title">Adaptive Path Song</h4>
+                                    <div class="portfolio-wave">
+                                        <div class="portfolio-wave-bar"></div>
+                                        <div class="portfolio-wave-bar"></div>
+                                        <div class="portfolio-wave-bar"></div>
+                                        <div class="portfolio-wave-bar"></div>
+                                        <div class="portfolio-wave-bar"></div>
                                     </div>
                                 </div>
-                                <div class="portfolio-card" data-type="song" data-id="overcome-song-6" aria-label="Play Adaptive Path Song" role="button" tabindex="0">
-                                    <div class="portfolio-card-bg" style="background-image: url('assets/timeline-2.png');"></div>
-                                    <div class="portfolio-card-overlay"></div>
-                                    <div class="portfolio-card-icon">
-                                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
-                                    </div>
-                                    <div class="portfolio-card-content">
-                                        <span class="portfolio-badge">Song</span>
-                                        <h4 class="portfolio-title">Adaptive Path Song</h4>
-                                        <div class="portfolio-wave">
-                                            <div class="portfolio-wave-bar"></div>
-                                            <div class="portfolio-wave-bar"></div>
-                                            <div class="portfolio-wave-bar"></div>
-                                            <div class="portfolio-wave-bar"></div>
-                                            <div class="portfolio-wave-bar"></div>
-                                        </div>
-                                    </div>
+                            </div>
+                            <div class="portfolio-card" data-type="image" data-src="assets/speaker_1_sheet.png" aria-label="View Speaker One-Sheet" role="button" tabindex="0">
+                                <div class="portfolio-card-bg" style="background-image: url('assets/speaker_1_sheet.png');"></div>
+                                <div class="portfolio-card-overlay"></div>
+                                <div class="portfolio-card-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
                                 </div>
-                                <div class="portfolio-card" data-type="image" data-src="assets/speaker_1_sheet.png" aria-label="View Keynote Speaker One-Sheet PDF Mockup" role="button" tabindex="0">
-                                    <div class="portfolio-card-bg" style="background-image: url('assets/speaker_1_sheet.png');"></div>
-                                    <div class="portfolio-card-overlay"></div>
-                                    <div class="portfolio-card-icon">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
-                                    </div>
-                                    <div class="portfolio-card-content">
-                                        <span class="portfolio-badge">Image</span>
-                                        <h4 class="portfolio-title">Keynote One-Sheet</h4>
-                                    </div>
+                                <div class="portfolio-card-content">
+                                    <span class="portfolio-badge">Image</span>
+                                    <h4 class="portfolio-title">Speaker One-Sheet</h4>
                                 </div>
-                                <div class="portfolio-card" data-type="image" data-src="assets/ring_anyway_coaching.png" aria-label="View Coaching Success Blueprint Design" role="button" tabindex="0">
-                                    <div class="portfolio-card-bg" style="background-image: url('assets/ring_anyway_coaching.png');"></div>
-                                    <div class="portfolio-card-overlay"></div>
-                                    <div class="portfolio-card-icon">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
-                                    </div>
-                                    <div class="portfolio-card-content">
-                                        <span class="portfolio-badge">Image</span>
-                                        <h4 class="portfolio-title">Coaching Blueprint</h4>
-                                    </div>
+                            </div>
+                            <div class="portfolio-card" data-type="image" data-src="assets/ring_anyway_coaching.png" aria-label="View Coaching Success Blueprint Design" role="button" tabindex="0">
+                                <div class="portfolio-card-bg" style="background-image: url('assets/ring_anyway_coaching.png');"></div>
+                                <div class="portfolio-card-overlay"></div>
+                                <div class="portfolio-card-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                                </div>
+                                <div class="portfolio-card-content">
+                                    <span class="portfolio-badge">Image</span>
+                                    <h4 class="portfolio-title">Coaching Blueprint</h4>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
+                
             </div>
 
             <!-- Bottom Logo/M-Divider -->
