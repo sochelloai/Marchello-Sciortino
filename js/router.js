@@ -2414,13 +2414,13 @@ Router.register('/accessible-aim', () => `
                 
                 <!-- Right Column: Content and Opt-in Form -->
                 <div class="aim-content-col">
-                    <span class="section-tag">Empowerment Through AI</span>
-                    <h2 style="color: var(--color-navy); font-size: 2rem; margin-bottom: 5px;">Bridging Physical Limitations with Voice</h2>
+                    <span class="section-tag">Accessible AIM Teaser</span>
+                    <h2 style="color: var(--color-navy); font-size: 2rem; margin-bottom: 5px;">A Brand New Way to Build by Voice</h2>
                     <p style="font-size: 1.05rem; line-height: 1.6; color: var(--color-gray-steel);">
-                        Living with Friedrich's ataxia means my energy levels and physical motor skills fluctuate throughout the day. Accessible AIM (Articulated Inspiration Method) was born out of necessity—treating artificial intelligence as the moving joint between mind and medium. 
+                        The Accessible AIM (Articulated Inspiration Method) program is a practical, step-by-step training system designed to help individuals with physical constraints discover how AI can act as a bridge for creation. 
                     </p>
                     <p style="font-size: 1.05rem; line-height: 1.6; color: var(--color-gray-steel);">
-                        By designing smart, voice-based prompt workflows and system shortcuts, I have unlocked ways to write, code, design, and run digital projects completely by voice. Accessible AIM is my mission to compile these frameworks and make them available to anyone turning limits into creative liberation.
+                        Instead of struggling with typing fatigue or manual coordinate limits, you will learn to construct custom speech-to-text workflows, design smart voice-prompt structures, and establish daily automation systems that translate your concepts into active web, writing, and design outcomes. We focus on showing you how to adapt your tools so you can keep building.
                     </p>
                     
                     <!-- Social Proof Section -->
