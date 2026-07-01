@@ -72,8 +72,8 @@ const Chat = {
             this.stopAvatarBtn.addEventListener('click', () => this.stopAvatarSession());
         }
 
-        // AUTO START LIVE SESSION IF POSSIBLE
-        this.startAvatarSession();
+        // AUTO START LIVE SESSION IF POSSIBLE - disabled (Live Avatar removed)
+        // this.startAvatarSession();
     },
 
     async startAvatarSession() {

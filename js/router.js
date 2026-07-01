@@ -1685,14 +1685,11 @@ Router.register('/chelloai', () => `
                     </p>
                     
                     <p style="font-size: 1.15rem; line-height: 1.7; color: var(--color-gray-steel); margin-bottom: var(--spacing-lg); font-weight: 500;">
-                        Speak directly with my Live Avatar companion below, or use the interactive chat simulator to ask preset questions.
+                        Use the interactive chat simulator to ask preset questions about my story, design process, and services.
                     </p>
                     
                     <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: flex-start;">
-                        <button id="start-avatar-btn" class="btn btn-teal" style="display: flex; align-items: center; gap: 8px; padding: 12px 24px; font-size: 1rem;">
-                            <span style="font-size: 1.1rem;">🎙️</span> Talk to Live Avatar
-                        </button>
-                        <button id="scroll-to-simulator-btn" class="btn btn-outline-teal" style="padding: 12px 24px; font-size: 1rem;">
+                        <button id="scroll-to-simulator-btn" class="btn btn-teal" style="padding: 12px 24px; font-size: 1rem;">
                             💬 Try Chat Simulator
                         </button>
                         <a href="https://www.accessibleaim.com" target="_blank" rel="noopener noreferrer" class="btn btn-outline-white" style="background: var(--color-navy); color: white; border: 1px solid var(--color-navy); padding: 12px 24px; font-size: 1rem; transition: var(--transition-fast);">Build Your Own Companion</a>
@@ -1703,93 +1700,78 @@ Router.register('/chelloai', () => `
         </div>
     </section>
 
-    <!-- Section 2: Live Avatar Companion (Centered in its own section, centered in a large row) -->
-    <section id="live-avatar-section" class="section bg-navy-light" style="border-top: 1px solid rgba(0, 209, 193, 0.1); border-bottom: 1px solid rgba(0, 209, 193, 0.1); padding: 5rem 0;">
-        <div class="container" style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
-            
-            <div class="text-center" style="margin-bottom: var(--spacing-md); max-width: 600px;">
-                <span class="section-tag text-teal" style="display: block; margin-bottom: 8px;">Real-Time Voice Twin</span>
-                <h3 class="text-white" style="font-size: 2rem; margin-bottom: var(--spacing-sm);">Talk to ChelloAI Twin</h3>
-                <p style="color: var(--color-gray-light); font-size: 1.05rem; line-height: 1.5; margin: 0;">
-                    Have a live, spoken conversation. Ask about Marchello's story, digital services, and prompt frameworks.
-                </p>
-            </div>
-
-            <!-- Live Avatar Card (Centered in large row) -->
-            <div id="companion-avatar-container" style="width: 100%; max-width: 800px; min-height: 500px; border-radius: var(--radius-md); overflow: hidden; background: var(--color-navy); border: 2px solid var(--color-teal); box-shadow: var(--shadow-lg); display: flex; flex-direction: column; position: relative;">
+    <!-- Section 2: Two-Column Chat Simulator & Guide -->
+    <section id="chat-simulator-section" class="section bg-navy-light text-white" style="padding: 5rem 0; border-top: 1px solid rgba(0, 209, 193, 0.1); border-bottom: 1px solid rgba(0, 209, 193, 0.1);">
+        <div class="container">
+            <div class="grid-2" style="align-items: center; gap: var(--spacing-xl);">
                 
-                <!-- Live Avatar Header -->
-                <div class="avatar-header" style="background: var(--color-navy-dark); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0, 209, 193, 0.15); width: 100%; box-sizing: border-box;">
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <div id="avatar-status-indicator" style="width: 10px; height: 10px; background: #a0aec0; border-radius: 50%;"></div>
-                        <h4 style="margin: 0; color: white; font-size: 1.1rem; font-family: var(--font-heading);">ChelloAI Live Session</h4>
-                    </div>
-                    <button id="stop-avatar-btn" style="display: none; background: rgba(255, 74, 74, 0.15); border: 1px solid rgba(255, 74, 74, 0.3); color: #ff7474; padding: 6px 14px; border-radius: 6px; font-size: 0.85rem; cursor: pointer; transition: var(--transition-fast); font-weight: 500;">End Session</button>
-                </div>
-                
-                <!-- Iframe Target / Start Screen Area -->
-                <div id="avatar-iframe-target" style="flex: 1; display: flex; align-items: center; justify-content: center; position: relative; background: #000; min-height: 440px; width: 100%;">
-                    <!-- Static preview overlay with start button -->
-                    <div id="avatar-placeholder-view" style="color: white; text-align: center; max-width: 500px; padding: 40px var(--spacing-md); display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%; box-sizing: border-box;">
-                        <div class="avatar-preview-circle" style="position: relative; width: 120px; height: 120px; margin-bottom: 10px;">
-                            <img src="assets/chello_ai_avatar.png" alt="ChelloAI Companion" style="width: 100%; height: 100%; border-radius: 50%; border: 3px solid var(--color-teal); object-fit: cover; box-shadow: 0 0 25px rgba(0, 209, 193, 0.3);">
-                            <div style="position: absolute; bottom: 5px; right: 5px; width: 20px; height: 20px; background: #48bb78; border-radius: 50%; border: 3px solid var(--color-navy);"></div>
+                <!-- Left Column: Interactive Chat Simulator -->
+                <div style="display: flex; flex-direction: column; justify-content: center; width: 100%;">
+                    <div class="chat-window" id="companion-chat-window" style="width: 100%; display: flex; flex-direction: column; box-shadow: var(--shadow-lg);">
+                        <div class="chat-header">
+                            <div class="chat-avatar-wrapper">
+                                <img src="assets/chello_ai_avatar.png" alt="ChelloAI Avatar" class="chat-avatar">
+                                <div class="avatar-status-dot"></div>
+                            </div>
+                            <div class="chat-header-info">
+                                <h4>ChelloAI</h4>
+                                <p>Voice & Concept Amplifier</p>
+                            </div>
                         </div>
-                        <h4 style="margin: 0; color: var(--color-white); font-size: 1.35rem; font-family: var(--font-heading); font-weight: 600;">ChelloAI Conversational Twin</h4>
-                        <p style="font-size: 0.95rem; color: var(--color-gray-light); line-height: 1.5; margin: 0;">
-                            ChelloAI is configured with Marchello's brand guidelines to answer questions in real time with audio lip-syncing.
-                        </p>
-                        <button id="start-avatar-card-btn" class="btn btn-teal" style="display: flex; align-items: center; gap: 10px; padding: 14px 28px; font-size: 1.05rem; font-weight: 600; width: 100%; justify-content: center; max-width: 320px;">
-                            🎙️ Start Voice Conversation
-                        </button>
-                        <span style="font-size: 0.8rem; color: var(--color-gray-steel);">Note: Requires microphone permission. Standard data rates may apply.</span>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- Section 3: Interactive Chat Simulator (Centered in own section, centered in a large row) -->
-    <section id="chat-simulator-section" class="section bg-white" style="padding: 5rem 0; border-bottom: 1px solid var(--color-gray-border);">
-        <div class="container" style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
-            
-            <div class="text-center" style="margin-bottom: var(--spacing-lg); max-width: 600px;">
-                <span class="section-tag" style="display: block; margin-bottom: 8px;">Text Assistant</span>
-                <h3 class="text-navy" style="font-size: 2.2rem; margin-bottom: var(--spacing-sm);">Interactive Chat Simulator</h3>
-                <p style="color: var(--color-gray-medium); font-size: 1.05rem; line-height: 1.5; margin: 0;">
-                    Prefer text? Click any of the topics below to instantly chat with ChelloAI.
-                </p>
-            </div>
-
-            <!-- Static Chat Simulator (Always visible) -->
-            <div class="chat-window" id="companion-chat-window" style="width: 100%; max-width: 800px; display: flex; flex-direction: column;">
-                <div class="chat-header">
-                    <div class="chat-avatar-wrapper">
-                        <img src="assets/chello_ai_avatar.png" alt="ChelloAI Avatar" class="chat-avatar">
-                        <div class="avatar-status-dot"></div>
-                    </div>
-                    <div class="chat-header-info">
-                        <h4>ChelloAI</h4>
-                        <p>Voice & Concept Amplifier</p>
+                        
+                        <div class="chat-messages" id="chat-messages" style="flex: 1; min-height: 250px; max-height: 320px; overflow-y: auto; padding: 20px;">
+                            <!-- Initial message -->
+                            <div class="message-bubble incoming">
+                                Hello! I am ChelloAI, my digital companion. Select any question below to explore my stories and tools.
+                            </div>
+                        </div>
+                        
+                        <div class="chat-suggestions" style="padding: 20px; border-top: 1px solid rgba(255, 255, 255, 0.08); background: rgba(4, 15, 24, 0.4);">
+                            <p class="chat-suggestions-title" style="margin-bottom: 12px; font-weight: 600; color: var(--color-white);">Select a topic to ask:</p>
+                            <div class="suggestions-grid" id="chat-suggestions-grid">
+                                <!-- Pre-baked buttons dynamically load here -->
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="chat-messages" id="chat-messages" style="flex: 1; min-height: 250px; max-height: 350px; overflow-y: auto; padding: 20px;">
-                    <!-- Initial message -->
-                    <div class="message-bubble incoming">
-                        Hello! I am ChelloAI, my digital companion. Select any question below to explore my stories and tools.
+                <!-- Right Column: Explanatory Copy & How to Chat -->
+                <div style="display: flex; flex-direction: column; justify-content: center;">
+                    <span class="section-tag text-teal" style="display: inline-block; margin-bottom: 8px;">Interactive Text Guide</span>
+                    <h3 class="text-white" style="font-size: 2rem; margin-bottom: var(--spacing-sm);">How to Interact with ChelloAI</h3>
+                    
+                    <p style="font-size: 1.05rem; line-height: 1.65; color: var(--color-gray-light); margin-bottom: var(--spacing-md);">
+                        The chat simulator allows you to explore Marchello's digital hub using pre-baked prompt combinations. Select a suggestion button to generate immediate answers on topic areas without having to type.
+                    </p>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 20px; margin-top: 10px;">
+                        <div style="display: flex; gap: 15px; align-items: flex-start;">
+                            <div style="width: 32px; height: 32px; border-radius: 50%; background: rgba(10, 216, 173, 0.1); border: 1px solid var(--color-teal); display: flex; align-items: center; justify-content: center; color: var(--color-teal); font-weight: 700; font-family: var(--font-heading); flex-shrink: 0; margin-top: 2px;">1</div>
+                            <div>
+                                <h4 style="color: var(--color-white); font-size: 1.1rem; margin-bottom: 4px;">Choose a Suggested Topic</h4>
+                                <p style="font-size: 0.95rem; color: rgba(247, 250, 252, 0.72); margin: 0; line-height: 1.45;">Click any button in the suggestion panel to send a question directly to ChelloAI.</p>
+                            </div>
+                        </div>
+                        
+                        <div style="display: flex; gap: 15px; align-items: flex-start;">
+                            <div style="width: 32px; height: 32px; border-radius: 50%; background: rgba(10, 216, 173, 0.1); border: 1px solid var(--color-teal); display: flex; align-items: center; justify-content: center; color: var(--color-teal); font-weight: 700; font-family: var(--font-heading); flex-shrink: 0; margin-top: 2px;">2</div>
+                            <div>
+                                <h4 style="color: var(--color-white); font-size: 1.1rem; margin-bottom: 4px;">Receive Instantly Amplified Answers</h4>
+                                <p style="font-size: 0.95rem; color: rgba(247, 250, 252, 0.72); margin: 0; line-height: 1.45;">Read concepts regarding Marchello's story, background, custom prompt workflows, and design services.</p>
+                            </div>
+                        </div>
+                        
+                        <div style="display: flex; gap: 15px; align-items: flex-start;">
+                            <div style="width: 32px; height: 32px; border-radius: 50%; background: rgba(10, 216, 173, 0.1); border: 1px solid var(--color-teal); display: flex; align-items: center; justify-content: center; color: var(--color-teal); font-weight: 700; font-family: var(--font-heading); flex-shrink: 0; margin-top: 2px;">3</div>
+                            <div>
+                                <h4 style="color: var(--color-white); font-size: 1.1rem; margin-bottom: 4px;">Explore Custom AI Integrations</h4>
+                                <p style="font-size: 0.95rem; color: rgba(247, 250, 252, 0.72); margin: 0; line-height: 1.45;">See how structured rules enable a conversational agent to behave with brand fidelity and high-fidelity output.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="chat-suggestions" style="padding: 20px; border-top: 1px solid var(--color-gray-border);">
-                    <p class="chat-suggestions-title" style="margin-bottom: 12px; font-weight: 600;">Select a topic to ask:</p>
-                    <div class="suggestions-grid" id="chat-suggestions-grid">
-                        <!-- Pre-baked buttons dynamically load here -->
-                    </div>
-                </div>
             </div>
-
         </div>
     </section>
 
