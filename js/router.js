@@ -686,7 +686,7 @@ Router.register('/story', () => `
                     <div class="timeline-col timeline-content-left">
                         <div class="timeline-year">Finding the Design Path & Faith</div>
                         <div class="timeline-card">
-                            <p>I have always been a faith-filled, God-loving guy... searching for clarity that I was on God's design path. I looked for signs and confirmation (and believe me, I asked for very specific, impossible signs—sometimes multiple times a day). Was I just drifting in the dark? Answer: No, I was being prepared for a different pulpit. I chose to live up to this path by helping others share their unique stories and perspective with faith and dedication to God.</p>
+                            <p>I chose to align my life with God's divine plan... learning to see my daily constraints as a gift rather than a curse (some days it takes real effort to see a heavy wheelchair as a package of wrapping paper, but the perspective shift is real). Are constraints a sentence to stop? Answer: No, they are a prompt to build. I live with complete dedication, knowing I can and will share my story and perspective with others to prove that action and success can be achieved regardless of the hand you are dealt.</p>
                         </div>
                     </div>
                     <div class="timeline-col timeline-center">
