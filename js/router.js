@@ -610,7 +610,7 @@ Router.register('/story', () => `
                     <div class="timeline-col timeline-content-left">
                         <div class="timeline-year">1996 - Childhood & Early Years</div>
                         <div class="timeline-card">
-                            <p>Born in St. Louis, Missouri. I had a fantastic childhood filled with comfort and stability provided by my loving parents, David and Alicia. Early on, I was a quiet, shy kid who stayed clear of sports after choking up at a t-ball game, preferring to play and observe.</p>
+                            <p>Born in St. Louis... quiet, shy, and always watching from the sidelines. I had a beautiful, stable childhood thanks to my parents, David and Alicia (even if I panicked and choked during my very first t-ball game—yikes, sports were definitely not my calling). I preferred drawing and observing... finding quiet ways to explore the world before things started changing.</p>
                         </div>
                     </div>
                     <div class="timeline-col timeline-center">
@@ -638,7 +638,7 @@ Router.register('/story', () => `
                     <div class="timeline-col timeline-content-right">
                         <div class="timeline-year">Around 3rd & 4th Grade</div>
                         <div class="timeline-card">
-                            <p>I began noticing shortness of breath and a rapid heartbeat during gym class. Soon, my balance slipped. I couldn't keep up or walk in a straight line. Other kids started asking why I walked that way, and I had no answers.</p>
+                            <p>Gym class started feeling... different. My lungs burned, my heart raced, and my balance began to slip away. I couldn't walk a straight line or keep up with my peers. Was I just out of shape? Answer: No, something deeper was shifting. Other kids stared and asked why I walked so funny... and I had no answers to give them.</p>
                         </div>
                     </div>
                 </div>
@@ -648,7 +648,7 @@ Router.register('/story', () => `
                     <div class="timeline-col timeline-content-left">
                         <div class="timeline-year">The Diagnosis at 14</div>
                         <div class="timeline-card">
-                            <p>After years of tests, we received the laboratory diagnosis: Friedrich's ataxia. This progressive condition affects coordination, energy, and fine motor skills. It was clear confirmation that my physical abilities would change over time.</p>
+                            <p>After years of clinical tests and confusing doctors, the laboratory report came back: Friedrich's ataxia. A progressive neuromuscular condition that slowly chips away at coordination, fine motor skills, and energy. It was a heavy realization... a clear confirmation that my physical parameters were going to change, whether I liked it or not.</p>
                         </div>
                     </div>
                     <div class="timeline-col timeline-center">
@@ -676,7 +676,7 @@ Router.register('/story', () => `
                     <div class="timeline-col timeline-content-right">
                         <div class="timeline-year">Progression & Independence Shift</div>
                         <div class="timeline-card">
-                            <p>High school and college required constant adjustments as I transitioned to a wheelchair. Simple things like getting out of bed or opening a soda required my parents' help. The hardest part was the mental fatigue of feeling like an energy-draining mooch, but I chose to focus on what I could still control.</p>
+                            <p>Transitioning to a wheelchair meant constant adjustments through high school and college. Simple tasks like getting out of bed or cracking open a soda now required help. Did it drain my mental energy? Yes, the fatigue of feeling dependent on my parents was real... but I chose to focus my mind on the creative abilities I still possessed.</p>
                         </div>
                     </div>
                 </div>
@@ -686,7 +686,7 @@ Router.register('/story', () => `
                     <div class="timeline-col timeline-content-left">
                         <div class="timeline-year">Discovering Digital Marketing & AI</div>
                         <div class="timeline-card">
-                            <p>Since physical work was out of the question, I focused on digital skills. I got ClickFunnels certified and built websites for business partners. When typing became a nightmare, I turned to AI. It acted as my typing speed, helping me write code and design pages.</p>
+                            <p>Manual labor was out of the question... so I took my mind to the digital world. I earned my ClickFunnels certification and designed layout systems for partners. When typing became a slow, exhausting nightmare, I discovered AI tools. They acts as my typing speed... letting me build clean code and write stories without physical limits.</p>
                         </div>
                     </div>
                     <div class="timeline-col timeline-center">
@@ -714,12 +714,13 @@ Router.register('/story', () => `
                     <div class="timeline-col timeline-content-right">
                         <div class="timeline-year">Today - Writing the Legacy</div>
                         <div class="timeline-card">
-                            <p>My physical challenges change, but my goal stays the same. I build websites, write, and speak to show that limits are parameters we can design around.</p>
+                            <p>My physical parameters keep shifting... yet my purpose stays firm. I build websites, write stories, and share keynotes about adapting to constraints. God gave us the creativity to design pathways around our limits... and I am using my remaining abilities to create a lasting legacy for those I love.</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </section>
 `);
 
 Router.register('/services', () => `
