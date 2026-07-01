@@ -283,6 +283,24 @@ function bindFormHandlers() {
         });
     }
 
+    // Dedicated AIM Waitlist Form (Email-only)
+    const aimDedicatedForm = document.getElementById('aim-dedicated-waitlist-form');
+    if (aimDedicatedForm) {
+        aimDedicatedForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const emailInput = document.getElementById('aim-dedicated-email');
+            if (emailInput) {
+                const data = {
+                    email: emailInput.value,
+                    timestamp: new Date().toISOString()
+                };
+                saveFormEntry('aim-waitlist', data);
+                showSuccessModal("Waitlist Joined", "Welcome to Accessible AIM! You are on the waitlist. I will email you prompt starter files soon.");
+                aimDedicatedForm.reset();
+            }
+        });
+    }
+
     // 4. Book Pre-registration Form
     const bookForm = document.getElementById('book-notify-form');
     if (bookForm) {

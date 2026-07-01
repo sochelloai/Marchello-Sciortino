@@ -100,7 +100,8 @@ const Router = {
                 '/resources': "Resources | Marchello Sciortino",
                 '/privacy': "Privacy Policy | Marchello Sciortino",
                 '/terms': "Terms of Service | Marchello Sciortino",
-                '/accessibility-statement': "Accessibility Statement | Marchello Sciortino"
+                '/accessibility-statement': "Accessibility Statement | Marchello Sciortino",
+                '/accessible-aim': "Accessible AIM | Marchello Sciortino"
             };
             document.title = titles[pathOnly] || "Marchello Sciortino";
 
@@ -170,7 +171,7 @@ Router.register('/', () => `
             </p>
             <div class="hero-ctas">
                 <a href="/services" class="btn btn-teal">MY SERVICES</a>
-                <a href="https://www.accessibleaim.com" target="_blank" rel="noopener noreferrer" class="btn btn-outline-white">EXPLORE ACCESSIBLE AIM</a>
+                <a href="/accessible-aim" class="btn btn-outline-white">EXPLORE ACCESSIBLE AIM</a>
             </div>
         </div>
     </section>
@@ -549,7 +550,7 @@ Router.register('/', () => `
                     <span class="section-tag">Technology</span>
                     <h3 class="card-title">Accessible AIM</h3>
                     <p>A mission to help individuals with physical challenges discover how AI can act as a bridge for creation and communication.</p>
-                    <a href="https://www.accessibleaim.com" target="_blank" rel="noopener noreferrer" class="text-teal">Join AIM Waitlist &rarr;</a>
+                    <a href="/accessible-aim" class="text-teal">Join AIM Waitlist &rarr;</a>
                 </div>
             </div>
         </div>
@@ -1712,7 +1713,7 @@ Router.register('/chelloai', () => `
                         <button id="scroll-to-simulator-btn" class="btn btn-teal" style="padding: 12px 24px; font-size: 1rem;">
                             💬 Try Chat Simulator
                         </button>
-                        <a href="https://www.accessibleaim.com" target="_blank" rel="noopener noreferrer" class="btn btn-outline-white" style="background: var(--color-navy); color: white; border: 1px solid var(--color-navy); padding: 12px 24px; font-size: 1rem; transition: var(--transition-fast);">Build Your Own Companion</a>
+                        <a href="/accessible-aim" class="btn btn-outline-white" style="background: var(--color-navy); color: white; border: 1px solid var(--color-navy); padding: 12px 24px; font-size: 1rem; transition: var(--transition-fast);">Build Your Own Companion</a>
                     </div>
                 </div>
                 
@@ -2283,7 +2284,7 @@ Router.register('/resources', () => `
                             <h3 style="margin-bottom: 10px;">AI Accessibility</h3>
                             <p style="font-size: 0.95rem; color: var(--color-gray-medium); margin-bottom: 20px;">Learn how we are building an accessible world through AI-powered advocacy and solutions.</p>
                         </div>
-                        <a href="https://www.accessibleaim.com/" target="_blank" rel="noopener noreferrer" class="btn btn-outline-teal" style="width: 100%; text-align: center;">Learn More</a>
+                        <a href="/accessible-aim" class="btn btn-outline-teal" style="width: 100%; text-align: center;">Learn More</a>
                     </div>
                 </div>
             </div>
@@ -2357,6 +2358,72 @@ Router.register('/resources', () => `
                         </div>
                         <a href="https://trafficsecrets.com/thebook-5" target="_blank" rel="noopener noreferrer" class="btn btn-outline-teal" style="width: 100%; text-align: center;">Learn More</a>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+`);
+
+// 17. Accessible AIM Page Template
+Router.register('/accessible-aim', () => `
+    <div class="page-intro" style="position: relative; overflow: hidden;">
+        <!-- Curved background gold/teal lines using inline SVG -->
+        <svg style="position: absolute; left: 0; top: 0; height: 100%; width: 220px; pointer-events: none; opacity: 0.25;" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path d="M -10,0 Q 20,40 100,50 M -10,15 Q 20,55 100,65 M -10,30 Q 20,70 100,80" fill="none" stroke="var(--color-teal)" stroke-width="0.3" />
+        </svg>
+        <svg style="position: absolute; right: 0; top: 0; height: 100%; width: 220px; pointer-events: none; opacity: 0.25;" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path d="M 110,0 Q 80,40 0,50 M 110,15 Q 80,55 0,65 M 110,30 Q 80,70 0,80" fill="none" stroke="var(--color-teal)" stroke-width="0.3" />
+        </svg>
+        
+        <div class="container text-center" style="position: relative; z-index: 2;">
+            <span class="section-tag text-teal">Articulated Inspiration Method</span>
+            <h1 style="color: white;">Accessible AIM</h1>
+            <p class="section-desc" style="color: var(--color-gray-light);">
+                Treating generative artificial intelligence as a helper for human capability and a bridge for creation.
+            </p>
+        </div>
+    </div>
+    
+    <section class="aim-showcase-section">
+        <div class="container">
+            <div class="aim-grid">
+                <!-- Left Column: Video -->
+                <div class="aim-video-col">
+                    <div class="aim-video-wrapper">
+                        <video controls poster="assets/hero-bg.jpg">
+                            <source src="assets/videos/W.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                </div>
+                
+                <!-- Right Column: Content and Opt-in Form -->
+                <div class="aim-content-col">
+                    <span class="section-tag">Empowerment Through AI</span>
+                    <h2 style="color: var(--color-navy); font-size: 2rem; margin-bottom: 5px;">Bridging Physical Limitations with Voice</h2>
+                    <p style="font-size: 1.05rem; line-height: 1.6; color: var(--color-gray-steel);">
+                        Living with Friedrich's ataxia means my energy levels and physical motor skills fluctuate throughout the day. Accessible AIM (Articulated Inspiration Method) was born out of necessity—treating artificial intelligence as the moving joint between mind and medium. 
+                    </p>
+                    <p style="font-size: 1.05rem; line-height: 1.6; color: var(--color-gray-steel);">
+                        By designing smart, voice-based prompt workflows and system shortcuts, I have unlocked ways to write, code, design, and run digital projects completely by voice. Accessible AIM is my mission to compile these frameworks and make them available to anyone turning limits into creative liberation.
+                    </p>
+                    
+                    <!-- Social Proof Section -->
+                    <div class="aim-social-proof">
+                        <div class="aim-avatar-stack">
+                            <img src="assets/reviews/reviewer_1.png" alt="Advocate avatar">
+                            <img src="assets/reviews/reviewer_2.png" alt="Advocate avatar">
+                            <img src="assets/reviews/reviewer_3.png" alt="Advocate avatar">
+                            <img src="assets/reviews/reviewer_4.png" alt="Advocate avatar">
+                        </div>
+                        <span class="aim-joined-text">They joined today</span>
+                    </div>
+                    
+                    <!-- Opt-in form -->
+                    <form id="aim-dedicated-waitlist-form" class="aim-waitlist-form">
+                        <input type="email" id="aim-dedicated-email" class="aim-email-input" placeholder="Enter your email address" required aria-label="Email address for waitlist">
+                        <button type="submit" class="aim-submit-btn">Join the waitlist</button>
+                    </form>
                 </div>
             </div>
         </div>

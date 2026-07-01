@@ -3612,3 +3612,136 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
         transform: translateX(-50%);
     }
 }
+
+/* ==========================================================================
+   Accessible AIM Page Styles
+   ========================================================================== */
+.aim-showcase-section {
+    padding: var(--spacing-xl) 0;
+    background-color: var(--color-white);
+    border-bottom: 1px solid var(--color-gray-border);
+}
+
+.aim-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: var(--spacing-lg);
+    align-items: center;
+}
+
+@media (max-width: 992px) {
+    .aim-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+}
+
+.aim-video-wrapper {
+    position: relative;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid rgba(10, 216, 173, 0.25);
+    background: var(--color-navy-dark);
+    aspect-ratio: 16 / 9;
+    line-height: 0;
+}
+
+.aim-video-wrapper video {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+.aim-content-col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.aim-social-proof {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: var(--spacing-xs);
+    margin-bottom: var(--spacing-sm);
+}
+
+.aim-avatar-stack {
+    display: flex;
+    align-items: center;
+}
+
+.aim-avatar-stack img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--color-white);
+    margin-left: -10px;
+}
+
+.aim-avatar-stack img:first-child {
+    margin-left: 0;
+}
+
+.aim-joined-text {
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--color-navy);
+}
+
+.aim-waitlist-form {
+    display: flex;
+    gap: var(--spacing-xs);
+    flex-wrap: wrap;
+    margin-top: var(--spacing-xs);
+    width: 100%;
+}
+
+.aim-email-input {
+    flex: 1;
+    min-width: 240px;
+    padding: 12px 18px;
+    border-radius: 8px;
+    border: 1px solid rgba(8, 27, 41, 0.2);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--color-navy);
+    background-color: var(--color-pure-white);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.aim-email-input:focus {
+    border-color: var(--color-teal);
+    box-shadow: 0 0 0 3px rgba(10, 216, 173, 0.15);
+    outline: none;
+}
+
+.aim-submit-btn {
+    background: linear-gradient(135deg, #FF5E00 0%, #FF8500 100%);
+    color: var(--color-pure-white) !important;
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 4px 15px rgba(255, 94, 0, 0.25);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.aim-submit-btn:hover {
+    transform: translateY(-1.5px);
+    box-shadow: 
+        0 6px 20px rgba(255, 94, 0, 0.4),
+        0 0 12px rgba(255, 133, 0, 0.2);
+}
+
