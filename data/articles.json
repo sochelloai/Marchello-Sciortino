@@ -102,5 +102,31 @@
         "image_alt_text": "Abstract golden pathway climbing white geometric steps toward a glowing sun, representing progress and stewardship of time.",
         "social_sharing_title": "Freedom is Stewardship: Choosing What to Build with Your Days",
         "social_sharing_description": "Real freedom isn't the absence of boundaries. It's choosing how we steward the time and tools God has given us."
+    },
+    {
+        "id": "daily-july-3-2026",
+        "title": "Creative Digital Stewardship: Building Better Systems to Serve",
+        "tag": "Tools I Use",
+        "desc": "Learn how to use simple digital systems responsibly to save energy and focus on your true calling.",
+        "date": "July 3, 2026",
+        "image": "assets/blog/creative-digital-stewardship.png",
+        "body": "<h2>The True Purpose of Our Creative Freedom</h2><p>With so many digital tools available, it is easy to get lost in the noise. True freedom is not about having endless options; it is about choosing to focus on our calling. Because of Friedrich's ataxia, I have learned that energy is a finite resource. This physical boundary forces me to practice creative digital stewardship every single day.</p><h2>How to Practice Creative Digital Stewardship</h2><p>Instead of letting technology control our time, we can use simple systems to serve others. Here is how you can start today:</p><ul><li><strong>Identify the clutter:</strong> Pinpoint one repetitive digital task that drains your creative energy.</li><li><strong>Set up assistants:</strong> Use a simple system to draft basic email replies or organize your thoughts.</li><li><strong>Focus on people:</strong> Use your saved time to connect directly with those you are called to build up.</li></ul><p>If you want to see how we structure these workflows to save energy, explore our <a href=\"/services\">services</a> page. We build clean setups that keep the focus on human connection. You can also read more about <a href=\"/story\">my journey</a> and how these tools keep me active in my community.</p><h3>Frequently Asked Questions</h3><h3>What is creative digital stewardship?</h3><p>It is the practice of using digital tools and simple automation responsibly to save time and focus on your higher purpose.</p><h3>How does AI fit into this?</h3><p>AI is simply a helpful assistant. It handles the repetitive heavy lifting so you can focus on genuine creation and building relationships.</p>\n<p style=\"margin-top: 20px; color: var(--color-teal);\"><strong><em>\"Much love, party people! That was awesome, the next one will only be better!\"</em></strong></p>",
+        "meta_title": "Creative Digital Stewardship: Simple Systems for Big Purpose",
+        "meta_description": "Discover how to practice creative digital stewardship by setting up simple systems that save your energy for what truly matters.",
+        "url_slug": "creative-digital-stewardship",
+        "primary_keyword": "creative digital stewardship",
+        "secondary_keywords": [
+            "simple digital systems",
+            "stewardship of tools",
+            "digital workflow automation"
+        ],
+        "search_intent_classification": "Informational",
+        "suggested_internal_links": [
+            "/services",
+            "/story"
+        ],
+        "image_alt_text": "A clean geometric pathway of light representing organized digital systems and purposeful direction",
+        "social_sharing_title": "How to Practice Creative Digital Stewardship",
+        "social_sharing_description": "Stop getting lost in the digital noise. Learn how simple systems can free your time to serve others."
     }
 ]
