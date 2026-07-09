@@ -148,6 +148,8 @@ const ServicesPortfolio = {
                                     </div>
                                 </div>
                             `;
+                        } else {
+                            this.openLightbox('image', bgUrl, title);
                         }
                     }
                 }
