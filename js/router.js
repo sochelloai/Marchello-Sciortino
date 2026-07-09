@@ -1535,7 +1535,7 @@ Router.register('/speaking', () => `
                 </div>
                 <div class="portfolio-grid">
                     <!-- Item 1: Video -->
-                    <div class="portfolio-card" data-type="video" data-src="assets/videos/N.mp4" aria-label="Play Standing Ovation Keynote Video" role="button" tabindex="0">
+                    <div class="portfolio-card" data-type="video" data-src="speaking-portfolio/Videos/Standing Ovation.mp4" aria-label="Play Standing Ovation Keynote Video" role="button" tabindex="0">
                         <div class="portfolio-card-bg" style="background-image: url('assets/timeline-6.png');"></div>
                         <div class="portfolio-card-overlay"></div>
                         <div class="portfolio-card-icon">
