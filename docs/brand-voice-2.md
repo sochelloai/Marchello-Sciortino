@@ -187,6 +187,10 @@ Helping people use creativity, technology, and determination to overcome obstacl
 * **Rule:** Do not use negative contrast styling like "it's not X, it's Y" or "it's not this, it's not that, it is this." Frame statements positively and directly instead.
 * **Example:** "The mission is not to eliminate limitations. The mission is to help people discover how to move beyond them."
 
+### 22. Avoid corporate/AI tells like "stewardship"
+* **Rule:** Do not use words like "stewardship" (an LLM-favored word attempting to sound authoritative). Replace with simpler words like care, management, or leadership.
+* **Example:** "Our stewardship of resources is vital."
+
 ---
 
 ## WHEN TEMPTED TO WRITE X, WRITE Y INSTEAD
@@ -199,3 +203,5 @@ Helping people use creativity, technology, and determination to overcome obstacl
 | "I'm sorry your life is so hard." | "This life is beautiful, and we all have challenges." |
 | "Buy now before this limited-time offer ends!" | "If you want to explore the courses or work together, here is where you can get involved." |
 | "I am suffering from Friedrich's ataxia." | "I live with a progressive neuromuscular condition called Friedrich's ataxia." |
+| "Our stewardship of resources is crucial." | "Our care of resources is important." |
+| "We want to empower you to succeed." | "We want to help you succeed." |

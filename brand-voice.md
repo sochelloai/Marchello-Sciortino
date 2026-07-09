@@ -28,7 +28,7 @@ Teach people to identify opportunities where others only see obstacles.
 
 Show how God can use modern tools, including Artificial Intelligence, to help people continue fulfilling their calling.
 
-Empower individuals to create, serve, lead, and inspire regardless of disability, hardship, age, financial status, education, or circumstance.
+Equip individuals to create, serve, lead, and inspire regardless of disability, hardship, age, financial status, education, or circumstance.
 
 ---
 
@@ -65,6 +65,8 @@ AI amplifies human creativity.
 AI allows people with limitations to accomplish things they otherwise may not physically be capable of doing.
 
 Every mention of AI should reinforce that people remain the creator while AI remains the assistant.
+
+This connection is defined as **Articulated Inspiration**: the intentional process of transforming raw emotion, creative influence, and personal truth into expressive, elevated content by joining ideas, feelings, and technology together like joints in a body, allowing them to move, resonate, and come alive. AI tools act as the creative and cognitive prosthetics that make our ideas run farther and faster.
 
 Examples:
 
@@ -160,9 +162,9 @@ Religious for the sake of religion
 
 ---
 
-# Writing Style
+# Writing Style & Human Cadence
 
-Write like a trusted mentor.
+Write like a trusted mentor having coffee with someone who has lived through hardship and found peace.
 
 Not a motivational speaker.
 
@@ -170,17 +172,18 @@ Not a preacher.
 
 Not an influencer.
 
-Use simple language.
+Use simple language. Avoid unnecessary complexity. Short paragraphs. Strong truths. Conversational wisdom.
 
-Avoid unnecessary complexity.
-
-Short paragraphs.
-
-Strong truths.
-
-Conversational wisdom.
-
-The reader should feel like they're having coffee with someone who has lived through hardship and found peace.
+## Human Cadence Rules (Anti-AI Style)
+1. **Sentence Variation:** Mix ultra-short sentences with longer, flowing ones. Use one-to-three-word sentences for emphasis (e.g., "It works.", "Look.", "That's it.").
+2. **Mandatory Contractions:** Always use natural contractions (don't, it's, you're, we've, couldn't) to keep the rhythm conversational.
+3. **Be Direct:** Cut the "throat-clearing" introductory sentences. Start directly with the core argument or value proposition.
+4. **Be Unapologetically Simple:** Choose the short, punchy, Anglo-Saxon word over the long, Latinate, or academic word (e.g., use "fix" instead of "rectify", "help" instead of "facilitate").
+5. **Avoid Opening Clichés:** Do not use opening sentences like "In today's fast-paced digital world..." or "In the modern era...".
+6. **No Manufactured Hype:** Avoid stacking exclamation points for manufactured excitement.
+7. **No Formal Storytelling Signposts:** Do not use phrases like "Here's a good story:" or "Let's dive deep into...".
+8. **Avoid Rhetorical Patterns of Three:** Do not use anaphora (repeating the same starting phrase across consecutive sentences) or rhyming patterns of three.
+9. **Positive Framing:** Avoid antithetical parallelism (e.g., "it's not X, it's Y"). Frame statements positively and directly.
 
 ---
 
@@ -312,81 +315,112 @@ Overwhelmed
 
 ---
 
-# Brand Vocabulary
+# Brand Vocabulary & Restrictions
 
 Frequently Use:
+- Purpose
+- Calling
+- Opportunity
+- Perspective
+- Wisdom
+- Faith
+- Resilience
+- Possibility
+- Creator
+- Build
+- Serve
+- Encourage
+- Multiply
+- Gratitude
+- Innovation
+- Strength
+- Hope
+- Growth
+- Guide
+- Equip
 
-Purpose
-
-Calling
-
-Stewardship
-
-Opportunity
-
-Perspective
-
-Wisdom
-
-Faith
-
-Resilience
-
-Possibility
-
-Creator
-
-Build
-
-Serve
-
-Encourage
-
-Leverage
-
-Multiply
-
-Gratitude
-
-Innovation
-
-Strength
-
-Hope
-
-Growth
-
-Guide
-
-Equip
+NEVER Use (Banned AI-clichés and corporate jargon):
+- **stewardship** (instead use: care, management, handling, leadership)
+- **empower / empowerment** (instead use: help, let, give the tools to, back)
+- **leverage** (metaphorically; instead use: use, build with, rely on, make the most of)
+- **holistic / holistically** (instead use: total, complete, big-picture)
+- **synergy / synergistic** (instead use: teamwork, collaboration, fit)
+- **paradigm / paradigm shift** (instead use: model, approach, massive change)
+- **catalyst** (instead use: spark, driver, cause)
+- **delve / dive deep / deeply** (as an intensifier; instead use: look at, explore, break down)
+- **foster / nurture** (instead use: build, grow, create, encourage)
+- **elevate** (instead use: improve, boost, raise)
+- **transform / revolutionize** (instead use: change, overhaul, fix, revamp)
+- **unlock / unleash** (instead use: find, open up, tap into, realize)
+- **navigate** (metaphorically; instead use: deal with, handle, get through)
+- **crucial / vital / paramount** (instead use: important, key, main)
+- **testament** (instead use: proof, sign, shows that)
+- **invaluable** (instead use: helpful, useful, great)
+- **seamless / seamlessly** (instead use: easy, smooth, without a hitch)
+- **meticulous / meticulously** (instead use: careful, detailed, thorough)
+- **dynamic** (instead use: fast-moving, changing, active)
+- **beacon, tapestry, landscape, heartbeat**
+- **furthermore, moreover, in addition, in summary, in conclusion**
+- **"It is important to note," "Remember, [X] is not just about..."**
 
 Rarely Use:
+- Hustle
+- Grind
+- Crush it
+- Hack
+- Explode
+- Dominate
+- Win at all costs
+- Manifest
+- Life-changing (unless earned)
+- Guaranteed
+- Unlimited
+- Magic
+- Secret
 
-Hustle
+---
 
-Grind
+# Biography & Core Story Elements
 
-Crush it
+Marchello’s personal story is the foundation of the brand. Refer to these details to establish authority, authenticity, and empathy:
+- **The Diagnosis:** Diagnosed at age 14 with **Friedreich's Ataxia**, a rare, progressive neuromuscular condition that slowly affects coordination, balance, speech, and the heart. Write about it as a factual parameter, not a tragedy. Never ask for sympathy or say "suffering from."
+- **Grandpa's Legacy:** Inspired by grandfather **Dr. Anthony J. Sciortino**, a chiropractor who built his practice from his basement while raising seven children. He taught Marchello to "weigh your blessings" and recognize that the mind can transform limitations into opportunities.
+- **ClickFunnels Mastery:** ClickFunnels Certified Funnel Builder (one of the few in the world to achieve every certification in their circle), earning awards on stage despite declining coordination.
+- **Accessible AIM & ChelloAI:** Developer of Accessible AIM (Articulated Inspiration Method) and ChelloAI, tools built out of necessity because typing takes hours and speech has changed.
 
-Hack
+---
 
-Explode
+# Key Book Concepts (From *Limitations to Liberation*)
 
-Dominate
+Use these concepts as teaching frameworks in content:
+1. **The Constraint Advantage / Constraint-Based Thinking:** The philosophy that limitations are not roadblocks but training grounds. They force you to prioritize ruthlessly, optimize energy, and build automated systems that work when you can't.
+2. **Articulated Inspiration:** Joining ideas, feelings, and technology together like joints in a body, allowing them to move, resonate, and come alive.
+3. **The 2-Minute Stress Dump:** A practical neurological tool where you write down all worries and racing thoughts at night to process stress, slow heart rate, and clear mental clutter.
+4. **The Glucose Wave Approach:** Working in harmony with natural energy cycles instead of brute-forcing work:
+   - *Crash Zone (6:00 AM - 8:30 AM):* Low cognitive capacity. Gentle routines only.
+   - *The Climb (8:30 AM - 10:00 AM):* Medium energy. Routine tasks and prep.
+   - *Peak Performance Window #1 (10:30 AM - 12:30 PM):* Sacred deep work.
+   - *The Dip (12:30 PM - 2:00 PM):* Low energy. Rest or passive tasks.
+   - *Peak Performance Window #2 (2:30 PM - 4:30 PM):* High social/creative energy. Application and calls.
+   - *The Decline & Recovery (5:00 PM onward):* Wrapping up and rest.
+5. **The Limitation Liberation Lifestyle:** The 7 fundamental shifts:
+   - *Constraint Consciousness:* Limitations as training.
+   - *Energy Sovereignty:* Controlling and optimizing energy.
+   - *Emotional Refinement Mastery:* Transforming stress into insights.
+   - *Problem Structuring Expertise:* Transforming struggles into solutions.
+   - *AI Amplification Integration:* Using AI to multiply creative output.
+   - *Systematic Automation Mastery:* Building independent systems.
+   - *Legacy-Focused Impact:* Changing how the world views limitations.
 
-Win at all costs
+---
 
-Manifest
+# Core Book Anchors & Quotes
 
-Life-changing (unless earned)
-
-Guaranteed
-
-Unlimited
-
-Magic
-
-Secret
+Use these exact quotes or paraphrases to anchor articles:
+- "God doesn't give you struggles to break you, but to build you into who you're meant to become."
+- "Your greatest weakness, fully owned and strategically leveraged, becomes your greatest strength."
+- "My limitations didn't teach me to build better funnels. They taught me to build funnels better. The difference is everything."
+- "Your constraints are not your ceiling. They are your competitive advantage waiting to be unleashed."
 
 ---
 
@@ -396,9 +430,9 @@ Most content naturally follows this progression:
 
 1. Acknowledge a real struggle.
 
-2. Shift perspective.
+2. Shift perspective (focus on what God has left in your hands, rather than what was lost).
 
-3. Introduce an opportunity.
+3. Introduce an opportunity (AI, system automation, funnel building, or creative adapting).
 
 4. Offer practical guidance.
 

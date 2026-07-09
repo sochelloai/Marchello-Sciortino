@@ -23,49 +23,67 @@ const ServicesPortfolio = {
     init() {
         this.cleanup();
         this.bindEvents();
-        this.initAccordion();
+        this.initFileExplorerTabs();
     },
 
-    initAccordion() {
-        const panels = document.querySelectorAll('.accordion-panel');
-        panels.forEach(panel => {
-            const handleExpand = () => {
-                if (panel.classList.contains('active')) return;
-                panels.forEach(p => {
-                    p.classList.remove('active');
-                    p.setAttribute('aria-expanded', 'false');
-                    const num = p.querySelector('.panel-num') ? p.querySelector('.panel-num').textContent : '';
-                    const title = p.querySelector('.panel-vertical-title') ? p.querySelector('.panel-vertical-title').textContent : '';
-                    p.setAttribute('aria-label', `${num} ${title}, click to expand`);
-                });
-                panel.classList.add('active');
-                panel.setAttribute('aria-expanded', 'true');
-                const num = panel.querySelector('.panel-num') ? panel.querySelector('.panel-num').textContent : '';
-                const title = panel.querySelector('.panel-vertical-title') ? panel.querySelector('.panel-vertical-title').textContent : '';
-                panel.setAttribute('aria-label', `${num} ${title}, currently expanded`);
-            };
+    initFileExplorerTabs() {
+        const tabs = document.querySelectorAll('.explorer-tab');
+        const contents = document.querySelectorAll('.explorer-tab-content');
 
-            panel.addEventListener('click', (e) => {
-                if (panel.classList.contains('active') && !e.target.closest('.panel-trigger')) {
-                    return;
-                }
-                if (window.innerWidth <= 768 && panel.classList.contains('active') && e.target.closest('.panel-trigger')) {
-                    panel.classList.remove('active');
-                    panel.setAttribute('aria-expanded', 'false');
-                    const num = panel.querySelector('.panel-num') ? panel.querySelector('.panel-num').textContent : '';
-                    const title = panel.querySelector('.panel-vertical-title') ? panel.querySelector('.panel-vertical-title').textContent : '';
-                    panel.setAttribute('aria-label', `${num} ${title}, click to expand`);
-                    return;
-                }
-                handleExpand();
+        const switchTab = (tabId) => {
+            // Stop any playing audio
+            this.stopAudio();
+
+            // Reset visual panes to defaults
+            this.resetAllVisualPanes();
+
+            // Update tabs
+            tabs.forEach(t => {
+                const isActive = t.getAttribute('data-tab') === tabId;
+                t.classList.toggle('active', isActive);
+                t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+                t.setAttribute('tabindex', isActive ? '0' : '-1');
             });
 
-            panel.addEventListener('keydown', (e) => {
-                if (e.key === ' ' || e.key === 'Enter') {
-                    e.preventDefault();
-                    handleExpand();
-                }
+            // Update content areas
+            contents.forEach(content => {
+                const isActive = content.id === `tab-content-${tabId}`;
+                content.classList.toggle('active', isActive);
             });
+        };
+
+        // Click handlers for top tabs
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabId = tab.getAttribute('data-tab');
+                switchTab(tabId);
+            });
+        });
+
+        // Keyboard navigation (Arrow keys, Space/Enter) for accessibility
+        const handleKeyDown = (e, elements, index) => {
+            let nextIndex = index;
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                nextIndex = (index + 1) % elements.length;
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                nextIndex = (index - 1 + elements.length) % elements.length;
+            } else if (e.key === 'Home') {
+                nextIndex = 0;
+            } else if (e.key === 'End') {
+                nextIndex = elements.length - 1;
+            } else {
+                return; // Do nothing for other keys
+            }
+
+            e.preventDefault();
+            const nextElement = elements[nextIndex];
+            nextElement.focus();
+            const tabId = nextElement.getAttribute('data-tab');
+            switchTab(tabId);
+        };
+
+        tabs.forEach((tab, index) => {
+            tab.addEventListener('keydown', (e) => handleKeyDown(e, tabs, index));
         });
     },
 
@@ -77,135 +95,97 @@ const ServicesPortfolio = {
                 const src = card.getAttribute('data-src');
                 const id = card.getAttribute('data-id');
                 const title = card.querySelector('.portfolio-title') ? card.querySelector('.portfolio-title').textContent : 'Portfolio Asset';
+                
+                // Find active panel
+                const activePanel = document.querySelector('.explorer-tab-content.active');
+                if (!activePanel) return;
 
-                if (type === 'image' || type === 'video') {
-                    this.openLightbox(type, src, title);
-                } else if (type === 'audio' || type === 'song') {
-                    this.toggleAudio(id, card);
+                const pane = activePanel.querySelector('.explorer-visual-pane');
+                if (!pane) return;
+
+                // If clicking another card while audio is playing, stop it first
+                if (this.playingAudioId && this.playingAudioId !== id) {
+                    this.stopAudio();
                 }
+
+                if (type === 'image') {
+                    this.stopAudio();
+                    pane.innerHTML = `<img src="${src}" alt="${title}" class="explorer-visual-img">`;
+                } else if (type === 'video') {
+                    this.stopAudio();
+                    pane.innerHTML = `<video src="${src}" controls autoplay loop class="explorer-visual-img" style="width: 100%; height: 100%; object-fit: cover;"></video>`;
+                } else if (type === 'audio' || type === 'song') {
+                    if (this.playingAudioId === id) {
+                        this.stopAudio();
+                        this.resetVisualPane(activePanel);
+                    } else {
+                        const bgUrl = card.querySelector('.portfolio-card-bg').style.backgroundImage.slice(5, -2).replace(/"/g, "");
+                        this.playAudio(id, card);
+                        
+                        pane.innerHTML = `
+                            <div class="explorer-audio-preview" style="position: relative; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; background-image: url('${bgUrl}'); background-size: cover; background-position: center; color: white;">
+                                <div style="position: absolute; inset: 0; background: rgba(8, 27, 41, 0.75); z-index: 1;"></div>
+                                <div style="position: relative; z-index: 2; text-align: center; padding: 2rem; display: flex; flex-direction: column; align-items: center;">
+                                    <div style="font-size: 3rem; margin-bottom: 1rem; animation: pulse 1.5s infinite;">🎵</div>
+                                    <h4 style="font-family: var(--font-heading); font-size: 1.5rem; margin-bottom: 0.5rem;">${title}</h4>
+                                    <p style="color: var(--color-teal); font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase; margin: 0;">Synthesizing Audio Loop...</p>
+                                    <div class="portfolio-wave playing" style="display: flex; gap: 4px; justify-content: center; margin-top: 1.5rem; height: 30px;">
+                                        <div class="portfolio-wave-bar" style="background-color: var(--color-teal); width: 4px; height: 100%;"></div>
+                                        <div class="portfolio-wave-bar" style="background-color: var(--color-teal); width: 4px; height: 100%;"></div>
+                                        <div class="portfolio-wave-bar" style="background-color: var(--color-teal); width: 4px; height: 100%;"></div>
+                                        <div class="portfolio-wave-bar" style="background-color: var(--color-teal); width: 4px; height: 100%;"></div>
+                                        <div class="portfolio-wave-bar" style="background-color: var(--color-teal); width: 4px; height: 100%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                }
+
+                // Smoothly scroll to visual pane so the user sees it
+                pane.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             });
         });
-
-        // Initialize Lightbox Elements
-        let overlay = document.getElementById('portfolio-lightbox-overlay');
-        if (!overlay) {
-            overlay = document.createElement('div');
-            overlay.id = 'portfolio-lightbox-overlay';
-            overlay.className = 'portfolio-lightbox-overlay';
-            overlay.setAttribute('role', 'dialog');
-            overlay.setAttribute('aria-modal', 'true');
-            overlay.setAttribute('aria-hidden', 'true');
-            overlay.innerHTML = `
-                <div class="portfolio-lightbox-wrapper">
-                    <button class="portfolio-lightbox-close" aria-label="Close lightbox">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                        </svg>
-                    </button>
-                    <div id="portfolio-lightbox-content"></div>
-                    <div class="portfolio-lightbox-caption"></div>
-                </div>
-            `;
-            document.body.appendChild(overlay);
-
-            // Close lightbox click handlers
-            overlay.addEventListener('click', (e) => {
-                if (e.target === overlay || e.target.closest('.portfolio-lightbox-close')) {
-                    this.closeLightbox();
-                }
-            });
-
-            // Close on escape key
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && overlay.classList.contains('active')) {
-                    this.closeLightbox();
-                }
-            });
-        }
     },
 
-    openLightbox(type, src, title) {
-        const overlay = document.getElementById('portfolio-lightbox-overlay');
-        const content = document.getElementById('portfolio-lightbox-content');
-        const caption = overlay.querySelector('.portfolio-lightbox-caption');
-
-        if (!overlay || !content || !caption) return;
-
-        content.innerHTML = '';
-        caption.textContent = title;
-
-        if (type === 'image') {
-            const img = document.createElement('img');
-            img.src = src;
-            img.alt = title;
-            img.className = 'portfolio-lightbox-image';
-            content.appendChild(img);
-        } else if (type === 'video') {
-            const video = document.createElement('video');
-            video.src = src;
-            video.controls = true;
-            video.autoplay = true;
-            video.className = 'portfolio-lightbox-video';
-            content.appendChild(video);
-        }
-
-        overlay.classList.add('active');
-        overlay.setAttribute('aria-hidden', 'false');
-        document.body.style.overflow = 'hidden';
-    },
-
-    closeLightbox() {
-        const overlay = document.getElementById('portfolio-lightbox-overlay');
-        const content = document.getElementById('portfolio-lightbox-content');
-        if (overlay) {
-            overlay.classList.remove('active');
-            overlay.setAttribute('aria-hidden', 'true');
-            if (content) {
-                const video = content.querySelector('video');
-                if (video) {
-                    video.pause();
-                    video.src = '';
-                }
-                content.innerHTML = '';
+    resetVisualPane(panel) {
+        const pane = panel.querySelector('.explorer-visual-pane');
+        if (pane) {
+            const defaultSrc = pane.getAttribute('data-default-src');
+            const defaultAlt = pane.getAttribute('data-default-alt');
+            if (defaultSrc) {
+                pane.innerHTML = `<img src="${defaultSrc}" alt="${defaultAlt}" class="explorer-visual-img">`;
             }
         }
-        document.body.style.overflow = '';
+    },
+
+    resetAllVisualPanes() {
+        const panels = document.querySelectorAll('.explorer-tab-content');
+        panels.forEach(panel => this.resetVisualPane(panel));
     },
 
     toggleAudio(id, card) {
-        if (this.playingAudioId === id) {
-            this.stopAudio();
-        } else {
-            if (this.playingAudioId) {
-                this.stopAudio();
-            }
-            this.playAudio(id, card);
-        }
+        // Obsolete/Unused since we handle clicking in bindEvents()
     },
 
     playAudio(id, card) {
         const track = this.tracks[id];
         if (!track) return;
 
-        // 1. Initialize Browser AudioContext if needed
         if (!this.audioCtx) {
             this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         }
 
-        // Resume context if suspended
         if (this.audioCtx.state === 'suspended') {
             this.audioCtx.resume();
         }
 
-        // 2. Setup Synth nodes
         this.oscillator = this.audioCtx.createOscillator();
         this.gainNode = this.audioCtx.createGain();
 
         this.oscillator.type = track.type;
         this.oscillator.frequency.setValueAtTime(track.freq, this.audioCtx.currentTime);
 
-        // Low volume tremolo modulation
         const lfo = this.audioCtx.createOscillator();
         const lfoGain = this.audioCtx.createGain();
         lfo.frequency.value = 2.0;
@@ -225,7 +205,6 @@ const ServicesPortfolio = {
         card.classList.add('playing');
         card.setAttribute('aria-label', `Pause ${card.querySelector('.portfolio-title').textContent}`);
 
-        // Melody loop progression
         let noteIndex = 0;
         this.playbackInterval = setInterval(() => {
             if (this.oscillator && this.audioCtx) {
@@ -260,8 +239,16 @@ const ServicesPortfolio = {
         }
 
         if (this.gainNode) {
-            this.gainNode.disconnect();
+            try {
+                this.gainNode.disconnect();
+            } catch (e) {}
             this.gainNode = null;
+        }
+
+        // Restore default image pane of the active panel
+        const activePanel = document.querySelector('.explorer-tab-content.active');
+        if (activePanel) {
+            this.resetVisualPane(activePanel);
         }
 
         this.playingAudioId = null;
@@ -269,10 +256,5 @@ const ServicesPortfolio = {
 
     cleanup() {
         this.stopAudio();
-        this.closeLightbox();
-        const overlay = document.getElementById('portfolio-lightbox-overlay');
-        if (overlay) {
-            overlay.remove();
-        }
     }
 };
