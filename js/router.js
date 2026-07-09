@@ -871,6 +871,17 @@ Router.register('/services', () => `
                                                 <h4 class="portfolio-title">AI Promo Video</h4>
                                             </div>
                                         </div>
+                                        <div class="portfolio-card" data-type="video" data-src="assets/videos/I.mp4" aria-label="Play AI Design Process Video" role="button" tabindex="0">
+                                            <div class="portfolio-card-bg" style="background-image: url('assets/ai-content-creation.jpg');"></div>
+                                            <div class="portfolio-card-overlay"></div>
+                                            <div class="portfolio-card-icon">
+                                                <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
+                                            </div>
+                                            <div class="portfolio-card-content">
+                                                <span class="portfolio-badge">Video</span>
+                                                <h4 class="portfolio-title">AI Design Process</h4>
+                                            </div>
+                                        </div>
                                         <div class="portfolio-card" data-type="audio" data-id="create-audio-1" aria-label="Play Brand Jingle Audio" role="button" tabindex="0">
                                             <div class="portfolio-card-bg" style="background-image: url('assets/articulated_inspiration.jpg');"></div>
                                             <div class="portfolio-card-overlay"></div>
@@ -1022,6 +1033,17 @@ Router.register('/services', () => `
                                                 <h4 class="portfolio-title">Platform Logic Demo</h4>
                                             </div>
                                         </div>
+                                        <div class="portfolio-card" data-type="video" data-src="assets/videos/W.mp4" aria-label="Play Funnel Architecture Demo Video" role="button" tabindex="0">
+                                            <div class="portfolio-card-bg" style="background-image: url('assets/web-and-funnel-building.png');"></div>
+                                            <div class="portfolio-card-overlay"></div>
+                                            <div class="portfolio-card-icon">
+                                                <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
+                                            </div>
+                                            <div class="portfolio-card-content">
+                                                <span class="portfolio-badge">Video</span>
+                                                <h4 class="portfolio-title">Funnel Architecture</h4>
+                                            </div>
+                                        </div>
                                         <div class="portfolio-card" data-type="audio" data-id="build-audio-3" aria-label="Play Automation Pulse Audio" role="button" tabindex="0">
                                             <div class="portfolio-card-bg" style="background-image: url('assets/articulated_inspiration.jpg');"></div>
                                             <div class="portfolio-card-overlay"></div>
@@ -1149,6 +1171,17 @@ Router.register('/services', () => `
                                             <div class="portfolio-card-content">
                                                 <span class="portfolio-badge">Video</span>
                                                 <h4 class="portfolio-title">Keynote Speech Snippet</h4>
+                                            </div>
+                                        </div>
+                                        <div class="portfolio-card" data-type="video" data-src="assets/videos/I.mp4" aria-label="Play Workspace Adaptation Video" role="button" tabindex="0">
+                                            <div class="portfolio-card-bg" style="background-image: url('assets/timeline-5.png');"></div>
+                                            <div class="portfolio-card-overlay"></div>
+                                            <div class="portfolio-card-icon">
+                                                <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
+                                            </div>
+                                            <div class="portfolio-card-content">
+                                                <span class="portfolio-badge">Video</span>
+                                                <h4 class="portfolio-title">Workspace Adaptation</h4>
                                             </div>
                                         </div>
                                         <div class="portfolio-card" data-type="audio" data-id="overcome-audio-5" aria-label="Play Resilience Mindset Audio" role="button" tabindex="0">
@@ -1513,7 +1546,19 @@ Router.register('/speaking', () => `
                             <h4 class="portfolio-title">Keynote Speech Snippet</h4>
                         </div>
                     </div>
-                    <!-- Item 2: Audio -->
+                    <!-- Item 2: Video -->
+                    <div class="portfolio-card" data-type="video" data-src="assets/videos/W.mp4" aria-label="Play Q&A Engagement Video" role="button" tabindex="0">
+                        <div class="portfolio-card-bg" style="background-image: url('assets/timeline-6.png');"></div>
+                        <div class="portfolio-card-overlay"></div>
+                        <div class="portfolio-card-icon">
+                            <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
+                        </div>
+                        <div class="portfolio-card-content">
+                            <span class="portfolio-badge">Video</span>
+                            <h4 class="portfolio-title">Q&A Engagement Clip</h4>
+                        </div>
+                    </div>
+                    <!-- Item 3: Audio -->
                     <div class="portfolio-card" data-type="audio" data-id="overcome-audio-5" aria-label="Play Resilience Mindset Audio" role="button" tabindex="0">
                         <div class="portfolio-card-bg" style="background-image: url('assets/speaker_1_sheet.png');"></div>
                         <div class="portfolio-card-overlay"></div>
@@ -1532,7 +1577,7 @@ Router.register('/speaking', () => `
                             </div>
                         </div>
                     </div>
-                    <!-- Item 3: Song -->
+                    <!-- Item 4: Song -->
                     <div class="portfolio-card" data-type="song" data-id="overcome-song-6" aria-label="Play Keynote Walk-on Song" role="button" tabindex="0">
                         <div class="portfolio-card-bg" style="background-image: url('assets/timeline-2.png');"></div>
                         <div class="portfolio-card-overlay"></div>
@@ -1551,7 +1596,7 @@ Router.register('/speaking', () => `
                             </div>
                         </div>
                     </div>
-                    <!-- Item 4: Image -->
+                    <!-- Item 5: Image -->
                     <div class="portfolio-card" data-type="image" data-src="assets/speaker_1_sheet.png" aria-label="View Keynote Speaker One-Sheet PDF Mockup" role="button" tabindex="0">
                         <div class="portfolio-card-bg" style="background-image: url('assets/speaker_1_sheet.png');"></div>
                         <div class="portfolio-card-overlay"></div>
@@ -1563,7 +1608,7 @@ Router.register('/speaking', () => `
                             <h4 class="portfolio-title">Keynote One-Sheet</h4>
                         </div>
                     </div>
-                    <!-- Item 5: Image -->
+                    <!-- Item 6: Image -->
                     <div class="portfolio-card" data-type="image" data-src="assets/ring_anyway_coaching.png" aria-label="View Coaching Success Blueprint Design" role="button" tabindex="0">
                         <div class="portfolio-card-bg" style="background-image: url('assets/ring_anyway_coaching.png');"></div>
                         <div class="portfolio-card-overlay"></div>
