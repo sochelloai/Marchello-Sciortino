@@ -22,6 +22,7 @@ const ServicesPortfolio = {
 
     init() {
         this.cleanup();
+        this.ensureLightboxInDOM();
         this.bindEvents();
         this.initFileExplorerTabs();
     },
@@ -111,9 +112,11 @@ const ServicesPortfolio = {
                 if (type === 'image') {
                     this.stopAudio();
                     pane.innerHTML = `<img src="${src}" alt="${title}" class="explorer-visual-img">`;
+                    this.openLightbox('image', src, title);
                 } else if (type === 'video') {
                     this.stopAudio();
                     pane.innerHTML = `<video src="${src}" controls autoplay loop class="explorer-visual-img" style="width: 100%; height: 100%; object-fit: cover;"></video>`;
+                    this.openLightbox('video', src, title);
                 } else if (type === 'audio' || type === 'song') {
                     if (this.playingAudioId === id) {
                         this.stopAudio();
@@ -144,6 +147,31 @@ const ServicesPortfolio = {
 
                 // Smoothly scroll to visual pane so the user sees it
                 pane.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            });
+        });
+
+        // Also allow clicking the preview pane image/media to open the lightbox
+        const visualPanes = document.querySelectorAll('.explorer-visual-pane');
+        visualPanes.forEach(pane => {
+            pane.style.cursor = 'pointer';
+            pane.addEventListener('click', (e) => {
+                // If a video control is clicked, let the event propagate normally
+                if (e.target.tagName.toLowerCase() === 'video' && e.target.hasAttribute('controls')) {
+                    return;
+                }
+                
+                const img = pane.querySelector('.explorer-visual-img');
+                if (img) {
+                    const src = img.getAttribute('src');
+                    const alt = img.getAttribute('alt') || 'Portfolio Asset';
+                    const tagName = img.tagName.toLowerCase();
+                    
+                    if (tagName === 'img') {
+                        this.openLightbox('image', src, alt);
+                    } else if (tagName === 'video') {
+                        this.openLightbox('video', src, alt);
+                    }
+                }
             });
         });
     },
@@ -254,7 +282,98 @@ const ServicesPortfolio = {
         this.playingAudioId = null;
     },
 
+    ensureLightboxInDOM() {
+        if (!document.getElementById('portfolio-lightbox-overlay')) {
+            const overlay = document.createElement('div');
+            overlay.id = 'portfolio-lightbox-overlay';
+            overlay.className = 'portfolio-lightbox-overlay';
+            overlay.setAttribute('role', 'dialog');
+            overlay.setAttribute('aria-modal', 'true');
+            overlay.setAttribute('aria-label', 'Portfolio Item Viewer');
+
+            overlay.innerHTML = `
+                <div class="portfolio-lightbox-wrapper">
+                    <button id="portfolio-lightbox-close" class="portfolio-lightbox-close" aria-label="Close viewer">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                    <div id="portfolio-lightbox-content"></div>
+                    <div id="portfolio-lightbox-caption" class="portfolio-lightbox-caption"></div>
+                </div>
+            `;
+
+            document.body.appendChild(overlay);
+
+            overlay.addEventListener('click', (e) => {
+                const isVideoControl = e.target.tagName.toLowerCase() === 'video' && e.target.hasAttribute('controls');
+                if (!isVideoControl) {
+                    this.closeLightbox();
+                }
+            });
+
+            const closeBtn = overlay.querySelector('#portfolio-lightbox-close');
+            closeBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.closeLightbox();
+            });
+        }
+
+        // Always bind keydown listener
+        if (!this.boundEscHandler) {
+            this.boundEscHandler = this.handleEscKey.bind(this);
+        }
+        document.addEventListener('keydown', this.boundEscHandler);
+    },
+
+    openLightbox(type, src, title) {
+        const overlay = document.getElementById('portfolio-lightbox-overlay');
+        if (!overlay) return;
+
+        const content = overlay.querySelector('#portfolio-lightbox-content');
+        const caption = overlay.querySelector('#portfolio-lightbox-caption');
+
+        if (type === 'image') {
+            content.innerHTML = `<img src="${src}" alt="${title}" class="portfolio-lightbox-image">`;
+        } else if (type === 'video') {
+            content.innerHTML = `<video src="${src}" controls autoplay loop class="portfolio-lightbox-video"></video>`;
+        } else {
+            return;
+        }
+
+        caption.textContent = title;
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    },
+
+    closeLightbox() {
+        const overlay = document.getElementById('portfolio-lightbox-overlay');
+        if (!overlay) return;
+
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+
+        const content = overlay.querySelector('#portfolio-lightbox-content');
+        if (content) {
+            content.innerHTML = '';
+        }
+    },
+
+    handleEscKey(e) {
+        if (e.key === 'Escape') {
+            const overlay = document.getElementById('portfolio-lightbox-overlay');
+            if (overlay && overlay.classList.contains('active')) {
+                this.closeLightbox();
+            }
+        }
+    },
+
     cleanup() {
         this.stopAudio();
+        this.closeLightbox();
+        if (this.boundEscHandler) {
+            document.removeEventListener('keydown', this.boundEscHandler);
+        }
     }
 };

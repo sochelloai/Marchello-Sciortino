@@ -3093,7 +3093,7 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(4, 15, 24, 0.95);
+    background-color: rgba(0, 0, 0, 0.8);
     z-index: 10005;
     display: flex;
     justify-content: center;
@@ -3112,7 +3112,7 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
 .portfolio-lightbox-wrapper {
     position: relative;
     max-width: 80vw;
-    max-height: 85vh;
+    max-height: 80vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -3128,13 +3128,13 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
 
 .portfolio-lightbox-close {
     position: absolute;
-    top: -45px;
-    right: 0;
-    background-color: var(--color-white);
+    top: 15px;
+    right: 15px;
+    background-color: var(--color-teal);
     border: none;
     border-radius: 50%;
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -3147,13 +3147,14 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
 
 .portfolio-lightbox-close:hover {
     transform: scale(1.1);
-    background-color: #f0f0f0;
+    background-color: var(--color-orange-brush);
 }
 
 .portfolio-lightbox-close svg {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     stroke: var(--color-navy);
+    stroke-width: 3px;
 }
 
 #portfolio-lightbox-content {
@@ -3166,7 +3167,7 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
 .portfolio-lightbox-image,
 .portfolio-lightbox-video {
     max-width: 80vw;
-    max-height: 70vh;
+    max-height: 80vh;
     border-radius: var(--radius-md);
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
     border: 1px solid rgba(255, 255, 255, 0.1);
