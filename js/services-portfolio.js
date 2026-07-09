@@ -374,7 +374,22 @@ const ServicesPortfolio = {
         if (type === 'image') {
             content.innerHTML = `<img src="${src}" alt="${title}" class="portfolio-lightbox-image">`;
         } else if (type === 'video') {
-            content.innerHTML = `<video src="${src}" controls autoplay loop class="portfolio-lightbox-video"></video>`;
+            // Check for YouTube / Vimeo URLs
+            const ytRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
+            const vimeoRegex = /vimeo\.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|video\/|)(\d+)/i;
+            
+            const ytMatch = src.match(ytRegex);
+            const vimeoMatch = src.match(vimeoRegex);
+            
+            if (ytMatch) {
+                const videoId = ytMatch[1];
+                content.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" class="portfolio-lightbox-video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width: 80vw; height: 60vh; min-height: 320px; border: none; border-radius: var(--radius-md);"></iframe>`;
+            } else if (vimeoMatch) {
+                const videoId = vimeoMatch[3];
+                content.innerHTML = `<iframe src="https://player.vimeo.com/video/${videoId}?autoplay=1" class="portfolio-lightbox-video" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="width: 80vw; height: 60vh; min-height: 320px; border: none; border-radius: var(--radius-md);"></iframe>`;
+            } else {
+                content.innerHTML = `<video src="${src}" controls autoplay loop class="portfolio-lightbox-video"></video>`;
+            }
         } else {
             return;
         }
