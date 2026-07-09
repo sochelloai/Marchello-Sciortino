@@ -9,6 +9,7 @@ const ServicesPortfolio = {
     gainNode: null,
     playingAudioId: null,
     playbackInterval: null,
+    activeAudio: null,
 
     // Audio tracks definition for live synthesized audio feedback
     tracks: {
@@ -94,15 +95,12 @@ const ServicesPortfolio = {
             card.addEventListener('click', (e) => {
                 const type = card.getAttribute('data-type');
                 const src = card.getAttribute('data-src');
-                const id = card.getAttribute('data-id');
+                const id = card.getAttribute('data-id') || src;
                 const title = card.querySelector('.portfolio-title') ? card.querySelector('.portfolio-title').textContent : 'Portfolio Asset';
                 
-                // Find active panel
+                // Find active panel and visual pane (only present on Services page)
                 const activePanel = document.querySelector('.explorer-tab-content.active');
-                if (!activePanel) return;
-
-                const pane = activePanel.querySelector('.explorer-visual-pane');
-                if (!pane) return;
+                const pane = activePanel ? activePanel.querySelector('.explorer-visual-pane') : null;
 
                 // If clicking another card while audio is playing, stop it first
                 if (this.playingAudioId && this.playingAudioId !== id) {
@@ -111,42 +109,53 @@ const ServicesPortfolio = {
 
                 if (type === 'image') {
                     this.stopAudio();
-                    pane.innerHTML = `<img src="${src}" alt="${title}" class="explorer-visual-img">`;
+                    if (pane) {
+                        pane.innerHTML = `<img src="${src}" alt="${title}" class="explorer-visual-img">`;
+                    }
                     this.openLightbox('image', src, title);
                 } else if (type === 'video') {
                     this.stopAudio();
-                    pane.innerHTML = `<video src="${src}" controls autoplay loop class="explorer-visual-img" style="width: 100%; height: 100%; object-fit: cover;"></video>`;
+                    if (pane) {
+                        pane.innerHTML = `<video src="${src}" controls autoplay loop class="explorer-visual-img" style="width: 100%; height: 100%; object-fit: cover;"></video>`;
+                    }
                     this.openLightbox('video', src, title);
                 } else if (type === 'audio' || type === 'song') {
                     if (this.playingAudioId === id) {
                         this.stopAudio();
-                        this.resetVisualPane(activePanel);
+                        if (activePanel) {
+                            this.resetVisualPane(activePanel);
+                        }
                     } else {
-                        const bgUrl = card.querySelector('.portfolio-card-bg').style.backgroundImage.slice(5, -2).replace(/"/g, "");
+                        const bgCardBg = card.querySelector('.portfolio-card-bg');
+                        const bgUrl = bgCardBg && bgCardBg.style.backgroundImage ? bgCardBg.style.backgroundImage.slice(5, -2).replace(/"/g, "") : '';
                         this.playAudio(id, card);
                         
-                        pane.innerHTML = `
-                            <div class="explorer-audio-preview" style="position: relative; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; background-image: url('${bgUrl}'); background-size: cover; background-position: center; color: white;">
-                                <div style="position: absolute; inset: 0; background: rgba(8, 27, 41, 0.75); z-index: 1;"></div>
-                                <div style="position: relative; z-index: 2; text-align: center; padding: 2rem; display: flex; flex-direction: column; align-items: center;">
-                                    <div style="font-size: 3rem; margin-bottom: 1rem; animation: pulse 1.5s infinite;">🎵</div>
-                                    <h4 style="font-family: var(--font-heading); font-size: 1.5rem; margin-bottom: 0.5rem;">${title}</h4>
-                                    <p style="color: var(--color-teal); font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase; margin: 0;">Synthesizing Audio Loop...</p>
-                                    <div class="portfolio-wave playing" style="display: flex; gap: 4px; justify-content: center; margin-top: 1.5rem; height: 30px;">
-                                        <div class="portfolio-wave-bar" style="background-color: var(--color-teal); width: 4px; height: 100%;"></div>
-                                        <div class="portfolio-wave-bar" style="background-color: var(--color-teal); width: 4px; height: 100%;"></div>
-                                        <div class="portfolio-wave-bar" style="background-color: var(--color-teal); width: 4px; height: 100%;"></div>
-                                        <div class="portfolio-wave-bar" style="background-color: var(--color-teal); width: 4px; height: 100%;"></div>
-                                        <div class="portfolio-wave-bar" style="background-color: var(--color-teal); width: 4px; height: 100%;"></div>
+                        if (pane) {
+                            pane.innerHTML = `
+                                <div class="explorer-audio-preview" style="position: relative; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; background-image: url('${bgUrl}'); background-size: cover; background-position: center; color: white;">
+                                    <div style="position: absolute; inset: 0; background: rgba(8, 27, 41, 0.75); z-index: 1;"></div>
+                                    <div style="position: relative; z-index: 2; text-align: center; padding: 2rem; display: flex; flex-direction: column; align-items: center;">
+                                        <div style="font-size: 3rem; margin-bottom: 1rem; animation: pulse 1.5s infinite;">🎵</div>
+                                        <h4 style="font-family: var(--font-heading); font-size: 1.5rem; margin-bottom: 0.5rem;">${title}</h4>
+                                        <p style="color: var(--color-teal); font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase; margin: 0;">Playing Audio...</p>
+                                        <div class="portfolio-wave playing" style="display: flex; gap: 4px; justify-content: center; margin-top: 1.5rem; height: 30px;">
+                                            <div class="portfolio-wave-bar" style="background-color: var(--color-teal); width: 4px; height: 100%;"></div>
+                                            <div class="portfolio-wave-bar" style="background-color: var(--color-teal); width: 4px; height: 100%;"></div>
+                                            <div class="portfolio-wave-bar" style="background-color: var(--color-teal); width: 4px; height: 100%;"></div>
+                                            <div class="portfolio-wave-bar" style="background-color: var(--color-teal); width: 4px; height: 100%;"></div>
+                                            <div class="portfolio-wave-bar" style="background-color: var(--color-teal); width: 4px; height: 100%;"></div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        `;
+                            `;
+                        }
                     }
                 }
 
                 // Smoothly scroll to visual pane so the user sees it
-                pane.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                if (pane) {
+                    pane.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             });
         });
 
@@ -197,6 +206,27 @@ const ServicesPortfolio = {
     },
 
     playAudio(id, card) {
+        const src = card.getAttribute('data-src');
+        if (src) {
+            this.stopAudio();
+
+            this.activeAudio = new Audio(src);
+            this.activeAudio.loop = true;
+            this.activeAudio.play().catch(err => {
+                console.warn("Audio autoplay blocked or failed:", err);
+            });
+
+            this.playingAudioId = id;
+            card.classList.add('playing');
+            const titleText = card.querySelector('.portfolio-title') ? card.querySelector('.portfolio-title').textContent : 'Portfolio Asset';
+            card.setAttribute('aria-label', `Pause ${titleText}`);
+
+            this.activeAudio.addEventListener('ended', () => {
+                this.stopAudio();
+            });
+            return;
+        }
+
         const track = this.tracks[id];
         if (!track) return;
 
@@ -246,7 +276,15 @@ const ServicesPortfolio = {
     stopAudio() {
         if (!this.playingAudioId) return;
 
-        const activeCard = document.querySelector(`.portfolio-card[data-id="${this.playingAudioId}"]`);
+        if (this.activeAudio) {
+            try {
+                this.activeAudio.pause();
+                this.activeAudio.currentTime = 0;
+            } catch (e) {}
+            this.activeAudio = null;
+        }
+
+        const activeCard = document.querySelector(`.portfolio-card[data-id="${this.playingAudioId}"], .portfolio-card[data-src="${this.playingAudioId}"]`);
         if (activeCard) {
             activeCard.classList.remove('playing');
             const titleText = activeCard.querySelector('.portfolio-title') ? activeCard.querySelector('.portfolio-title').textContent : 'Portfolio Asset';
@@ -273,7 +311,6 @@ const ServicesPortfolio = {
             this.gainNode = null;
         }
 
-        // Restore default image pane of the active panel
         const activePanel = document.querySelector('.explorer-tab-content.active');
         if (activePanel) {
             this.resetVisualPane(activePanel);
