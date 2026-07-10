@@ -806,7 +806,7 @@ Router.register('/services', () => `
                                             I use generative AI systems to build customized visual and written creative outputs. Whether you need audio loops, copy packages, or digital graphics, I construct systems that turn raw ideas into active assets.
                                         </p>
                                         <div class="explorer-cta">
-                                            <a href="/contact?interest=Create" class="btn btn-teal">CONTACT ME</a>
+                                            <a href="/contact?interest=Create" class="btn btn-teal">Contact me for creating</a>
                                         </div>
                                     </div>
                                     <div class="explorer-image-col">
@@ -957,7 +957,7 @@ Router.register('/services', () => `
                                             I construct modern web architectures, landing pages, and lead workflows. Using AI-assisted programming tools, I design responsive templates that connect with visitors and support clean automation pipelines.
                                         </p>
                                         <div class="explorer-cta">
-                                            <a href="/contact?interest=Build" class="btn btn-teal">CONTACT ME</a>
+                                            <a href="/contact?interest=Build" class="btn btn-teal">Contact me for building</a>
                                         </div>
                                     </div>
                                     <div class="explorer-image-col">
@@ -1108,7 +1108,7 @@ Router.register('/services', () => `
                                             I work directly with individuals to shift their perspective and reframe their limitations. Through mindset coaching and constraint-based problem solving, we establish customized habits to convert physical or mental barriers into growth pathways.
                                         </p>
                                         <div class="explorer-cta">
-                                            <a href="/contact?interest=Overcome" class="btn btn-teal">CONTACT ME</a>
+                                            <a href="/contact?interest=Overcome" class="btn btn-teal">Contact me for overcoming</a>
                                         </div>
                                     </div>
                                     <div class="explorer-image-col">
