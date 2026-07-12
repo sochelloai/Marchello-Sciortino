@@ -860,37 +860,37 @@ Router.register('/services', () => `
                                 <div class="explorer-portfolio-section">
                                     <h3 class="explorer-portfolio-title">CREATE PORTFOLIO</h3>
                                     <div class="portfolio-grid">
-                                        <div class="portfolio-card" data-type="video" data-src="assets/videos/W.mp4" aria-label="Play AI Promo Video" role="button" tabindex="0">
-                                            <div class="portfolio-card-bg" style="background-image: url('assets/ai_content.png');"></div>
+                                        <div class="portfolio-card" data-type="video" data-src="assets/videos/the-adventure.mp4" aria-label="Play The Adventure Video" role="button" tabindex="0">
+                                            <div class="portfolio-card-bg" style="background-image: url('assets/videos/the-adventure_cover-art.jpeg');"></div>
                                             <div class="portfolio-card-overlay"></div>
                                             <div class="portfolio-card-icon">
                                                 <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
                                             </div>
                                             <div class="portfolio-card-content">
                                                 <span class="portfolio-badge">Video</span>
-                                                <h4 class="portfolio-title">AI Promo Video</h4>
+                                                <h4 class="portfolio-title">The Adventure</h4>
                                             </div>
                                         </div>
-                                        <div class="portfolio-card" data-type="video" data-src="assets/videos/I.mp4" aria-label="Play AI Design Process Video" role="button" tabindex="0">
-                                            <div class="portfolio-card-bg" style="background-image: url('assets/ai-content-creation.jpg');"></div>
+                                        <div class="portfolio-card" data-type="video" data-src="assets/videos/king-zosimus.mp4" aria-label="Play King Zosimus Video" role="button" tabindex="0">
+                                            <div class="portfolio-card-bg" style="background-image: url('assets/videos/king-zosimus_card-image.jpeg');"></div>
                                             <div class="portfolio-card-overlay"></div>
                                             <div class="portfolio-card-icon">
                                                 <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
                                             </div>
                                             <div class="portfolio-card-content">
                                                 <span class="portfolio-badge">Video</span>
-                                                <h4 class="portfolio-title">AI Design Process</h4>
+                                                <h4 class="portfolio-title">King Zosimus</h4>
                                             </div>
                                         </div>
-                                        <div class="portfolio-card" data-type="audio" data-id="create-audio-1" aria-label="Play Brand Jingle Audio" role="button" tabindex="0">
-                                            <div class="portfolio-card-bg" style="background-image: url('assets/articulated_inspiration.jpg');"></div>
+                                        <div class="portfolio-card" data-type="audio" data-src="assets/chello-ai-music.mp3" data-id="chello-ai-music" aria-label="Play Chello AI Music Audio" role="button" tabindex="0">
+                                            <div class="portfolio-card-bg" style="background-image: url('assets/chello-ai-music_cover-art.jpeg');"></div>
                                             <div class="portfolio-card-overlay"></div>
                                             <div class="portfolio-card-icon">
                                                 <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
                                             </div>
                                             <div class="portfolio-card-content">
                                                 <span class="portfolio-badge">Audio</span>
-                                                <h4 class="portfolio-title">Commercial Jingle</h4>
+                                                <h4 class="portfolio-title">Chello AI Music</h4>
                                                 <div class="portfolio-wave">
                                                     <div class="portfolio-wave-bar"></div>
                                                     <div class="portfolio-wave-bar"></div>
@@ -900,15 +900,15 @@ Router.register('/services', () => `
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="portfolio-card" data-type="song" data-id="create-song-2" aria-label="Play Ambient Synth Track" role="button" tabindex="0">
-                                            <div class="portfolio-card-bg" style="background-image: url('assets/hero-bg.png');"></div>
+                                        <div class="portfolio-card" data-type="song" data-src="assets/endgame-shadows.mp3" data-id="endgame-shadows" aria-label="Play Endgame Shadows Song" role="button" tabindex="0">
+                                            <div class="portfolio-card-bg" style="background-image: url('assets/endgame-shadows_cover-art.jpeg');"></div>
                                             <div class="portfolio-card-overlay"></div>
                                             <div class="portfolio-card-icon">
                                                 <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
                                             </div>
                                             <div class="portfolio-card-content">
                                                 <span class="portfolio-badge">Song</span>
-                                                <h4 class="portfolio-title">Ambient Synth Track</h4>
+                                                <h4 class="portfolio-title">Endgame Shadows</h4>
                                                 <div class="portfolio-wave">
                                                     <div class="portfolio-wave-bar"></div>
                                                     <div class="portfolio-wave-bar"></div>
@@ -918,26 +918,26 @@ Router.register('/services', () => `
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="portfolio-card" data-type="image" data-src="assets/ai_content.png" aria-label="View Brand Graphics Mockup" role="button" tabindex="0">
-                                            <div class="portfolio-card-bg" style="background-image: url('assets/ai_content.png');"></div>
+                                        <div class="portfolio-card" data-type="image" data-src="assets/muppet-or-man.png" aria-label="View Muppet or Man Image" role="button" tabindex="0">
+                                            <div class="portfolio-card-bg" style="background-image: url('assets/muppet-or-man.png');"></div>
                                             <div class="portfolio-card-overlay"></div>
                                             <div class="portfolio-card-icon">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
                                             </div>
                                             <div class="portfolio-card-content">
                                                 <span class="portfolio-badge">Image</span>
-                                                <h4 class="portfolio-title">Brand Graphics</h4>
+                                                <h4 class="portfolio-title">Muppet or Man</h4>
                                             </div>
                                         </div>
-                                        <div class="portfolio-card" data-type="image" data-src="assets/book_cover_mockup.png" aria-label="View Book Cover Mockup" role="button" tabindex="0">
-                                            <div class="portfolio-card-bg" style="background-image: url('assets/book_cover_mockup.png');"></div>
+                                        <div class="portfolio-card" data-type="image" data-src="assets/paper-discovery.png" aria-label="View Paper Discovery Image" role="button" tabindex="0">
+                                            <div class="portfolio-card-bg" style="background-image: url('assets/paper-discovery.png');"></div>
                                             <div class="portfolio-card-overlay"></div>
                                             <div class="portfolio-card-icon">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
                                             </div>
                                             <div class="portfolio-card-content">
                                                 <span class="portfolio-badge">Image</span>
-                                                <h4 class="portfolio-title">Book Cover Mockup</h4>
+                                                <h4 class="portfolio-title">Paper Discovery</h4>
                                             </div>
                                         </div>
                                     </div>
