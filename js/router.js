@@ -1112,8 +1112,8 @@ Router.register('/services', () => `
                                         </div>
                                     </div>
                                     <div class="explorer-image-col">
-                                        <div class="explorer-visual-pane" data-default-src="assets/ring_anyway_coaching.png" data-default-alt="Resilience Mindset & Coaching">
-                                            <img src="assets/ring_anyway_coaching.png" alt="Resilience Mindset & Coaching" class="explorer-visual-img">
+                                        <div class="explorer-visual-pane" data-default-src="assets/shift-your-perspective.png" data-default-alt="Resilience Mindset & Coaching">
+                                            <img src="assets/shift-your-perspective.png" alt="Resilience Mindset & Coaching" class="explorer-visual-img">
                                         </div>
                                     </div>
                                 </div>
@@ -1162,37 +1162,37 @@ Router.register('/services', () => `
                                 <div class="explorer-portfolio-section">
                                     <h3 class="explorer-portfolio-title">OVERCOME PORTFOLIO</h3>
                                     <div class="portfolio-grid">
-                                        <div class="portfolio-card" data-type="video" data-src="assets/videos/N.mp4" aria-label="Play Keynote Snippet Video" role="button" tabindex="0">
-                                            <div class="portfolio-card-bg" style="background-image: url('assets/timeline-6.png');"></div>
+                                        <div class="portfolio-card" data-type="video" data-src="assets/videos/i-hear-you.mp4" aria-label="Play I Hear You Video" role="button" tabindex="0">
+                                            <div class="portfolio-card-bg" style="background-image: url('assets/videos/i-hear-you_thumbnail.png');"></div>
                                             <div class="portfolio-card-overlay"></div>
                                             <div class="portfolio-card-icon">
                                                 <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
                                             </div>
                                             <div class="portfolio-card-content">
                                                 <span class="portfolio-badge">Video</span>
-                                                <h4 class="portfolio-title">Keynote Speech Snippet</h4>
+                                                <h4 class="portfolio-title">I Hear You</h4>
                                             </div>
                                         </div>
-                                        <div class="portfolio-card" data-type="video" data-src="assets/videos/I.mp4" aria-label="Play Workspace Adaptation Video" role="button" tabindex="0">
-                                            <div class="portfolio-card-bg" style="background-image: url('assets/timeline-5.png');"></div>
+                                        <div class="portfolio-card" data-type="video" data-src="assets/videos/stop-saying-i-cant.mp4" aria-label="Play Stop Saying I Can't Video" role="button" tabindex="0">
+                                            <div class="portfolio-card-bg" style="background-image: url('assets/videos/stop-saying-i-cant_thumbnail.webp');"></div>
                                             <div class="portfolio-card-overlay"></div>
                                             <div class="portfolio-card-icon">
                                                 <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
                                             </div>
                                             <div class="portfolio-card-content">
                                                 <span class="portfolio-badge">Video</span>
-                                                <h4 class="portfolio-title">Workspace Adaptation</h4>
+                                                <h4 class="portfolio-title">Stop Saying I Can't</h4>
                                             </div>
                                         </div>
-                                        <div class="portfolio-card" data-type="audio" data-id="overcome-audio-5" aria-label="Play Resilience Mindset Audio" role="button" tabindex="0">
-                                            <div class="portfolio-card-bg" style="background-image: url('assets/speaker_1_sheet.png');"></div>
+                                        <div class="portfolio-card" data-type="audio" data-src="assets/what-does-it-mean.mp3" data-id="what-does-it-mean" aria-label="Play What Does It Mean Audio" role="button" tabindex="0">
+                                            <div class="portfolio-card-bg" style="background-image: url('assets/what-does-it-mean_cover-art.jpeg');"></div>
                                             <div class="portfolio-card-overlay"></div>
                                             <div class="portfolio-card-icon">
                                                 <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
                                             </div>
                                             <div class="portfolio-card-content">
                                                 <span class="portfolio-badge">Audio</span>
-                                                <h4 class="portfolio-title">Mindset Quote</h4>
+                                                <h4 class="portfolio-title">What Does It Mean</h4>
                                                 <div class="portfolio-wave">
                                                     <div class="portfolio-wave-bar"></div>
                                                     <div class="portfolio-wave-bar"></div>
@@ -1202,15 +1202,15 @@ Router.register('/services', () => `
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="portfolio-card" data-type="song" data-id="overcome-song-6" aria-label="Play Adaptive Path Song" role="button" tabindex="0">
-                                            <div class="portfolio-card-bg" style="background-image: url('assets/timeline-2.png');"></div>
+                                        <div class="portfolio-card" data-type="song" data-src="assets/the-battle-of-the-illusions.mp3" data-id="the-battle-of-the-illusions" aria-label="Play The Battle of the Illusions Song" role="button" tabindex="0">
+                                            <div class="portfolio-card-bg" style="background-image: url('assets/the-battle-of-the-illusions_cover-art.jpeg');"></div>
                                             <div class="portfolio-card-overlay"></div>
                                             <div class="portfolio-card-icon">
                                                 <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
                                             </div>
                                             <div class="portfolio-card-content">
                                                 <span class="portfolio-badge">Song</span>
-                                                <h4 class="portfolio-title">Adaptive Path Song</h4>
+                                                <h4 class="portfolio-title">The Battle of the Illusions</h4>
                                                 <div class="portfolio-wave">
                                                     <div class="portfolio-wave-bar"></div>
                                                     <div class="portfolio-wave-bar"></div>
@@ -1220,26 +1220,26 @@ Router.register('/services', () => `
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="portfolio-card" data-type="image" data-src="assets/speaker_1_sheet.png" aria-label="View Keynote Speaker One-Sheet PDF Mockup" role="button" tabindex="0">
-                                            <div class="portfolio-card-bg" style="background-image: url('assets/speaker_1_sheet.png');"></div>
+                                        <div class="portfolio-card" data-type="image" data-src="assets/determined-acceptance.png" aria-label="View Determined Acceptance Image" role="button" tabindex="0">
+                                            <div class="portfolio-card-bg" style="background-image: url('assets/determined-acceptance.png');"></div>
                                             <div class="portfolio-card-overlay"></div>
                                             <div class="portfolio-card-icon">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
                                             </div>
                                             <div class="portfolio-card-content">
                                                 <span class="portfolio-badge">Image</span>
-                                                <h4 class="portfolio-title">Keynote One-Sheet</h4>
+                                                <h4 class="portfolio-title">Determined Acceptance</h4>
                                             </div>
                                         </div>
-                                        <div class="portfolio-card" data-type="image" data-src="assets/ring_anyway_coaching.png" aria-label="View Coaching Success Blueprint Design" role="button" tabindex="0">
-                                            <div class="portfolio-card-bg" style="background-image: url('assets/ring_anyway_coaching.png');"></div>
+                                        <div class="portfolio-card" data-type="image" data-src="assets/shift-your-perspective.png" aria-label="View Shift Your Perspective Image" role="button" tabindex="0">
+                                            <div class="portfolio-card-bg" style="background-image: url('assets/shift-your-perspective.png');"></div>
                                             <div class="portfolio-card-overlay"></div>
                                             <div class="portfolio-card-icon">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
                                             </div>
                                             <div class="portfolio-card-content">
                                                 <span class="portfolio-badge">Image</span>
-                                                <h4 class="portfolio-title">Coaching Blueprint</h4>
+                                                <h4 class="portfolio-title">Shift Your Perspective</h4>
                                             </div>
                                         </div>
                                     </div>

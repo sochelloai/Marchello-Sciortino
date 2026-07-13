@@ -3449,14 +3449,16 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     overflow: hidden;
     border: 1px solid #cbd5e1;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    aspect-ratio: 4/3;
     background-color: #f8fafc;
+    width: 100%;
+    height: auto;
+    transition: all 0.3s ease;
 }
 
 .explorer-visual-img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
+    object-fit: contain;
     display: block;
 }
 
@@ -3487,7 +3489,8 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     }
     
     .explorer-visual-pane {
-        aspect-ratio: 16/9;
+        aspect-ratio: auto;
+        height: auto;
     }
 }
 
@@ -3823,6 +3826,7 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     text-transform: uppercase;
 }
 
+
 /* Animations for Dynamic Portfolio Visual Pane */
 @keyframes pulse {
     0%, 100% {
@@ -3834,5 +3838,253 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
         opacity: 0.8;
     }
 }
+
+/* ==========================================================================
+   Follow Marchello on Instagram Section
+   ========================================================================== */
+.instagram-section-link {
+    display: block;
+    text-decoration: none;
+    outline: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.instagram-section {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-navy-dark);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    width: 100%;
+}
+
+.instagram-marquee-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Glassmorphic Overlay Gradient to Fade Marquee Edges */
+.instagram-marquee-container::before,
+.instagram-marquee-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 15%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.instagram-marquee-container::before {
+    left: 0;
+    background: linear-gradient(to right, var(--color-navy-dark) 0%, transparent 100%);
+}
+
+.instagram-marquee-container::after {
+    right: 0;
+    background: linear-gradient(to left, var(--color-navy-dark) 0%, transparent 100%);
+}
+
+.instagram-marquee-row {
+    display: flex;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.instagram-marquee-track {
+    display: flex;
+    width: max-content;
+}
+
+.instagram-post {
+    display: block;
+    width: 250px;
+    height: 250px;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+.instagram-post img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.6s ease;
+}
+
+/* Hover effects for posts */
+.instagram-post::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, rgba(240, 148, 51, 0.35) 0%, rgba(230, 104, 60, 0.35) 25%, rgba(220, 39, 67, 0.35) 50%, rgba(204, 35, 102, 0.35) 75%, rgba(188, 24, 136, 0.35) 100%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: 1;
+}
+
+/* Hover animation play state pause */
+.instagram-section-link:hover .instagram-marquee-track {
+    animation-play-state: paused !important;
+}
+
+.instagram-section-link:hover .instagram-post img {
+    transform: scale(1.06);
+    filter: brightness(0.9);
+}
+
+.instagram-section-link:hover .instagram-post::after {
+    opacity: 1;
+}
+
+/* Floating Center Badge styling */
+.instagram-center-badge {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    background: rgba(11, 19, 43, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem 2.8rem;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(10, 216, 173, 0.1);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    pointer-events: none; /* Let clicks pass through to the overlay link */
+}
+
+.instagram-icon-wrap {
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-white);
+    box-shadow: 0 4px 15px rgba(220, 39, 67, 0.3);
+    transition: transform 0.4s ease;
+}
+
+.instagram-icon-wrap svg {
+    width: 22px;
+    height: 22px;
+}
+
+.instagram-badge {
+    color: var(--color-teal);
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.instagram-cta-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+    font-weight: 800;
+    color: var(--color-white);
+    margin: 0;
+    letter-spacing: 0.03em;
+    line-height: 1.2;
+}
+
+/* Hover effects for the link on the center badge */
+.instagram-section-link:hover .instagram-center-badge {
+    background: rgba(11, 19, 43, 0.92);
+    border-color: rgba(10, 216, 173, 0.5);
+    box-shadow: 0 20px 45px rgba(10, 216, 173, 0.2), 0 0 15px rgba(10, 216, 173, 0.1);
+    transform: translate(-50%, -50%) scale(1.04);
+}
+
+.instagram-section-link:hover .instagram-icon-wrap {
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* Animations for marquee */
+@keyframes marquee-rtl {
+    0% {
+        transform: translate3d(0, 0, 0);
+    }
+    100% {
+        transform: translate3d(-50%, 0, 0);
+    }
+}
+
+@keyframes marquee-ltr {
+    0% {
+        transform: translate3d(-50%, 0, 0);
+    }
+    100% {
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+.marquee-rtl .instagram-marquee-track {
+    animation: marquee-rtl 42s linear infinite;
+}
+
+.marquee-ltr .instagram-marquee-track {
+    animation: marquee-ltr 42s linear infinite;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .instagram-post {
+        width: 200px;
+        height: 200px;
+    }
+    .marquee-rtl .instagram-marquee-track,
+    .marquee-ltr .instagram-marquee-track {
+        animation-duration: 35s;
+    }
+    .instagram-center-badge {
+        padding: 1.2rem 2.2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .instagram-post {
+        width: 160px;
+        height: 160px;
+    }
+    .marquee-rtl .instagram-marquee-track,
+    .marquee-ltr .instagram-marquee-track {
+        animation-duration: 28s;
+    }
+    .instagram-center-badge {
+        padding: 1rem 1.8rem;
+    }
+    .instagram-icon-wrap {
+        width: 36px;
+        height: 36px;
+    }
+    .instagram-icon-wrap svg {
+        width: 18px;
+        height: 18px;
+    }
+}
+
 
 

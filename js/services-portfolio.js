@@ -102,56 +102,27 @@ const ServicesPortfolio = {
                 const activePanel = document.querySelector('.explorer-tab-content.active');
                 const pane = activePanel ? activePanel.querySelector('.explorer-visual-pane') : null;
 
-                // If clicking another card while audio is playing, stop it first
-                if (this.playingAudioId && this.playingAudioId !== id) {
-                    this.stopAudio();
-                }
+                // Stop any currently playing audio before triggering new lightbox/audio
+                this.stopAudio();
+
+                const bgCardBg = card.querySelector('.portfolio-card-bg');
+                const bgUrl = bgCardBg && bgCardBg.style.backgroundImage ? bgCardBg.style.backgroundImage.slice(5, -2).replace(/"/g, "") : '';
 
                 if (type === 'image') {
-                    this.stopAudio();
                     if (pane) {
-                        pane.innerHTML = `<img src="${src}" alt="${title}" class="explorer-visual-img">`;
+                        pane.innerHTML = `<img src="${src}" alt="${title}" class="explorer-visual-img" data-type="image" data-media-src="${src}" data-id="${id}">`;
                     }
                     this.openLightbox('image', src, title);
                 } else if (type === 'video') {
-                    this.stopAudio();
                     if (pane) {
-                        pane.innerHTML = `<video src="${src}" controls autoplay loop class="explorer-visual-img" style="width: 100%; height: 100%; object-fit: cover;"></video>`;
+                        pane.innerHTML = `<img src="${bgUrl}" alt="${title}" class="explorer-visual-img" data-type="video" data-media-src="${src}" data-id="${id}">`;
                     }
                     this.openLightbox('video', src, title);
                 } else if (type === 'audio' || type === 'song') {
-                    if (this.playingAudioId === id) {
-                        this.stopAudio();
-                        if (activePanel) {
-                            this.resetVisualPane(activePanel);
-                        }
-                    } else {
-                        const bgCardBg = card.querySelector('.portfolio-card-bg');
-                        const bgUrl = bgCardBg && bgCardBg.style.backgroundImage ? bgCardBg.style.backgroundImage.slice(5, -2).replace(/"/g, "") : '';
-                        this.playAudio(id, card);
-                        
-                        if (pane) {
-                            pane.innerHTML = `
-                                <div class="explorer-audio-preview" style="position: relative; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; background-image: url('${bgUrl}'); background-size: cover; background-position: center; color: white;">
-                                    <div style="position: absolute; inset: 0; background: rgba(8, 27, 41, 0.75); z-index: 1;"></div>
-                                    <div style="position: relative; z-index: 2; text-align: center; padding: 2rem; display: flex; flex-direction: column; align-items: center;">
-                                        <div style="font-size: 3rem; margin-bottom: 1rem; animation: pulse 1.5s infinite;">🎵</div>
-                                        <h4 style="font-family: var(--font-heading); font-size: 1.5rem; margin-bottom: 0.5rem;">${title}</h4>
-                                        <p style="color: var(--color-teal); font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase; margin: 0;">Playing Audio...</p>
-                                        <div class="portfolio-wave playing" style="display: flex; gap: 4px; justify-content: center; margin-top: 1.5rem; height: 30px;">
-                                            <div class="portfolio-wave-bar" style="background-color: var(--color-teal); width: 4px; height: 100%;"></div>
-                                            <div class="portfolio-wave-bar" style="background-color: var(--color-teal); width: 4px; height: 100%;"></div>
-                                            <div class="portfolio-wave-bar" style="background-color: var(--color-teal); width: 4px; height: 100%;"></div>
-                                            <div class="portfolio-wave-bar" style="background-color: var(--color-teal); width: 4px; height: 100%;"></div>
-                                            <div class="portfolio-wave-bar" style="background-color: var(--color-teal); width: 4px; height: 100%;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            `;
-                        } else {
-                            this.openLightbox('image', bgUrl, title);
-                        }
+                    if (pane) {
+                        pane.innerHTML = `<img src="${bgUrl}" alt="${title}" class="explorer-visual-img" data-type="${type}" data-media-src="${src || ''}" data-id="${id}">`;
                     }
+                    this.openLightbox(type, bgUrl, title, src, id, card);
                 }
 
                 // Smoothly scroll to visual pane so the user sees it
@@ -166,21 +137,20 @@ const ServicesPortfolio = {
         visualPanes.forEach(pane => {
             pane.style.cursor = 'pointer';
             pane.addEventListener('click', (e) => {
-                // If a video control is clicked, let the event propagate normally
-                if (e.target.tagName.toLowerCase() === 'video' && e.target.hasAttribute('controls')) {
-                    return;
-                }
-                
                 const img = pane.querySelector('.explorer-visual-img');
                 if (img) {
-                    const src = img.getAttribute('src');
+                    const type = img.getAttribute('data-type') || 'image';
+                    const mediaSrc = img.getAttribute('data-media-src') || img.getAttribute('src');
+                    const mediaId = img.getAttribute('data-id');
                     const alt = img.getAttribute('alt') || 'Portfolio Asset';
-                    const tagName = img.tagName.toLowerCase();
                     
-                    if (tagName === 'img') {
-                        this.openLightbox('image', src, alt);
-                    } else if (tagName === 'video') {
-                        this.openLightbox('video', src, alt);
+                    if (type === 'image') {
+                        this.openLightbox('image', mediaSrc, alt);
+                    } else if (type === 'video') {
+                        this.openLightbox('video', mediaSrc, alt);
+                    } else if (type === 'audio' || type === 'song') {
+                        const matchingCard = document.querySelector(`.portfolio-card[data-id="${mediaId}"], .portfolio-card[data-src="${mediaSrc}"]`);
+                        this.openLightbox(type, img.getAttribute('src'), alt, mediaSrc, mediaId, matchingCard);
                     }
                 }
             });
@@ -208,7 +178,7 @@ const ServicesPortfolio = {
     },
 
     playAudio(id, card) {
-        const src = card.getAttribute('data-src');
+        const src = card ? card.getAttribute('data-src') : null;
         if (src) {
             this.stopAudio();
 
@@ -219,9 +189,11 @@ const ServicesPortfolio = {
             });
 
             this.playingAudioId = id;
-            card.classList.add('playing');
-            const titleText = card.querySelector('.portfolio-title') ? card.querySelector('.portfolio-title').textContent : 'Portfolio Asset';
-            card.setAttribute('aria-label', `Pause ${titleText}`);
+            if (card) {
+                card.classList.add('playing');
+                const titleText = card.querySelector('.portfolio-title') ? card.querySelector('.portfolio-title').textContent : 'Portfolio Asset';
+                card.setAttribute('aria-label', `Pause ${titleText}`);
+            }
 
             this.activeAudio.addEventListener('ended', () => {
                 this.stopAudio();
@@ -262,8 +234,10 @@ const ServicesPortfolio = {
         this.oscillator.start();
 
         this.playingAudioId = id;
-        card.classList.add('playing');
-        card.setAttribute('aria-label', `Pause ${card.querySelector('.portfolio-title').textContent}`);
+        if (card) {
+            card.classList.add('playing');
+            card.setAttribute('aria-label', `Pause ${card.querySelector('.portfolio-title').textContent}`);
+        }
 
         let noteIndex = 0;
         this.playbackInterval = setInterval(() => {
@@ -366,7 +340,7 @@ const ServicesPortfolio = {
         document.addEventListener('keydown', this.boundEscHandler);
     },
 
-    openLightbox(type, src, title) {
+    openLightbox(type, src, title, audioSrc = null, audioId = null, card = null) {
         const overlay = document.getElementById('portfolio-lightbox-overlay');
         if (!overlay) return;
 
@@ -392,6 +366,22 @@ const ServicesPortfolio = {
             } else {
                 content.innerHTML = `<video src="${src}" controls autoplay loop class="portfolio-lightbox-video"></video>`;
             }
+        } else if (type === 'audio' || type === 'song') {
+            content.innerHTML = `
+                <div class="portfolio-lightbox-audio-container" style="text-align: center; max-width: 500px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <img src="${src}" alt="${title}" class="portfolio-lightbox-image" style="max-height: 50vh; border-radius: var(--radius-md); box-shadow: var(--shadow-lg);">
+                    <div class="portfolio-wave playing" style="display: flex; gap: 6px; justify-content: center; height: 30px; margin-top: 1.5rem;">
+                        <div class="portfolio-wave-bar" style="background-color: var(--color-teal); width: 4px; height: 100%;"></div>
+                        <div class="portfolio-wave-bar" style="background-color: var(--color-teal); width: 4px; height: 100%;"></div>
+                        <div class="portfolio-wave-bar" style="background-color: var(--color-teal); width: 4px; height: 100%;"></div>
+                        <div class="portfolio-wave-bar" style="background-color: var(--color-teal); width: 4px; height: 100%;"></div>
+                        <div class="portfolio-wave-bar" style="background-color: var(--color-teal); width: 4px; height: 100%;"></div>
+                    </div>
+                    <p style="color: var(--color-teal); font-family: var(--font-heading); margin-top: 1rem; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700;">Playing Audio</p>
+                </div>
+            `;
+            // Play audio track
+            this.playAudio(audioId, card);
         } else {
             return;
         }
@@ -402,6 +392,9 @@ const ServicesPortfolio = {
     },
 
     closeLightbox() {
+        // Stop audio when lightbox closes
+        this.stopAudio();
+
         const overlay = document.getElementById('portfolio-lightbox-overlay');
         if (!overlay) return;
 
