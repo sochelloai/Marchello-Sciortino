@@ -1044,42 +1044,28 @@ Router.register('/services', () => `
                                                 <h4 class="portfolio-title">Funnel Architecture</h4>
                                             </div>
                                         </div>
-                                        <div class="portfolio-card" data-type="audio" data-id="build-audio-3" aria-label="Play Automation Pulse Audio" role="button" tabindex="0">
-                                            <div class="portfolio-card-bg" style="background-image: url('assets/articulated_inspiration.jpg');"></div>
-                                            <div class="portfolio-card-overlay"></div>
-                                            <div class="portfolio-card-icon">
-                                                <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
-                                            </div>
-                                            <div class="portfolio-card-content">
-                                                <span class="portfolio-badge">Audio</span>
-                                                <h4 class="portfolio-title">Automation Pulse</h4>
-                                                <div class="portfolio-wave">
-                                                    <div class="portfolio-wave-bar"></div>
-                                                    <div class="portfolio-wave-bar"></div>
-                                                    <div class="portfolio-wave-bar"></div>
-                                                    <div class="portfolio-wave-bar"></div>
-                                                    <div class="portfolio-wave-bar"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="portfolio-card" data-type="song" data-id="build-song-4" aria-label="Play Cybernetic Rhythm Song" role="button" tabindex="0">
-                                            <div class="portfolio-card-bg" style="background-image: url('assets/hero-bg.png');"></div>
-                                            <div class="portfolio-card-overlay"></div>
-                                            <div class="portfolio-card-icon">
-                                                <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
-                                            </div>
-                                            <div class="portfolio-card-content">
-                                                <span class="portfolio-badge">Song</span>
-                                                <h4 class="portfolio-title">Cybernetic Rhythm</h4>
-                                                <div class="portfolio-wave">
-                                                    <div class="portfolio-wave-bar"></div>
-                                                    <div class="portfolio-wave-bar"></div>
-                                                    <div class="portfolio-wave-bar"></div>
-                                                    <div class="portfolio-wave-bar"></div>
-                                                    <div class="portfolio-wave-bar"></div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                         <div class="portfolio-card" data-type="website" data-src="assets/jesus-bello.png" data-link="https://jesus-bello.pages.dev/" aria-label="View Jesus Bello Website" role="button" tabindex="0">
+                                             <div class="portfolio-card-bg" style="background-image: url('assets/jesus-bello.png');"></div>
+                                             <div class="portfolio-card-overlay"></div>
+                                             <div class="portfolio-card-icon">
+                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                                             </div>
+                                             <div class="portfolio-card-content">
+                                                 <span class="portfolio-badge">Website</span>
+                                                 <h4 class="portfolio-title">Jesus Bello Website</h4>
+                                             </div>
+                                         </div>
+                                         <div class="portfolio-card" data-type="website" data-src="assets/ai-song-quiz.png" data-link="https://ai-song-quiz-app.pages.dev/" aria-label="View AI Song Quiz App Website" role="button" tabindex="0">
+                                             <div class="portfolio-card-bg" style="background-image: url('assets/ai-song-quiz.png');"></div>
+                                             <div class="portfolio-card-overlay"></div>
+                                             <div class="portfolio-card-icon">
+                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                                             </div>
+                                             <div class="portfolio-card-content">
+                                                 <span class="portfolio-badge">Website</span>
+                                                 <h4 class="portfolio-title">AI Song Quiz App</h4>
+                                             </div>
+                                         </div>
                                         <div class="portfolio-card" data-type="image" data-src="assets/accessible_ai.png" aria-label="View Workflow Diagram Preview" role="button" tabindex="0">
                                             <div class="portfolio-card-bg" style="background-image: url('assets/accessible_ai.png');"></div>
                                             <div class="portfolio-card-overlay"></div>

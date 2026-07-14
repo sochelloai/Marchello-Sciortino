@@ -27,3 +27,6 @@ yarn-error.log*
 .wrangler/
 skills-lock.json
 
+# Dependencies
+node_modules/
+

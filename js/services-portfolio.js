@@ -118,6 +118,11 @@ const ServicesPortfolio = {
                         pane.innerHTML = `<img src="${bgUrl}" alt="${title}" class="explorer-visual-img" data-type="video" data-media-src="${src}" data-id="${id}">`;
                     }
                     this.openLightbox('video', src, title);
+                } else if (type === 'website') {
+                    if (pane) {
+                        pane.innerHTML = `<img src="${src}" alt="${title}" class="explorer-visual-img" data-type="website" data-media-src="${src}" data-link="${card.getAttribute('data-link') || ''}" data-id="${id}">`;
+                    }
+                    this.openLightbox('website', src, title, null, null, card);
                 } else if (type === 'audio' || type === 'song') {
                     if (pane) {
                         pane.innerHTML = `<img src="${bgUrl}" alt="${title}" class="explorer-visual-img" data-type="${type}" data-media-src="${src || ''}" data-id="${id}">`;
@@ -148,6 +153,9 @@ const ServicesPortfolio = {
                         this.openLightbox('image', mediaSrc, alt);
                     } else if (type === 'video') {
                         this.openLightbox('video', mediaSrc, alt);
+                    } else if (type === 'website') {
+                        const matchingCard = document.querySelector(`.portfolio-card[data-src="${mediaSrc}"]`) || document.querySelector(`.portfolio-card[data-id="${mediaId}"]`);
+                        this.openLightbox('website', mediaSrc, alt, null, null, matchingCard);
                     } else if (type === 'audio' || type === 'song') {
                         const matchingCard = document.querySelector(`.portfolio-card[data-id="${mediaId}"], .portfolio-card[data-src="${mediaSrc}"]`);
                         this.openLightbox(type, img.getAttribute('src'), alt, mediaSrc, mediaId, matchingCard);
@@ -382,6 +390,14 @@ const ServicesPortfolio = {
             `;
             // Play audio track
             this.playAudio(audioId, card);
+        } else if (type === 'website') {
+            const link = card ? card.getAttribute('data-link') : '';
+            content.innerHTML = `
+                <div class="portfolio-lightbox-website-container" style="text-align: center; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem;">
+                    <iframe src="${link || src}" class="portfolio-lightbox-iframe" style="width: 85vw; height: 70vh; max-width: 1200px; min-height: 450px; border: none; border-radius: var(--radius-md); box-shadow: var(--shadow-lg); background: #ffffff;"></iframe>
+                    ${link ? `<a href="${link}" target="_blank" rel="noopener noreferrer" class="btn btn-teal" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-weight: 600; font-size: 0.9rem; padding: 8px 16px;">Open in New Tab <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>` : ''}
+                </div>
+            `;
         } else {
             return;
         }
