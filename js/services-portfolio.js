@@ -393,16 +393,35 @@ const ServicesPortfolio = {
         } else if (type === 'website') {
             const link = card ? card.getAttribute('data-link') : '';
             content.innerHTML = `
-                <div class="portfolio-lightbox-website-container" style="text-align: center; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem;">
-                    <iframe src="${link || src}" class="portfolio-lightbox-iframe" style="width: 85vw; height: 70vh; max-width: 1200px; min-height: 450px; border: none; border-radius: var(--radius-md); box-shadow: var(--shadow-lg); background: #ffffff;"></iframe>
-                    ${link ? `<a href="${link}" target="_blank" rel="noopener noreferrer" class="btn btn-teal" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-weight: 600; font-size: 0.9rem; padding: 8px 16px;">Open in New Tab <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>` : ''}
+                <div class="portfolio-lightbox-browser" style="width: 85vw; max-width: 1200px; height: 75vh; min-height: 480px; display: flex; flex-direction: column; border-radius: 8px; overflow: hidden; box-shadow: var(--shadow-xl); border: 1px solid rgba(255,255,255,0.12); background: #1e293b; margin: 0 auto;">
+                    <!-- Browser Top Bar -->
+                    <div class="browser-top-bar" style="height: 40px; background-color: #0f172a; display: flex; align-items: center; padding: 0 16px; border-bottom: 1px solid rgba(255,255,255,0.06); position: relative; user-select: none;">
+                        <!-- Window Controls (Red, Yellow, Green circles) -->
+                        <div class="browser-window-controls" style="display: flex; gap: 8px; position: absolute; left: 16px; top: 50%; transform: translateY(-50%);">
+                            <span style="width: 12px; height: 12px; border-radius: 50%; background-color: #ef4444; display: inline-block;"></span>
+                            <span style="width: 12px; height: 12px; border-radius: 50%; background-color: #eab308; display: inline-block;"></span>
+                            <span style="width: 12px; height: 12px; border-radius: 50%; background-color: #22c55e; display: inline-block;"></span>
+                        </div>
+                        <!-- Center Title -->
+                        <div class="browser-window-title" style="width: 100%; text-align: center; color: #94a3b8; font-family: var(--font-heading); font-size: 0.95rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 80px;">
+                            ${title}
+                        </div>
+                    </div>
+                    <!-- Browser Content (IFrame) -->
+                    <iframe src="${link || src}" class="portfolio-lightbox-iframe" style="flex: 1; width: 100%; border: none; background: #ffffff; display: block;" scrolling="yes"></iframe>
                 </div>
             `;
         } else {
             return;
         }
 
-        caption.textContent = title;
+        if (type === 'website') {
+            caption.style.display = 'none';
+        } else {
+            caption.style.display = '';
+            caption.textContent = title;
+        }
+
         overlay.classList.add('active');
         document.body.style.overflow = 'hidden';
     },
@@ -420,6 +439,11 @@ const ServicesPortfolio = {
         const content = overlay.querySelector('#portfolio-lightbox-content');
         if (content) {
             content.innerHTML = '';
+        }
+
+        const caption = overlay.querySelector('#portfolio-lightbox-caption');
+        if (caption) {
+            caption.style.display = '';
         }
     },
 
