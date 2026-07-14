@@ -3264,16 +3264,22 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     display: flex;
     flex-direction: column;
     background-color: transparent;
+    align-items: center;
 }
 
 .explorer-tab-bar {
-    display: flex;
+    display: inline-flex;
     justify-content: center;
-    background-color: transparent;
-    border-bottom: 2px solid #e2e8f0;
+    align-items: center;
+    background-color: var(--color-navy-dark);
+    border-radius: 50px;
+    padding: 6px;
+    margin: 0 auto 3.5rem auto;
     overflow-x: auto;
     scrollbar-width: none; /* Firefox */
-    margin-bottom: 3.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: var(--shadow-md);
+    max-width: fit-content;
 }
 
 .explorer-tab-bar::-webkit-scrollbar {
@@ -3284,31 +3290,47 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1rem 2.5rem;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #64748b;
+    gap: 12px;
+    padding: 0.8rem 2rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--color-gray-light);
     background-color: transparent;
     border: none;
-    border-bottom: 3px solid transparent;
+    border-radius: 40px;
     cursor: pointer;
-    transition: all 0.25s ease;
+    transition: all var(--transition-fast);
     user-select: none;
     position: relative;
-    margin-bottom: -2px;
 }
 
 .explorer-tab:hover {
-    background-color: transparent;
-    color: #6366f1; /* Unique Indigo hover color */
-    border-bottom-color: rgba(99, 102, 241, 0.4);
+    color: var(--color-pure-white);
+    background-color: rgba(255, 255, 255, 0.08);
 }
 
 .explorer-tab.active {
-    background-color: rgba(10, 216, 173, 0.05); /* Lit background tint */
-    color: var(--color-teal); /* Lit teal text */
-    border-bottom-color: var(--color-teal); /* Lit teal border */
-    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    background-color: var(--color-navy-light);
+    color: var(--color-teal);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Light tag on the tabs */
+.explorer-tab-tag {
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 12px;
+    background-color: var(--color-white);
+    color: var(--color-navy-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: all var(--transition-fast);
+}
+
+.explorer-tab.active .explorer-tab-tag {
+    background-color: var(--color-teal);
+    color: var(--color-navy-dark);
 }
 
 .explorer-tab:focus-visible {
@@ -3347,6 +3369,7 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     margin-bottom: 2rem;
     border-bottom: 1px solid #e2e8f0;
     padding-bottom: 1rem;
+    text-align: center;
 }
 
 .explorer-panel-subtitle {
@@ -3389,8 +3412,30 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
 }
 
 .explorer-description-row {
-    grid-template-columns: 1.3fr 1fr;
-    align-items: center; /* Center-align paragraph + button vertically with the image */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 3rem auto;
+}
+
+.explorer-description-row .explorer-panel-desc {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: var(--color-navy);
+    margin-bottom: 1.5rem;
+    max-width: 700px;
+}
+
+.explorer-description-row .explorer-cta {
+    margin-bottom: 2.5rem;
+}
+
+.explorer-description-row .explorer-visual-pane {
+    max-width: 650px;
+    width: 100%;
+    margin: 0 auto;
 }
 
 .explorer-features-row {
@@ -3479,7 +3524,6 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
 
 @media (max-width: 1024px) {
     .explorer-panel-inner,
-    .explorer-description-row,
     .explorer-features-row {
         grid-template-columns: 1fr;
         gap: 2rem;
@@ -3504,25 +3548,28 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     }
     
     .explorer-tab-bar {
-        display: flex;
+        flex-direction: column;
+        border-radius: 20px;
+        padding: 8px;
+        width: 100%;
+        max-width: 340px;
+        margin-left: auto;
+        margin-right: auto;
+        gap: 6px;
         margin-bottom: 2rem;
     }
     
     .explorer-tab {
-        flex: 1;
-        justify-content: center;
-        padding: 0.85rem 0.25rem;
-        font-size: 0.9rem;
-        flex-direction: row;
-        gap: 0;
-        border: none;
-        border-bottom: 3px solid transparent;
+        width: 100%;
+        justify-content: space-between;
+        padding: 0.75rem 1.25rem;
+        font-size: 0.95rem;
+        border-radius: 14px;
+        gap: 8px;
     }
     
     .explorer-tab.active {
-        background-color: rgba(10, 216, 173, 0.05);
-        color: var(--color-teal);
-        border-bottom-color: var(--color-teal);
+        background-color: var(--color-navy-light);
     }
     
     .explorer-gutter {

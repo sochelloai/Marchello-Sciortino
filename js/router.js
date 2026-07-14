@@ -777,13 +777,13 @@ Router.register('/services', () => `
                     <!-- Tab Bar -->
                     <div class="explorer-tab-bar" role="tablist" aria-label="Services Tabs">
                         <button class="explorer-tab active" data-tab="create" role="tab" aria-selected="true" aria-controls="tab-content-create" id="tab-create" tabindex="0">
-                            Create (AI & Writing)
+                            <span>Create</span><span class="explorer-tab-tag">AI & Writing</span>
                         </button>
                         <button class="explorer-tab" data-tab="build" role="tab" aria-selected="false" aria-controls="tab-content-build" id="tab-build" tabindex="-1">
-                            Build (Web & Funnels)
+                            <span>Build</span><span class="explorer-tab-tag">Web & Funnels</span>
                         </button>
                         <button class="explorer-tab" data-tab="overcome" role="tab" aria-selected="false" aria-controls="tab-content-overcome" id="tab-overcome" tabindex="-1">
-                            Overcome (Coaching)
+                            <span>Overcome</span><span class="explorer-tab-tag">Coaching</span>
                         </button>
                     </div>
 
@@ -799,20 +799,16 @@ Router.register('/services', () => `
                                     <span class="explorer-panel-subtitle">AI-Powered Creative Strategy</span>
                                     <h2 class="explorer-panel-title">CREATE</h2>
                                 </div>
-                                <!-- Row 1: Description & Image (Two Columns) -->
+                                <!-- Row 1: Description & Image (One Column Centered) -->
                                 <div class="explorer-row explorer-description-row">
-                                    <div class="explorer-desc-col">
-                                        <p class="explorer-panel-desc">
-                                            I use generative AI systems to build customized visual and written creative outputs. Whether you need audio loops, copy packages, or digital graphics, I construct systems that turn raw ideas into active assets.
-                                        </p>
-                                        <div class="explorer-cta">
-                                            <a href="/contact?interest=Create" class="btn btn-teal">Contact me for creating</a>
-                                        </div>
+                                    <p class="explorer-panel-desc">
+                                        I use generative AI systems to build customized visual and written creative outputs. Whether you need audio loops, copy packages, or digital graphics, I construct systems that turn raw ideas into active assets.
+                                    </p>
+                                    <div class="explorer-cta">
+                                        <a href="/contact?interest=Create" class="btn btn-teal">Contact me for creating</a>
                                     </div>
-                                    <div class="explorer-image-col">
-                                        <div class="explorer-visual-pane" data-default-src="assets/ai_content.png" data-default-alt="AI Content Creation">
-                                            <img src="assets/ai_content.png" alt="AI Content Creation" class="explorer-visual-img">
-                                        </div>
+                                    <div class="explorer-visual-pane" data-default-src="assets/ai_content.png" data-default-alt="AI Content Creation">
+                                        <img src="assets/ai_content.png" alt="AI Content Creation" class="explorer-visual-img">
                                     </div>
                                 </div>
                                 
@@ -950,20 +946,16 @@ Router.register('/services', () => `
                                     <span class="explorer-panel-subtitle">Websites & Digital Ecosystems</span>
                                     <h2 class="explorer-panel-title">BUILD</h2>
                                 </div>
-                                <!-- Row 1: Description & Image (Two Columns) -->
+                                <!-- Row 1: Description & Image (One Column Centered) -->
                                 <div class="explorer-row explorer-description-row">
-                                    <div class="explorer-desc-col">
-                                        <p class="explorer-panel-desc">
-                                            I construct modern web architectures, landing pages, and lead workflows. Using AI-assisted programming tools, I design responsive templates that connect with visitors and support clean automation pipelines.
-                                        </p>
-                                        <div class="explorer-cta">
-                                            <a href="/contact?interest=Build" class="btn btn-teal">Contact me for building</a>
-                                        </div>
+                                    <p class="explorer-panel-desc">
+                                        I construct modern web architectures, landing pages, and lead workflows. Using AI-assisted programming tools, I design responsive templates that connect with visitors and support clean automation pipelines.
+                                    </p>
+                                    <div class="explorer-cta">
+                                        <a href="/contact?interest=Build" class="btn btn-teal">Contact me for building</a>
                                     </div>
-                                    <div class="explorer-image-col">
-                                        <div class="explorer-visual-pane" data-default-src="assets/funnel_building.png" data-default-alt="Websites & Funnels Building">
-                                            <img src="assets/funnel_building.png" alt="Websites & Funnels Building" class="explorer-visual-img">
-                                        </div>
+                                    <div class="explorer-visual-pane" data-default-src="assets/funnel_building.png" data-default-alt="Websites & Funnels Building">
+                                        <img src="assets/funnel_building.png" alt="Websites & Funnels Building" class="explorer-visual-img">
                                     </div>
                                 </div>
                                 
@@ -1087,20 +1079,16 @@ Router.register('/services', () => `
                                     <span class="explorer-panel-subtitle">Resilience & Mindset Coaching</span>
                                     <h2 class="explorer-panel-title">OVERCOME</h2>
                                 </div>
-                                <!-- Row 1: Description & Image (Two Columns) -->
+                                <!-- Row 1: Description & Image (One Column Centered) -->
                                 <div class="explorer-row explorer-description-row">
-                                    <div class="explorer-desc-col">
-                                        <p class="explorer-panel-desc">
-                                            I work directly with individuals to shift their perspective and reframe their limitations. Through mindset coaching and constraint-based problem solving, we establish customized habits to convert physical or mental barriers into growth pathways.
-                                        </p>
-                                        <div class="explorer-cta">
-                                            <a href="/contact?interest=Overcome" class="btn btn-teal">Contact me for overcoming</a>
-                                        </div>
+                                    <p class="explorer-panel-desc">
+                                        I work directly with individuals to shift their perspective and reframe their limitations. Through mindset coaching and constraint-based problem solving, we establish customized habits to convert physical or mental barriers into growth pathways.
+                                    </p>
+                                    <div class="explorer-cta">
+                                        <a href="/contact?interest=Overcome" class="btn btn-teal">Contact me for overcoming</a>
                                     </div>
-                                    <div class="explorer-image-col">
-                                        <div class="explorer-visual-pane" data-default-src="assets/shift-your-perspective.png" data-default-alt="Resilience Mindset & Coaching">
-                                            <img src="assets/shift-your-perspective.png" alt="Resilience Mindset & Coaching" class="explorer-visual-img">
-                                        </div>
+                                    <div class="explorer-visual-pane" data-default-src="assets/shift-your-perspective.png" data-default-alt="Resilience Mindset & Coaching">
+                                        <img src="assets/shift-your-perspective.png" alt="Resilience Mindset & Coaching" class="explorer-visual-img">
                                     </div>
                                 </div>
                                 
