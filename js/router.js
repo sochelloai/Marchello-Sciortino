@@ -856,7 +856,7 @@ Router.register('/services', () => `
                                         <div class="explorer-brand-footer">
                                             <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin: 2rem auto 1rem auto; width: 100%; max-width: 200px;">
                                                 <div style="flex: 1; height: 1px; background: rgba(0,0,0,0.1);"></div>
-                                                <img src="assets/logo-dark.png" alt="M logo" style="height: 22px; width: auto; opacity: 0.8;">
+                                                <img src="assets/logo-dark.png" alt="M logo" style="height: 33px; width: auto; opacity: 0.8;">
                                                 <div style="flex: 1; height: 1px; background: rgba(0,0,0,0.1);"></div>
                                             </div>
                                             <div style="font-family: var(--font-heading); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-teal); line-height: 1.4;">
@@ -968,7 +968,7 @@ Router.register('/services', () => `
                                         <div class="explorer-brand-footer">
                                             <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin: 2rem auto 1rem auto; width: 100%; max-width: 200px;">
                                                 <div style="flex: 1; height: 1px; background: rgba(0,0,0,0.1);"></div>
-                                                <img src="assets/logo-dark.png" alt="M logo" style="height: 22px; width: auto; opacity: 0.8;">
+                                                <img src="assets/logo-dark.png" alt="M logo" style="height: 33px; width: auto; opacity: 0.8;">
                                                 <div style="flex: 1; height: 1px; background: rgba(0,0,0,0.1);"></div>
                                             </div>
                                             <div style="font-family: var(--font-heading); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-teal); line-height: 1.4;">
@@ -1080,7 +1080,7 @@ Router.register('/services', () => `
                                         <div class="explorer-brand-footer">
                                             <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin: 2rem auto 1rem auto; width: 100%; max-width: 200px;">
                                                 <div style="flex: 1; height: 1px; background: rgba(0,0,0,0.1);"></div>
-                                                <img src="assets/logo-dark.png" alt="M logo" style="height: 22px; width: auto; opacity: 0.8;">
+                                                <img src="assets/logo-dark.png" alt="M logo" style="height: 33px; width: auto; opacity: 0.8;">
                                                 <div style="flex: 1; height: 1px; background: rgba(0,0,0,0.1);"></div>
                                             </div>
                                             <div style="font-family: var(--font-heading); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-teal); line-height: 1.4;">
