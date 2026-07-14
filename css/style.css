@@ -3264,7 +3264,7 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     display: flex;
     flex-direction: column;
     background-color: transparent;
-    align-items: center;
+    width: 100%;
 }
 
 .explorer-tab-bar {
@@ -3411,38 +3411,47 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     margin-bottom: 2.5rem;
 }
 
-.explorer-description-row {
-    display: flex;
-    flex-direction: column;
+.explorer-grid-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.25fr 1fr;
+    gap: 3.5rem;
     align-items: center;
-    text-align: center;
-    max-width: 800px;
-    margin: 0 auto 3rem auto;
+    margin-top: 1rem;
+    width: 100%;
 }
 
-.explorer-description-row .explorer-panel-desc {
+.explorer-grid-col {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.explorer-grid-center {
+    text-align: center;
+    padding: 0 1rem;
+}
+
+.explorer-grid-center .explorer-panel-desc {
     font-size: 1.2rem;
     line-height: 1.8;
     color: var(--color-navy);
-    margin-bottom: 1.5rem;
-    max-width: 700px;
+    margin-bottom: 2rem;
+    max-width: 600px;
 }
 
-.explorer-description-row .explorer-cta {
-    margin-bottom: 2.5rem;
+.explorer-grid-center .explorer-cta {
+    margin-top: 1rem;
 }
 
-.explorer-description-row .explorer-visual-pane {
-    max-width: 650px;
+.explorer-grid-left .portfolio-card,
+.explorer-grid-right .portfolio-card {
+    aspect-ratio: 1 / 1;
     width: 100%;
+    max-width: 280px;
     margin: 0 auto;
-}
-
-.explorer-features-row {
-    grid-template-columns: 1fr 1fr;
-    border-top: 1px dashed #cbd5e1;
-    padding-top: 2.5rem;
-    margin-bottom: 3rem;
 }
 
 .explorer-bullets-list {
@@ -3523,18 +3532,45 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
 }
 
 @media (max-width: 1024px) {
-    .explorer-panel-inner,
-    .explorer-features-row {
+    .explorer-panel-inner {
         grid-template-columns: 1fr;
         gap: 2rem;
     }
-    .explorer-features-row {
-        padding-top: 1.5rem;
+    
+    .explorer-grid-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
     }
     
-    .explorer-visual-pane {
-        aspect-ratio: auto;
-        height: auto;
+    .explorer-grid-center {
+        order: -1; /* Stack the text and button at the top */
+        padding: 0;
+    }
+    
+    .explorer-grid-left,
+    .explorer-grid-right {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .explorer-grid-left,
+    .explorer-grid-right {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .explorer-grid-left,
+    .explorer-grid-right {
+        grid-template-columns: 1fr;
+        max-width: 280px;
+        margin: 0 auto;
     }
 }
 

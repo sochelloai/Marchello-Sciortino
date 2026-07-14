@@ -799,60 +799,10 @@ Router.register('/services', () => `
                                     <span class="explorer-panel-subtitle">AI-Powered Creative Strategy</span>
                                     <h2 class="explorer-panel-title">CREATE</h2>
                                 </div>
-                                <!-- Row 1: Description (One Column Centered) -->
-                                <div class="explorer-row explorer-description-row">
-                                    <p class="explorer-panel-desc">
-                                        I use generative AI systems to build customized visual and written creative outputs. Whether you need audio loops, copy packages, or digital graphics, I construct systems that turn raw ideas into active assets.
-                                    </p>
-                                    <div class="explorer-cta">
-                                        <a href="/contact?interest=Create" class="btn btn-teal">Contact me for creating</a>
-                                    </div>
-                                </div>
-                                
-                                <!-- Row 2: Features (Two Columns - 2 Left, 2 Right) -->
-                                <div class="explorer-row explorer-features-row">
-                                    <div class="explorer-features-col">
-                                        <ul class="explorer-bullets-list">
-                                            <li>
-                                                <div class="explorer-bullet-icon" aria-hidden="true">💡</div>
-                                                <div class="explorer-bullet-content">
-                                                    <h4>Custom Images & Video</h4>
-                                                    <p>Generating custom graphics, promotional videos, and interactive visual content with AI models.</p>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="explorer-bullet-icon" aria-hidden="true">🎵</div>
-                                                <div class="explorer-bullet-content">
-                                                    <h4>Songs & Brand Jingles</h4>
-                                                    <p>Crafting distinct background tunes, melodies, and custom jingles to enrich your message.</p>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="explorer-features-col">
-                                        <ul class="explorer-bullets-list">
-                                            <li>
-                                                <div class="explorer-bullet-icon" aria-hidden="true">✍️</div>
-                                                <div class="explorer-bullet-content">
-                                                    <h4>Assisted Writing & Copy</h4>
-                                                    <p>Writing books, storytelling, and copy scripting using structured AI prompts and voice-dictated editing.</p>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="explorer-bullet-icon" aria-hidden="true">🧠</div>
-                                                <div class="explorer-bullet-content">
-                                                    <h4>Creative AI Consulting</h4>
-                                                    <p>Consulting on customized prompt setups and configurations to simplify your daily writing workflow.</p>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                
-                                <!-- Panel Portfolio: CREATE -->
-                                <div class="explorer-portfolio-section">
-                                    <h3 class="explorer-portfolio-title">CREATE PORTFOLIO</h3>
-                                    <div class="portfolio-grid">
+                                <!-- Row 1: Description & Portfolio (Three Columns) -->
+                                <div class="explorer-grid-layout">
+                                    <!-- Left Column: 3 Portfolio Squares -->
+                                    <div class="explorer-grid-col explorer-grid-left">
                                         <div class="portfolio-card" data-type="video" data-src="assets/videos/the-adventure.mp4" aria-label="Play The Adventure Video" role="button" tabindex="0">
                                             <div class="portfolio-card-bg" style="background-image: url('assets/videos/the-adventure_cover-art.jpeg');"></div>
                                             <div class="portfolio-card-overlay"></div>
@@ -893,6 +843,20 @@ Router.register('/services', () => `
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                    
+                                    <!-- Center Column: Text & Button -->
+                                    <div class="explorer-grid-col explorer-grid-center">
+                                        <p class="explorer-panel-desc">
+                                            I use generative AI systems to build customized visual and written creative outputs. Whether you need audio loops, copy packages, or digital graphics, I construct systems that turn raw ideas into active assets.
+                                        </p>
+                                        <div class="explorer-cta">
+                                            <a href="/contact?interest=Create" class="btn btn-teal">Contact me for creating</a>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Right Column: 3 Portfolio Squares -->
+                                    <div class="explorer-grid-col explorer-grid-right">
                                         <div class="portfolio-card" data-type="song" data-src="assets/endgame-shadows.mp3" data-id="endgame-shadows" aria-label="Play Endgame Shadows Song" role="button" tabindex="0">
                                             <div class="portfolio-card-bg" style="background-image: url('assets/endgame-shadows_cover-art.jpeg');"></div>
                                             <div class="portfolio-card-overlay"></div>
@@ -943,60 +907,10 @@ Router.register('/services', () => `
                                     <span class="explorer-panel-subtitle">Websites & Digital Ecosystems</span>
                                     <h2 class="explorer-panel-title">BUILD</h2>
                                 </div>
-                                <!-- Row 1: Description (One Column Centered) -->
-                                <div class="explorer-row explorer-description-row">
-                                    <p class="explorer-panel-desc">
-                                        I construct modern web architectures, landing pages, and lead workflows. Using AI-assisted programming tools, I design responsive templates that connect with visitors and support clean automation pipelines.
-                                    </p>
-                                    <div class="explorer-cta">
-                                        <a href="/contact?interest=Build" class="btn btn-teal">Contact me for building</a>
-                                    </div>
-                                </div>
-                                
-                                <!-- Row 2: Features (Two Columns - 2 Left, 2 Right) -->
-                                <div class="explorer-row explorer-features-row">
-                                    <div class="explorer-features-col">
-                                        <ul class="explorer-bullets-list">
-                                            <li>
-                                                <div class="explorer-bullet-icon" aria-hidden="true">💻</div>
-                                                <div class="explorer-bullet-content">
-                                                    <h4>Web Development</h4>
-                                                    <p>Designing and deploying modern web portals, clean layouts, and functional portfolios.</p>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="explorer-bullet-icon" aria-hidden="true">🚀</div>
-                                                <div class="explorer-bullet-content">
-                                                    <h4>Funnels & Landing Pages</h4>
-                                                    <p>Building structured multi-page pathways and lead captures that turn clicks into active queries.</p>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="explorer-features-col">
-                                        <ul class="explorer-bullets-list">
-                                            <li>
-                                                <div class="explorer-bullet-icon" aria-hidden="true">⚙️</div>
-                                                <div class="explorer-bullet-content">
-                                                    <h4>Workflow Automation</h4>
-                                                    <p>Connecting tools and automating administrative tasks using AI to save valuable hours.</p>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="explorer-bullet-icon" aria-hidden="true">🔒</div>
-                                                <div class="explorer-bullet-content">
-                                                    <h4>Membership Platforms</h4>
-                                                    <p>Setting up membership vaults, lesson portals, and automated digital course areas.</p>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                
-                                <!-- Panel Portfolio: BUILD -->
-                                <div class="explorer-portfolio-section">
-                                    <h3 class="explorer-portfolio-title">BUILD PORTFOLIO</h3>
-                                    <div class="portfolio-grid">
+                                <!-- Row 1: Description & Portfolio (Three Columns) -->
+                                <div class="explorer-grid-layout">
+                                    <!-- Left Column: 3 Portfolio Squares -->
+                                    <div class="explorer-grid-col explorer-grid-left">
                                         <div class="portfolio-card" data-type="image" data-src="assets/funnel_building.png" aria-label="View Client Portal Design Mockup" role="button" tabindex="0">
                                             <div class="portfolio-card-bg" style="background-image: url('assets/funnel_building.png');"></div>
                                             <div class="portfolio-card-overlay"></div>
@@ -1030,6 +944,20 @@ Router.register('/services', () => `
                                                 <h4 class="portfolio-title">Funnel Architecture</h4>
                                             </div>
                                         </div>
+                                    </div>
+                                    
+                                    <!-- Center Column: Text & Button -->
+                                    <div class="explorer-grid-col explorer-grid-center">
+                                        <p class="explorer-panel-desc">
+                                            I construct modern web architectures, landing pages, and lead workflows. Using AI-assisted programming tools, I design responsive templates that connect with visitors and support clean automation pipelines.
+                                        </p>
+                                        <div class="explorer-cta">
+                                            <a href="/contact?interest=Build" class="btn btn-teal">Contact me for building</a>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Right Column: 3 Portfolio Squares -->
+                                    <div class="explorer-grid-col explorer-grid-right">
                                          <div class="portfolio-card" data-type="website" data-src="assets/jesus-bello.png" data-link="https://jesus-bello.pages.dev/" aria-label="View Jesus Bello Website" role="button" tabindex="0">
                                              <div class="portfolio-card-bg" style="background-image: url('assets/jesus-bello.png');"></div>
                                              <div class="portfolio-card-overlay"></div>
@@ -1064,7 +992,7 @@ Router.register('/services', () => `
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div>                             </div>
                             </div>
 
                             <!-- Tab Content 3: OVERCOME -->
@@ -1073,60 +1001,10 @@ Router.register('/services', () => `
                                     <span class="explorer-panel-subtitle">Resilience & Mindset Coaching</span>
                                     <h2 class="explorer-panel-title">OVERCOME</h2>
                                 </div>
-                                <!-- Row 1: Description (One Column Centered) -->
-                                <div class="explorer-row explorer-description-row">
-                                    <p class="explorer-panel-desc">
-                                        I work directly with individuals to shift their perspective and reframe their limitations. Through mindset coaching and constraint-based problem solving, we establish customized habits to convert physical or mental barriers into growth pathways.
-                                    </p>
-                                    <div class="explorer-cta">
-                                        <a href="/contact?interest=Overcome" class="btn btn-teal">Contact me for overcoming</a>
-                                    </div>
-                                </div>
-                                
-                                <!-- Row 2: Features (Two Columns - 2 Left, 2 Right) -->
-                                <div class="explorer-row explorer-features-row">
-                                    <div class="explorer-features-col">
-                                        <ul class="explorer-bullets-list">
-                                            <li>
-                                                <div class="explorer-bullet-icon" aria-hidden="true">🌱</div>
-                                                <div class="explorer-bullet-content">
-                                                    <h4>Personal Growth</h4>
-                                                    <p>Developing actionable goals and personal strategies to build consistent creative momentum.</p>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="explorer-bullet-icon" aria-hidden="true">🧩</div>
-                                                <div class="explorer-bullet-content">
-                                                    <h4>Constraint-Based Strategy</h4>
-                                                    <p>Reframing physical limitations or tight boundaries as structured design constraints for creation.</p>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="explorer-features-col">
-                                        <ul class="explorer-bullets-list">
-                                            <li>
-                                                <div class="explorer-bullet-icon" aria-hidden="true">🗣️</div>
-                                                <div class="explorer-bullet-content">
-                                                    <h4>Speaking & Workshops</h4>
-                                                    <p>Hosting presentations and active workshops showing the intersection of resilience and AI capability.</p>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="explorer-bullet-icon" aria-hidden="true">🤝</div>
-                                                <div class="explorer-bullet-content">
-                                                    <h4>Adaptability Consulting</h4>
-                                                    <p>Setting up customized voice commands, adaptive workspaces, and productivity hacks.</p>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                
-                                <!-- Panel Portfolio: OVERCOME -->
-                                <div class="explorer-portfolio-section">
-                                    <h3 class="explorer-portfolio-title">OVERCOME PORTFOLIO</h3>
-                                    <div class="portfolio-grid">
+                                <!-- Row 1: Description & Portfolio (Three Columns) -->
+                                <div class="explorer-grid-layout">
+                                    <!-- Left Column: 3 Portfolio Squares -->
+                                    <div class="explorer-grid-col explorer-grid-left">
                                         <div class="portfolio-card" data-type="video" data-src="assets/videos/i-hear-you.mp4" aria-label="Play I Hear You Video" role="button" tabindex="0">
                                             <div class="portfolio-card-bg" style="background-image: url('assets/videos/i-hear-you_thumbnail.png');"></div>
                                             <div class="portfolio-card-overlay"></div>
@@ -1167,6 +1045,20 @@ Router.register('/services', () => `
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                    
+                                    <!-- Center Column: Text & Button -->
+                                    <div class="explorer-grid-col explorer-grid-center">
+                                        <p class="explorer-panel-desc">
+                                            I work directly with individuals to shift their perspective and reframe their limitations. Through mindset coaching and constraint-based problem solving, we establish customized habits to convert physical or mental barriers into growth pathways.
+                                        </p>
+                                        <div class="explorer-cta">
+                                            <a href="/contact?interest=Overcome" class="btn btn-teal">Contact me for overcoming</a>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Right Column: 3 Portfolio Squares -->
+                                    <div class="explorer-grid-col explorer-grid-right">
                                         <div class="portfolio-card" data-type="song" data-src="assets/the-battle-of-the-illusions.mp3" data-id="the-battle-of-the-illusions" aria-label="Play The Battle of the Illusions Song" role="button" tabindex="0">
                                             <div class="portfolio-card-bg" style="background-image: url('assets/the-battle-of-the-illusions_cover-art.jpeg');"></div>
                                             <div class="portfolio-card-overlay"></div>
