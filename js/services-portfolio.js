@@ -393,22 +393,22 @@ const ServicesPortfolio = {
         } else if (type === 'website') {
             const link = card ? card.getAttribute('data-link') : '';
             content.innerHTML = `
-                <div class="portfolio-lightbox-browser" style="width: 85vw; max-width: 1200px; height: 75vh; min-height: 480px; display: flex; flex-direction: column; border-radius: 8px; overflow: hidden; box-shadow: var(--shadow-xl); border: 1px solid rgba(255,255,255,0.12); background: #1e293b; margin: 0 auto;">
+                <div class="portfolio-lightbox-browser">
                     <!-- Browser Top Bar -->
-                    <div class="browser-top-bar" style="height: 40px; background-color: #0f172a; display: flex; align-items: center; padding: 0 16px; border-bottom: 1px solid rgba(255,255,255,0.06); position: relative; user-select: none;">
+                    <div class="browser-top-bar">
                         <!-- Window Controls (Red, Yellow, Green circles) -->
-                        <div class="browser-window-controls" style="display: flex; gap: 8px; position: absolute; left: 16px; top: 50%; transform: translateY(-50%);">
-                            <span style="width: 12px; height: 12px; border-radius: 50%; background-color: #ef4444; display: inline-block;"></span>
-                            <span style="width: 12px; height: 12px; border-radius: 50%; background-color: #eab308; display: inline-block;"></span>
-                            <span style="width: 12px; height: 12px; border-radius: 50%; background-color: #22c55e; display: inline-block;"></span>
+                        <div class="browser-window-controls">
+                            <span class="browser-control-dot red"></span>
+                            <span class="browser-control-dot yellow"></span>
+                            <span class="browser-control-dot green"></span>
                         </div>
                         <!-- Center Title -->
-                        <div class="browser-window-title" style="width: 100%; text-align: center; color: #94a3b8; font-family: var(--font-heading); font-size: 0.95rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 80px;">
+                        <div class="browser-window-title">
                             ${title}
                         </div>
                     </div>
                     <!-- Browser Content (IFrame) -->
-                    <iframe src="${link || src}" class="portfolio-lightbox-iframe" style="flex: 1; width: 100%; border: none; background: #ffffff; display: block;" scrolling="yes"></iframe>
+                    <iframe src="${link || src}" class="portfolio-lightbox-iframe" scrolling="yes"></iframe>
                 </div>
             `;
         } else {
