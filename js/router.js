@@ -795,10 +795,6 @@ Router.register('/services', () => `
                             
                             <!-- Tab Content 1: CREATE -->
                             <div class="explorer-tab-content active" id="tab-content-create" role="tabpanel" aria-labelledby="tab-create">
-                                <div class="explorer-panel-header">
-                                    <span class="explorer-panel-subtitle">AI-Powered Creative Strategy</span>
-                                    <h2 class="explorer-panel-title">CREATE</h2>
-                                </div>
                                 <!-- Row 1: Description & Portfolio (Three Columns) -->
                                 <div class="explorer-grid-layout">
                                     <!-- Left Column: 3 Portfolio Squares -->
@@ -847,11 +843,29 @@ Router.register('/services', () => `
                                     
                                     <!-- Center Column: Text & Button -->
                                     <div class="explorer-grid-col explorer-grid-center">
+                                        <div class="explorer-panel-header">
+                                            <span class="explorer-panel-subtitle">AI-Powered Creative Strategy</span>
+                                            <h2 class="explorer-panel-title">CREATE</h2>
+                                        </div>
                                         <p class="explorer-panel-desc">
                                             I use generative AI systems to build customized visual and written creative outputs. Whether you need audio loops, copy packages, or digital graphics, I construct systems that turn raw ideas into active assets.
                                         </p>
                                         <div class="explorer-cta">
                                             <a href="/contact?interest=Create" class="btn btn-teal">Contact me for creating</a>
+                                        </div>
+                                        <div class="explorer-brand-footer">
+                                            <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin: 2rem auto 1rem auto; width: 100%; max-width: 200px;">
+                                                <div style="flex: 1; height: 1px; background: rgba(0,0,0,0.1);"></div>
+                                                <img src="assets/logo-dark.png" alt="M logo" style="height: 18px; width: auto; opacity: 0.8;">
+                                                <div style="flex: 1; height: 1px; background: rgba(0,0,0,0.1);"></div>
+                                            </div>
+                                            <div style="font-family: 'Caveat', cursive; font-size: 2.1rem; color: var(--color-navy); margin-bottom: 0.5rem; line-height: 1;">
+                                                Marchello Sciortino
+                                            </div>
+                                            <div style="font-family: var(--font-heading); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-teal); line-height: 1.4;">
+                                                Creativity. Technology. Determination.<br>
+                                                Unlocking Possibilities. Delivering Results.
+                                            </div>
                                         </div>
                                     </div>
                                     
@@ -903,10 +917,6 @@ Router.register('/services', () => `
 
                             <!-- Tab Content 2: BUILD -->
                             <div class="explorer-tab-content" id="tab-content-build" role="tabpanel" aria-labelledby="tab-build">
-                                <div class="explorer-panel-header">
-                                    <span class="explorer-panel-subtitle">Websites & Digital Ecosystems</span>
-                                    <h2 class="explorer-panel-title">BUILD</h2>
-                                </div>
                                 <!-- Row 1: Description & Portfolio (Three Columns) -->
                                 <div class="explorer-grid-layout">
                                     <!-- Left Column: 3 Portfolio Squares -->
@@ -948,11 +958,29 @@ Router.register('/services', () => `
                                     
                                     <!-- Center Column: Text & Button -->
                                     <div class="explorer-grid-col explorer-grid-center">
+                                        <div class="explorer-panel-header">
+                                            <span class="explorer-panel-subtitle">Websites & Digital Ecosystems</span>
+                                            <h2 class="explorer-panel-title">BUILD</h2>
+                                        </div>
                                         <p class="explorer-panel-desc">
                                             I construct modern web architectures, landing pages, and lead workflows. Using AI-assisted programming tools, I design responsive templates that connect with visitors and support clean automation pipelines.
                                         </p>
                                         <div class="explorer-cta">
                                             <a href="/contact?interest=Build" class="btn btn-teal">Contact me for building</a>
+                                        </div>
+                                        <div class="explorer-brand-footer">
+                                            <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin: 2rem auto 1rem auto; width: 100%; max-width: 200px;">
+                                                <div style="flex: 1; height: 1px; background: rgba(0,0,0,0.1);"></div>
+                                                <img src="assets/logo-dark.png" alt="M logo" style="height: 18px; width: auto; opacity: 0.8;">
+                                                <div style="flex: 1; height: 1px; background: rgba(0,0,0,0.1);"></div>
+                                            </div>
+                                            <div style="font-family: 'Caveat', cursive; font-size: 2.1rem; color: var(--color-navy); margin-bottom: 0.5rem; line-height: 1;">
+                                                Marchello Sciortino
+                                            </div>
+                                            <div style="font-family: var(--font-heading); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-teal); line-height: 1.4;">
+                                                Creativity. Technology. Determination.<br>
+                                                Unlocking Possibilities. Delivering Results.
+                                            </div>
                                         </div>
                                     </div>
                                     
@@ -997,10 +1025,6 @@ Router.register('/services', () => `
 
                             <!-- Tab Content 3: OVERCOME -->
                             <div class="explorer-tab-content" id="tab-content-overcome" role="tabpanel" aria-labelledby="tab-overcome">
-                                <div class="explorer-panel-header">
-                                    <span class="explorer-panel-subtitle">Resilience & Mindset Coaching</span>
-                                    <h2 class="explorer-panel-title">OVERCOME</h2>
-                                </div>
                                 <!-- Row 1: Description & Portfolio (Three Columns) -->
                                 <div class="explorer-grid-layout">
                                     <!-- Left Column: 3 Portfolio Squares -->
@@ -1049,11 +1073,29 @@ Router.register('/services', () => `
                                     
                                     <!-- Center Column: Text & Button -->
                                     <div class="explorer-grid-col explorer-grid-center">
+                                        <div class="explorer-panel-header">
+                                            <span class="explorer-panel-subtitle">Resilience & Mindset Coaching</span>
+                                            <h2 class="explorer-panel-title">OVERCOME</h2>
+                                        </div>
                                         <p class="explorer-panel-desc">
                                             I work directly with individuals to shift their perspective and reframe their limitations. Through mindset coaching and constraint-based problem solving, we establish customized habits to convert physical or mental barriers into growth pathways.
                                         </p>
                                         <div class="explorer-cta">
                                             <a href="/contact?interest=Overcome" class="btn btn-teal">Contact me for overcoming</a>
+                                        </div>
+                                        <div class="explorer-brand-footer">
+                                            <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin: 2rem auto 1rem auto; width: 100%; max-width: 200px;">
+                                                <div style="flex: 1; height: 1px; background: rgba(0,0,0,0.1);"></div>
+                                                <img src="assets/logo-dark.png" alt="M logo" style="height: 18px; width: auto; opacity: 0.8;">
+                                                <div style="flex: 1; height: 1px; background: rgba(0,0,0,0.1);"></div>
+                                            </div>
+                                            <div style="font-family: 'Caveat', cursive; font-size: 2.1rem; color: var(--color-navy); margin-bottom: 0.5rem; line-height: 1;">
+                                                Marchello Sciortino
+                                            </div>
+                                            <div style="font-family: var(--font-heading); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-teal); line-height: 1.4;">
+                                                Creativity. Technology. Determination.<br>
+                                                Unlocking Possibilities. Delivering Results.
+                                            </div>
                                         </div>
                                     </div>
                                     
@@ -1109,22 +1151,8 @@ Router.register('/services', () => `
 
             </div>
 
-            <!-- Bottom Logo/M-Divider -->
-            <div style="display: flex; align-items: center; justify-content: center; gap: 20px; margin-top: 80px; margin-bottom: 25px;">
-                <div style="flex: 1; max-width: 280px; height: 1.5px; background: var(--color-gray-border);"></div>
-                <img src="assets/logo-dark.png" alt="M logo" style="height: 25px; width: auto; border-radius: 0; opacity: 0.85;">
-                <div style="flex: 1; max-width: 280px; height: 1.5px; background: var(--color-gray-border);"></div>
-            </div>
-
-            <!-- Bottom Branding Text -->
-            <div class="text-center">
-                <h4 style="font-family: var(--font-heading); color: var(--color-navy); font-size: 1.05rem; font-weight: 800; letter-spacing: 0.18em; margin-bottom: 8px; text-transform: uppercase;">
-                    CREATIVITY. TECHNOLOGY. DETERMINATION.
-                </h4>
-                <p style="color: var(--color-teal); font-family: var(--font-heading); font-size: 1.15rem; font-weight: 800; letter-spacing: 0.08em; margin-bottom: 0; text-transform: uppercase;">
-                     UNLOCKING POSSIBILITIES. DELIVERING RESULTS.
-                </p>
-            </div>
+            <!-- Bottom spacing -->
+            <div style="margin-top: 50px;"></div>
 
         </div>
     </section>
