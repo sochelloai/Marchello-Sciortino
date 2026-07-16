@@ -2349,31 +2349,46 @@ Router.register('/resources', () => `
                 <div style="height: 2px; width: 60px; background: var(--color-teal); margin-top: 10px; margin-bottom: 25px;"></div>
                 
                 <div class="grid-3">
-                    <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
-                        <div>
-                            <span class="section-tag text-teal" style="margin-bottom: 10px; display: inline-block;">Sources</span>
-                            <h3 style="margin-bottom: 10px;">Coming Soon</h3>
-                            <p style="font-size: 0.95rem; color: var(--color-gray-medium); margin-bottom: 20px;">Documentation, references, and sources for Limitation to Liberation.</p>
+                    <div class="resource-card">
+                        <div class="resource-image-wrapper">
+                            <span class="resource-badge">Sources</span>
+                            <img src="assets/blog/accessible-planning-systems.png" alt="Sources cover" class="resource-cover-image">
                         </div>
-                        <button class="btn btn-outline-teal" disabled style="width: 100%; opacity: 0.6; cursor: not-allowed;">Coming Soon</button>
+                        <div class="resource-card-content">
+                            <h3>Coming Soon</h3>
+                            <p>Documentation, references, and sources for Limitation to Liberation.</p>
+                        </div>
+                        <div class="resource-card-button-wrapper">
+                            <button class="btn btn-outline-teal" disabled style="width: 100%; opacity: 0.6; cursor: not-allowed;">Coming Soon</button>
+                        </div>
                     </div>
                     
-                    <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
-                        <div>
-                            <span class="section-tag text-teal" style="margin-bottom: 10px; display: inline-block;">Read Now</span>
-                            <h3 style="margin-bottom: 10px;">Book Website</h3>
-                            <p style="font-size: 0.95rem; color: var(--color-gray-medium); margin-bottom: 20px;">Get your copy of "Limitations to Liberation" and begin turning constraints into creative agency.</p>
+                    <div class="resource-card">
+                        <div class="resource-image-wrapper">
+                            <span class="resource-badge">Read Now</span>
+                            <img src="assets/book_cover_mockup.png" alt="Book Website cover" class="resource-cover-image">
                         </div>
-                        <a href="https://www.limitationstoliberation.com/" target="_blank" rel="noopener noreferrer" class="btn btn-outline-teal" style="width: 100%; text-align: center;">Learn More</a>
+                        <div class="resource-card-content">
+                            <h3>Book Website</h3>
+                            <p>Get your copy of "Limitations to Liberation" and begin turning constraints into creative agency.</p>
+                        </div>
+                        <div class="resource-card-button-wrapper">
+                            <a href="https://www.limitationstoliberation.com/" target="_blank" rel="noopener noreferrer" class="btn btn-outline-teal" style="width: 100%; text-align: center;">Learn More</a>
+                        </div>
                     </div>
                     
-                    <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
-                        <div>
-                            <span class="section-tag text-teal" style="margin-bottom: 10px; display: inline-block;">Accessible AIM</span>
-                            <h3 style="margin-bottom: 10px;">AI Accessibility</h3>
-                            <p style="font-size: 0.95rem; color: var(--color-gray-medium); margin-bottom: 20px;">Learn how we are building an accessible world through AI-powered advocacy and solutions.</p>
+                    <div class="resource-card">
+                        <div class="resource-image-wrapper">
+                            <span class="resource-badge">Accessible AIM</span>
+                            <img src="assets/accessible_ai.png" alt="AI Accessibility cover" class="resource-cover-image">
                         </div>
-                        <a href="/accessible-aim" class="btn btn-outline-teal" style="width: 100%; text-align: center;">Learn More</a>
+                        <div class="resource-card-content">
+                            <h3>AI Accessibility</h3>
+                            <p>Learn how we are building an accessible world through AI-powered advocacy and solutions.</p>
+                        </div>
+                        <div class="resource-card-button-wrapper">
+                            <a href="/accessible-aim" class="btn btn-outline-teal" style="width: 100%; text-align: center;">Learn More</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -2385,31 +2400,46 @@ Router.register('/resources', () => `
                 <div style="height: 2px; width: 60px; background: var(--color-teal); margin-top: 10px; margin-bottom: 25px;"></div>
                 
                 <div class="grid-3">
-                    <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
-                        <div>
-                            <span class="section-tag text-teal" style="margin-bottom: 10px; display: inline-block;">Platform</span>
-                            <h3 style="margin-bottom: 10px;">ClickFunnels</h3>
-                            <p style="font-size: 0.95rem; color: var(--color-gray-medium); margin-bottom: 20px;">The ultimate platform for building high-converting landing pages, sales pipelines, and websites.</p>
+                    <div class="resource-card">
+                        <div class="resource-image-wrapper">
+                            <span class="resource-badge">Platform</span>
+                            <img src="assets/funnel_building.png" alt="ClickFunnels cover" class="resource-cover-image">
                         </div>
-                        <a href="https://www.clickfunnels.com/signup-flow-new-plans?aff=marchello-sciortino" target="_blank" rel="noopener noreferrer" class="btn btn-outline-teal" style="width: 100%; text-align: center;">Learn More</a>
+                        <div class="resource-card-content">
+                            <h3>ClickFunnels</h3>
+                            <p>The ultimate platform for building high-converting landing pages, sales pipelines, and websites.</p>
+                        </div>
+                        <div class="resource-card-button-wrapper">
+                            <a href="https://www.clickfunnels.com/signup-flow-new-plans?aff=marchello-sciortino" target="_blank" rel="noopener noreferrer" class="btn btn-outline-teal" style="width: 100%; text-align: center;">Learn More</a>
+                        </div>
                     </div>
                     
-                    <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
-                        <div>
-                            <span class="section-tag text-teal" style="margin-bottom: 10px; display: inline-block;">Training</span>
-                            <h3 style="margin-bottom: 10px;">One Funnel Away</h3>
-                            <p style="font-size: 0.95rem; color: var(--color-gray-medium); margin-bottom: 20px;">The training system that guides you step-by-step through launching your online funnel.</p>
+                    <div class="resource-card">
+                        <div class="resource-image-wrapper">
+                            <span class="resource-badge">Training</span>
+                            <img src="assets/web-and-funnel-building.png" alt="One Funnel Away cover" class="resource-cover-image">
                         </div>
-                        <a href="https://www.onefunnelaway.com/?aff=marchello-sciortino" target="_blank" rel="noopener noreferrer" class="btn btn-outline-teal" style="width: 100%; text-align: center;">Learn More</a>
+                        <div class="resource-card-content">
+                            <h3>One Funnel Away</h3>
+                            <p>The training system that guides you step-by-step through launching your online funnel.</p>
+                        </div>
+                        <div class="resource-card-button-wrapper">
+                            <a href="https://www.onefunnelaway.com/?aff=marchello-sciortino" target="_blank" rel="noopener noreferrer" class="btn btn-outline-teal" style="width: 100%; text-align: center;">Learn More</a>
+                        </div>
                     </div>
                     
-                    <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
-                        <div>
-                            <span class="section-tag text-teal" style="margin-bottom: 10px; display: inline-block;">Templates</span>
-                            <h3 style="margin-bottom: 10px;">PLR Funnels</h3>
-                            <p style="font-size: 0.95rem; color: var(--color-gray-medium); margin-bottom: 20px;">Ready-to-use private label rights funnels to accelerate your digital launch speed.</p>
+                    <div class="resource-card">
+                        <div class="resource-image-wrapper">
+                            <span class="resource-badge">Templates</span>
+                            <img src="assets/blog/business-automation-tips-personal-freedom.png" alt="PLR Funnels cover" class="resource-cover-image">
                         </div>
-                        <a href="https://www.plrfunnels.com/plr?aff=marchello-sciortino" target="_blank" rel="noopener noreferrer" class="btn btn-outline-teal" style="width: 100%; text-align: center;">Learn More</a>
+                        <div class="resource-card-content">
+                            <h3>PLR Funnels</h3>
+                            <p>Ready-to-use private label rights funnels to accelerate your digital launch speed.</p>
+                        </div>
+                        <div class="resource-card-button-wrapper">
+                            <a href="https://www.plrfunnels.com/plr?aff=marchello-sciortino" target="_blank" rel="noopener noreferrer" class="btn btn-outline-teal" style="width: 100%; text-align: center;">Learn More</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -2421,31 +2451,46 @@ Router.register('/resources', () => `
                 <div style="height: 2px; width: 60px; background: var(--color-teal); margin-top: 10px; margin-bottom: 25px;"></div>
                 
                 <div class="grid-3">
-                    <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
-                        <div>
-                            <span class="section-tag text-teal" style="margin-bottom: 10px; display: inline-block;">Marketing</span>
-                            <h3 style="margin-bottom: 10px;">DotCom Secrets</h3>
-                            <p style="font-size: 0.95rem; color: var(--color-gray-medium); margin-bottom: 20px;">The playbook for building a repeatable online sales system to grow any company.</p>
+                    <div class="resource-card">
+                        <div class="resource-image-wrapper">
+                            <span class="resource-badge">Marketing</span>
+                            <img src="assets/blog/redefining-creative-freedom-parameters.png" alt="DotCom Secrets cover" class="resource-cover-image">
                         </div>
-                        <a href="https://www.dotcomsecrets.com/?aff=d0960bf47d9b1ccc93da0b5cc9cf2d5a7bd719a1780f0a7f83d7b7bdce30c52b" target="_blank" rel="noopener noreferrer" class="btn btn-outline-teal" style="width: 100%; text-align: center;">Learn More</a>
+                        <div class="resource-card-content">
+                            <h3>DotCom Secrets</h3>
+                            <p>The playbook for building a repeatable online sales system to grow any company.</p>
+                        </div>
+                        <div class="resource-card-button-wrapper">
+                            <a href="https://www.dotcomsecrets.com/?aff=d0960bf47d9b1ccc93da0b5cc9cf2d5a7bd719a1780f0a7f83d7b7bdce30c52b" target="_blank" rel="noopener noreferrer" class="btn btn-outline-teal" style="width: 100%; text-align: center;">Learn More</a>
+                        </div>
                     </div>
                     
-                    <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
-                        <div>
-                            <span class="section-tag text-teal" style="margin-bottom: 10px; display: inline-block;">Influence</span>
-                            <h3 style="margin-bottom: 10px;">Expert Secrets</h3>
-                            <p style="font-size: 0.95rem; color: var(--color-gray-medium); margin-bottom: 20px;">The guide to building a community of people who will pay you for your advice.</p>
+                    <div class="resource-card">
+                        <div class="resource-image-wrapper">
+                            <span class="resource-badge">Influence</span>
+                            <img src="assets/blog/creative-independence-responsibility.png" alt="Expert Secrets cover" class="resource-cover-image">
                         </div>
-                        <a href="https://www.expertsecrets.com/?aff=d0960bf47d9b1ccc93da0b5cc9cf2d5a7bd719a1780f0a7f83d7b7bdce30c52b" target="_blank" rel="noopener noreferrer" class="btn btn-outline-teal" style="width: 100%; text-align: center;">Learn More</a>
+                        <div class="resource-card-content">
+                            <h3>Expert Secrets</h3>
+                            <p>The guide to building a community of people who will pay you for your advice.</p>
+                        </div>
+                        <div class="resource-card-button-wrapper">
+                            <a href="https://www.expertsecrets.com/?aff=d0960bf47d9b1ccc93da0b5cc9cf2d5a7bd719a1780f0a7f83d7b7bdce30c52b" target="_blank" rel="noopener noreferrer" class="btn btn-outline-teal" style="width: 100%; text-align: center;">Learn More</a>
+                        </div>
                     </div>
                     
-                    <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
-                        <div>
-                            <span class="section-tag text-teal" style="margin-bottom: 10px; display: inline-block;">Traffic</span>
-                            <h3 style="margin-bottom: 10px;">Traffic Secrets</h3>
-                            <p style="font-size: 0.95rem; color: var(--color-gray-medium); margin-bottom: 20px;">The strategies for finding your dream customers and directing them to your products.</p>
+                    <div class="resource-card">
+                        <div class="resource-image-wrapper">
+                            <span class="resource-badge">Traffic</span>
+                            <img src="assets/blog/creative-digital-stewardship.png" alt="Traffic Secrets cover" class="resource-cover-image">
                         </div>
-                        <a href="https://trafficsecrets.com/thebook-5" target="_blank" rel="noopener noreferrer" class="btn btn-outline-teal" style="width: 100%; text-align: center;">Learn More</a>
+                        <div class="resource-card-content">
+                            <h3>Traffic Secrets</h3>
+                            <p>The strategies for finding your dream customers and directing them to your products.</p>
+                        </div>
+                        <div class="resource-card-button-wrapper">
+                            <a href="https://trafficsecrets.com/thebook-5" target="_blank" rel="noopener noreferrer" class="btn btn-outline-teal" style="width: 100%; text-align: center;">Learn More</a>
+                        </div>
                     </div>
                 </div>
             </div>
