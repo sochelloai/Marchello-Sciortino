@@ -3411,6 +3411,14 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     margin-bottom: 2.5rem;
 }
 
+.explorer-features-row {
+    grid-template-columns: 1fr 1fr;
+    border-top: 1px dashed #cbd5e1;
+    padding-top: 2.5rem;
+    margin-bottom: 3rem;
+    margin-top: 3rem;
+}
+
 .explorer-grid-layout {
     display: grid;
     grid-template-columns: 1fr 1.25fr 1fr;
@@ -3532,9 +3540,14 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
 }
 
 @media (max-width: 1024px) {
-    .explorer-panel-inner {
+    .explorer-panel-inner,
+    .explorer-features-row {
         grid-template-columns: 1fr;
         gap: 2rem;
+    }
+    
+    .explorer-features-row {
+        padding-top: 1.5rem;
     }
     
     .explorer-grid-layout {

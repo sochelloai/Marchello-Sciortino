@@ -910,6 +910,46 @@ Router.register('/services', () => `
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- Row 2: Features (Two Columns - 2 Left, 2 Right) -->
+                                <div class="explorer-row explorer-features-row">
+                                    <div class="explorer-features-col">
+                                        <ul class="explorer-bullets-list">
+                                            <li>
+                                                <div class="explorer-bullet-icon" aria-hidden="true">💡</div>
+                                                <div class="explorer-bullet-content">
+                                                    <h4>Custom Images & Video</h4>
+                                                    <p>Generating custom graphics, promotional videos, and interactive visual content with AI models.</p>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="explorer-bullet-icon" aria-hidden="true">🎵</div>
+                                                <div class="explorer-bullet-content">
+                                                    <h4>Songs & Brand Jingles</h4>
+                                                    <p>Crafting distinct background tunes, melodies, and custom jingles to enrich your message.</p>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="explorer-features-col">
+                                        <ul class="explorer-bullets-list">
+                                            <li>
+                                                <div class="explorer-bullet-icon" aria-hidden="true">✍️</div>
+                                                <div class="explorer-bullet-content">
+                                                    <h4>Assisted Writing & Copy</h4>
+                                                    <p>Writing books, storytelling, and copy scripting using structured AI prompts and voice-dictated editing.</p>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="explorer-bullet-icon" aria-hidden="true">🧠</div>
+                                                <div class="explorer-bullet-content">
+                                                    <h4>Creative AI Consulting</h4>
+                                                    <p>Consulting on customized prompt setups and configurations to simplify your daily writing workflow.</p>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- Tab Content 2: BUILD -->
@@ -1014,7 +1054,48 @@ Router.register('/services', () => `
                                             </div>
                                         </div>
                                     </div>
-                                </div>                             </div>
+                                </div>
+
+                                <!-- Row 2: Features (Two Columns - 2 Left, 2 Right) -->
+                                <div class="explorer-row explorer-features-row">
+                                    <div class="explorer-features-col">
+                                        <ul class="explorer-bullets-list">
+                                            <li>
+                                                <div class="explorer-bullet-icon" aria-hidden="true">💻</div>
+                                                <div class="explorer-bullet-content">
+                                                    <h4>Web Development</h4>
+                                                    <p>Designing and deploying modern web portals, clean layouts, and functional portfolios.</p>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="explorer-bullet-icon" aria-hidden="true">🚀</div>
+                                                <div class="explorer-bullet-content">
+                                                    <h4>Funnels & Landing Pages</h4>
+                                                    <p>Building structured multi-page pathways and lead captures that turn clicks into active queries.</p>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="explorer-features-col">
+                                        <ul class="explorer-bullets-list">
+                                            <li>
+                                                <div class="explorer-bullet-icon" aria-hidden="true">⚙️</div>
+                                                <div class="explorer-bullet-content">
+                                                    <h4>Workflow Automation</h4>
+                                                    <p>Connecting tools and automating administrative tasks using AI to save valuable hours.</p>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="explorer-bullet-icon" aria-hidden="true">🔒</div>
+                                                <div class="explorer-bullet-content">
+                                                    <h4>Membership Platforms</h4>
+                                                    <p>Setting up membership vaults, lesson portals, and automated digital course areas.</p>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
                             </div>
 
                             <!-- Tab Content 3: OVERCOME -->
@@ -1132,6 +1213,46 @@ Router.register('/services', () => `
                                                 <h4 class="portfolio-title">Shift Your Perspective</h4>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+
+                                <!-- Row 2: Features (Two Columns - 2 Left, 2 Right) -->
+                                <div class="explorer-row explorer-features-row">
+                                    <div class="explorer-features-col">
+                                        <ul class="explorer-bullets-list">
+                                            <li>
+                                                <div class="explorer-bullet-icon" aria-hidden="true">🌱</div>
+                                                <div class="explorer-bullet-content">
+                                                    <h4>Personal Growth</h4>
+                                                    <p>Developing actionable goals and personal strategies to build consistent creative momentum.</p>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="explorer-bullet-icon" aria-hidden="true">🧩</div>
+                                                <div class="explorer-bullet-content">
+                                                    <h4>Constraint-Based Strategy</h4>
+                                                    <p>Reframing physical limitations or tight boundaries as structured design constraints for creation.</p>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="explorer-features-col">
+                                        <ul class="explorer-bullets-list">
+                                            <li>
+                                                <div class="explorer-bullet-icon" aria-hidden="true">🗣️</div>
+                                                <div class="explorer-bullet-content">
+                                                    <h4>Speaking & Workshops</h4>
+                                                    <p>Hosting presentations and active workshops showing the intersection of resilience and AI capability.</p>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="explorer-bullet-icon" aria-hidden="true">🤝</div>
+                                                <div class="explorer-bullet-content">
+                                                    <h4>Adaptability Consulting</h4>
+                                                    <p>Setting up customized voice commands, adaptive workspaces, and productivity hacks.</p>
+                                                </div>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
