@@ -1801,16 +1801,9 @@ Router.register('/chelloai', () => `
                         Creating ChelloAI has unlocked incredible benefits for my digital creations: it acts as a persistent digital twin that preserves my coordination energy, assists with communication flow, and enables me to build and share resources more efficiently.
                     </p>
                     
-                    <p style="font-size: 1.15rem; line-height: 1.7; color: var(--color-gray-steel); margin-bottom: var(--spacing-lg); font-weight: 500;">
+                    <p style="font-size: 1.15rem; line-height: 1.7; color: var(--color-gray-steel); margin-bottom: 0; font-weight: 500;">
                         Use the interactive chat simulator to ask preset questions about my story, design process, and services.
                     </p>
-                    
-                    <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: flex-start;">
-                        <button id="scroll-to-simulator-btn" class="btn btn-teal" style="padding: 12px 24px; font-size: 1rem;">
-                            💬 Try Chat Simulator
-                        </button>
-                        <a href="/accessible-aim" class="btn btn-outline-white" style="background: var(--color-navy); color: white; border: 1px solid var(--color-navy); padding: 12px 24px; font-size: 1rem; transition: var(--transition-fast);">Build Your Own Companion</a>
-                    </div>
                 </div>
                 
             </div>
