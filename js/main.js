@@ -626,8 +626,8 @@ function initPerspectiveConsole() {
  * initScrollReveal - Fades in rows and sections smoothly as they enter the screen.
  */
 function initScrollReveal() {
-    // Automatically select all section elements and elements with class 'section' across the entire site
-    const sections = document.querySelectorAll('section, .section');
+    // Automatically select all sections and timeline rows across the entire site
+    const sections = document.querySelectorAll('section, .section, .timeline-row');
     
     sections.forEach(sec => {
         // Exclude hero sections or elements that should be visible immediately
