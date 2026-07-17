@@ -1272,149 +1272,118 @@ Router.register('/services', () => `
 
 // 3. Mission Page Template
 Router.register('/mission', () => `
-    <div class="page-intro">
-        <div class="container text-center">
-            <span class="section-tag text-teal">Purpose</span>
-            <h1 style="color: white;">The Mission</h1>
-            <p class="section-desc" style="color: var(--color-gray-light);">
-                Why this hub exists, what I believe, and how we change our relationship with limitation.
+    <div class="mission-hero">
+        <div class="floating-bubble bubble-1"></div>
+        <div class="floating-bubble bubble-2"></div>
+        <div class="floating-bubble bubble-3"></div>
+        <div class="container text-center" style="position: relative; z-index: 5;">
+            <span class="section-tag text-teal" style="background: rgba(10, 216, 173, 0.15); border: 1px solid rgba(10, 216, 173, 0.3); padding: 6px 16px; border-radius: 30px; font-weight: 700; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;">Our Goal</span>
+            <h1 style="color: white; margin-top: 15px; font-family: var(--font-heading); font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 900; line-height: 1.2;">Reimagining What Is Possible</h1>
+            <p class="section-desc" style="color: var(--color-gray-light); max-width: 700px; margin: 20px auto 0 auto; font-size: 1.15rem; line-height: 1.6;">
+                I teach creators how to turn limits into strategic leverage, live with a positive warrior mindset, and build highly-converting systems in the digital marketplace.
             </p>
         </div>
     </div>
     
-    <section class="section bg-white">
+    <!-- Interactive Perspective Console Section -->
+    <section class="section" style="background: var(--color-white); border-bottom: 1px solid rgba(226, 232, 240, 0.8); padding: 80px 0;">
         <div class="container">
-            <div class="grid-2" style="margin-bottom: var(--spacing-lg);">
-                <div>
-                    <h2>Rejecting the Default Limit</h2>
-                    <p>
-                        We frame disability around capability. You do not need a perfect body to build a website, write copy, or help others. I focus on producing solid digital work with the physical coordination I have left.
-                    </p>
-                </div>
-                <div class="graphic-panel bg-navy text-white" style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: var(--spacing-lg); border-radius: var(--radius-md); position: relative; overflow: hidden; border: 1px solid rgba(10, 216, 173, 0.15); min-height: 280px;">
-                    <div class="graphic-flare" style="position: absolute; width: 150px; height: 150px; background: var(--color-teal); filter: blur(70px); opacity: 0.15; top: 20%; left: 20%;"></div>
-                    <div class="graphic-flare" style="position: absolute; width: 120px; height: 120px; background: var(--color-gold); filter: blur(60px); opacity: 0.12; bottom: 20%; right: 20%;"></div>
-                    <span style="font-family: 'Permanent Marker', sans-serif; font-size: 2.2rem; color: var(--color-teal); transform: rotate(-5deg); margin-bottom: 10px; z-index: 2;">No Excuses.</span>
-                    <p class="text-center" style="font-size: 0.95rem; color: var(--color-gray-steel); max-width: 280px; text-align: center; margin: 0; line-height: 1.5; z-index: 2;">
-                        "Focus on what can be created within your constraints."
-                    </p>
-                </div>
+            <div class="text-center" style="max-width: 600px; margin: 0 auto 30px auto;">
+                <span class="section-tag text-teal">Playful Console</span>
+                <h2 class="text-navy" style="margin-top: 10px; font-weight: 800; font-family: var(--font-heading);">The Perspective Reframer</h2>
+                <p style="color: var(--color-gray-medium); margin-top: 10px; line-height: 1.5;">
+                    Constraints aren't walls; they are design parameters. Select a constraint below to see how it can be reframed into your greatest competitive advantage!
+                </p>
             </div>
-        </div>
-    </section>
-
-    <!-- Dynamic W.I.N. Framework Section -->
-    <section class="win-scroll-trigger-section" style="position: relative; height: 300vh; background-color: var(--color-navy); border-top: 1px solid rgba(10, 216, 173, 0.1); border-bottom: 1px solid rgba(10, 216, 173, 0.1);">
-        
-        <!-- Sticky inner container: height 100vh -->
-        <div class="win-sticky-container" style="position: sticky; top: 0; height: 100vh; height: 100dvh; display: flex; align-items: center; justify-content: center; overflow: hidden; width: 100%;">
             
-            <div class="container win-two-col-container">
+            <div class="perspective-console">
+                <div class="console-header">
+                    <div class="console-dot-container">
+                        <span class="console-dot"></span>
+                        <span class="console-dot"></span>
+                        <span class="console-dot"></span>
+                    </div>
+                    <span class="console-title">Reframe_Engine_v1.0.exe</span>
+                    <span style="font-size: 1.2rem;">⚡</span>
+                </div>
                 
-                <!-- Left Sticky Column -->
-                <div class="win-left-sticky-col">
-                    <span class="section-tag text-teal" style="display: block; margin-bottom: 10px;">Framework</span>
-                    <h2 style="color: white; margin-bottom: var(--spacing-md); font-size: clamp(2rem, 3.5vw, 3rem); font-family: var(--font-heading); font-weight: 800; text-align: left;">The W.I.N. Framework</h2>
-                    <p style="color: var(--color-gray-light); line-height: 1.6; font-size: 1.05rem; margin-bottom: 40px; text-align: left; max-width: 360px;">
-                        A daily system to reframe limitations as parameters, focus on high-value digital execution, and automate consistent progress.
-                    </p>
-                    
-                    <!-- Vertical Scroll Indicator Dot Matrix -->
-                    <div class="win-scroll-indicator-inline" aria-hidden="true">
-                        <div class="win-indicator-track">
-                            <div class="win-indicator-progress"></div>
-                        </div>
-                        <button class="win-indicator-step active-step" data-step="0" aria-label="Warrior Story">
-                            <span class="step-dot"></span>
-                            <span class="step-label">W: Warrior Story</span>
+                <div class="console-grid">
+                    <div class="console-buttons-column">
+                        <button class="console-btn active" data-constraint="physical">
+                            <span>🎯</span> Physical Limits
                         </button>
-                        <button class="win-indicator-step" data-step="1" aria-label="Inspiring Impact">
-                            <span class="step-dot"></span>
-                            <span class="step-label">I: Inspiring Impact</span>
+                        <button class="console-btn" data-constraint="time">
+                            <span>⏳</span> Limited Time
                         </button>
-                        <button class="win-indicator-step" data-step="2" aria-label="Nurturing Outcomes">
-                            <span class="step-dot"></span>
-                            <span class="step-label">N: Nurturing Outcomes</span>
+                        <button class="console-btn" data-constraint="tech">
+                            <span>💻</span> No Tech Background
+                        </button>
+                        <button class="console-btn" data-constraint="audience">
+                            <span>📣</span> Small Audience
                         </button>
                     </div>
-                </div>
-
-                <!-- Right Viewport Wrapper (Frame for vertical slider) -->
-                <div class="win-right-viewport">
                     
-                    <!-- Sliding cards track -->
-                    <div class="win-right-scroll-col">
-                        
-                        <!-- Card 1: Warrior Story -->
-                        <div class="win-card-wrapper" data-card="W" tabindex="0" aria-label="Warrior Story: Acknowledge your constraints. Detail: Acknowledge your limitations fully as design parameters rather than roadblocks.">
-                            <div class="win-card-tilt">
-                                <div class="win-card">
-                                    <div class="win-card-content">
-                                        <span class="win-badge">Phase W</span>
-                                        <span class="win-letter">W</span>
-                                        <h3 class="win-card-title">Warrior Story</h3>
-                                        <p class="win-card-teaser">Acknowledge your constraints.</p>
-                                        <div class="win-divider"></div>
-                                        <p class="win-card-description">Acknowledge your limitations fully as design parameters rather than roadblocks. Accept your reality today, map out your boundary conditions, and design a strategic path around them. By shifting from pity to parameter-based execution, we redirect our focus toward what can actually be built.</p>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="console-display-column">
+                        <div id="console-loader" style="display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(7, 24, 39, 0.95); justify-content: center; align-items: center; z-index: 10;">
+                            <span style="color: var(--color-teal); font-family: var(--font-heading); font-weight: bold; animation: pulse-slow 1s infinite alternate; font-size: 0.9rem; letter-spacing: 0.1em;">REFRAMING PERSPECTIVE...</span>
                         </div>
-
-                        <!-- Card 2: Inspiring Impact -->
-                        <div class="win-card-wrapper" data-card="I" tabindex="0" aria-label="Inspiring Impact: Focus on high-value execution. Detail: Identify the highest-value digital outcomes you can produce within your coordinates.">
-                            <div class="win-card-tilt">
-                                <div class="win-card">
-                                    <div class="win-card-content">
-                                        <span class="win-badge">Phase I</span>
-                                        <span class="win-letter">I</span>
-                                        <h3 class="win-card-title">Inspiring Impact</h3>
-                                        <p class="win-card-teaser">Focus on high-value execution.</p>
-                                        <div class="win-divider"></div>
-                                        <p class="win-card-description">Identify the highest-value digital outcomes you can produce within your coordinates. Do not waste energy on busywork. Focus on producing high-impact assets—like custom web design, logic-driven systems, or copy—that prove what is possible when constraint meets deliberate creativity.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Card 3: Nurturing Outcomes -->
-                        <div class="win-card-wrapper" data-card="N" tabindex="0" aria-label="Nurturing Outcomes: Build steady daily progress. Detail: Establish consistent systems to protect your energy while maintaining progress.">
-                            <div class="win-card-tilt">
-                                <div class="win-card">
-                                    <div class="win-card-content">
-                                        <span class="win-badge">Phase N</span>
-                                        <span class="win-letter">N</span>
-                                        <h3 class="win-card-title">Nurturing Outcomes</h3>
-                                        <p class="win-card-teaser">Build steady daily progress.</p>
-                                        <div class="win-divider"></div>
-                                        <p class="win-card-description">Establish consistent systems to protect your energy while maintaining progress. Integrate modern AI tools, voice-to-text transcription, and automated workflows to handle the repetitive, manual tasks. Nurture your projects through slow, daily increments—making sure every ounce of coordination you expend goes directly to high-value creation.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
+                        <h4 id="console-display-title" class="console-display-title">The Constraint Advantage</h4>
+                        <p id="console-display-text" class="console-display-text">
+                            Physical boundaries force you to preserve energy and leverage assistants. By using voice-driven automation, AI digital twins, and structured workflows, you save physical coordination while multiplying your digital leverage.
+                        </p>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
 
-    <section class="section bg-white">
+    <!-- Three Core Pillars Section -->
+    <section class="pillar-section bg-light" style="background: #f8fafc; border-bottom: 1px solid rgba(226, 232, 240, 0.8);">
         <div class="container">
+            <div class="text-center" style="max-width: 600px; margin: 0 auto 50px auto;">
+                <span class="section-tag text-teal">Our Pillars</span>
+                <h2 class="text-navy" style="margin-top: 10px; font-weight: 800; font-family: var(--font-heading);">What We Teach</h2>
+                <p style="color: var(--color-gray-medium); margin-top: 10px;">Three core lessons that turn constraints into digital momentum and strategic freedom.</p>
+            </div>
+            
             <div class="grid-3">
-                <div class="card">
-                    <h3>Constraint-Based Thinking</h3>
-                    <p>In web design, constraints like screen size make us build simpler pages. In life, boundaries help us filter out noise and focus on what we can write or design today.</p>
+                <div class="pillar-card">
+                    <span class="pillar-emoji">🎯</span>
+                    <h3>The Constraint Advantage</h3>
+                    <p>
+                        A limit is not a roadblock; it is a design parameter. Physical or environmental constraints force you to filter out noise, simplify layouts, and focus only on creating the highest-value digital solutions.
+                    </p>
                 </div>
-                <div class="card">
-                    <h3>AI as a Human Bridge</h3>
-                    <p>I treat AI as a helper for human capability. For anyone with motor blocks, AI acts as a physical assistant that types and formats copy based on spoken instructions.</p>
+                
+                <div class="pillar-card card-gold">
+                    <span class="pillar-emoji">⚡</span>
+                    <h3>Positive Mindset</h3>
+                    <p>
+                        Warrior acceptance means accepting reality today, stopping excuses, and choosing to build with what is left in your hands. A joyful, determined attitude is the spark that keeps projects consistent.
+                    </p>
                 </div>
-                <div class="card">
-                    <h3>Serve First, Sell Last</h3>
-                    <p>I value real connections and sharing helpful resources. This hub acts as a blueprint you can adapt for your own projects.</p>
+                
+                <div class="pillar-card">
+                    <span class="pillar-emoji">🚀</span>
+                    <h3>Digital Marketplace</h3>
+                    <p>
+                        We build clean online funnels, custom landing pages, and AI-driven automation systems. Mastering these digital skills allows anyone to monetize their creativity and scale their agency without boundaries.
+                    </p>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cute CTA Section -->
+    <section class="mission-cta">
+        <div class="container text-center" style="position: relative; z-index: 5;">
+            <h2 class="mission-cta-title">Ready to Turn Limits into Leverage?</h2>
+            <p style="color: var(--color-gray-light); max-width: 600px; margin: 0 auto 30px auto; font-size: 1.1rem; line-height: 1.6;">
+                I value real connections and sharing helpful worksheets. Join the movement to reframe constraints and construct your next digital project today!
+            </p>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <a href="/free-gifts" class="btn btn-teal">Explore Free Gifts</a>
+                <a href="/contact" class="btn btn-outline-teal" style="color: white; border-color: rgba(255, 255, 255, 0.4);">Get In Touch</a>
             </div>
         </div>
     </section>

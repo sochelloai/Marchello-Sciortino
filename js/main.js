@@ -47,7 +47,9 @@ document.addEventListener('DOMContentLoaded', () => {
             Music.init();
         } else if (page === 'hub' || page === 'marchellos-blog') {
             Hub.init();
-        } else if (page === 'mission' || page === 'aim') {
+        } else if (page === 'mission') {
+            initPerspectiveConsole();
+        } else if (page === 'aim') {
             WinCardsEffect.init();
             initWinScrollSequence();
         } else if (page === 'speaking') {
@@ -559,6 +561,61 @@ function cleanupWinScrollSequence() {
         window.removeEventListener('resize', winScrollListener);
         winScrollListener = null;
     }
+}
+
+/**
+ * initPerspectiveConsole - Interactive console widget on the Mission page.
+ */
+function initPerspectiveConsole() {
+    const consoleContainer = document.querySelector('.perspective-console');
+    if (!consoleContainer) return;
+
+    const buttons = consoleContainer.querySelectorAll('.console-btn');
+    const displayTitle = consoleContainer.querySelector('#console-display-title');
+    const displayText = consoleContainer.querySelector('#console-display-text');
+    const loader = consoleContainer.querySelector('#console-loader');
+
+    const reframes = {
+        physical: {
+            title: "The Constraint Advantage",
+            text: "Physical boundaries force you to preserve energy and leverage assistants. By using voice-driven automation, AI digital twins, and structured workflows, you save physical coordination while multiplying your digital leverage."
+        },
+        time: {
+            title: "The Time Leverage",
+            text: "Having limited hours forces you to stop wasting energy on non-essential busywork. It triggers extreme focus, leading you to build only high-converting, core funnels and systems that produce maximum impact."
+        },
+        tech: {
+            title: "The Beginner Advantage",
+            text: "A lack of technical experience prevents over-engineering and keeps your solutions simple, direct, and user-friendly. You focus on human connection and clean messaging rather than getting lost in complex code."
+        },
+        audience: {
+            title: "The Niche Advantage",
+            text: "A small audience allows you to build deep, genuine relationships and offer hyper-personalized value. You refine your offers, gather intense feedback, and achieve higher conversion rates with people who truly care."
+        }
+    };
+
+    buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const constraint = btn.getAttribute('data-constraint');
+            if (!reframes[constraint]) return;
+
+            // Remove active class from all buttons
+            buttons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            if (loader) {
+                loader.style.display = 'flex';
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    if (displayTitle) displayTitle.textContent = reframes[constraint].title;
+                    if (displayText) displayText.textContent = reframes[constraint].text;
+                }, 300); // 300ms transition time
+            } else {
+                if (displayTitle) displayTitle.textContent = reframes[constraint].title;
+                if (displayText) displayText.textContent = reframes[constraint].text;
+            }
+        });
+    });
 }
 
 let timelineScrollListener = null;
