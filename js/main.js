@@ -48,8 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (page === 'hub' || page === 'marchellos-blog') {
             Hub.init();
         } else if (page === 'mission') {
-            initPerspectiveConsole();
-            initScrollReveal();
+            initImmersiveMission();
         } else if (page === 'aim') {
             WinCardsEffect.init();
             initWinScrollSequence();
@@ -63,8 +62,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Always bind forms rendered inside the page view
         bindFormHandlers();
         
-        // Initialize global scroll reveals on all page sections
-        initScrollReveal();
+        // Initialize global scroll reveals on all page sections (except immersive mission)
+        if (page !== 'mission') {
+            cleanupImmersiveMission();
+            initScrollReveal();
+        }
     });
 });
 
@@ -821,6 +823,191 @@ const SpeakingGalleryLightbox = {
         document.body.style.overflow = ''; // Re-enable scroll
     }
 };
+
+let immersiveCursorDot = null;
+let immersiveCursorRing = null;
+let immersiveAnimationId = null;
+let mouseEventCleaners = [];
+
+function initImmersiveMission() {
+    // 1. Create custom cursor elements
+    cleanupImmersiveMission(); // Clean up first in case it's re-entered
+
+    immersiveCursorDot = document.createElement('div');
+    immersiveCursorDot.className = 'immersive-cursor-dot';
+    document.body.appendChild(immersiveCursorDot);
+
+    immersiveCursorRing = document.createElement('div');
+    immersiveCursorRing.className = 'immersive-cursor-ring';
+    document.body.appendChild(immersiveCursorRing);
+
+    // Track mouse coordinates
+    let mouseX = 0, mouseY = 0;
+    let ringX = 0, ringY = 0;
+    let targetWidth = 30, targetHeight = 30;
+    let targetRadius = '50%';
+    let isHoveringMagnetic = false;
+
+    // Show cursor on mousemove
+    const onMouseMove = (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        
+        if (immersiveCursorDot && immersiveCursorRing) {
+            immersiveCursorDot.style.opacity = '1';
+            immersiveCursorRing.style.opacity = '1';
+        }
+
+        // Update hero background if it exists
+        const hero = document.getElementById('section_01_hero');
+        if (hero) {
+            const xPct = (e.clientX / window.innerWidth) * 100;
+            const yPct = (e.clientY / window.innerHeight) * 100;
+            hero.style.setProperty('--mouse-x', `${xPct}%`);
+            hero.style.setProperty('--mouse-y', `${yPct}%`);
+        }
+
+        // Update Bento Card radial coordinates
+        const bentoGrid = document.querySelector('.bento-grid');
+        if (bentoGrid) {
+            const cards = bentoGrid.querySelectorAll('.bento-card');
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        }
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    mouseEventCleaners.push(() => document.removeEventListener('mousemove', onMouseMove));
+
+    // Handle magnetic interactions
+    const onMouseOver = (e) => {
+        const magnetic = e.target.closest('[data-magnetic="true"]');
+        if (magnetic) {
+            isHoveringMagnetic = true;
+            const rect = magnetic.getBoundingClientRect();
+            
+            // Adjust ring properties to snap around the button
+            targetWidth = rect.width + 16;
+            targetHeight = rect.height + 12;
+            targetRadius = getComputedStyle(magnetic).borderRadius || '8px';
+
+            // Add minor offset effect to the button itself
+            const onBtnMove = (me) => {
+                const rx = me.clientX - rect.left;
+                const ry = me.clientY - rect.top;
+                const dx = rx - rect.width / 2;
+                const dy = ry - rect.height / 2;
+                magnetic.style.transform = `translate3d(${dx * 0.15}px, ${dy * 0.15}px, 0)`;
+                // Center the ring on the button
+                mouseX = rect.left + rect.width / 2;
+                mouseY = rect.top + rect.height / 2;
+            };
+            magnetic.addEventListener('mousemove', onBtnMove);
+            
+            const onBtnLeave = () => {
+                magnetic.style.transform = '';
+                isHoveringMagnetic = false;
+                targetWidth = 30;
+                targetHeight = 30;
+                targetRadius = '50%';
+                magnetic.removeEventListener('mousemove', onBtnMove);
+            };
+            magnetic.addEventListener('mouseleave', onBtnLeave, { once: true });
+        }
+    };
+
+    document.addEventListener('mouseover', onMouseOver);
+    mouseEventCleaners.push(() => document.removeEventListener('mouseover', onMouseOver));
+
+    // Animation loop for smooth trailing ring
+    function updateCursor() {
+        if (immersiveCursorDot && immersiveCursorRing) {
+            // Smooth cursor dot
+            immersiveCursorDot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate3d(-50%, -50%, 0)`;
+
+            // Interpolate ring coordinates
+            const easing = isHoveringMagnetic ? 0.25 : 0.15;
+            ringX += (mouseX - ringX) * easing;
+            ringY += (mouseY - ringY) * easing;
+
+            immersiveCursorRing.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate3d(-50%, -50%, 0)`;
+            immersiveCursorRing.style.width = `${targetWidth}px`;
+            immersiveCursorRing.style.height = `${targetHeight}px`;
+            immersiveCursorRing.style.borderRadius = targetRadius;
+        }
+
+        immersiveAnimationId = requestAnimationFrame(updateCursor);
+    }
+    updateCursor();
+
+    // Scroll metrics scrubbing
+    const onScroll = () => {
+        // 1. Narrative Section metrics
+        const narrative = document.getElementById('section_03_narrative_bleed');
+        if (narrative) {
+            const rect = narrative.getBoundingClientRect();
+            const viewportHeight = window.innerHeight;
+            const totalDist = rect.height + viewportHeight;
+            const currentDist = viewportHeight - rect.top;
+            let pct = Math.max(0, Math.min(1, currentDist / totalDist));
+
+            // Update counting text
+            const metric = narrative.querySelector('.narrative-metric');
+            if (metric) {
+                const val = (pct * 99.99).toFixed(2);
+                metric.textContent = `${val}ms`;
+            }
+
+            // Update text wipe CSS variable
+            const statement = narrative.querySelector('.narrative-statement');
+            if (statement) {
+                statement.style.setProperty('--wipe-pct', `${pct * 100}%`);
+            }
+        }
+
+        // 2. Footer Watermark letter-spacing on bottom reached
+        const watermark = document.querySelector('.footer-watermark');
+        if (watermark) {
+            const isAtBottom = (window.innerHeight + window.pageYOffset) >= document.documentElement.scrollHeight - 15;
+            if (isAtBottom) {
+                watermark.style.letterSpacing = '1.5em';
+            } else {
+                watermark.style.letterSpacing = '0.2em';
+            }
+        }
+    };
+
+    window.addEventListener('scroll', onScroll);
+    mouseEventCleaners.push(() => window.removeEventListener('scroll', onScroll));
+    onScroll(); // initial trigger
+}
+
+function cleanupImmersiveMission() {
+    // Stop cursor loop
+    if (immersiveAnimationId) {
+        cancelAnimationFrame(immersiveAnimationId);
+        immersiveAnimationId = null;
+    }
+
+    // Remove event listeners
+    mouseEventCleaners.forEach(cleanup => cleanup());
+    mouseEventCleaners = [];
+
+    // Remove DOM cursor elements
+    if (immersiveCursorDot && immersiveCursorDot.parentNode) {
+        immersiveCursorDot.parentNode.removeChild(immersiveCursorDot);
+    }
+    if (immersiveCursorRing && immersiveCursorRing.parentNode) {
+        immersiveCursorRing.parentNode.removeChild(immersiveCursorRing);
+    }
+    immersiveCursorDot = null;
+    immersiveCursorRing = null;
+}
 
 
 
