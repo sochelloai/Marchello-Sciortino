@@ -62,6 +62,9 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Always bind forms rendered inside the page view
         bindFormHandlers();
+        
+        // Initialize global scroll reveals on all page sections
+        initScrollReveal();
     });
 });
 
@@ -623,6 +626,17 @@ function initPerspectiveConsole() {
  * initScrollReveal - Fades in rows and sections smoothly as they enter the screen.
  */
 function initScrollReveal() {
+    // Automatically select all section elements or divs with class 'section' or custom components
+    const sections = document.querySelectorAll('section, .section, .pillar-section, .mission-cta, .featured-in, .story-timeline-section, .resources-showcase-section, .free-gifts-showcase-section');
+    
+    sections.forEach(sec => {
+        // Exclude hero sections or elements that should be visible immediately
+        if (sec.classList.contains('hero-sec') || sec.classList.contains('page-intro') || sec.closest('.page-intro')) {
+            return; 
+        }
+        sec.classList.add('reveal-on-scroll');
+    });
+
     const elements = document.querySelectorAll('.reveal-on-scroll');
     if (!elements.length) return;
 
@@ -634,8 +648,8 @@ function initScrollReveal() {
             }
         });
     }, {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
+        threshold: 0.05,
+        rootMargin: '0px 0px -40px 0px'
     });
 
     elements.forEach(el => observer.observe(el));
