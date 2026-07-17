@@ -1330,7 +1330,15 @@ Router.register('/mission', () => `
             <div class="text-center" style="max-width: 600px; margin: 0 auto 50px auto;">
                 <span class="section-tag text-teal">My Pillars</span>
                 <h2 class="text-navy" style="margin-top: 10px; font-weight: 800; font-family: var(--font-heading);">What I Teach</h2>
-                <p style="color: var(--color-gray-medium); margin-top: 10px;">Three core lessons I use to turn constraints into digital momentum and strategic freedom.</p>
+                <p style="color: var(--color-gray-medium); margin-top: 10px;">My core lessons and foundations to turn constraints into digital momentum and strategic freedom.</p>
+            </div>
+            
+            <div class="pillar-featured-card reveal-on-scroll">
+                <span class="pillar-emoji" style="font-size: 3.5rem;">🙏</span>
+                <h3>Faith-Driven Inspiration</h3>
+                <p>
+                    All gratitude, respect, and honor go to God as the guide of my journey. Every digital system I build, every lesson I share, and everything I am able to do is dedicated to honoring Him. Inspiration is the name of the game—God is so good, providing me with a path of clarity and power to actively lift up and inspire others.
+                </p>
             </div>
             
             <div class="grid-3">

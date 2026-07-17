@@ -4571,5 +4571,44 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     margin-bottom: 20px;
 }
 
+.pillar-featured-card {
+    background: var(--color-white);
+    border-radius: var(--radius-md);
+    padding: 50px 40px;
+    text-align: center;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.04);
+    border: 2px solid rgba(230, 175, 46, 0.25);
+    margin-bottom: 45px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+.pillar-featured-card::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 6px;
+    background: var(--color-gold);
+}
+.pillar-featured-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 45px rgba(230, 175, 46, 0.08);
+    border-color: rgba(230, 175, 46, 0.5);
+}
+.pillar-featured-card h3 {
+    font-family: var(--font-heading);
+    color: var(--color-navy);
+    font-size: 1.8rem;
+    font-weight: 900;
+    margin-bottom: 18px;
+}
+.pillar-featured-card p {
+    font-size: 1.15rem;
+    color: var(--color-gray-medium);
+    line-height: 1.8;
+    max-width: 850px;
+    margin: 0 auto;
+}
+
 
 
