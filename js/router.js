@@ -1272,21 +1272,18 @@ Router.register('/services', () => `
 
 // 3. Mission Page Template
 Router.register('/mission', () => `
-    <div class="mission-hero">
-        <div class="floating-bubble bubble-1"></div>
-        <div class="floating-bubble bubble-2"></div>
-        <div class="floating-bubble bubble-3"></div>
-        <div class="container text-center" style="position: relative; z-index: 5;">
+    <div class="page-intro">
+        <div class="container text-center">
             <span class="section-tag text-teal">My Goal</span>
-            <h1 style="color: white; margin-top: 15px; font-family: var(--font-heading); font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 900; line-height: 1.2;">Reimagining What Is Possible</h1>
-            <p class="section-desc" style="color: var(--color-gray-light); max-width: 700px; margin: 20px auto 0 auto; font-size: 1.15rem; line-height: 1.6;">
+            <h1 style="color: white;">The Mission</h1>
+            <p class="section-desc" style="color: var(--color-gray-light);">
                 I teach creators how to turn limits into strategic leverage, live with a positive warrior mindset, and build highly-converting systems in the digital marketplace.
             </p>
         </div>
     </div>
     
     <!-- Interactive Perspective Console Section -->
-    <section class="section" style="background: var(--color-white); border-bottom: 1px solid rgba(226, 232, 240, 0.8); padding: 80px 0;">
+    <section class="mission-section reveal-on-scroll" style="background: var(--color-white); border-bottom: 1px solid rgba(226, 232, 240, 0.8);">
         <div class="container">
             <div class="text-center" style="max-width: 600px; margin: 0 auto 30px auto;">
                 <span class="section-tag text-teal">Playful Console</span>
@@ -1297,16 +1294,6 @@ Router.register('/mission', () => `
             </div>
             
             <div class="perspective-console">
-                <div class="console-header">
-                    <div class="console-dot-container">
-                        <span class="console-dot"></span>
-                        <span class="console-dot"></span>
-                        <span class="console-dot"></span>
-                    </div>
-                    <span class="console-title">Reframe_Engine_v1.0.exe</span>
-                    <span style="font-size: 1.2rem;">⚡</span>
-                </div>
-                
                 <div class="console-grid">
                     <div class="console-buttons-column">
                         <button class="console-btn active" data-constraint="physical">
@@ -1324,8 +1311,8 @@ Router.register('/mission', () => `
                     </div>
                     
                     <div class="console-display-column">
-                        <div id="console-loader" style="display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(7, 24, 39, 0.95); justify-content: center; align-items: center; z-index: 10;">
-                            <span style="color: var(--color-teal); font-family: var(--font-heading); font-weight: bold; animation: pulse-slow 1s infinite alternate; font-size: 0.9rem; letter-spacing: 0.1em;">REFRAMING PERSPECTIVE...</span>
+                        <div id="console-loader" style="display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255, 255, 255, 0.9); justify-content: center; align-items: center; z-index: 10;">
+                            <span style="color: var(--color-teal); font-family: var(--font-heading); font-weight: bold; animation: pulse-slow 1s infinite alternate; font-size: 1rem; letter-spacing: 0.1em;">REFRAMING...</span>
                         </div>
                         <h4 id="console-display-title" class="console-display-title">The Constraint Advantage</h4>
                         <p id="console-display-text" class="console-display-text">
@@ -1338,7 +1325,7 @@ Router.register('/mission', () => `
     </section>
 
     <!-- Three Core Pillars Section -->
-    <section class="pillar-section bg-light" style="background: #f8fafc; border-bottom: 1px solid rgba(226, 232, 240, 0.8);">
+    <section class="pillar-section reveal-on-scroll" style="border-bottom: 1px solid rgba(226, 232, 240, 0.8);">
         <div class="container">
             <div class="text-center" style="max-width: 600px; margin: 0 auto 50px auto;">
                 <span class="section-tag text-teal">My Pillars</span>
@@ -1375,7 +1362,7 @@ Router.register('/mission', () => `
     </section>
 
     <!-- Cute CTA Section -->
-    <section class="mission-cta">
+    <section class="mission-cta reveal-on-scroll">
         <div class="container text-center" style="position: relative; z-index: 5;">
             <h2 class="mission-cta-title">Ready to Turn Limits into Leverage?</h2>
             <p style="color: var(--color-gray-light); max-width: 600px; margin: 0 auto 30px auto; font-size: 1.1rem; line-height: 1.6;">

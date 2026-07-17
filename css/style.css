@@ -4382,110 +4382,38 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     padding: 0 var(--spacing-md) var(--spacing-md) var(--spacing-md);
 }
 
-/* Mission Page Rebuild - Fun, Cute, Futuristic styles */
-.mission-hero {
-    padding: 100px 0 80px 0;
-    background: radial-gradient(circle at top right, rgba(10, 216, 173, 0.1), transparent 40%),
-                radial-gradient(circle at bottom left, rgba(230, 175, 46, 0.08), transparent 40%),
-                var(--color-navy);
+/* Mission Page Rebuild - Friendly, Modern, Futuristic styles */
+.mission-section {
+    padding: 50px 0;
     position: relative;
-    overflow: hidden;
-    text-align: center;
 }
 
-.floating-bubble {
-    position: absolute;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--color-teal), rgba(10, 216, 173, 0.4));
-    filter: blur(8px);
-    opacity: 0.3;
-    pointer-events: none;
-    animation: float-slow 8s infinite ease-in-out;
+/* Scroll reveal animations */
+.reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
-
-.floating-bubble.bubble-1 {
-    width: 80px;
-    height: 80px;
-    top: 15%;
-    left: 10%;
-    animation-delay: 0s;
-}
-
-.floating-bubble.bubble-2 {
-    width: 120px;
-    height: 120px;
-    bottom: 10%;
-    right: 15%;
-    background: linear-gradient(135deg, var(--color-gold), rgba(230, 175, 46, 0.3));
-    animation-delay: 2s;
-}
-
-.floating-bubble.bubble-3 {
-    width: 60px;
-    height: 60px;
-    top: 50%;
-    left: 80%;
-    animation-delay: 4s;
-}
-
-@keyframes float-slow {
-    0%, 100% { transform: translateY(0) scale(1); }
-    50% { transform: translateY(-20px) scale(1.1); }
+.reveal-on-scroll.revealed {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .perspective-console {
-    background: rgba(7, 24, 39, 0.95);
-    border: 2px solid var(--color-teal);
+    background: var(--color-white);
+    border: 1px solid rgba(226, 232, 240, 0.8);
     border-radius: var(--radius-md);
-    padding: 30px;
+    padding: 40px;
     max-width: 100%;
-    margin: 40px auto;
-    box-shadow: 0 0 25px rgba(10, 216, 173, 0.25), inset 0 0 15px rgba(10, 216, 173, 0.1);
+    margin: 30px auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
     position: relative;
-    animation: console-glow 4s infinite alternate;
-}
-
-@keyframes console-glow {
-    from { box-shadow: 0 0 20px rgba(10, 216, 173, 0.2), inset 0 0 10px rgba(10, 216, 173, 0.05); }
-    to { box-shadow: 0 0 35px rgba(10, 216, 173, 0.4), inset 0 0 20px rgba(10, 216, 173, 0.15); }
-}
-
-.console-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid rgba(10, 216, 173, 0.3);
-    padding-bottom: 15px;
-    margin-bottom: 20px;
-}
-
-.console-dot-container {
-    display: flex;
-    gap: 8px;
-}
-
-.console-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: #ef4444;
-}
-.console-dot:nth-child(2) { background: #eab308; }
-.console-dot:nth-child(3) { background: #22c55e; }
-
-.console-title {
-    font-family: var(--font-heading);
-    font-weight: 700;
-    color: var(--color-white);
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
 }
 
 .console-grid {
     display: grid;
     grid-template-columns: 1fr 1.5fr;
-    gap: 20px;
+    gap: 30px;
 }
 
 @media (max-width: 768px) {
@@ -4497,45 +4425,46 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
 .console-buttons-column {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 15px;
 }
 
 .console-btn {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(10, 216, 173, 0.3);
-    color: var(--color-gray-steel);
-    padding: 12px 15px;
+    background: #ffffff;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    color: var(--color-navy);
+    padding: 15px 20px;
     border-radius: var(--radius-sm);
     cursor: pointer;
     font-family: var(--font-body);
-    font-weight: 600;
+    font-weight: 700;
     text-align: left;
     transition: all 0.25s ease;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
 .console-btn:hover {
-    background: rgba(10, 216, 173, 0.08);
+    background: #f8fafc;
+    color: var(--color-teal);
     border-color: var(--color-teal);
-    color: var(--color-white);
-    transform: translateX(4px);
+    transform: translateY(-2px);
 }
 
 .console-btn.active {
-    background: var(--color-teal);
-    color: var(--color-navy);
-    border-color: var(--color-teal);
-    box-shadow: 0 0 12px rgba(10, 216, 173, 0.4);
-    transform: translateX(4px);
+    background: var(--color-navy);
+    color: var(--color-white);
+    border-color: var(--color-navy);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(7, 24, 39, 0.15);
 }
 
 .console-display-column {
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(10, 216, 173, 0.2);
+    background: #f8fafc;
+    border: 1px solid rgba(226, 232, 240, 0.8);
     border-radius: var(--radius-sm);
-    padding: 20px;
+    padding: 30px;
     min-height: 180px;
     display: flex;
     flex-direction: column;
@@ -4544,34 +4473,26 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     overflow: hidden;
 }
 
-.console-display-column::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-    background-size: 100% 4px, 3px 100%;
-    pointer-events: none;
-}
-
 .console-display-title {
     font-family: var(--font-heading);
-    color: var(--color-gold);
-    font-size: 1.1rem;
-    margin-bottom: 8px;
+    color: var(--color-teal);
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin-bottom: 12px;
     text-transform: uppercase;
 }
 
 .console-display-text {
     font-family: var(--font-body);
-    color: var(--color-gray-light);
-    font-size: 0.95rem;
-    line-height: 1.6;
+    color: var(--color-navy);
+    font-size: 1.05rem;
+    line-height: 1.7;
     margin: 0;
 }
 
 .pillar-section {
-    padding: 80px 0;
-    background: var(--color-white);
+    padding: 60px 0;
+    background: #f8fafc;
 }
 
 .pillar-card {
@@ -4598,8 +4519,8 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
 
 .pillar-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(10, 216, 173, 0.1);
-    border-color: rgba(10, 216, 173, 0.25);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);
+    border-color: rgba(10, 216, 173, 0.3);
 }
 
 .pillar-card:hover::after {
@@ -4611,27 +4532,20 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
 }
 
 .pillar-card.card-gold:hover {
-    box-shadow: 0 20px 40px rgba(230, 175, 46, 0.1);
-    border-color: rgba(230, 175, 46, 0.25);
+    border-color: rgba(230, 175, 46, 0.3);
 }
 
 .pillar-emoji {
-    font-size: 3rem;
-    margin-bottom: 20px;
-    display: inline-block;
-    animation: pulse-slow 3s infinite ease-in-out;
-}
-
-@keyframes pulse-slow {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 15px;
 }
 
 .pillar-card h3 {
     font-family: var(--font-heading);
-    font-size: 1.4rem;
-    font-weight: 800;
     color: var(--color-navy);
+    font-size: 1.3rem;
+    font-weight: 800;
     margin-bottom: 15px;
 }
 
@@ -4644,7 +4558,7 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
 
 .mission-cta {
     background: var(--color-navy);
-    padding: 80px 0;
+    padding: 60px 0;
     text-align: center;
     position: relative;
 }
