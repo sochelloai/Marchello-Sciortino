@@ -1277,7 +1277,7 @@ Router.register('/mission', () => `
         <div class="floating-bubble bubble-2"></div>
         <div class="floating-bubble bubble-3"></div>
         <div class="container text-center" style="position: relative; z-index: 5;">
-            <span class="section-tag text-teal" style="background: rgba(10, 216, 173, 0.15); border: 1px solid rgba(10, 216, 173, 0.3); padding: 6px 16px; border-radius: 30px; font-weight: 700; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;">Our Goal</span>
+            <span class="section-tag text-teal">My Goal</span>
             <h1 style="color: white; margin-top: 15px; font-family: var(--font-heading); font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 900; line-height: 1.2;">Reimagining What Is Possible</h1>
             <p class="section-desc" style="color: var(--color-gray-light); max-width: 700px; margin: 20px auto 0 auto; font-size: 1.15rem; line-height: 1.6;">
                 I teach creators how to turn limits into strategic leverage, live with a positive warrior mindset, and build highly-converting systems in the digital marketplace.
@@ -1329,7 +1329,7 @@ Router.register('/mission', () => `
                         </div>
                         <h4 id="console-display-title" class="console-display-title">The Constraint Advantage</h4>
                         <p id="console-display-text" class="console-display-text">
-                            Physical boundaries force you to preserve energy and leverage assistants. By using voice-driven automation, AI digital twins, and structured workflows, you save physical coordination while multiplying your digital leverage.
+                            Physical boundaries force me to preserve energy and leverage assistants. By using voice-driven automation, my AI digital twins, and structured workflows, I save my physical coordination while multiplying my digital leverage.
                         </p>
                     </div>
                 </div>
@@ -1341,9 +1341,9 @@ Router.register('/mission', () => `
     <section class="pillar-section bg-light" style="background: #f8fafc; border-bottom: 1px solid rgba(226, 232, 240, 0.8);">
         <div class="container">
             <div class="text-center" style="max-width: 600px; margin: 0 auto 50px auto;">
-                <span class="section-tag text-teal">Our Pillars</span>
-                <h2 class="text-navy" style="margin-top: 10px; font-weight: 800; font-family: var(--font-heading);">What We Teach</h2>
-                <p style="color: var(--color-gray-medium); margin-top: 10px;">Three core lessons that turn constraints into digital momentum and strategic freedom.</p>
+                <span class="section-tag text-teal">My Pillars</span>
+                <h2 class="text-navy" style="margin-top: 10px; font-weight: 800; font-family: var(--font-heading);">What I Teach</h2>
+                <p style="color: var(--color-gray-medium); margin-top: 10px;">Three core lessons I use to turn constraints into digital momentum and strategic freedom.</p>
             </div>
             
             <div class="grid-3">
@@ -1351,7 +1351,7 @@ Router.register('/mission', () => `
                     <span class="pillar-emoji">🎯</span>
                     <h3>The Constraint Advantage</h3>
                     <p>
-                        A limit is not a roadblock; it is a design parameter. Physical or environmental constraints force you to filter out noise, simplify layouts, and focus only on creating the highest-value digital solutions.
+                        A limit is not a roadblock; it is a design parameter. Physical or environmental constraints force me to filter out noise, simplify layouts, and focus only on creating the highest-value digital solutions.
                     </p>
                 </div>
                 
@@ -1359,7 +1359,7 @@ Router.register('/mission', () => `
                     <span class="pillar-emoji">⚡</span>
                     <h3>Positive Mindset</h3>
                     <p>
-                        Warrior acceptance means accepting reality today, stopping excuses, and choosing to build with what is left in your hands. A joyful, determined attitude is the spark that keeps projects consistent.
+                        Warrior acceptance means accepting reality today, stopping excuses, and choosing to build with what is left in my hands. My joyful, determined attitude is the spark that keeps my projects consistent.
                     </p>
                 </div>
                 
@@ -1367,7 +1367,7 @@ Router.register('/mission', () => `
                     <span class="pillar-emoji">🚀</span>
                     <h3>Digital Marketplace</h3>
                     <p>
-                        We build clean online funnels, custom landing pages, and AI-driven automation systems. Mastering these digital skills allows anyone to monetize their creativity and scale their agency without boundaries.
+                        I build clean online funnels, custom landing pages, and AI-driven automation systems. Mastering these digital skills allows me to monetize my creativity and scale my projects without boundaries.
                     </p>
                 </div>
             </div>
@@ -1379,7 +1379,7 @@ Router.register('/mission', () => `
         <div class="container text-center" style="position: relative; z-index: 5;">
             <h2 class="mission-cta-title">Ready to Turn Limits into Leverage?</h2>
             <p style="color: var(--color-gray-light); max-width: 600px; margin: 0 auto 30px auto; font-size: 1.1rem; line-height: 1.6;">
-                I value real connections and sharing helpful worksheets. Join the movement to reframe constraints and construct your next digital project today!
+                I value real connections and sharing helpful worksheets. Join me to reframe constraints and construct your next digital project today!
             </p>
             <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
                 <a href="/free-gifts" class="btn btn-teal">Explore Free Gifts</a>

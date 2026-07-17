@@ -578,19 +578,19 @@ function initPerspectiveConsole() {
     const reframes = {
         physical: {
             title: "The Constraint Advantage",
-            text: "Physical boundaries force you to preserve energy and leverage assistants. By using voice-driven automation, AI digital twins, and structured workflows, you save physical coordination while multiplying your digital leverage."
+            text: "Physical boundaries force me to preserve energy and leverage assistants. By using voice-driven automation, my AI digital twins, and structured workflows, I save my physical coordination while multiplying my digital leverage."
         },
         time: {
             title: "The Time Leverage",
-            text: "Having limited hours forces you to stop wasting energy on non-essential busywork. It triggers extreme focus, leading you to build only high-converting, core funnels and systems that produce maximum impact."
+            text: "Having limited hours forces me to stop wasting energy on non-essential busywork. It triggers my extreme focus, leading me to build only high-converting, core funnels and systems that produce maximum impact."
         },
         tech: {
             title: "The Beginner Advantage",
-            text: "A lack of technical experience prevents over-engineering and keeps your solutions simple, direct, and user-friendly. You focus on human connection and clean messaging rather than getting lost in complex code."
+            text: "A lack of technical experience prevents over-engineering and keeps my solutions simple, direct, and user-friendly. I focus on human connection and clean messaging rather than getting lost in complex code."
         },
         audience: {
             title: "The Niche Advantage",
-            text: "A small audience allows you to build deep, genuine relationships and offer hyper-personalized value. You refine your offers, gather intense feedback, and achieve higher conversion rates with people who truly care."
+            text: "A small audience allows me to build deep, genuine relationships and offer hyper-personalized value. I refine my offers, gather intense feedback, and achieve higher conversion rates with people who truly care."
         }
     };
 
