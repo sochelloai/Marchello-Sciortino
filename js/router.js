@@ -2178,23 +2178,46 @@ Router.register('/free-gifts', () => `
     <section class="section bg-white">
         <div class="container">
             <div class="grid-3">
-                <div class="card">
-                    <span class="section-tag">PDF Worksheet</span>
-                    <h3>W.I.N. Reframe Matrix</h3>
-                    <p>A step-by-step reflection grid to list your active constraints and construct a custom action plan.</p>
-                    <a href="/free-gifts" class="btn btn-outline-teal" onclick="alert('Downloading W.I.N. Reframe Matrix PDF'); return false;" style="margin-top: 15px;">Download PDF</a>
+                <div class="resource-card">
+                    <div class="resource-image-wrapper">
+                        <span class="resource-badge">PDF Worksheet</span>
+                        <img src="assets/free-gifts/WIN_Reframe_Matrix_cover_image.png" alt="W.I.N. Reframe Matrix cover" class="resource-cover-image">
+                    </div>
+                    <div class="resource-card-content">
+                        <h3>W.I.N. Reframe Matrix</h3>
+                        <p>A step-by-step reflection grid to list your active constraints and construct a custom action plan.</p>
+                    </div>
+                    <div class="resource-card-button-wrapper">
+                        <a href="assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf" download="WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf" class="btn btn-outline-teal" style="width: 100%; text-align: center;">Download PDF</a>
+                    </div>
                 </div>
-                <div class="card">
-                    <span class="section-tag">Prompt Cheat Sheet</span>
-                    <h3>AI Accessibility Commands</h3>
-                    <p>My core templates for configuring AI writing assistants to act as efficient transcription guides.</p>
-                    <a href="/free-gifts" class="btn btn-outline-teal" onclick="alert('Downloading AI Accessibility Commands Prompt Guide'); return false;" style="margin-top: 15px;">Download Guide</a>
+                
+                <div class="resource-card">
+                    <div class="resource-image-wrapper">
+                        <span class="resource-badge">Prompt Cheat Sheet</span>
+                        <img src="assets/free-gifts/Prompt_Cheat_Sheat_cover_image.png" alt="AI Accessibility Commands cover" class="resource-cover-image">
+                    </div>
+                    <div class="resource-card-content">
+                        <h3>AI Accessibility Commands</h3>
+                        <p>My core templates for configuring AI writing assistants to act as efficient transcription guides.</p>
+                    </div>
+                    <div class="resource-card-button-wrapper">
+                        <a href="assets/free-gifts/Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf" download="Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf" class="btn btn-outline-teal" style="width: 100%; text-align: center;">Download Guide</a>
+                    </div>
                 </div>
-                <div class="card">
-                    <span class="section-tag">Checklist</span>
-                    <h3>Digital Flow Audit</h3>
-                    <p>A simple check sheet to audit your landing pages for ADA accessibility and speed friction blocks.</p>
-                    <a href="/free-gifts" class="btn btn-outline-teal" onclick="alert('Downloading Digital Flow Audit Checklist'); return false;" style="margin-top: 15px;">Download Checklist</a>
+                
+                <div class="resource-card">
+                    <div class="resource-image-wrapper">
+                        <span class="resource-badge">Checklist</span>
+                        <img src="assets/free-gifts/Digital_Flow_Audit_cover_image.png" alt="Digital Flow Audit cover" class="resource-cover-image">
+                    </div>
+                    <div class="resource-card-content">
+                        <h3>Digital Flow Audit</h3>
+                        <p>A simple check sheet to audit your landing pages for ADA accessibility and speed friction blocks.</p>
+                    </div>
+                    <div class="resource-card-button-wrapper">
+                        <a href="assets/free-gifts/Digital_Flow_Audit_Checklist_Enhanced.pdf" download="Digital_Flow_Audit_Checklist_Enhanced.pdf" class="btn btn-outline-teal" style="width: 100%; text-align: center;">Download Checklist</a>
+                    </div>
                 </div>
             </div>
         </div>
