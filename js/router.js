@@ -1275,10 +1275,6 @@ Router.register('/mission', () => `
     <style>
     /* Show and restyle the site's default header and footer for luxury dark-theme integration */
     body:has(.mission-immersive-page) .main-header {
-        background: url('assets/bg_marble_dark.png') center/cover no-repeat !important;
-        backdrop-filter: blur(16px) !important;
-        -webkit-backdrop-filter: blur(16px) !important;
-        border-bottom: 1px solid rgba(230, 175, 46, 0.25) !important; /* Elegant gold border bottom */
         display: block !important;
         position: fixed !important;
         width: 100% !important;
@@ -1286,13 +1282,34 @@ Router.register('/mission', () => `
         left: 0 !important;
         z-index: 1000 !important;
     }
+
+    /* Restyle the header container directly since it holds the backgrounds/borders */
+    body:has(.mission-immersive-page) .header-container {
+        background: url('assets/bg_marble_dark.png') center/cover no-repeat !important;
+        backdrop-filter: blur(16px) !important;
+        -webkit-backdrop-filter: blur(16px) !important;
+        border: 1px solid rgba(230, 175, 46, 0.25) !important; /* Elegant gold border */
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5) !important;
+    }
+
+    /* Hide teal nav flares */
+    body:has(.mission-immersive-page) .nav-flare {
+        display: none !important;
+    }
     
     body:has(.mission-immersive-page) .main-header * {
         color: #ffffff !important;
     }
     
-    body:has(.mission-immersive-page) .main-header .nav-link:hover {
-        color: #e6af2e !important; /* Gold links on hover */
+    body:has(.mission-immersive-page) .main-header .nav-link:hover,
+    body:has(.mission-immersive-page) .main-header .nav-link.active {
+        color: #e6af2e !important; /* Gold links on hover & active */
+        text-shadow: 0 0 8px rgba(230, 175, 46, 0.5) !important;
+    }
+
+    body:has(.mission-immersive-page) .main-header .nav-link::after {
+        background-color: #e6af2e !important;
+        box-shadow: 0 0 8px #e6af2e !important;
     }
     
     body:has(.mission-immersive-page) .instagram-section-link {
