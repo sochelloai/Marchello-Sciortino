@@ -1273,12 +1273,12 @@ Router.register('/services', () => `
 // 3. Mission Page Template
 Router.register('/mission', () => `
     <style>
-    /* Show and restyle the site's default header and footer for dark-theme integration */
+    /* Show and restyle the site's default header and footer for luxury dark-theme integration */
     body:has(.mission-immersive-page) .main-header {
-        background: rgba(10, 10, 10, 0.7) !important;
+        background: linear-gradient(rgba(10, 10, 10, 0.8), rgba(10, 10, 10, 0.8)), url('assets/bg_marble_dark.png') center/cover no-repeat !important;
         backdrop-filter: blur(16px) !important;
         -webkit-backdrop-filter: blur(16px) !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+        border-bottom: 1px solid rgba(230, 175, 46, 0.25) !important; /* Elegant gold border bottom */
         display: block !important;
         position: fixed !important;
         width: 100% !important;
@@ -1287,13 +1287,21 @@ Router.register('/mission', () => `
         z-index: 1000 !important;
     }
     
+    body:has(.mission-immersive-page) .main-header * {
+        color: #ffffff !important;
+    }
+    
+    body:has(.mission-immersive-page) .main-header .nav-link:hover {
+        color: #e6af2e !important; /* Gold links on hover */
+    }
+    
     body:has(.mission-immersive-page) .instagram-section-link {
         display: none !important;
     }
     
     body:has(.mission-immersive-page) .main-footer {
-        background: #050505 !important;
-        border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
+        background: linear-gradient(rgba(5, 5, 5, 0.85), rgba(5, 5, 5, 0.85)), url('assets/bg_marble_dark.png') center/cover no-repeat !important;
+        border-top: 1px solid rgba(230, 175, 46, 0.2) !important;
         display: block !important;
         padding: 5rem 2.5rem 2rem 2.5rem !important;
     }
@@ -1303,7 +1311,7 @@ Router.register('/mission', () => `
     }
     
     body:has(.mission-immersive-page) .main-footer a:hover {
-        color: #ffffff !important;
+        color: #e6af2e !important; /* Gold on hover */
     }
     
     body:has(.mission-immersive-page) .main-footer .footer-logo-img {
@@ -1367,7 +1375,7 @@ Router.register('/mission', () => `
         pointer-events: none;
         z-index: 1;
         filter: blur(150px);
-        opacity: 0.06;
+        opacity: 0.05;
         mix-blend-mode: screen;
         animation: floatFlare 15s infinite alternate ease-in-out;
     }
@@ -1405,8 +1413,7 @@ Router.register('/mission', () => `
         position: relative;
         overflow: hidden;
         box-sizing: border-box;
-        background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), #121212 0%, #0A0A0A 100%);
-        transition: background 0.05s ease-out;
+        background: linear-gradient(rgba(10, 10, 10, 0.8), rgba(10, 10, 10, 0.8)), url('assets/bg_marble_dark.png') center/cover no-repeat;
         border-bottom: 1px solid rgba(255, 255, 255, 0.03);
     }
     
@@ -1494,7 +1501,7 @@ Router.register('/mission', () => `
     #section_perspective_console {
         padding: 7rem 2.5rem;
         border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-        background: #0A0A0A;
+        background: linear-gradient(rgba(10, 10, 10, 0.8), rgba(10, 10, 10, 0.8)), url('assets/bg_brushed_aluminum.png') center/cover no-repeat;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -1551,7 +1558,7 @@ Router.register('/mission', () => `
     }
     
     .perspective-console-immersive .console-btn {
-        background: rgba(20, 20, 20, 0.4);
+        background: rgba(15, 15, 15, 0.65);
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
         border: 1px solid rgba(255, 255, 255, 0.05);
@@ -1582,7 +1589,7 @@ Router.register('/mission', () => `
     }
     
     .perspective-console-immersive .console-display-column {
-        background: rgba(20, 20, 20, 0.4);
+        background: rgba(15, 15, 15, 0.65);
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
         border: 1px solid rgba(255, 255, 255, 0.05);
@@ -1620,7 +1627,7 @@ Router.register('/mission', () => `
         display: flex;
         flex-direction: column;
         justify-content: center;
-        background-color: #0A0A0A;
+        background: linear-gradient(rgba(10, 10, 10, 0.8), rgba(10, 10, 10, 0.8)), url('assets/bg_gold_glitter.png') center/cover no-repeat;
         position: relative;
     }
     
@@ -1656,7 +1663,7 @@ Router.register('/mission', () => `
     }
     
     .bento-featured-card {
-        background: rgba(20, 20, 20, 0.4);
+        background: rgba(15, 15, 15, 0.6);
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
         border-radius: 12px;
@@ -1664,7 +1671,7 @@ Router.register('/mission', () => `
         position: relative;
         overflow: hidden;
         box-sizing: border-box;
-        border: 1px solid rgba(230, 175, 46, 0.2) !important; /* gold border tint */
+        border: 1px solid rgba(230, 175, 46, 0.25) !important; /* gold border tint */
         margin-bottom: 1.5rem;
         width: 100%;
         transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
@@ -1672,7 +1679,7 @@ Router.register('/mission', () => `
     
     .bento-featured-card:hover {
         transform: translateY(-4px);
-        box-shadow: 0 10px 30px rgba(230, 175, 46, 0.06);
+        box-shadow: 0 10px 30px rgba(230, 175, 46, 0.08);
     }
     
     .bento-featured-card::before {
@@ -1715,7 +1722,7 @@ Router.register('/mission', () => `
     }
     
     .bento-card {
-        background: rgba(20, 20, 20, 0.4);
+        background: rgba(15, 15, 15, 0.6);
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
         border-radius: 12px;
@@ -1768,7 +1775,7 @@ Router.register('/mission', () => `
     #section_03_narrative_bleed {
         height: 80vh;
         width: 100%;
-        background: #090909;
+        background: linear-gradient(rgba(10, 10, 10, 0.8), rgba(10, 10, 10, 0.8)), url('assets/bg_marble_light.png') center/cover no-repeat;
         display: flex;
         flex-direction: column;
         justify-content: center;
