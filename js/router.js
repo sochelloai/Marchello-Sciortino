@@ -1273,11 +1273,41 @@ Router.register('/services', () => `
 // 3. Mission Page Template
 Router.register('/mission', () => `
     <style>
-    /* When on the immersive mission page, hide the site's default header, instagram link, and footer */
-    body:has(.mission-immersive-page) .main-header,
-    body:has(.mission-immersive-page) .instagram-section-link,
-    body:has(.mission-immersive-page) .main-footer {
+    /* Show and restyle the site's default header and footer for dark-theme integration */
+    body:has(.mission-immersive-page) .main-header {
+        background: rgba(10, 10, 10, 0.7) !important;
+        backdrop-filter: blur(16px) !important;
+        -webkit-backdrop-filter: blur(16px) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+        display: block !important;
+        position: fixed !important;
+        width: 100% !important;
+        top: 0 !important;
+        left: 0 !important;
+        z-index: 1000 !important;
+    }
+    
+    body:has(.mission-immersive-page) .instagram-section-link {
         display: none !important;
+    }
+    
+    body:has(.mission-immersive-page) .main-footer {
+        background: #050505 !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
+        display: block !important;
+        padding: 5rem 2.5rem 2rem 2.5rem !important;
+    }
+    
+    body:has(.mission-immersive-page) .main-footer * {
+        color: rgba(255, 255, 255, 0.5) !important;
+    }
+    
+    body:has(.mission-immersive-page) .main-footer a:hover {
+        color: #ffffff !important;
+    }
+    
+    body:has(.mission-immersive-page) .main-footer .footer-logo-img {
+        filter: brightness(1) !important;
     }
     
     /* Reset body padding/background when immersive page is active */
@@ -1297,6 +1327,7 @@ Router.register('/mission', () => `
         width: 100%;
         position: relative;
         overflow-x: hidden;
+        padding-top: 80px; /* offset for fixed header */
     }
     
     /* Cursor styles */
@@ -1327,19 +1358,56 @@ Router.register('/mission', () => `
         transition: opacity 0.3s ease, width 0.3s ease, height 0.3s ease, border-radius 0.3s ease;
     }
     
+    /* Ambient Neon Flares */
+    .ambient-flare {
+        position: absolute;
+        width: 45vw;
+        height: 45vw;
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 1;
+        filter: blur(150px);
+        opacity: 0.06;
+        mix-blend-mode: screen;
+        animation: floatFlare 15s infinite alternate ease-in-out;
+    }
+    
+    .flare-gold {
+        background: radial-gradient(circle, #e6af2e 0%, transparent 70%);
+        top: 5%;
+        left: -15%;
+    }
+    
+    .flare-teal {
+        background: radial-gradient(circle, #00f2fe 0%, transparent 70%);
+        bottom: 15%;
+        right: -15%;
+        animation-delay: -7.5s;
+    }
+    
+    @keyframes floatFlare {
+        0% {
+            transform: translate3d(0, 0, 0) scale(1);
+        }
+        100% {
+            transform: translate3d(6vw, 6vh, 0) scale(1.15);
+        }
+    }
+    
     /* Hero Styles */
     #section_01_hero {
-        height: 100vh;
+        height: 90vh;
         width: 100%;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
-        padding: 2.5rem;
+        justify-content: center;
+        padding: 5rem 2.5rem;
         position: relative;
         overflow: hidden;
         box-sizing: border-box;
-        background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), #141414 0%, #0A0A0A 100%);
+        background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), #121212 0%, #0A0A0A 100%);
         transition: background 0.05s ease-out;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
     }
     
     .hero-eyebrow {
@@ -1348,6 +1416,8 @@ Router.register('/mission', () => `
         color: rgba(255, 255, 255, 0.5);
         font-weight: 700;
         text-transform: uppercase;
+        margin-bottom: 1.5rem;
+        display: inline-block;
     }
     
     .hero-heading {
@@ -1356,7 +1426,7 @@ Router.register('/mission', () => `
         font-weight: 900;
         color: #ffffff;
         line-height: 1.1;
-        margin: 1.5rem 0;
+        margin: 0.5rem 0 2rem 0;
     }
     
     .hero-heading span.char-span {
@@ -1379,22 +1449,25 @@ Router.register('/mission', () => `
         font-weight: 400;
         max-width: 700px;
         line-height: 1.6;
+        margin-bottom: 3rem;
     }
     
     .hero-btn {
         align-self: flex-start;
-        background: transparent;
+        background: rgba(255, 255, 255, 0.03);
         color: #ffffff;
-        border: 1px solid rgba(255, 255, 255, 0.25);
+        border: 1px solid rgba(255, 255, 255, 0.15);
         padding: 14px 28px;
         font-size: 0.95rem;
         font-weight: 700;
         border-radius: 8px;
         cursor: pointer;
         text-decoration: none;
-        transition: border-color 0.3s ease, color 0.3s ease;
+        transition: border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
         position: relative;
         overflow: hidden;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
     }
     
     .hero-btn::before {
@@ -1414,22 +1487,26 @@ Router.register('/mission', () => `
     
     .hero-btn:hover {
         border-color: #ffffff;
+        background: rgba(255, 255, 255, 0.06);
     }
     
     /* Interactive Perspective Console Section */
     #section_perspective_console {
         padding: 7rem 2.5rem;
-        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
         background: #0A0A0A;
         display: flex;
         flex-direction: column;
         justify-content: center;
+        position: relative;
     }
     
     .console-header {
         max-width: 1200px;
         margin: 0 auto 3rem auto;
         width: 100%;
+        position: relative;
+        z-index: 5;
     }
     
     .console-header h2 {
@@ -1451,6 +1528,8 @@ Router.register('/mission', () => `
         max-width: 1200px;
         margin: 0 auto;
         width: 100%;
+        position: relative;
+        z-index: 5;
     }
     
     .perspective-console-immersive .console-grid {
@@ -1472,7 +1551,9 @@ Router.register('/mission', () => `
     }
     
     .perspective-console-immersive .console-btn {
-        background: #121212;
+        background: rgba(20, 20, 20, 0.4);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
         border: 1px solid rgba(255, 255, 255, 0.05);
         color: rgba(255, 255, 255, 0.6);
         padding: 1.2rem;
@@ -1488,19 +1569,22 @@ Router.register('/mission', () => `
     }
     
     .perspective-console-immersive .console-btn.active {
-        background: #ffffff;
-        color: #0A0A0A;
-        border-color: #ffffff;
+        background: #ffffff !important;
+        color: #0A0A0A !important;
+        border-color: #ffffff !important;
+        box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15) !important;
     }
     
     .perspective-console-immersive .console-btn:hover:not(.active) {
-        background: #1a1a1a;
+        background: rgba(255, 255, 255, 0.05) !important;
         color: #ffffff;
         border-color: rgba(255, 255, 255, 0.2);
     }
     
     .perspective-console-immersive .console-display-column {
-        background: #121212;
+        background: rgba(20, 20, 20, 0.4);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
         border: 1px solid rgba(255, 255, 255, 0.05);
         padding: 3rem;
         border-radius: 12px;
@@ -1532,17 +1616,20 @@ Router.register('/mission', () => `
         width: 100%;
         padding: 7rem 2.5rem;
         box-sizing: border-box;
-        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
         display: flex;
         flex-direction: column;
         justify-content: center;
         background-color: #0A0A0A;
+        position: relative;
     }
     
     .bento-header {
         max-width: 1200px;
         margin: 0 auto 3rem auto;
         width: 100%;
+        position: relative;
+        z-index: 5;
     }
     
     .bento-header h2 {
@@ -1564,16 +1651,20 @@ Router.register('/mission', () => `
         max-width: 1200px;
         margin: 0 auto;
         width: 100%;
+        position: relative;
+        z-index: 5;
     }
     
     .bento-featured-card {
-        background: #121212;
+        background: rgba(20, 20, 20, 0.4);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
         border-radius: 12px;
         padding: 3rem;
         position: relative;
         overflow: hidden;
         box-sizing: border-box;
-        border: 1px solid rgba(230, 175, 46, 0.15); /* gold border tint */
+        border: 1px solid rgba(230, 175, 46, 0.2) !important; /* gold border tint */
         margin-bottom: 1.5rem;
         width: 100%;
         transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
@@ -1581,7 +1672,7 @@ Router.register('/mission', () => `
     
     .bento-featured-card:hover {
         transform: translateY(-4px);
-        box-shadow: 0 10px 30px rgba(230, 175, 46, 0.04);
+        box-shadow: 0 10px 30px rgba(230, 175, 46, 0.06);
     }
     
     .bento-featured-card::before {
@@ -1624,13 +1715,15 @@ Router.register('/mission', () => `
     }
     
     .bento-card {
-        background: #121212;
+        background: rgba(20, 20, 20, 0.4);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
         border-radius: 12px;
         padding: 2.5rem;
         position: relative;
         overflow: hidden;
         box-sizing: border-box;
-        border: 1px solid rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.04) !important;
         transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
     }
     
@@ -1693,6 +1786,8 @@ Router.register('/mission', () => `
         color: #ffffff;
         letter-spacing: -0.02em;
         margin-bottom: 1.5rem;
+        position: relative;
+        z-index: 5;
     }
     
     .narrative-statement {
@@ -1705,78 +1800,8 @@ Router.register('/mission', () => `
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         transition: background 0.05s ease-out;
-    }
-    
-    /* Footer */
-    #section_04_monogram_footer {
-        min-height: 60vh;
-        width: 100%;
-        background: #050505;
-        padding: 4rem 2.5rem;
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: center;
         position: relative;
-        overflow: hidden;
-        border-top: 1px solid rgba(255, 255, 255, 0.05);
-    }
-    
-    .footer-links-container {
-        display: flex;
-        gap: 2.5rem;
         z-index: 5;
-        margin-top: 2rem;
-    }
-    
-    .footer-link {
-        color: rgba(255, 255, 255, 0.6);
-        font-size: 1rem;
-        font-weight: 600;
-        text-decoration: none;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        position: relative;
-        transition: opacity 0.3s ease, color 0.3s ease;
-    }
-    
-    .footer-link::after {
-        content: "";
-        position: absolute;
-        left: 0; bottom: -4px;
-        width: 100%; height: 1px;
-        background-color: #ffffff;
-        transform: scaleX(0);
-        transform-origin: left;
-        transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-    }
-    
-    .footer-link:hover {
-        color: #ffffff;
-    }
-    
-    .footer-link:hover::after {
-        transform: scaleX(1);
-    }
-    
-    .footer-links-container:hover .footer-link:not(:hover) {
-        opacity: 0.4;
-    }
-    
-    .footer-watermark {
-        font-family: var(--font-heading);
-        font-size: clamp(3rem, 12vw, 9rem);
-        font-weight: 900;
-        color: rgba(255, 255, 255, 0.015);
-        text-transform: uppercase;
-        letter-spacing: 0.2em;
-        pointer-events: none;
-        user-select: none;
-        z-index: 1;
-        margin-bottom: 2rem;
-        transition: letter-spacing 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        text-align: center;
     }
     
     /* Reduced motion guidelines */
@@ -1809,23 +1834,28 @@ Router.register('/mission', () => `
     </style>
     
     <div class="mission-immersive-page">
+        <!-- Ambient Background Flares (Cinematic Glows) -->
+        <div class="ambient-flare flare-gold"></div>
+        <div class="ambient-flare flare-teal"></div>
+        
         <!-- 1. Hero Section -->
         <header id="section_01_hero">
-            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <!-- Curved background gold lines using SVG curves -->
+            <svg style="position: absolute; left: 0; top: 0; height: 100%; width: 220px; pointer-events: none; opacity: 0.25; z-index: 2;" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path d="M -10,0 Q 20,40 100,50 M -10,15 Q 20,55 100,65 M -10,30 Q 20,70 100,80 M -10,45 Q 20,85 100,95 M -10,60 Q 20,100 100,110" fill="none" stroke="#e6af2e" stroke-width="0.3" />
+            </svg>
+            <svg style="position: absolute; right: 0; top: 0; height: 100%; width: 220px; pointer-events: none; opacity: 0.25; z-index: 2;" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path d="M 110,0 Q 80,40 0,50 M 110,15 Q 80,55 0,65 M 110,30 Q 80,70 0,80 M 110,45 Q 80,85 0,95 M 110,60 Q 80,100 0,110" fill="none" stroke="#e6af2e" stroke-width="0.3" />
+            </svg>
+
+            <div style="position: relative; z-index: 5;">
                 <span class="hero-eyebrow">THE NEXT PARADIGM</span>
-                <a href="/" class="hero-eyebrow" style="text-decoration: none; color: rgba(255, 255, 255, 0.3); transition: color 0.3s;" onmouseover="this.style.color='#ffffff'" onmouseout="this.style.color='rgba(255, 255, 255, 0.3)'">&larr; Back to Main Site</a>
-            </div>
-            
-            <div style="margin: auto 0;">
                 <h1 class="hero-heading">
                     Architecting Digital Momentum
                 </h1>
                 <p class="hero-subheading">
                     I teach creators how to turn limits into strategic leverage, live with a positive warrior mindset, and build highly-converting systems in the digital marketplace.
                 </p>
-            </div>
-            
-            <div>
                 <a href="#section_perspective_console" class="hero-btn" data-magnetic="true">
                     Explore the Canvas
                 </a>
@@ -1874,6 +1904,14 @@ Router.register('/mission', () => `
         
         <!-- 3. Bento Pillars Section -->
         <section id="section_02_bento_features">
+            <!-- Curved background gold lines using SVG curves -->
+            <svg style="position: absolute; left: 0; top: 10%; height: 80%; width: 220px; pointer-events: none; opacity: 0.15; z-index: 2;" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path d="M -10,0 Q 20,40 100,50 M -10,15 Q 20,55 100,65 M -10,30 Q 20,70 100,80" fill="none" stroke="#e6af2e" stroke-width="0.3" />
+            </svg>
+            <svg style="position: absolute; right: 0; top: 10%; height: 80%; width: 220px; pointer-events: none; opacity: 0.15; z-index: 2;" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path d="M 110,0 Q 80,40 0,50 M 110,15 Q 80,55 0,65 M 110,30 Q 80,70 0,80" fill="none" stroke="#e6af2e" stroke-width="0.3" />
+            </svg>
+
             <div class="bento-header">
                 <span class="hero-eyebrow" style="display: block; margin-bottom: 0.5rem;">Core Disciplines</span>
                 <h2>What I Teach</h2>
@@ -1921,23 +1959,8 @@ Router.register('/mission', () => `
                 Limits are design parameters, not barriers. We tether constraint directly to strategic leverage.
             </p>
         </section>
-        
-        <!-- 5. Monogram Footer Section -->
-        <footer id="section_04_monogram_footer">
-            <div class="footer-links-container">
-                <a href="/" class="footer-link">Index</a>
-                <a href="/story" class="footer-link">Architecture</a>
-                <a href="/services" class="footer-link">Systems</a>
-                <a href="/hub" class="footer-link">Journal</a>
-            </div>
-            
-            <div class="footer-watermark">
-                MOMENTUM
-            </div>
-        </footer>
     </div>
 `);
-
 // 4. The Brain Page Template
 Router.register('/brain', () => `
     <div class="page-intro">
