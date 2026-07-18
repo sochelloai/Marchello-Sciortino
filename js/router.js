@@ -454,7 +454,7 @@ Router.register('/', () => `
                     </div>
                     <div class="timeline-col timeline-content-right">
                         <div class="timeline-image-placeholder">
-                            <img src="assets/timeline-1.png" alt="Losing Mobility and adapting" class="timeline-img">
+                            <img src="assets/losing-mobility.jpg" alt="Losing Mobility and adapting" class="timeline-img">
                         </div>
                     </div>
                 </div>
@@ -472,7 +472,7 @@ Router.register('/', () => `
                 <div class="timeline-row">
                     <div class="timeline-col timeline-content-left">
                         <div class="timeline-image-placeholder">
-                            <img src="assets/timeline-2.png" alt="Refusing Defeat and digital creation" class="timeline-img">
+                            <img src="assets/warrior-story.png" alt="Refusing Defeat and digital creation" class="timeline-img">
                         </div>
                     </div>
                     <div class="timeline-col timeline-center">
