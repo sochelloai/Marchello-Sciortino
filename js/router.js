@@ -1275,7 +1275,7 @@ Router.register('/mission', () => `
     <style>
     /* Show and restyle the site's default header and footer for luxury dark-theme integration */
     body:has(.mission-immersive-page) .main-header {
-        background: linear-gradient(rgba(10, 10, 10, 0.8), rgba(10, 10, 10, 0.8)), url('assets/bg_marble_dark.png') center/cover no-repeat !important;
+        background: url('assets/bg_marble_dark.png') center/cover no-repeat !important;
         backdrop-filter: blur(16px) !important;
         -webkit-backdrop-filter: blur(16px) !important;
         border-bottom: 1px solid rgba(230, 175, 46, 0.25) !important; /* Elegant gold border bottom */
@@ -1300,14 +1300,14 @@ Router.register('/mission', () => `
     }
     
     body:has(.mission-immersive-page) .main-footer {
-        background: linear-gradient(rgba(5, 5, 5, 0.85), rgba(5, 5, 5, 0.85)), url('assets/bg_marble_dark.png') center/cover no-repeat !important;
+        background: url('assets/bg_marble_dark.png') center/cover no-repeat !important;
         border-top: 1px solid rgba(230, 175, 46, 0.2) !important;
         display: block !important;
         padding: 5rem 2.5rem 2rem 2.5rem !important;
     }
     
     body:has(.mission-immersive-page) .main-footer * {
-        color: rgba(255, 255, 255, 0.5) !important;
+        color: rgba(255, 255, 255, 0.7) !important;
     }
     
     body:has(.mission-immersive-page) .main-footer a:hover {
@@ -1413,7 +1413,7 @@ Router.register('/mission', () => `
         position: relative;
         overflow: hidden;
         box-sizing: border-box;
-        background: linear-gradient(rgba(10, 10, 10, 0.8), rgba(10, 10, 10, 0.8)), url('assets/bg_marble_dark.png') center/cover no-repeat;
+        background: url('assets/bg_marble_dark.png') center/cover no-repeat;
         border-bottom: 1px solid rgba(255, 255, 255, 0.03);
     }
     
@@ -1501,7 +1501,7 @@ Router.register('/mission', () => `
     #section_perspective_console {
         padding: 7rem 2.5rem;
         border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-        background: linear-gradient(rgba(10, 10, 10, 0.8), rgba(10, 10, 10, 0.8)), url('assets/bg_brushed_aluminum.png') center/cover no-repeat;
+        background: url('assets/bg_brushed_aluminum.png') center/cover no-repeat;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -1627,7 +1627,7 @@ Router.register('/mission', () => `
         display: flex;
         flex-direction: column;
         justify-content: center;
-        background: linear-gradient(rgba(10, 10, 10, 0.8), rgba(10, 10, 10, 0.8)), url('assets/bg_gold_glitter.png') center/cover no-repeat;
+        background: url('assets/bg_gold_glitter.png') center/cover no-repeat;
         position: relative;
     }
     
@@ -1775,7 +1775,7 @@ Router.register('/mission', () => `
     #section_03_narrative_bleed {
         height: 80vh;
         width: 100%;
-        background: linear-gradient(rgba(10, 10, 10, 0.8), rgba(10, 10, 10, 0.8)), url('assets/bg_marble_light.png') center/cover no-repeat;
+        background: url('assets/bg_marble_light.png') center/cover no-repeat;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -1790,7 +1790,7 @@ Router.register('/mission', () => `
         font-family: monospace;
         font-size: clamp(3rem, 10vw, 7rem);
         font-weight: 900;
-        color: #ffffff;
+        color: #121212; /* Dark text for high contrast on light marble */
         letter-spacing: -0.02em;
         margin-bottom: 1.5rem;
         position: relative;
@@ -1803,7 +1803,7 @@ Router.register('/mission', () => `
         font-weight: 700;
         max-width: 900px;
         line-height: 1.4;
-        background: linear-gradient(to right, #ffffff var(--wipe-pct, 0%), rgba(255, 255, 255, 0.12) var(--wipe-pct, 0%));
+        background: linear-gradient(to right, #121212 var(--wipe-pct, 0%), rgba(18, 18, 18, 0.15) var(--wipe-pct, 0%));
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         transition: background 0.05s ease-out;
@@ -1830,7 +1830,7 @@ Router.register('/mission', () => `
             transform: none !important;
         }
         .narrative-statement {
-            background: #ffffff !important;
+            background: #121212 !important;
             -webkit-background-clip: text !important;
             -webkit-text-fill-color: transparent !important;
         }
