@@ -1889,7 +1889,7 @@ Router.register('/mission', () => `
         <!-- 2. Perspective Reframer Console Section -->
         <section id="section_perspective_console">
             <div class="console-header">
-                <span class="hero-eyebrow" style="display: block; margin-bottom: 0.5rem;">Playful Console</span>
+                <span class="hero-eyebrow" style="display: block; margin-bottom: 0.5rem;">LET'S TAKE ACTION</span>
                 <h2>The Perspective Reframer</h2>
                 <p>
                     Constraints aren't walls; they are design parameters. Select a constraint below to see how it can be reframed into your greatest competitive advantage!
