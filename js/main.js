@@ -870,7 +870,7 @@ function initImmersiveMission() {
         // Update Bento Card radial coordinates
         const bentoGrid = document.querySelector('.bento-grid');
         if (bentoGrid) {
-            const cards = bentoGrid.querySelectorAll('.bento-card');
+            const cards = document.querySelectorAll('.bento-card, .bento-featured-card');
             cards.forEach(card => {
                 const rect = card.getBoundingClientRect();
                 const x = e.clientX - rect.left;
@@ -923,6 +923,64 @@ function initImmersiveMission() {
 
     document.addEventListener('mouseover', onMouseOver);
     mouseEventCleaners.push(() => document.removeEventListener('mouseover', onMouseOver));
+
+    // 2. Character split reveal for hero heading
+    const heading = document.querySelector('.hero-heading');
+    if (heading) {
+        const text = heading.textContent.trim();
+        heading.innerHTML = text.split('').map((char, index) => {
+            if (char === ' ') return '<span>&nbsp;</span>';
+            return `<span class="char-span" style="animation-delay: ${index * 0.02}s">${char}</span>`;
+        }).join('');
+    }
+
+    // 3. Initialize Perspective Console inside Immersive Theme
+    const consoleContainer = document.querySelector('.perspective-console-immersive');
+    if (consoleContainer) {
+        const buttons = consoleContainer.querySelectorAll('.console-btn');
+        const loader = consoleContainer.querySelector('#console-loader');
+        const displayTitle = consoleContainer.querySelector('#console-display-title');
+        const displayText = consoleContainer.querySelector('#console-display-text');
+        
+        const reframes = {
+            physical: {
+                title: "The Constraint Advantage",
+                text: "Physical boundaries force me to preserve energy and leverage assistants. By using voice-driven automation, my AI digital twins, and structured workflows, I save my physical coordination while multiplying my digital leverage."
+            },
+            time: {
+                title: "Time Optimization",
+                text: "Having limited hours forces me to stop wasting time on low-value details. I focus strictly on high-impact core funnels, automated follow-ups, and pre-packaged assets that build trust while I rest."
+            },
+            tech: {
+                title: "Strategic Simplicity",
+                text: "Not being a traditional programmer is a gift. It means I build with reliable, user-friendly no-code tools and drag-and-drop systems, ensuring my clients can easily manage the platforms I build for them."
+            },
+            audience: {
+                title: "High-Ticket Connection",
+                text: "A small email list or social following is not a failure. It allows me to build deeply personal, high-trust relationships with clients who value real support, resulting in higher conversions and premium coaching clients."
+            }
+        };
+
+        buttons.forEach(btn => {
+            const onBtnClick = () => {
+                const constraint = btn.getAttribute('data-constraint');
+                if (reframes[constraint]) {
+                    if (loader) loader.style.display = 'flex';
+                    
+                    buttons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    setTimeout(() => {
+                        if (loader) loader.style.display = 'none';
+                        if (displayTitle) displayTitle.textContent = reframes[constraint].title;
+                        if (displayText) displayText.textContent = reframes[constraint].text;
+                    }, 400);
+                }
+            };
+            btn.addEventListener('click', onBtnClick);
+            mouseEventCleaners.push(() => btn.removeEventListener('click', onBtnClick));
+        });
+    }
 
     // Animation loop for smooth trailing ring
     function updateCursor() {

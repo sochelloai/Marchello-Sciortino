@@ -1273,6 +1273,7 @@ Router.register('/services', () => `
 // 3. Mission Page Template
 Router.register('/mission', () => `
     <style>
+    /* When on the immersive mission page, hide the site's default header, instagram link, and footer */
     body:has(.mission-immersive-page) .main-header,
     body:has(.mission-immersive-page) .instagram-section-link,
     body:has(.mission-immersive-page) .main-footer {
@@ -1351,7 +1352,7 @@ Router.register('/mission', () => `
     
     .hero-heading {
         font-family: var(--font-heading);
-        font-size: clamp(2.5rem, 6vw, 4.5rem);
+        font-size: clamp(2.3rem, 5.5vw, 4.3rem);
         font-weight: 900;
         color: #ffffff;
         line-height: 1.1;
@@ -1373,10 +1374,11 @@ Router.register('/mission', () => `
     }
     
     .hero-subheading {
-        font-size: clamp(1.1rem, 2vw, 1.4rem);
+        font-size: clamp(1.05rem, 1.8vw, 1.3rem);
         color: rgba(255, 255, 255, 0.6);
         font-weight: 400;
-        max-width: 600px;
+        max-width: 700px;
+        line-height: 1.6;
     }
     
     .hero-btn {
@@ -1414,6 +1416,116 @@ Router.register('/mission', () => `
         border-color: #ffffff;
     }
     
+    /* Interactive Perspective Console Section */
+    #section_perspective_console {
+        padding: 7rem 2.5rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        background: #0A0A0A;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    
+    .console-header {
+        max-width: 1200px;
+        margin: 0 auto 3rem auto;
+        width: 100%;
+    }
+    
+    .console-header h2 {
+        font-family: var(--font-heading);
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: #ffffff;
+    }
+    
+    .console-header p {
+        color: rgba(255, 255, 255, 0.5);
+        margin-top: 1rem;
+        max-width: 600px;
+        font-size: 1.05rem;
+        line-height: 1.6;
+    }
+    
+    .perspective-console-immersive {
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+    }
+    
+    .perspective-console-immersive .console-grid {
+        display: grid;
+        grid-template-cols: 1fr 2fr;
+        gap: 2rem;
+    }
+    
+    @media (max-width: 768px) {
+        .perspective-console-immersive .console-grid {
+            grid-template-cols: 1fr;
+        }
+    }
+    
+    .perspective-console-immersive .console-buttons-column {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .perspective-console-immersive .console-btn {
+        background: #121212;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        color: rgba(255, 255, 255, 0.6);
+        padding: 1.2rem;
+        border-radius: 8px;
+        text-align: left;
+        cursor: pointer;
+        font-size: 1.05rem;
+        font-weight: 600;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+    
+    .perspective-console-immersive .console-btn.active {
+        background: #ffffff;
+        color: #0A0A0A;
+        border-color: #ffffff;
+    }
+    
+    .perspective-console-immersive .console-btn:hover:not(.active) {
+        background: #1a1a1a;
+        color: #ffffff;
+        border-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    .perspective-console-immersive .console-display-column {
+        background: #121212;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        padding: 3rem;
+        border-radius: 12px;
+        position: relative;
+        overflow: hidden;
+        min-height: 250px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    
+    .perspective-console-immersive .console-display-title {
+        font-family: var(--font-heading);
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: #ffffff;
+        margin-bottom: 1rem;
+    }
+    
+    .perspective-console-immersive .console-display-text {
+        font-size: 1.1rem;
+        color: rgba(255, 255, 255, 0.6);
+        line-height: 1.7;
+    }
+    
     /* Bento Features */
     #section_02_bento_features {
         min-height: 100vh;
@@ -1440,12 +1552,74 @@ Router.register('/mission', () => `
         color: #ffffff;
     }
     
+    .bento-header p {
+        color: rgba(255, 255, 255, 0.5);
+        margin-top: 1rem;
+        max-width: 600px;
+        font-size: 1.05rem;
+        line-height: 1.6;
+    }
+    
     .bento-grid {
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+    }
+    
+    .bento-featured-card {
+        background: #121212;
+        border-radius: 12px;
+        padding: 3rem;
+        position: relative;
+        overflow: hidden;
+        box-sizing: border-box;
+        border: 1px solid rgba(230, 175, 46, 0.15); /* gold border tint */
+        margin-bottom: 1.5rem;
+        width: 100%;
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+    }
+    
+    .bento-featured-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 30px rgba(230, 175, 46, 0.04);
+    }
+    
+    .bento-featured-card::before {
+        content: "";
+        position: absolute;
+        top: -1px; left: -1px; right: -1px; bottom: -1px;
+        z-index: 1;
+        border-radius: 12px;
+        background: radial-gradient(200px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), rgba(230, 175, 46, 0.15) 0%, transparent 100%);
+        pointer-events: none;
+    }
+    
+    .bento-featured-card-content {
+        position: relative;
+        z-index: 2;
+    }
+    
+    .bento-featured-card h3 {
+        font-family: var(--font-heading);
+        font-size: 1.7rem;
+        font-weight: 800;
+        color: #ffffff;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+    
+    .bento-featured-card p {
+        font-size: 1.1rem;
+        color: rgba(255, 255, 255, 0.6);
+        line-height: 1.7;
+    }
+    
+    .bento-columns-3 {
         display: grid;
         grid-template-cols: repeat(auto-fit, minmax(300px, 1fr));
         gap: 1.5rem;
-        max-width: 1200px;
-        margin: 0 auto;
         width: 100%;
     }
     
@@ -1486,6 +1660,9 @@ Router.register('/mission', () => `
         font-weight: 800;
         color: #ffffff;
         margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
     }
     
     .bento-card p {
@@ -1617,7 +1794,7 @@ Router.register('/mission', () => `
             opacity: 1 !important;
             transform: none !important;
         }
-        .bento-card {
+        .bento-card, .bento-featured-card {
             transform: none !important;
         }
         .narrative-statement {
@@ -1641,58 +1818,111 @@ Router.register('/mission', () => `
             
             <div style="margin: auto 0;">
                 <h1 class="hero-heading">
-                    Architecting Digital Masterpieces
+                    Architecting Digital Momentum
                 </h1>
                 <p class="hero-subheading">
-                    A study in expression-driven minimalism. Every design is built with strict purpose and zero static clutter.
+                    I teach creators how to turn limits into strategic leverage, live with a positive warrior mindset, and build highly-converting systems in the digital marketplace.
                 </p>
             </div>
             
             <div>
-                <a href="#section_02_bento_features" class="hero-btn" data-magnetic="true">
+                <a href="#section_perspective_console" class="hero-btn" data-magnetic="true">
                     Explore the Canvas
                 </a>
             </div>
         </header>
         
-        <!-- 2. Bento Features Section -->
+        <!-- 2. Perspective Reframer Console Section -->
+        <section id="section_perspective_console">
+            <div class="console-header">
+                <span class="hero-eyebrow" style="display: block; margin-bottom: 0.5rem;">Playful Console</span>
+                <h2>The Perspective Reframer</h2>
+                <p>
+                    Constraints aren't walls; they are design parameters. Select a constraint below to see how it can be reframed into your greatest competitive advantage!
+                </p>
+            </div>
+            
+            <div class="perspective-console-immersive">
+                <div class="console-grid">
+                    <div class="console-buttons-column">
+                        <button class="console-btn active" data-constraint="physical" data-magnetic="true">
+                            <span>🎯</span> Physical Limits
+                        </button>
+                        <button class="console-btn" data-constraint="time" data-magnetic="true">
+                            <span>⏳</span> Limited Time
+                        </button>
+                        <button class="console-btn" data-constraint="tech" data-magnetic="true">
+                            <span>💻</span> No Tech Background
+                        </button>
+                        <button class="console-btn" data-constraint="audience" data-magnetic="true">
+                            <span>📣</span> Small Audience
+                        </button>
+                    </div>
+                    
+                    <div class="console-display-column">
+                        <div id="console-loader" style="display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(10, 10, 10, 0.95); justify-content: center; align-items: center; z-index: 10;">
+                            <span style="color: #ffffff; font-family: var(--font-heading); font-weight: bold; animation: pulse-slow 1s infinite alternate; font-size: 1rem; letter-spacing: 0.15em;">REFRAMING...</span>
+                        </div>
+                        <h4 id="console-display-title" class="console-display-title">The Constraint Advantage</h4>
+                        <p id="console-display-text" class="console-display-text">
+                            Physical boundaries force me to preserve energy and leverage assistants. By using voice-driven automation, my AI digital twins, and structured workflows, I save my physical coordination while multiplying my digital leverage.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 3. Bento Pillars Section -->
         <section id="section_02_bento_features">
             <div class="bento-header">
                 <span class="hero-eyebrow" style="display: block; margin-bottom: 0.5rem;">Core Disciplines</span>
-                <h2>Pillars of Construction</h2>
+                <h2>What I Teach</h2>
+                <p>My core lessons and foundations to turn constraints into digital momentum and strategic freedom.</p>
             </div>
             
             <div class="bento-grid">
-                <div class="bento-card">
-                    <div class="bento-card-content">
-                        <h3>Precision Execution</h3>
-                        <p>Flawless technical translation without visual noise. Every coordinate, alignment, and spacing rule is constructed to keep layouts crisp and modern.</p>
+                <!-- Faith Featured Card (Gold Light Sweep) -->
+                <div class="bento-featured-card">
+                    <div class="bento-featured-card-content">
+                        <h3><span>🙏</span> Faith-Driven Inspiration</h3>
+                        <p>
+                            All gratitude, respect, and honor go to God as the guide of my journey. Every digital system I build, every lesson I share, and everything I am able to do is dedicated to honoring Him. Inspiration is the name of the game—God is so good, providing me with a path of clarity and power to actively lift up and inspire others.
+                        </p>
                     </div>
                 </div>
-                <div class="bento-card">
-                    <div class="bento-card-content">
-                        <h3>Fluid Dynamics</h3>
-                        <p>Interfaces that react naturally to organic motion. Fluid hover states, micro-interactive transitions, and snapping mechanics that feel like physics, not raw scripts.</p>
+                
+                <div class="bento-columns-3">
+                    <div class="bento-card">
+                        <div class="bento-card-content">
+                            <h3><span>🎯</span> The Constraint Advantage</h3>
+                            <p>A limit is not a roadblock; it is a design parameter. Physical or environmental constraints force me to filter out noise, simplify layouts, and focus only on creating the highest-value digital solutions.</p>
+                        </div>
                     </div>
-                </div>
-                <div class="bento-card">
-                    <div class="bento-card-content">
-                        <h3>Obsidian Aesthetics</h3>
-                        <p>Deep contrast, high readability, and premium dark tones. Combining pure blacks, soft grays, and precise gradients for a high-end showcase.</p>
+                    <div class="bento-card">
+                        <div class="bento-card-content">
+                            <h3><span>⚡</span> Positive Mindset</h3>
+                            <p>Warrior acceptance means accepting reality today, stopping excuses, and choosing to build with what is left in my hands. My joyful, determined attitude is the spark that keeps my projects consistent.</p>
+                        </div>
+                    </div>
+                    <div class="bento-card">
+                        <div class="bento-card-content">
+                            <h3><span>🚀</span> Digital Marketplace</h3>
+                            <p>I build clean online funnels, custom landing pages, and AI-driven automation systems. Mastering these digital skills allows me to monetize my creativity and scale my projects without boundaries.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
         
-        <!-- 3. Narrative Bleed Section -->
+        <!-- 4. Narrative Bleed Section -->
         <section id="section_03_narrative_bleed">
             <div class="narrative-metric">0.00ms</div>
             <p class="narrative-statement">
-                Interactions should feel like physics, not code. We tether velocity straight to visual expression.
+                Limits are design parameters, not barriers. We tether constraint directly to strategic leverage.
             </p>
         </section>
         
-        <!-- 4. Monogram Footer Section -->
+        <!-- 5. Monogram Footer Section -->
         <footer id="section_04_monogram_footer">
             <div class="footer-links-container">
                 <a href="/" class="footer-link">Index</a>
@@ -1702,7 +1932,7 @@ Router.register('/mission', () => `
             </div>
             
             <div class="footer-watermark">
-                MASTERCLASS
+                MOMENTUM
             </div>
         </footer>
     </div>
