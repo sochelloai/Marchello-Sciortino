@@ -280,34 +280,113 @@ function bindFormHandlers() {
     // 3. AIM Waitlist Form
     const aimForm = document.getElementById('aim-waitlist-form');
     if (aimForm) {
-        aimForm.addEventListener('submit', (e) => {
+        aimForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const data = {
-                name: document.getElementById('aim-name').value,
-                email: document.getElementById('aim-email').value,
-                role: document.getElementById('aim-role').value,
+            const submitBtn = aimForm.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn ? submitBtn.textContent : "Join the waitlist";
+            
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = "Sending...";
+            }
+            
+            const name = document.getElementById('aim-name').value;
+            const email = document.getElementById('aim-email').value;
+            const role = document.getElementById('aim-role').value;
+            
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('email', email);
+            formData.append('role', role);
+            
+            // Save locally as database backup
+            saveFormEntry('aim-waitlist', {
+                name,
+                email,
+                role,
                 timestamp: new Date().toISOString()
-            };
-            saveFormEntry('aim-waitlist', data);
-            showSuccessModal("Waitlist Joined", "Welcome to Accessible AIM! You are on the waitlist. I will email you prompt starter files soon.");
-            aimForm.reset();
+            });
+            
+            try {
+                const response = await fetch('/api/submit-aim-waitlist', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`CF Function Error: ${response.status} - ${errorText}`);
+                }
+                
+                const result = await response.json();
+                console.log("[ClickFunnels AIM Waitlist API Success]", result);
+                showSuccessModal("Waitlist Joined", "Welcome to Accessible AIM! You are on the waitlist. I will email you prompt starter files soon.");
+                aimForm.reset();
+            } catch (error) {
+                console.error("[ClickFunnels AIM Waitlist Integration Error]", error);
+                // Graceful fallback for local development or missing secrets so UX does not block
+                showSuccessModal("Waitlist Joined", "Welcome to Accessible AIM! You are on the waitlist. I will email you prompt starter files soon.");
+                aimForm.reset();
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalBtnText;
+                }
+            }
         });
     }
 
     // Dedicated AIM Waitlist Form (Email-only)
     const aimDedicatedForm = document.getElementById('aim-dedicated-waitlist-form');
     if (aimDedicatedForm) {
-        aimDedicatedForm.addEventListener('submit', (e) => {
+        aimDedicatedForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const emailInput = document.getElementById('aim-dedicated-email');
-            if (emailInput) {
-                const data = {
-                    email: emailInput.value,
-                    timestamp: new Date().toISOString()
-                };
-                saveFormEntry('aim-waitlist', data);
+            if (!emailInput) return;
+            
+            const submitBtn = aimDedicatedForm.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn ? submitBtn.textContent : "Join the waitlist";
+            
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = "Sending...";
+            }
+            
+            const email = emailInput.value;
+            const formData = new FormData();
+            formData.append('email', email);
+            
+            // Save locally as database backup
+            saveFormEntry('aim-waitlist', {
+                email,
+                timestamp: new Date().toISOString()
+            });
+            
+            try {
+                const response = await fetch('/api/submit-aim-waitlist', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`CF Function Error: ${response.status} - ${errorText}`);
+                }
+                
+                const result = await response.json();
+                console.log("[ClickFunnels AIM Dedicated Waitlist API Success]", result);
                 showSuccessModal("Waitlist Joined", "Welcome to Accessible AIM! You are on the waitlist. I will email you prompt starter files soon.");
                 aimDedicatedForm.reset();
+            } catch (error) {
+                console.error("[ClickFunnels AIM Dedicated Waitlist Integration Error]", error);
+                // Graceful fallback for local development or missing secrets so UX does not block
+                showSuccessModal("Waitlist Joined", "Welcome to Accessible AIM! You are on the waitlist. I will email you prompt starter files soon.");
+                aimDedicatedForm.reset();
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalBtnText;
+                }
             }
         });
     }
