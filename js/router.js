@@ -620,7 +620,7 @@ Router.register('/story', () => `
                     </div>
                     <div class="timeline-col timeline-content-right">
                         <div class="timeline-image-placeholder">
-                            <img src="assets/timeline-1.png" alt="Born in St. Louis and childhood years" class="timeline-img">
+                            <img src="assets/childhood-early-years.jpg" alt="Born in St. Louis and childhood years" class="timeline-img">
                         </div>
                     </div>
                 </div>
@@ -629,7 +629,7 @@ Router.register('/story', () => `
                 <div class="timeline-row">
                     <div class="timeline-col timeline-content-left">
                         <div class="timeline-image-placeholder">
-                            <img src="assets/timeline-2.png" alt="Noticing progressive balance challenges in gym class" class="timeline-img">
+                            <img src="assets/around-3rd-4th-grade.jpg" alt="Noticing progressive balance challenges in gym class" class="timeline-img">
                         </div>
                     </div>
                     <div class="timeline-col timeline-center">
@@ -658,7 +658,7 @@ Router.register('/story', () => `
                     </div>
                     <div class="timeline-col timeline-content-right">
                         <div class="timeline-image-placeholder">
-                            <img src="assets/timeline-3.png" alt="Medical diagnosis of Friedrich's ataxia at age 14" class="timeline-img">
+                            <img src="assets/diagnosis-at-14.jpg" alt="Medical diagnosis of Friedrich's ataxia at age 14" class="timeline-img">
                         </div>
                     </div>
                 </div>
@@ -667,7 +667,7 @@ Router.register('/story', () => `
                 <div class="timeline-row">
                     <div class="timeline-col timeline-content-left">
                         <div class="timeline-image-placeholder">
-                            <img src="assets/timeline-4.png" alt="Transition to wheelchair and adapting daily routines" class="timeline-img">
+                            <img src="assets/progression-independence-shift.jpg" alt="Transition to wheelchair and adapting daily routines" class="timeline-img">
                         </div>
                     </div>
                     <div class="timeline-col timeline-center">
