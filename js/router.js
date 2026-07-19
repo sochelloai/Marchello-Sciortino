@@ -551,7 +551,7 @@ Router.register('/', () => `
 
  
     <!-- Key previews grid -->
-    <section class="section bg-white">
+    <section class="section bg-white" style="padding-bottom: 2rem;">
         <div class="container">
             <h2 class="text-center" style="margin-bottom: var(--spacing-lg);">The Brand Ecosystem</h2>
             <div class="grid-3">
@@ -578,7 +578,7 @@ Router.register('/', () => `
     </section>
 
     <!-- Legacy Signature Section -->
-    <section class="bg-navy-dark text-center" style="padding: 4rem 0; border-top: 1px solid rgba(0, 209, 193, 0.1);">
+    <section class="bg-navy-dark text-center" style="padding: 2rem 0; border-top: 1px solid rgba(0, 209, 193, 0.1);">
         <div class="container">
             <h2 class="legacy-title">Much love, party people!<br>That was awesome. The next one will only be better!</h2>
         </div>

@@ -244,6 +244,7 @@ img {
 .text-gold { color: var(--color-gold) !important; }
 .bg-navy { background-color: var(--color-navy) !important; color: var(--color-white) !important; }
 .bg-navy-light { background-color: var(--color-navy-light) !important; color: var(--color-white) !important; }
+.bg-navy-dark { background-color: var(--color-navy-dark) !important; color: var(--color-white) !important; }
 .bg-white { background-color: var(--color-white) !important; color: var(--color-navy) !important; }
 
 /* Ensure proper paragraph & heading contrast on dark backgrounds */
@@ -251,7 +252,8 @@ img {
     color: var(--color-gray-light) !important;
 }
 .bg-navy h1, .bg-navy h2, .bg-navy h3, .bg-navy h4, .bg-navy h5, .bg-navy h6,
-.bg-navy-light h1, .bg-navy-light h2, .bg-navy-light h3, .bg-navy-light h4, .bg-navy-light h5, .bg-navy-light h6 {
+.bg-navy-light h1, .bg-navy-light h2, .bg-navy-light h3, .bg-navy-light h4, .bg-navy-light h5, .bg-navy-light h6,
+.bg-navy-dark h1, .bg-navy-dark h2, .bg-navy-dark h3, .bg-navy-dark h4, .bg-navy-dark h5, .bg-navy-dark h6 {
     color: var(--color-white) !important;
 }
 
@@ -3949,7 +3951,7 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
 .instagram-section {
     position: relative;
     overflow: hidden;
-    background-color: var(--color-navy-dark);
+    background-color: transparent;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     width: 100%;
