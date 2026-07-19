@@ -2212,66 +2212,59 @@ Router.register('/speaking', () => `
                     </div>
                 </div>
                 
-                <div class="card bg-navy" style="border: 1px solid rgba(0, 209, 193, 0.2); color: white;">
+                <div class="card bg-navy" style="border: 1px solid rgba(0, 209, 193, 0.2); color: white; padding: 1.5rem;">
                     <span class="section-tag text-teal">Media Assets</span>
                     <h3 class="text-white">Download Media Kit</h3>
-                    <p style="font-size: 0.95rem; margin-bottom: 20px; color: var(--color-gray-light);">Select files to download for event programs, promotional flyers, or articles.</p>
-                    <ul style="list-style: none; display: flex; flex-direction: column; gap: 15px; margin-bottom: 1.5rem;">
-                        <li style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 10px;">
+                    <p style="font-size: 0.9rem; margin-bottom: 12px; color: var(--color-gray-light);">Select files to download for event programs, promotional flyers, or articles.</p>
+                    <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 1.25rem;">
+                        <li style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 6px;">
                             <div>
-                                <strong style="display:block; color: white;">Speaking One-Sheet</strong>
-                                <span style="font-size:0.8rem; color:rgba(255, 255, 255, 0.75);">PNG (1.7 MB)</span>
+                                <strong style="display:block; color: white; font-size: 0.9rem;">Speaking One-Sheet</strong>
+                                <span style="font-size:0.75rem; color:rgba(255, 255, 255, 0.7);">PNG (1.7 MB)</span>
                             </div>
-                            <a href="assets/speaker_1_sheet.png" download="Speaker_1_Sheet.png" class="btn btn-teal btn-sm">Download</a>
+                            <a href="assets/speaker_1_sheet.png" download="Speaker_1_Sheet.png" class="btn btn-teal btn-sm" style="padding: 4px 10px; font-size: 0.8rem;">Download</a>
                         </li>
-                        <li style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 10px;">
+                        <li style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 6px;">
                             <div>
-                                <strong style="display:block; color: white;">Headshot Gallery</strong>
-                                <span style="font-size:0.8rem; color:rgba(255, 255, 255, 0.75);">ZIP (9.6 MB)</span>
+                                <strong style="display:block; color: white; font-size: 0.9rem;">Headshot Gallery</strong>
+                                <span style="font-size:0.75rem; color:rgba(255, 255, 255, 0.7);">ZIP (9.6 MB)</span>
                             </div>
-                            <a href="assets/Headshots.zip" download="Headshots.zip" class="btn btn-teal btn-sm">Download</a>
+                            <a href="assets/Headshots.zip" download="Headshots.zip" class="btn btn-teal btn-sm" style="padding: 4px 10px; font-size: 0.8rem;">Download</a>
                         </li>
                         <li style="display:flex; justify-content:space-between; align-items:center;">
                             <div>
-                                <strong style="display:block; color: white;">Marchello Sciortino Logo Assets</strong>
-                                <span style="font-size:0.8rem; color:rgba(255, 255, 255, 0.75);">ZIP (39 KB)</span>
+                                <strong style="display:block; color: white; font-size: 0.9rem;">Marchello Logo Assets</strong>
+                                <span style="font-size:0.75rem; color:rgba(255, 255, 255, 0.7);">ZIP (39 KB)</span>
                             </div>
-                            <a href="assets/Marchello_Sciortino_Logo_Assets.zip" download="Marchello_Sciortino_Logo_Assets.zip" class="btn btn-teal btn-sm">Download</a>
+                            <a href="assets/Marchello_Sciortino_Logo_Assets.zip" download="Marchello_Sciortino_Logo_Assets.zip" class="btn btn-teal btn-sm" style="padding: 4px 10px; font-size: 0.8rem;">Download</a>
                         </li>
                     </ul>
 
                     <!-- Media kit preview gallery inside the card -->
-                    <div style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 1.25rem;">
-                        <h4 class="text-white" style="margin-bottom: 5px; font-family: var(--font-heading); font-size: 1.1rem;">Preview Speaker Materials</h4>
-                        <p style="font-size: 0.82rem; color: var(--color-gray-light); margin-bottom: 12px;">Preview of assets included in the Download Media Kit package.</p>
-                        <div class="media-gallery-grid" style="grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 0.5rem;">
+                    <div style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 1rem;">
+                        <h4 class="text-white" style="margin-bottom: 3px; font-family: var(--font-heading); font-size: 1rem;">Preview Speaker Materials</h4>
+                        <p style="font-size: 0.8rem; color: var(--color-gray-light); margin-bottom: 8px;">Preview of assets included in the Download Media Kit package.</p>
+                        <div class="media-gallery-grid" style="grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 0.25rem;">
                             <div class="gallery-item">
-                                <img src="assets/speaker_1_sheet.png" alt="Speaking One-Sheet">
-                                <span class="gallery-item-label" style="font-size: 0.68rem; line-height: 1.2;">One-Sheet</span>
+                                <img src="assets/speaker_1_sheet.png" alt="Speaking One-Sheet" title="Speaking One-Sheet">
                             </div>
                             <div class="gallery-item">
-                                <img src="assets/headshot_1.jpg" alt="Headshot 1">
-                                <span class="gallery-item-label" style="font-size: 0.68rem; line-height: 1.2;">Headshot 1</span>
+                                <img src="assets/headshot_1.jpg" alt="Headshot 1" title="Headshot 1">
                             </div>
                             <div class="gallery-item">
-                                <img src="assets/headshot_2.jpg" alt="Headshot 2">
-                                <span class="gallery-item-label" style="font-size: 0.68rem; line-height: 1.2;">Headshot 2</span>
+                                <img src="assets/headshot_2.jpg" alt="Headshot 2" title="Headshot 2">
                             </div>
                             <div class="gallery-item">
-                                <img src="assets/headshot_3.jpg" alt="Headshot 3">
-                                <span class="gallery-item-label" style="font-size: 0.68rem; line-height: 1.2;">Headshot 3</span>
+                                <img src="assets/headshot_3.jpg" alt="Headshot 3" title="Headshot 3">
                             </div>
                             <div class="gallery-item">
-                                <img src="assets/headshot_4.jpg" alt="Headshot 4">
-                                <span class="gallery-item-label" style="font-size: 0.68rem; line-height: 1.2;">Headshot 4</span>
+                                <img src="assets/headshot_4.jpg" alt="Headshot 4" title="Headshot 4">
                             </div>
                             <div class="gallery-item">
-                                <img src="assets/marchello_logo_dark.png" alt="Marchello Sciortino Logo Dark">
-                                <span class="gallery-item-label" style="font-size: 0.68rem; line-height: 1.2;">Logo Dark</span>
+                                <img src="assets/marchello_logo_dark.png" alt="Marchello Sciortino Logo Dark" title="Marchello Sciortino Logo Dark">
                             </div>
                             <div class="gallery-item">
-                                <img src="assets/marchello_logo_light.png" alt="Marchello Sciortino Logo Light">
-                                <span class="gallery-item-label" style="font-size: 0.68rem; line-height: 1.2;">Logo Light</span>
+                                <img src="assets/marchello_logo_light.png" alt="Marchello Sciortino Logo Light" title="Marchello Sciortino Logo Light">
                             </div>
                         </div>
                     </div>
