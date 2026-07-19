@@ -431,6 +431,27 @@ Router.register('/', () => `
         </div>
     </section>
  
+    <!-- Book Promotion Section -->
+    <section class="book-promo-sec">
+        <div style="flex-grow: 1; display: flex; align-items: center; width: 100%; padding: 4.5rem 0;">
+            <div class="container">
+                <div class="grid-2">
+                    <div class="book-promo-content">
+                        <span class="section-tag text-teal">New Book Release</span>
+                        <h2 class="book-promo-headline">LIMITATIONS TO LIBERATION</h2>
+                        <p class="book-promo-subheadline">Learn the mental models and daily systems to build freedom from limitation and write your own story.</p>
+                        <div style="margin-top: var(--spacing-sm);">
+                            <a href="https://www.limitationstoliberation.com/" target="_blank" rel="noopener noreferrer" class="btn-cta-orange">Get The Book <span class="arrow">&rarr;</span></a>
+                        </div>
+                    </div>
+                    <div class="book-promo-empty-col">
+                        <!-- Right column is empty to showcase the background image -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- The Reality Section -->
     <section class="section bg-white">
         <div class="container text-center">
@@ -555,30 +576,11 @@ Router.register('/', () => `
             </div>
         </div>
     </section>
- 
-    <!-- Book Promotion Section -->
-    <section class="book-promo-sec">
-        <div style="flex-grow: 1; display: flex; align-items: center; width: 100%; padding-top: 3rem;">
-            <div class="container">
-                <div class="grid-2">
-                    <div class="book-promo-content">
-                        <span class="section-tag text-teal">New Book Release</span>
-                        <h2 class="book-promo-headline">LIMITATIONS TO LIBERATION</h2>
-                        <p class="book-promo-subheadline">Learn the mental models and daily systems to build freedom from limitation and write your own story.</p>
-                        <div style="margin-top: var(--spacing-sm);">
-                            <a href="https://www.limitationstoliberation.com/" target="_blank" rel="noopener noreferrer" class="btn-cta-orange">Get The Book <span class="arrow">&rarr;</span></a>
-                        </div>
-                    </div>
-                    <div class="book-promo-empty-col">
-                        <!-- Right column is empty to showcase the background image -->
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="book-promo-footer-row text-center" style="width: 100%; padding-bottom: 3rem; position: relative; z-index: 2;">
-            <div class="container">
-                <h2 class="legacy-title">Much love, party people!<br>That was awesome. The next one will only be better!</h2>
-            </div>
+
+    <!-- Legacy Signature Section -->
+    <section class="bg-navy-dark text-center" style="padding: 4rem 0; border-top: 1px solid rgba(0, 209, 193, 0.1);">
+        <div class="container">
+            <h2 class="legacy-title">Much love, party people!<br>That was awesome. The next one will only be better!</h2>
         </div>
     </section>
 `);
