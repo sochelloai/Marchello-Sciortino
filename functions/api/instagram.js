@@ -44,15 +44,18 @@ export async function onRequestGet(context) {
         "Cache-Control": "public, max-age=14400" // Cache in browser for 4 hours
     };
 
-    // If token is missing, return fallback posts immediately
+    // If token is missing, return fallback posts immediately (do not cache fallback)
     if (!accessToken) {
-        const fallbackRes = new Response(JSON.stringify({
+        return new Response(JSON.stringify({
             source: "fallback",
             data: FALLBACK_POSTS
-        }), { status: 200, headers: corsHeaders });
-        
-        context.waitUntil(cache.put(cacheKey, fallbackRes.clone()));
-        return fallbackRes;
+        }), { 
+            status: 200, 
+            headers: {
+                ...corsHeaders,
+                "Cache-Control": "no-store, no-cache, must-revalidate"
+            }
+        });
     }
 
     try {
