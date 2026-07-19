@@ -2199,13 +2199,15 @@ Router.register('/speaking', () => `
                     <div style="margin-bottom: 20px;">
                         <span class="section-tag text-teal" style="font-size: 0.8rem; margin-bottom: 5px;">Short Bio (100 words)</span>
                         <p style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-left: 3px solid var(--color-teal); font-size: 0.95rem; color: var(--color-gray-light); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; margin-bottom: var(--spacing-sm);">
-                            I am a digital designer, ClickFunnels builder, and speaker living with Friedrich's ataxia. I use AI to write and build code, bypassing my physical limits. I coach people on how to work within their constraints and build digital projects.
+                            I am a web designer, AI developer, and speaker. When Friedreich's ataxia limited my physical coordination, God redirected my hands to build digitally. Today, I accept this limitation as a gift of perspective. I design high-converting web layouts and develop custom AI systems to write code and bypass my physical boundaries. AI creation is my cognitive prosthetic, but God is the source of my purpose. I speak to show how we can combine modern technology, digital design, and faith in God's plan to build what is possible.
                         </p>
                     </div>
                     <div>
                         <span class="section-tag text-teal" style="font-size: 0.8rem; margin-bottom: 5px;">Long Bio</span>
                         <p style="font-size: 0.95rem; line-height: 1.6; color: var(--color-gray-light);">
-                            I grew up in St. Louis and was diagnosed with Friedrich's ataxia at age 14. As my coordination changed, I adjusted my plans and built a career in digital design. I configure AI to help me type, write code, and run my business. Today, I speak to groups about how to audit their constraints and build practical digital solutions.
+                            My journey began in St. Louis, where a diagnosis of Friedreich's ataxia at age 14 gradually took away my physical balance and coordination. But instead of focusing on what was lost, I chose to accept what God left in my hands. I realized that my changing physical boundary was simply a redirection toward a greater digital calling.<br><br>
+                            I built my career around modern web design, crafting interfaces and ClickFunnels architectures that convert. To scale past physical limitations, I stepped into AI development. By building custom API pipelines and training AI assistants, I turn complex programming concepts into working software. This blend of web design and AI creation acts as my cognitive prosthetic, allowing me to build solutions that run faster and cleaner.<br><br>
+                            Yet, technology is never the hero of my story. Every line of code, design, and speech is proof of God's grace. I believe our talents and the tools we build are gifts to be accepted and used for His glory. Today, I speak to inspire audiences to audit their limitations, master modern AI tools, and trust the purpose God has designed for them.
                         </p>
                     </div>
                 </div>
