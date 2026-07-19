@@ -57,7 +57,8 @@ export async function onRequestGet(context) {
 
     try {
         // Fetch posts from Instagram Graph API
-        const instagramUrl = `https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink,timestamp&access_token=${accessToken.trim()}`;
+        const businessAccountId = env.INSTAGRAM_BUSINESS_ACCOUNT_ID || "17841400436172857";
+        const instagramUrl = `https://graph.facebook.com/v19.0/${businessAccountId.trim()}/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink,timestamp&access_token=${accessToken.trim()}`;
         const response = await fetch(instagramUrl);
 
         if (!response.ok) {
