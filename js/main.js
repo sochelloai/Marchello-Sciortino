@@ -6,6 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
     Accessibility.init();
     Router.init();
     
+    // Initialize Instagram feed marquee
+    initInstagramMarquee();
+    
     // 2. Setup global DOM listeners
     setupMobileNav();
     setupGlobalModals();
@@ -1065,6 +1068,65 @@ function cleanupImmersiveMission() {
     }
     immersiveCursorDot = null;
     immersiveCursorRing = null;
+}
+
+/**
+ * Fetches the latest Instagram posts and populates the marquee tracks
+ */
+async function initInstagramMarquee() {
+    try {
+        const response = await fetch('/api/instagram');
+        if (!response.ok) return;
+        
+        const result = await response.json();
+        if (!result || !result.data || result.source === 'fallback' || result.source === 'fallback_on_error') {
+            // Keep static fallback HTML already present in index.html
+            return;
+        }
+        
+        const posts = result.data;
+        if (posts.length === 0) return;
+        
+        // Split posts into Row 1 (RTL) and Row 2 (LTR)
+        const half = Math.ceil(posts.length / 2);
+        const row1Posts = posts.slice(0, half);
+        const row2Posts = posts.slice(half);
+        
+        const trackRTL = document.querySelector('.marquee-rtl .instagram-marquee-track');
+        const trackLTR = document.querySelector('.marquee-ltr .instagram-marquee-track');
+        
+        const escapeHtml = (str) => {
+            if (!str) return 'Instagram Post';
+            return str
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        };
+        
+        if (trackRTL && row1Posts.length > 0) {
+            // Double the items for seamless infinite marquee loop
+            const doublePosts = [...row1Posts, ...row1Posts];
+            trackRTL.innerHTML = doublePosts.map(post => `
+                <div class="instagram-post">
+                    <img src="${post.media_url}" alt="${escapeHtml(post.caption)}" loading="lazy">
+                </div>
+            `).join('');
+        }
+        
+        if (trackLTR && row2Posts.length > 0) {
+            // Double the items for seamless infinite marquee loop
+            const doublePosts = [...row2Posts, ...row2Posts];
+            trackLTR.innerHTML = doublePosts.map(post => `
+                <div class="instagram-post">
+                    <img src="${post.media_url}" alt="${escapeHtml(post.caption)}" loading="lazy">
+                </div>
+            `).join('');
+        }
+    } catch (e) {
+        console.error("Failed to load Instagram marquee feed:", e);
+    }
 }
 
 
