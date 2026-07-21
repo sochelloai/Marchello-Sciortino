@@ -73,7 +73,35 @@
 
     <!-- Dynamic SPA View Render Target -->
     <main id="app" aria-live="polite">
-        <!-- Client-side router dynamically injects active page content here -->
+        <!-- Cinematic Hero -->
+        <section class="hero-sec">
+            <!-- Animated Grain Overlay -->
+            <svg class="hero-grain" xmlns="http://www.w3.org/2000/svg">
+                <filter id="grain-noise">
+                    <feTurbulence type="fractalNoise" baseFrequency="1.5" numOctaves="2" stitchTiles="stitch" />
+                </filter>
+                <rect width="100%" height="100%" filter="url(#grain-noise)" />
+            </svg>
+     
+            <div class="container">
+                <h1 class="hero-title">
+                    <span class="hero-title-line-1">LIMITATIONS DO NOT</span>
+                    <span class="hero-title-line-2">
+                        <span class="text-teal-italic">DEFINE </span>
+                        <span class="text-orange-brush">POSSIBILITY.
+                            <span class="brush-underline"></span>
+                        </span>
+                    </span>
+                </h1>
+                <p class="hero-tagline">
+                    I help people reframe daily constraints, adapt through changes, and use AI as an accessibility bridge to build creative outcomes and professional momentum.
+                </p>
+                <div class="hero-ctas">
+                    <a href="/services" class="btn btn-teal">MY SERVICES</a>
+                    <a href="/accessible-aim" class="btn btn-outline-white">EXPLORE ACCESSIBLE AIM</a>
+                </div>
+            </div>
+        </section>
     </main>
 
     <!-- Instagram Section -->

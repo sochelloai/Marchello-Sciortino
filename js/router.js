@@ -27,11 +27,11 @@ const Router = {
             }
         });
 
-        // Handle initial page load
-        if (document.readyState === 'complete') {
-            this.handleRouting();
+        // Handle initial page load immediately without waiting for full window.onload asset downloads
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => this.handleRouting());
         } else {
-            window.addEventListener('load', () => this.handleRouting());
+            this.handleRouting();
         }
     },
 
@@ -129,8 +129,10 @@ const Router = {
     },
 
     resetFocus() {
-        // Reset scroll position to top
-        window.scrollTo({ top: 0, behavior: 'auto' });
+        // Reset scroll position to top instantly
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
 
         // Shift screen-reader focus to the main focus helper
         const mainFocus = document.getElementById('main-focus');
