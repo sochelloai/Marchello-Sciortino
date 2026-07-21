@@ -4811,6 +4811,10 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
         display: none !important;
         content: none !important;
         background: none !important;
+        width: 0 !important;
+        height: 0 !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
     }
 }
 
