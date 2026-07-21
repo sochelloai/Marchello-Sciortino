@@ -4799,6 +4799,19 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     h3 {
         font-size: clamp(1.2rem, 4vw, 1.45rem);
     }
+    /* Disable left and right fade overlays on marquees on mobile */
+    .reviews-marquee-wrapper::before,
+    .reviews-marquee-wrapper::after,
+    .marquee-wrapper::before,
+    .marquee-wrapper::after,
+    .instagram-marquee-row::before,
+    .instagram-marquee-row::after,
+    .instagram-marquee-container::before,
+    .instagram-marquee-container::after {
+        display: none !important;
+        content: none !important;
+        background: none !important;
+    }
 }
 
 
