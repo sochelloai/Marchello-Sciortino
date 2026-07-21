@@ -6,6 +6,7 @@
     src: url('../assets/fonts/Madness-Regular.otf') format('opentype');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 /* ==========================================================================
@@ -4610,6 +4611,188 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     line-height: 1.8;
     max-width: 850px;
     margin: 0 auto;
+}
+
+/* ==========================================================================
+   Global Media Lightbox (Full-Screen Viewer) & Zoomable Media Feedback
+   ========================================================================== */
+.global-media-lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(3, 11, 19, 0.95);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    z-index: 100000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 20px; /* Minimum 20px padding on all sides */
+    box-sizing: border-box;
+}
+
+.global-media-lightbox.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.global-media-lightbox .lightbox-body {
+    position: relative;
+    max-width: calc(100vw - 40px); /* Minimum 20px padding left & right */
+    max-height: calc(100vh - 100px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.global-media-lightbox .lightbox-media-element {
+    max-width: calc(100vw - 40px);
+    max-height: calc(100vh - 100px);
+    width: auto;
+    height: auto;
+    object-fit: contain; /* Nothing is cropped! */
+    border-radius: var(--radius-md);
+    box-shadow: 
+        0 20px 50px rgba(0, 0, 0, 0.8),
+        0 0 30px rgba(10, 216, 173, 0.25);
+    border: 1px solid rgba(0, 209, 193, 0.3);
+}
+
+.global-media-lightbox .lightbox-close-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 46px;
+    height: 46px;
+    background: rgba(255, 255, 255, 0.14);
+    border: 1.5px solid rgba(255, 255, 255, 0.35);
+    border-radius: 50%;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 100001;
+    transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.global-media-lightbox .lightbox-close-btn svg {
+    width: 22px;
+    height: 22px;
+}
+
+.global-media-lightbox .lightbox-close-btn:hover {
+    background: rgba(10, 216, 173, 0.85);
+    border-color: var(--color-teal);
+    color: var(--color-navy);
+    transform: scale(1.08);
+}
+
+.global-media-lightbox .lightbox-caption {
+    margin-top: 15px;
+    text-align: center;
+    color: var(--color-white);
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    font-weight: 500;
+    max-width: calc(100vw - 40px);
+    pointer-events: none;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+}
+
+/* Cursor Indicator for Zoomable Clickable Media */
+.timeline-img, 
+.articulated-img, 
+.contact-image-column img, 
+.resource-cover-image, 
+.blog-card-img, 
+.blog-card img, 
+.media-gallery-grid img, 
+.instagram-post img, 
+.zoomable-media, 
+.portfolio-card {
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.timeline-img:hover, 
+.articulated-img:hover, 
+.contact-image-column img:hover, 
+.resource-cover-image:hover, 
+.blog-card-img:hover, 
+.media-gallery-grid img:hover, 
+.instagram-post img:hover {
+    transform: scale(1.02);
+    box-shadow: var(--shadow-md);
+}
+
+/* ==========================================================================
+   Comprehensive Mobile Optimization (Strict 20px Min Side Padding & Layout)
+   ========================================================================== */
+@media (max-width: 768px) {
+    /* Enforce strict minimum 20px padding left & right on mobile screen view */
+    .container,
+    .footer-container,
+    .footer-bottom,
+    .header-container,
+    .page-intro .container,
+    .contact-card-custom,
+    .resource-card,
+    .reviews-marquee-card,
+    .modal-content {
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+        box-sizing: border-box;
+    }
+
+    .header-container {
+        width: calc(100% - 40px);
+        margin: 0 auto;
+    }
+
+    /* Reduce excess vertical margins & spacing on mobile */
+    .section {
+        padding: 40px 0;
+    }
+
+    .hero-sec {
+        padding: 120px 0 40px 0;
+        min-height: auto;
+    }
+
+    .page-intro {
+        padding: 110px 0 35px 0;
+    }
+
+    /* Grids & Card spacing on mobile */
+    .grid-2, .grid-3 {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .contact-card-custom {
+        padding-top: 25px !important;
+        padding-bottom: 25px !important;
+    }
+
+    /* Responsive typography scaling */
+    h1 {
+        font-size: clamp(1.8rem, 6vw, 2.4rem);
+        line-height: 1.25;
+    }
+    h2 {
+        font-size: clamp(1.4rem, 5vw, 1.85rem);
+        line-height: 1.3;
+    }
+    h3 {
+        font-size: clamp(1.2rem, 4vw, 1.45rem);
+    }
 }
 
 

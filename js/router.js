@@ -183,20 +183,20 @@ Router.register('/', () => `
             <div class="marquee-wrapper">
                 <div class="marquee-track">
                     <div class="marquee-group">
-                        <div class="marquee-item"><img src="assets/empower-1.png" alt="The Empower Network TV"></div>
-                        <div class="marquee-item"><img src="assets/empower-2.png" alt="The Empower Network TV"></div>
-                        <div class="marquee-item"><img src="assets/empower-3.png" alt="The Empower Network TV"></div>
-                        <div class="marquee-item"><img src="assets/empower-4.png" alt="The Empower Network TV"></div>
-                        <div class="marquee-item"><img src="assets/empower-5.png" alt="The Empower Network TV"></div>
-                        <div class="marquee-item"><img src="assets/empower-6.png" alt="The Empower Network TV"></div>
+                        <div class="marquee-item"><img src="assets/empower-1.png" alt="The Empower Network TV" loading="lazy" decoding="async"></div>
+                        <div class="marquee-item"><img src="assets/empower-2.png" alt="The Empower Network TV" loading="lazy" decoding="async"></div>
+                        <div class="marquee-item"><img src="assets/empower-3.png" alt="The Empower Network TV" loading="lazy" decoding="async"></div>
+                        <div class="marquee-item"><img src="assets/empower-4.png" alt="The Empower Network TV" loading="lazy" decoding="async"></div>
+                        <div class="marquee-item"><img src="assets/empower-5.png" alt="The Empower Network TV" loading="lazy" decoding="async"></div>
+                        <div class="marquee-item"><img src="assets/empower-6.png" alt="The Empower Network TV" loading="lazy" decoding="async"></div>
                     </div>
                     <div class="marquee-group" aria-hidden="true">
-                        <div class="marquee-item"><img src="assets/empower-1.png" alt="The Empower Network TV"></div>
-                        <div class="marquee-item"><img src="assets/empower-2.png" alt="The Empower Network TV"></div>
-                        <div class="marquee-item"><img src="assets/empower-3.png" alt="The Empower Network TV"></div>
-                        <div class="marquee-item"><img src="assets/empower-4.png" alt="The Empower Network TV"></div>
-                        <div class="marquee-item"><img src="assets/empower-5.png" alt="The Empower Network TV"></div>
-                        <div class="marquee-item"><img src="assets/empower-6.png" alt="The Empower Network TV"></div>
+                        <div class="marquee-item"><img src="assets/empower-1.png" alt="The Empower Network TV" loading="lazy" decoding="async"></div>
+                        <div class="marquee-item"><img src="assets/empower-2.png" alt="The Empower Network TV" loading="lazy" decoding="async"></div>
+                        <div class="marquee-item"><img src="assets/empower-3.png" alt="The Empower Network TV" loading="lazy" decoding="async"></div>
+                        <div class="marquee-item"><img src="assets/empower-4.png" alt="The Empower Network TV" loading="lazy" decoding="async"></div>
+                        <div class="marquee-item"><img src="assets/empower-5.png" alt="The Empower Network TV" loading="lazy" decoding="async"></div>
+                        <div class="marquee-item"><img src="assets/empower-6.png" alt="The Empower Network TV" loading="lazy" decoding="async"></div>
                     </div>
                 </div>
             </div>
@@ -475,7 +475,7 @@ Router.register('/', () => `
                     </div>
                     <div class="timeline-col timeline-content-right">
                         <div class="timeline-image-placeholder">
-                            <img src="assets/losing-mobility.jpg" alt="Losing Mobility and adapting" class="timeline-img">
+                            <img src="assets/losing-mobility.jpg" alt="Losing Mobility and adapting" class="timeline-img" loading="lazy" decoding="async">
                         </div>
                     </div>
                 </div>
@@ -493,7 +493,7 @@ Router.register('/', () => `
                 <div class="timeline-row">
                     <div class="timeline-col timeline-content-left">
                         <div class="timeline-image-placeholder">
-                            <img src="assets/warrior-story.png" alt="Refusing Defeat and digital creation" class="timeline-img">
+                            <img src="assets/warrior-story.png" alt="Refusing Defeat and digital creation" class="timeline-img" loading="lazy" decoding="async">
                         </div>
                     </div>
                     <div class="timeline-col timeline-center">
@@ -2246,25 +2246,25 @@ Router.register('/speaking', () => `
                         <p style="font-size: 0.8rem; color: var(--color-gray-light); margin-bottom: 8px;">Preview of assets included in the Download Media Kit package.</p>
                         <div class="media-gallery-grid" style="grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 0.25rem;">
                             <div class="gallery-item">
-                                <img src="assets/speaker_1_sheet.png" alt="Speaking One-Sheet" title="Speaking One-Sheet">
+                                <img src="assets/speaker_1_sheet.png" alt="Speaking One-Sheet" title="Speaking One-Sheet" loading="lazy" decoding="async">
                             </div>
                             <div class="gallery-item">
-                                <img src="assets/headshot_1.jpg" alt="Headshot 1" title="Headshot 1">
+                                <img src="assets/headshot_1.jpg" alt="Headshot 1" title="Headshot 1" loading="lazy" decoding="async">
                             </div>
                             <div class="gallery-item">
-                                <img src="assets/headshot_2.jpg" alt="Headshot 2" title="Headshot 2">
+                                <img src="assets/headshot_2.jpg" alt="Headshot 2" title="Headshot 2" loading="lazy" decoding="async">
                             </div>
                             <div class="gallery-item">
-                                <img src="assets/headshot_3.jpg" alt="Headshot 3" title="Headshot 3">
+                                <img src="assets/headshot_3.jpg" alt="Headshot 3" title="Headshot 3" loading="lazy" decoding="async">
                             </div>
                             <div class="gallery-item">
-                                <img src="assets/headshot_4.jpg" alt="Headshot 4" title="Headshot 4">
+                                <img src="assets/headshot_4.jpg" alt="Headshot 4" title="Headshot 4" loading="lazy" decoding="async">
                             </div>
                             <div class="gallery-item">
-                                <img src="assets/marchello_logo_dark.png" alt="Marchello Sciortino Logo Dark" title="Marchello Sciortino Logo Dark">
+                                <img src="assets/marchello_logo_dark.png" alt="Marchello Sciortino Logo Dark" title="Marchello Sciortino Logo Dark" loading="lazy" decoding="async">
                             </div>
                             <div class="gallery-item">
-                                <img src="assets/marchello_logo_light.png" alt="Marchello Sciortino Logo Light" title="Marchello Sciortino Logo Light">
+                                <img src="assets/marchello_logo_light.png" alt="Marchello Sciortino Logo Light" title="Marchello Sciortino Logo Light" loading="lazy" decoding="async">
                             </div>
                         </div>
                     </div>
@@ -2661,7 +2661,7 @@ Router.register('/contact', () => {
             <div class="grid-2" style="align-items: center; gap: var(--spacing-lg);">
                 <!-- Left Column: Picture of Marchello -->
                 <div class="contact-image-column" style="text-align: center;">
-                    <img src="assets/contact_hero.png" alt="Marchello Sciortino" style="width: 100%; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); border: 1px solid var(--color-gray-border); margin-bottom: 20px; object-fit: cover;">
+                    <img src="assets/contact_hero.png" alt="Marchello Sciortino" style="width: 100%; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); border: 1px solid var(--color-gray-border); margin-bottom: 20px; object-fit: cover;" fetchpriority="high" decoding="async">
                     <h3 style="color: var(--color-navy); margin-bottom: 6px; font-family: var(--font-heading); font-weight: 800; text-transform: uppercase; letter-spacing: 0.02em;">Marchello Sciortino</h3>
                     <p style="color: var(--color-teal); font-weight: 700; font-family: var(--font-heading); font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0;">Creativity. Technology. Determination.</p>
                 </div>

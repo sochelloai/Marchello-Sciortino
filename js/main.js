@@ -12,11 +12,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. Setup global DOM listeners
     setupMobileNav();
     setupGlobalModals();
+    GlobalMediaLightbox.init();
     
     // 3. Listen to page rendering transitions to bootstrap specific page scripts
     document.addEventListener('page-loaded', (e) => {
         const page = e.detail.page;
         
+        // Clean up full-screen media lightbox on page transition
+        GlobalMediaLightbox.close();
+
         // Clean up parallax and timeline listeners when page transitions
         cleanupHeroParallax();
         cleanupTimelineScroll();
@@ -74,25 +78,56 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /**
- * Mobile Navigation Handler
+ * Mobile Navigation Handler - Smart toggle, close on outside click, link click & Escape key
  */
 function setupMobileNav() {
     const menuToggle = document.querySelector('.menu-toggle');
     const navMenu = document.getElementById('main-nav');
+    const headerContainer = document.querySelector('.header-container');
     
     if (menuToggle && navMenu) {
-        menuToggle.addEventListener('click', () => {
-            const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
-            menuToggle.setAttribute('aria-expanded', !isExpanded);
-            navMenu.classList.toggle('active');
+        function openNav() {
+            menuToggle.setAttribute('aria-expanded', 'true');
+            navMenu.classList.add('active');
+        }
+
+        function closeNav() {
+            menuToggle.setAttribute('aria-expanded', 'false');
+            navMenu.classList.remove('active');
+        }
+
+        // Toggle menu when clicking hamburger icon
+        menuToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isActive = navMenu.classList.contains('active');
+            if (isActive) {
+                closeNav();
+            } else {
+                openNav();
+            }
         });
 
-        // Close menu when clicking links in mobile view
-        const navLinks = navMenu.querySelectorAll('.nav-link');
+        // Close menu when clicking anywhere outside of header-container
+        document.addEventListener('click', (e) => {
+            if (navMenu.classList.contains('active')) {
+                if (headerContainer && !headerContainer.contains(e.target)) {
+                    closeNav();
+                }
+            }
+        });
+
+        // Close menu on Escape key press
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+                closeNav();
+            }
+        });
+
+        // Close menu when clicking any link or button inside navigation
+        const navLinks = navMenu.querySelectorAll('a, button');
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
-                menuToggle.setAttribute('aria-expanded', 'false');
-                navMenu.classList.remove('active');
+                closeNav();
             });
         });
     }
@@ -1207,6 +1242,140 @@ async function initInstagramMarquee() {
         console.error("Failed to load Instagram marquee feed:", e);
     }
 }
+
+/**
+ * GlobalMediaLightbox - Unified full-screen viewer for clickable images & videos.
+ */
+const GlobalMediaLightbox = {
+    initialized: false,
+
+    init() {
+        if (this.initialized) return;
+        this.initialized = true;
+        this.bindEvents();
+    },
+
+    bindEvents() {
+        // Event delegation for clickable media across all pages & routes
+        document.body.addEventListener('click', (e) => {
+            // Check if click target or parent is a zoomable media element
+            const mediaTarget = e.target.closest(
+                '.timeline-img, .articulated-img, .contact-image-column img, ' +
+                '.resource-cover-image, .blog-card-img, .blog-card img, ' +
+                '.media-gallery-grid img, .instagram-post img, .zoomable-media, ' +
+                '.portfolio-card[data-type="image"], .portfolio-card[data-type="video"]'
+            );
+
+            if (!mediaTarget) return;
+
+            // Don't intercept if clicking inside active lightbox
+            if (e.target.closest('#global-media-lightbox')) return;
+
+            let type = 'image';
+            let src = mediaTarget.src || mediaTarget.getAttribute('data-src') || '';
+            let alt = mediaTarget.alt || mediaTarget.title || mediaTarget.getAttribute('aria-label') || '';
+
+            // Handle portfolio card targets
+            if (mediaTarget.classList.contains('portfolio-card')) {
+                const cardType = mediaTarget.getAttribute('data-type');
+                if (cardType === 'video') {
+                    type = 'video';
+                    src = mediaTarget.getAttribute('data-src') || src;
+                } else if (cardType === 'image') {
+                    type = 'image';
+                    src = mediaTarget.getAttribute('data-src') || src;
+                }
+            }
+
+            if (src) {
+                e.preventDefault();
+                e.stopPropagation();
+                this.open(type, src, alt);
+            }
+        });
+
+        // Close button listener
+        const closeBtn = document.getElementById('global-media-close-btn');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.close();
+            });
+        }
+
+        // Overlay backdrop click listener
+        const overlay = document.getElementById('global-media-lightbox');
+        if (overlay) {
+            overlay.addEventListener('click', (e) => {
+                const content = document.getElementById('global-media-content');
+                if (content && !content.contains(e.target) && e.target !== content) {
+                    this.close();
+                }
+            });
+        }
+
+        // Escape key listener
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const overlay = document.getElementById('global-media-lightbox');
+                if (overlay && overlay.classList.contains('active')) {
+                    this.close();
+                }
+            }
+        });
+    },
+
+    open(type, src, captionText = '') {
+        const overlay = document.getElementById('global-media-lightbox');
+        const content = document.getElementById('global-media-content');
+        const caption = document.getElementById('global-media-caption');
+        if (!overlay || !content) return;
+
+        content.innerHTML = '';
+
+        if (type === 'video') {
+            const video = document.createElement('video');
+            video.src = src;
+            video.controls = true;
+            video.autoplay = true;
+            video.playsInline = true;
+            video.className = 'lightbox-media-element';
+            content.appendChild(video);
+        } else {
+            const img = document.createElement('img');
+            img.src = src;
+            img.alt = captionText || 'Full screen image';
+            img.className = 'lightbox-media-element';
+            content.appendChild(img);
+        }
+
+        if (caption) {
+            caption.textContent = captionText || '';
+        }
+
+        overlay.classList.add('active');
+        overlay.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+    },
+
+    close() {
+        const overlay = document.getElementById('global-media-lightbox');
+        const content = document.getElementById('global-media-content');
+        if (!overlay) return;
+
+        if (content) {
+            const video = content.querySelector('video');
+            if (video) {
+                video.pause();
+            }
+            content.innerHTML = '';
+        }
+
+        overlay.classList.remove('active');
+        overlay.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+    }
+};
 
 
 
