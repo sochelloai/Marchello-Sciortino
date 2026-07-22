@@ -64,6 +64,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (typeof ServicesPortfolio !== 'undefined') {
                 ServicesPortfolio.init();
             }
+        } else if (page === 'accessible-aim') {
+            initAccessibleAimVideo();
         }
 
         // Always bind forms rendered inside the page view
@@ -1376,6 +1378,39 @@ const GlobalMediaLightbox = {
         document.body.style.overflow = '';
     }
 };
+
+/**
+ * Accessible AIM Video custom overlay play handler
+ */
+function initAccessibleAimVideo() {
+    const video = document.getElementById('aim-video');
+    const overlay = document.getElementById('aim-video-overlay');
+    if (!video || !overlay) return;
+
+    // Ensure initial state: autoplay, muted, looping, no controls
+    video.muted = true;
+    video.loop = true;
+    video.removeAttribute('controls');
+    overlay.classList.remove('hidden');
+
+    // Make sure the video is playing
+    video.play().catch(err => {
+        console.warn("Autoplay blocked or video not ready:", err);
+    });
+
+    // When overlay is clicked, unmute, restart, add controls, and hide overlay
+    overlay.addEventListener('click', () => {
+        video.muted = false;
+        video.loop = false; // Disable looping for unmuted playthrough
+        video.currentTime = 0;
+        video.setAttribute('controls', 'true');
+        overlay.classList.add('hidden');
+        
+        video.play().catch(err => {
+            console.error("Failed to play video after user interaction:", err);
+        });
+    });
+}
 
 
 
