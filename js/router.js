@@ -3113,7 +3113,7 @@ Router.register('/accessible-aim', () => `
                 <div class="aim-video-col">
                     <div class="aim-video-wrapper">
                         <video controls poster="assets/hero-bg.jpg">
-                            <source src="assets/videos/W.mp4" type="video/mp4">
+                            <source src="assets/videos/accessible-aim-intro.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
                     </div>
