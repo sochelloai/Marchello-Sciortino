@@ -5,19 +5,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. Initialize core system structures
     Accessibility.init();
     Router.init();
-    
+
     // Initialize Instagram feed marquee
     initInstagramMarquee();
-    
+
     // 2. Setup global DOM listeners
     setupMobileNav();
     setupGlobalModals();
     GlobalMediaLightbox.init();
-    
+
     // 3. Listen to page rendering transitions to bootstrap specific page scripts
     document.addEventListener('page-loaded', (e) => {
         const page = e.detail.page;
-        
+
         // Clean up full-screen media lightbox on page transition
         GlobalMediaLightbox.close();
 
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
         cleanupHeroParallax();
         cleanupTimelineScroll();
         cleanupWinScrollSequence();
-        
+
         // Clean up lightbox overlay when page transitions
         if (typeof SpeakingGalleryLightbox !== 'undefined') {
             SpeakingGalleryLightbox.close();
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof ServicesPortfolio !== 'undefined') {
             ServicesPortfolio.cleanup();
         }
-        
+
         if (page === 'home') {
             initHeroParallax();
         } else if (page === 'story') {
@@ -65,10 +65,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 ServicesPortfolio.init();
             }
         }
-        
+
         // Always bind forms rendered inside the page view
         bindFormHandlers();
-        
+
         // Initialize global scroll reveals on all page sections (except immersive mission)
         if (page !== 'mission') {
             cleanupImmersiveMission();
@@ -84,7 +84,7 @@ function setupMobileNav() {
     const menuToggle = document.querySelector('.menu-toggle');
     const navMenu = document.getElementById('main-nav');
     const headerContainer = document.querySelector('.header-container');
-    
+
     if (menuToggle && navMenu) {
         function openNav() {
             menuToggle.setAttribute('aria-expanded', 'true');
@@ -138,20 +138,20 @@ function setupMobileNav() {
  */
 function setupGlobalModals() {
     const modals = document.querySelectorAll('.modal-overlay');
-    
+
     modals.forEach(modal => {
         const closeBtns = modal.querySelectorAll('.modal-close-btn, .modal-ok-btn');
-        
+
         const closeModalFn = () => {
             modal.classList.remove('active');
             modal.setAttribute('aria-hidden', 'true');
-            
+
             // Clear the article query parameter on close to restore clean main page path
             if (modal.id === 'detail-modal') {
                 const urlWithoutParams = window.location.pathname;
                 history.pushState(null, '', urlWithoutParams);
             }
-            
+
             // If stopping audio on modal close (fallback helper)
             if (modal.id === 'detail-modal' && typeof Music !== 'undefined') {
                 // Return focus to active trigger
@@ -160,12 +160,12 @@ function setupGlobalModals() {
 
         // Close buttons clicks
         closeBtns.forEach(btn => btn.addEventListener('click', closeModalFn));
-        
+
         // Click on dark backdrop
         modal.addEventListener('click', (e) => {
             if (e.target === modal) closeModalFn();
         });
-        
+
         // Escape key presses
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && modal.classList.contains('active')) {
@@ -186,25 +186,25 @@ function bindFormHandlers() {
             e.preventDefault();
             const submitBtn = speakingForm.querySelector('button[type="submit"]');
             const originalBtnText = submitBtn ? submitBtn.textContent : "Submit Speaking Inquiry";
-            
+
             if (submitBtn) {
                 submitBtn.disabled = true;
                 submitBtn.textContent = "Sending...";
             }
-            
+
             const name = document.getElementById('speaking-name').value;
             const email = document.getElementById('speaking-email').value;
             const eventName = document.getElementById('event-name').value;
             const location = document.getElementById('event-location').value;
             const message = document.getElementById('speaking-message').value;
-            
+
             const formData = new FormData();
             formData.append('name', name);
             formData.append('email', email);
             formData.append('event', eventName);
             formData.append('location', location);
             formData.append('message', message);
-            
+
             // Save locally as database backup
             saveFormEntry('speaking', {
                 name,
@@ -214,18 +214,18 @@ function bindFormHandlers() {
                 message,
                 timestamp: new Date().toISOString()
             });
-            
+
             try {
                 const response = await fetch('/api/submit-speaking', {
                     method: 'POST',
                     body: formData
                 });
-                
+
                 if (!response.ok) {
                     const errorText = await response.text();
                     throw new Error(`CF Function Error: ${response.status} - ${errorText}`);
                 }
-                
+
                 const result = await response.json();
                 console.log("[ClickFunnels Speaking API Success]", result);
                 showSuccessModal("Speaking Inquiry Received", "Thank you for reaching out. I will review your event details and respond within 2 business days.");
@@ -251,26 +251,26 @@ function bindFormHandlers() {
             e.preventDefault();
             const submitBtn = contactForm.querySelector('button[type="submit"]');
             const originalBtnText = submitBtn ? submitBtn.textContent : "Submit";
-            
+
             if (submitBtn) {
                 submitBtn.disabled = true;
                 submitBtn.textContent = "Sending...";
             }
-            
+
             const fileInput = document.getElementById('contact-attachments');
             const selectedInterest = contactForm.querySelector('input[name="contact-interest"]:checked');
-            
+
             const formData = new FormData();
             formData.append('name', document.getElementById('contact-name').value);
             formData.append('email', document.getElementById('contact-email').value);
             formData.append('interest', selectedInterest ? selectedInterest.value : "");
             formData.append('subject', document.getElementById('contact-subject').value);
             formData.append('description', document.getElementById('contact-description').value);
-            
+
             if (fileInput && fileInput.files && fileInput.files[0]) {
                 formData.append('file', fileInput.files[0]);
             }
-            
+
             // Save locally as database backup
             saveFormEntry('contact', {
                 name: document.getElementById('contact-name').value,
@@ -281,19 +281,19 @@ function bindFormHandlers() {
                 attachmentName: fileInput && fileInput.files && fileInput.files[0] ? fileInput.files[0].name : "",
                 timestamp: new Date().toISOString()
             });
-            
+
             try {
                 // Call the Cloudflare Pages Function secure endpoint
                 const response = await fetch('/api/submit-contact', {
                     method: 'POST',
                     body: formData
                 });
-                
+
                 if (!response.ok) {
                     const errorText = await response.text();
                     throw new Error(`CF Function Error: ${response.status} - ${errorText}`);
                 }
-                
+
                 const result = await response.json();
                 console.log("[ClickFunnels API Success]", result);
                 showSuccessModal("Message Sent", "Thank you. I have received your message. I prioritize genuine connections and will get back to you shortly.");
@@ -319,21 +319,21 @@ function bindFormHandlers() {
             e.preventDefault();
             const submitBtn = aimForm.querySelector('button[type="submit"]');
             const originalBtnText = submitBtn ? submitBtn.textContent : "Join the waitlist";
-            
+
             if (submitBtn) {
                 submitBtn.disabled = true;
                 submitBtn.textContent = "Sending...";
             }
-            
+
             const name = document.getElementById('aim-name').value;
             const email = document.getElementById('aim-email').value;
             const role = document.getElementById('aim-role').value;
-            
+
             const formData = new FormData();
             formData.append('name', name);
             formData.append('email', email);
             formData.append('role', role);
-            
+
             // Save locally as database backup
             saveFormEntry('aim-waitlist', {
                 name,
@@ -341,18 +341,18 @@ function bindFormHandlers() {
                 role,
                 timestamp: new Date().toISOString()
             });
-            
+
             try {
                 const response = await fetch('/api/submit-aim-waitlist', {
                     method: 'POST',
                     body: formData
                 });
-                
+
                 if (!response.ok) {
                     const errorText = await response.text();
                     throw new Error(`CF Function Error: ${response.status} - ${errorText}`);
                 }
-                
+
                 const result = await response.json();
                 console.log("[ClickFunnels AIM Waitlist API Success]", result);
                 showSuccessModal("Waitlist Joined", "Welcome to Accessible AIM! You are on the waitlist. I will email you prompt starter files soon.");
@@ -378,36 +378,36 @@ function bindFormHandlers() {
             e.preventDefault();
             const emailInput = document.getElementById('aim-dedicated-email');
             if (!emailInput) return;
-            
+
             const submitBtn = aimDedicatedForm.querySelector('button[type="submit"]');
             const originalBtnText = submitBtn ? submitBtn.textContent : "Join the waitlist";
-            
+
             if (submitBtn) {
                 submitBtn.disabled = true;
                 submitBtn.textContent = "Sending...";
             }
-            
+
             const email = emailInput.value;
             const formData = new FormData();
             formData.append('email', email);
-            
+
             // Save locally as database backup
             saveFormEntry('aim-waitlist', {
                 email,
                 timestamp: new Date().toISOString()
             });
-            
+
             try {
                 const response = await fetch('/api/submit-aim-waitlist', {
                     method: 'POST',
                     body: formData
                 });
-                
+
                 if (!response.ok) {
                     const errorText = await response.text();
                     throw new Error(`CF Function Error: ${response.status} - ${errorText}`);
                 }
-                
+
                 const result = await response.json();
                 console.log("[ClickFunnels AIM Dedicated Waitlist API Success]", result);
                 showSuccessModal("Waitlist Joined", "Welcome to Accessible AIM! You are on the waitlist. I will email you prompt starter files soon.");
@@ -477,7 +477,7 @@ function bindFormHandlers() {
  */
 function saveFormEntry(formId, data) {
     console.log(`[Form Submission Logged] Form: ${formId}`, data);
-    
+
     // Save to localStorage array
     const key = `ms-form-${formId}`;
     const existing = JSON.parse(localStorage.getItem(key)) || [];
@@ -492,14 +492,14 @@ function showSuccessModal(title, message) {
     const modal = document.getElementById('success-modal');
     const titleEl = document.getElementById('modal-title');
     const msgEl = document.getElementById('modal-message');
-    
+
     if (modal && titleEl && msgEl) {
         titleEl.textContent = title;
         msgEl.textContent = message;
-        
+
         modal.classList.add('active');
         modal.setAttribute('aria-hidden', 'false');
-        
+
         // Shift focus inside modal
         const okBtn = modal.querySelector('.modal-ok-btn');
         if (okBtn) okBtn.focus();
@@ -545,7 +545,7 @@ function initHeroParallax() {
 
     window.addEventListener('scroll', heroScrollListener, { passive: true });
     window.addEventListener('resize', heroResizeListener);
-    
+
     // Run initial frame
     handleScroll();
 }
@@ -597,7 +597,7 @@ function initWinScrollSequence() {
             const rect = outer.getBoundingClientRect();
             const scrollTop = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
             const totalScrollableHeight = outer.offsetHeight - window.innerHeight;
-            
+
             // Map index to progress values: Step 0 -> 0.0, Step 1 -> 0.45, Step 2 -> 0.85
             let targetProgress = 0;
             if (index === 0) targetProgress = 0;
@@ -605,7 +605,7 @@ function initWinScrollSequence() {
             if (index === 2) targetProgress = 0.85;
 
             const targetTop = rect.top + scrollTop + (totalScrollableHeight * targetProgress);
-            
+
             // Standard scrollTo will scroll smoothly because html { scroll-behavior: smooth; } is active in CSS.
             // This is robust against headless browser smooth-scroll option bugs.
             window.scrollTo(0, targetTop);
@@ -747,11 +747,11 @@ function initPerspectiveConsole() {
 function initScrollReveal() {
     // Automatically select all sections and timeline rows across the entire site
     const sections = document.querySelectorAll('section, .section, .timeline-row');
-    
+
     sections.forEach(sec => {
         // Exclude hero sections or elements that should be visible immediately
         if (sec.classList.contains('hero-sec') || sec.classList.contains('page-intro') || sec.closest('.page-intro')) {
-            return; 
+            return;
         }
         sec.classList.add('reveal-on-scroll');
     });
@@ -790,7 +790,7 @@ function initStoryTimelineScroll() {
     const handleScroll = () => {
         // Accessibility check: Pause animations toggles snap full progress and skips effects
         const animationsPaused = document.documentElement.classList.contains('accessibility-paused-animations');
-        
+
         if (animationsPaused) {
             bullets.forEach(b => b.classList.add('active-bullet'));
             rows.forEach(r => r.classList.add('active-row'));
@@ -800,7 +800,7 @@ function initStoryTimelineScroll() {
 
         const rect = timeline.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
-        
+
         // Trigger point is at 55% height of the screen (slightly below center for organic flow)
         const triggerPoint = viewportHeight * 0.55;
 
@@ -851,7 +851,7 @@ function initStoryTimelineScroll() {
 
     timelineScrollListener = handleScroll;
     window.addEventListener('scroll', timelineScrollListener, { passive: true });
-    
+
     // Initial run
     handleScroll();
 }
@@ -880,15 +880,15 @@ const SpeakingGalleryLightbox = {
             overlay = document.createElement('div');
             overlay.id = 'gallery-lightbox-overlay';
             overlay.className = 'gallery-lightbox-overlay';
-            
+
             const wrapper = document.createElement('div');
             wrapper.id = 'gallery-lightbox-wrapper';
             wrapper.className = 'gallery-lightbox-wrapper';
-            
+
             const img = document.createElement('img');
             img.id = 'gallery-lightbox-image';
             img.className = 'gallery-lightbox-image';
-            
+
             // Premium close button with black X icon
             const closeBtn = document.createElement('button');
             closeBtn.id = 'gallery-lightbox-close-x';
@@ -900,11 +900,11 @@ const SpeakingGalleryLightbox = {
                     <line x1="6" y1="6" x2="18" y2="18"></line>
                 </svg>
             `;
-            
+
             wrapper.appendChild(img);
             wrapper.appendChild(closeBtn);
             overlay.appendChild(wrapper);
-            
+
             // Append to body so it overlays the entire viewport safely
             document.body.appendChild(overlay);
 
@@ -969,7 +969,7 @@ function initImmersiveMission() {
     const onMouseMove = (e) => {
         mouseX = e.clientX;
         mouseY = e.clientY;
-        
+
         if (immersiveCursorDot && immersiveCursorRing) {
             immersiveCursorDot.style.opacity = '1';
             immersiveCursorRing.style.opacity = '1';
@@ -1007,7 +1007,7 @@ function initImmersiveMission() {
         if (magnetic) {
             isHoveringMagnetic = true;
             const rect = magnetic.getBoundingClientRect();
-            
+
             // Adjust ring properties to snap around the button
             targetWidth = rect.width + 16;
             targetHeight = rect.height + 12;
@@ -1025,7 +1025,7 @@ function initImmersiveMission() {
                 mouseY = rect.top + rect.height / 2;
             };
             magnetic.addEventListener('mousemove', onBtnMove);
-            
+
             const onBtnLeave = () => {
                 magnetic.style.transform = '';
                 isHoveringMagnetic = false;
@@ -1058,7 +1058,7 @@ function initImmersiveMission() {
         const loader = consoleContainer.querySelector('#console-loader');
         const displayTitle = consoleContainer.querySelector('#console-display-title');
         const displayText = consoleContainer.querySelector('#console-display-text');
-        
+
         const reframes = {
             physical: {
                 title: "The Constraint Advantage",
@@ -1083,10 +1083,10 @@ function initImmersiveMission() {
                 const constraint = btn.getAttribute('data-constraint');
                 if (reframes[constraint]) {
                     if (loader) loader.style.display = 'flex';
-                    
+
                     buttons.forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
-                    
+
                     setTimeout(() => {
                         if (loader) loader.style.display = 'none';
                         if (displayTitle) displayTitle.textContent = reframes[constraint].title;
@@ -1191,24 +1191,24 @@ async function initInstagramMarquee() {
     try {
         const response = await fetch('/api/instagram?v=2');
         if (!response.ok) return;
-        
+
         const result = await response.json();
         if (!result || !result.data || result.source === 'fallback' || result.source === 'fallback_on_error') {
             // Keep static fallback HTML already present in index.html
             return;
         }
-        
+
         const posts = result.data;
         if (posts.length === 0) return;
-        
+
         // Split posts into Row 1 (RTL) and Row 2 (LTR)
         const half = Math.ceil(posts.length / 2);
         const row1Posts = posts.slice(0, half);
         const row2Posts = posts.slice(half);
-        
+
         const trackRTL = document.querySelector('.marquee-rtl .instagram-marquee-track');
         const trackLTR = document.querySelector('.marquee-ltr .instagram-marquee-track');
-        
+
         const escapeHtml = (str) => {
             if (!str) return 'Instagram Post';
             return str
@@ -1218,7 +1218,7 @@ async function initInstagramMarquee() {
                 .replace(/"/g, '&quot;')
                 .replace(/'/g, '&#039;');
         };
-        
+
         if (trackRTL && row1Posts.length > 0) {
             // Double the items for seamless infinite marquee loop
             const doublePosts = [...row1Posts, ...row1Posts];
@@ -1228,7 +1228,7 @@ async function initInstagramMarquee() {
                 </div>
             `).join('');
         }
-        
+
         if (trackLTR && row2Posts.length > 0) {
             // Double the items for seamless infinite marquee loop
             const doublePosts = [...row2Posts, ...row2Posts];

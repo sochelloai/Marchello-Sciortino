@@ -47,7 +47,7 @@ const Router = {
     handleRouting(route) {
         // If route is not provided, read pathname and search from location
         let currentPath = route || (window.location.pathname + window.location.search);
-        
+
         // Split route path from query parameters
         let pathOnly = currentPath.split('?')[0];
 
