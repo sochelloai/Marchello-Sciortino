@@ -1384,32 +1384,48 @@ const GlobalMediaLightbox = {
  */
 function initAccessibleAimVideo() {
     const video = document.getElementById('aim-video');
-    const overlay = document.getElementById('aim-video-overlay');
-    if (!video || !overlay) return;
+    const badge = document.getElementById('aim-sound-badge');
+    if (!video) return;
 
     // Ensure initial state: autoplay, muted, looping, no controls
     video.muted = true;
     video.loop = true;
     video.removeAttribute('controls');
-    overlay.classList.remove('hidden');
+    if (badge) badge.classList.remove('hidden');
 
     // Make sure the video is playing
     video.play().catch(err => {
         console.warn("Autoplay blocked or video not ready:", err);
     });
 
-    // When overlay is clicked, unmute, restart, add controls, and hide overlay
-    overlay.addEventListener('click', () => {
+    const handleUnmuteAndPlay = () => {
         video.muted = false;
         video.loop = false; // Disable looping for unmuted playthrough
         video.currentTime = 0;
         video.setAttribute('controls', 'true');
-        overlay.classList.add('hidden');
+        if (badge) badge.classList.add('hidden');
         
         video.play().catch(err => {
             console.error("Failed to play video after user interaction:", err);
         });
-    });
+    };
+
+    // When badge is clicked, unmute and play
+    if (badge) {
+        badge.addEventListener('click', (e) => {
+            e.stopPropagation();
+            handleUnmuteAndPlay();
+        });
+    }
+
+    // Also unmute and play when the video itself is clicked (only when muted)
+    const onVideoClick = () => {
+        if (video.muted) {
+            handleUnmuteAndPlay();
+            video.removeEventListener('click', onVideoClick);
+        }
+    };
+    video.addEventListener('click', onVideoClick);
 }
 
 
