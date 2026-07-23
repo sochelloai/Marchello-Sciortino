@@ -4,10 +4,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Initialize core system structures
     Accessibility.init();
-    Router.init();
-
-    // Initialize Instagram feed marquee
-    initInstagramMarquee();
 
     // 2. Setup global DOM listeners
     setupMobileNav();
@@ -77,6 +73,10 @@ document.addEventListener('DOMContentLoaded', () => {
             initScrollReveal();
         }
     });
+
+    // 4. Initialize Router and components
+    Router.init();
+    initInstagramMarquee();
 });
 
 /**
