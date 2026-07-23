@@ -3111,13 +3111,18 @@ Router.register('/accessible-aim', () => `
             <div class="aim-grid">
                 <!-- Left Column: Video -->
                 <div class="aim-video-col">
-                    <div class="aim-video-wrapper">
+                    <div class="aim-video-wrapper" id="aim-video-wrapper">
                         <video id="aim-video" autoplay muted loop playsinline poster="assets/hero-bg.jpg">
                             <source src="assets/videos/accessible-aim-intro.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
                         <div class="aim-sound-badge" id="aim-sound-badge">
                             <img src="assets/click-to-turn-on-sound.png" alt="Click to turn on sound">
+                        </div>
+                        <div class="aim-center-play" id="aim-center-play">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z" fill="currentColor"/>
+                            </svg>
                         </div>
                     </div>
                 </div>

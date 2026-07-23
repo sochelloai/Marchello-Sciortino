@@ -1385,47 +1385,56 @@ const GlobalMediaLightbox = {
 function initAccessibleAimVideo() {
     const video = document.getElementById('aim-video');
     const badge = document.getElementById('aim-sound-badge');
+    const centerPlay = document.getElementById('aim-center-play');
+    const wrapper = document.getElementById('aim-video-wrapper');
     if (!video) return;
 
-    // Ensure initial state: autoplay, muted, looping, no controls
-    video.muted = true;
-    video.loop = true;
-    video.removeAttribute('controls');
-    if (badge) badge.classList.remove('hidden');
+    // Reset initial state
+    const resetToAutoplayMuted = () => {
+        video.muted = true;
+        video.loop = true;
+        video.removeAttribute('controls');
+        if (badge) badge.classList.remove('hidden');
+        if (centerPlay) centerPlay.classList.remove('hidden');
+        
+        video.play().catch(err => {
+            console.warn("Muted autoplay failed to start:", err);
+        });
+    };
 
-    // Make sure the video is playing
-    video.play().catch(err => {
-        console.warn("Autoplay blocked or video not ready:", err);
-    });
+    resetToAutoplayMuted();
 
     const handleUnmuteAndPlay = () => {
+        if (!video.muted) return; // Already unmuted, do nothing
+        
         video.muted = false;
         video.loop = false; // Disable looping for unmuted playthrough
         video.currentTime = 0;
         video.setAttribute('controls', 'true');
         if (badge) badge.classList.add('hidden');
+        if (centerPlay) centerPlay.classList.add('hidden');
         
         video.play().catch(err => {
-            console.error("Failed to play video after user interaction:", err);
+            console.error("Failed to play video after interaction:", err);
         });
     };
 
-    // When badge is clicked, unmute and play
-    if (badge) {
-        badge.addEventListener('click', (e) => {
-            e.stopPropagation();
-            handleUnmuteAndPlay();
+    // When the wrapper (entire window of the video) is clicked, unmute and play
+    if (wrapper) {
+        wrapper.addEventListener('click', (e) => {
+            // Only intercept clicks if the video is currently muted (in preview mode)
+            if (video.muted) {
+                e.preventDefault();
+                e.stopPropagation();
+                handleUnmuteAndPlay();
+            }
         });
     }
 
-    // Also unmute and play when the video itself is clicked (only when muted)
-    const onVideoClick = () => {
-        if (video.muted) {
-            handleUnmuteAndPlay();
-            video.removeEventListener('click', onVideoClick);
-        }
-    };
-    video.addEventListener('click', onVideoClick);
+    // Reset to default at the end of the video
+    video.addEventListener('ended', () => {
+        resetToAutoplayMuted();
+    });
 }
 
 
