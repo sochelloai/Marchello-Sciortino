@@ -1405,8 +1405,6 @@ function initAccessibleAimVideo() {
     resetToAutoplayMuted();
 
     const handleUnmuteAndPlay = () => {
-        if (!video.muted) return; // Already unmuted, do nothing
-        
         video.muted = false;
         video.loop = false; // Disable looping for unmuted playthrough
         video.currentTime = 0;
@@ -1422,8 +1420,12 @@ function initAccessibleAimVideo() {
     // When the wrapper (entire window of the video) is clicked, unmute and play
     if (wrapper) {
         wrapper.addEventListener('click', (e) => {
-            // Only intercept clicks if the video is currently muted (in preview mode)
-            if (video.muted) {
+            // Check if overlays are currently visible
+            const badgeVisible = badge && !badge.classList.contains('hidden');
+            const centerPlayVisible = centerPlay && !centerPlay.classList.contains('hidden');
+            
+            // If overlays are visible, or the video is muted, intercept the click
+            if (badgeVisible || centerPlayVisible || video.muted) {
                 e.preventDefault();
                 e.stopPropagation();
                 handleUnmuteAndPlay();
