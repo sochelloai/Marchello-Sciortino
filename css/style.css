@@ -5201,8 +5201,6 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     }
 
     /* Disable left and right fade overlays on marquees on mobile */
-    .reviews-marquee-wrapper::before,
-    .reviews-marquee-wrapper::after,
     .marquee-wrapper::before,
     .marquee-wrapper::after,
     .instagram-marquee-row::before,
@@ -5217,8 +5215,21 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
         opacity: 0 !important;
         visibility: hidden !important;
     }
+}
 
-    /* Reviews Carousel Navigation (Mobile specific layout) */
+/* Reviews Carousel Navigation (Mobile & Tablet specific layout up to 1024px) */
+@media (max-width: 1024px) {
+    .reviews-marquee-wrapper::before,
+    .reviews-marquee-wrapper::after {
+        display: none !important;
+        content: none !important;
+        background: none !important;
+        width: 0 !important;
+        height: 0 !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+    }
+
     .reviews-marquee-wrapper {
         position: relative;
         overflow: hidden;
@@ -5234,6 +5245,8 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
         scroll-behavior: smooth !important;
         -webkit-overflow-scrolling: touch !important;
         animation: none !important; /* Disables marquee animation */
+        animation-name: none !important;
+        animation-play-state: paused !important;
         scrollbar-width: none !important; /* Hide scrollbar Firefox */
         -ms-overflow-style: none !important; /* Hide scrollbar IE/Edge */
     }
@@ -5261,6 +5274,6 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     }
 
     .reviews-arrow {
-        display: flex !important; /* Show navigation arrows on mobile */
+        display: flex !important; /* Show navigation arrows on mobile & tablet */
     }
 }

@@ -1489,7 +1489,7 @@ function setupReviewsCarousel() {
 
     document.body.addEventListener('pointerdown', (e) => {
         const track = e.target.closest('.reviews-marquee-track');
-        if (!track || window.innerWidth > 768) return;
+        if (!track || window.innerWidth > 1024) return;
         pointerStartX = e.clientX;
         pointerStartY = e.clientY;
         pointerStartTime = Date.now();
@@ -1497,7 +1497,7 @@ function setupReviewsCarousel() {
 
     document.body.addEventListener('pointerup', (e) => {
         const track = e.target.closest('.reviews-marquee-track');
-        if (!track || window.innerWidth > 768) return;
+        if (!track || window.innerWidth > 1024) return;
 
         // Skip if clicking interactive elements like buttons/links/arrows
         if (e.target.closest('a, button, .reviews-arrow')) return;
