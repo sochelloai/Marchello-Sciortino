@@ -219,6 +219,16 @@ Router.register('/', () => `
         
         <!-- Reviews Scrolling Marquee -->
         <div class="reviews-marquee-wrapper">
+            <button class="reviews-arrow reviews-arrow-left" aria-label="Previous Review">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+            </button>
+            <button class="reviews-arrow reviews-arrow-right" aria-label="Next Review">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </button>
             <div class="reviews-marquee-track">
                 <div class="reviews-marquee-group">
                     <!-- Card 1 -->

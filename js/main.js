@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupMobileNav();
     setupGlobalModals();
     GlobalMediaLightbox.init();
+    setupReviewsCarousel();
 
     // 3. Listen to page rendering transitions to bootstrap specific page scripts
     document.addEventListener('page-loaded', (e) => {
@@ -1226,7 +1227,7 @@ async function initInstagramMarquee() {
             const doublePosts = [...row1Posts, ...row1Posts];
             trackRTL.innerHTML = doublePosts.map(post => `
                 <div class="instagram-post">
-                    <img src="${post.media_url}" alt="${escapeHtml(post.caption)}" loading="lazy">
+                    <img src="${post.media_url}" alt="${escapeHtml(post.caption)}" loading="eager">
                 </div>
             `).join('');
         }
@@ -1236,7 +1237,7 @@ async function initInstagramMarquee() {
             const doublePosts = [...row2Posts, ...row2Posts];
             trackLTR.innerHTML = doublePosts.map(post => `
                 <div class="instagram-post">
-                    <img src="${post.media_url}" alt="${escapeHtml(post.caption)}" loading="lazy">
+                    <img src="${post.media_url}" alt="${escapeHtml(post.caption)}" loading="eager">
                 </div>
             `).join('');
         }
@@ -1436,6 +1437,110 @@ function initAccessibleAimVideo() {
     // Reset to default at the end of the video
     video.addEventListener('ended', () => {
         resetToAutoplayMuted();
+    });
+}
+
+/**
+ * Setup Reviews Carousel controls for mobile layout.
+ * Listens to clicks on .reviews-arrow-left and .reviews-arrow-right
+ * and scrolls the .reviews-marquee-track.
+ * Also handles mobile-only tap navigation on the track/cards.
+ */
+function setupReviewsCarousel() {
+    // 1. Existing Arrow Click Navigation
+    document.body.addEventListener('click', (e) => {
+        const arrow = e.target.closest('.reviews-arrow');
+        if (!arrow) return;
+
+        const wrapper = arrow.closest('.reviews-marquee-wrapper');
+        if (!wrapper) return;
+
+        const track = wrapper.querySelector('.reviews-marquee-track');
+        if (!track) return;
+
+        const cards = track.querySelectorAll('.reviews-marquee-group:not([aria-hidden="true"]) .reviews-marquee-card');
+        if (cards.length === 0) return;
+
+        const cardWidth = cards[0].getBoundingClientRect().width;
+        const style = window.getComputedStyle(cards[0]);
+        const marginRight = parseFloat(style.marginRight) || 0;
+        const gap = parseFloat(window.getComputedStyle(cards[0].parentNode).gap) || 0;
+        const step = cardWidth + gap + marginRight;
+
+        const currentScroll = track.scrollLeft;
+
+        if (arrow.classList.contains('reviews-arrow-left')) {
+            track.scrollTo({
+                left: currentScroll - step,
+                behavior: 'smooth'
+            });
+        } else if (arrow.classList.contains('reviews-arrow-right')) {
+            track.scrollTo({
+                left: currentScroll + step,
+                behavior: 'smooth'
+            });
+        }
+    });
+
+    // 2. Mobile-Only Tap Navigation on Marquee Track
+    let pointerStartX = 0;
+    let pointerStartY = 0;
+    let pointerStartTime = 0;
+
+    document.body.addEventListener('pointerdown', (e) => {
+        const track = e.target.closest('.reviews-marquee-track');
+        if (!track || window.innerWidth > 768) return;
+        pointerStartX = e.clientX;
+        pointerStartY = e.clientY;
+        pointerStartTime = Date.now();
+    });
+
+    document.body.addEventListener('pointerup', (e) => {
+        const track = e.target.closest('.reviews-marquee-track');
+        if (!track || window.innerWidth > 768) return;
+
+        // Skip if clicking interactive elements like buttons/links/arrows
+        if (e.target.closest('a, button, .reviews-arrow')) return;
+
+        const diffX = e.clientX - pointerStartX;
+        const diffY = e.clientY - pointerStartY;
+        const duration = Date.now() - pointerStartTime;
+
+        // Ignore swipe/drag (moved finger/mouse more than 10px or held more than 300ms)
+        if (Math.abs(diffX) > 10 || Math.abs(diffY) > 10 || duration > 300) {
+            return;
+        }
+
+        // Tap detected! Determine if it occurred in the left or right half of the track viewport
+        const rect = track.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+        const halfWidth = rect.width / 2;
+
+        const cards = track.querySelectorAll('.reviews-marquee-group:not([aria-hidden="true"]) .reviews-marquee-card');
+        if (cards.length === 0) return;
+
+        const cardWidth = cards[0].getBoundingClientRect().width;
+        const style = window.getComputedStyle(cards[0]);
+        const marginRight = parseFloat(style.marginRight) || 0;
+        const gap = parseFloat(window.getComputedStyle(cards[0].parentNode).gap) || 0;
+        const step = cardWidth + gap + marginRight;
+
+        const currentScroll = track.scrollLeft;
+        const currentIndex = Math.round(currentScroll / step);
+
+        if (clickX < halfWidth) {
+            // Clicked left half -> Go to previous review
+            track.scrollTo({
+                left: (currentIndex - 1) * step,
+                behavior: 'smooth'
+            });
+        } else {
+            // Clicked right half -> Go to next review
+            track.scrollTo({
+                left: (currentIndex + 1) * step,
+                behavior: 'smooth'
+            });
+        }
     });
 }
 
