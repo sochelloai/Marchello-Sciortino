@@ -5271,9 +5271,18 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
         flex-shrink: 0 !important;
         scroll-snap-align: center !important;
         box-sizing: border-box !important;
+        padding-left: 65px !important;
+        padding-right: 65px !important;
     }
 
     .reviews-arrow {
         display: flex !important; /* Show navigation arrows on mobile & tablet */
+        opacity: 0.65;
+        transition: opacity 0.3s ease, background 0.3s ease, transform 0.3s ease;
+    }
+
+    .reviews-arrow:hover,
+    .reviews-arrow:active {
+        opacity: 1;
     }
 }
