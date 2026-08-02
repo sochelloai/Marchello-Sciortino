@@ -61,6 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (typeof ServicesPortfolio !== 'undefined') {
                 ServicesPortfolio.init();
             }
+            initSpeakingVideo();
         } else if (page === 'accessible-aim') {
             initAccessibleAimVideo();
         }
@@ -1381,24 +1382,20 @@ const GlobalMediaLightbox = {
 };
 
 /**
- * Accessible AIM Video custom overlay play handler
+ * Generic Interactive Video Handler
  */
-function initAccessibleAimVideo() {
-    const video = document.getElementById('aim-video');
-    const badge = document.getElementById('aim-sound-badge');
-    const centerPlay = document.getElementById('aim-center-play');
-    const wrapper = document.getElementById('aim-video-wrapper');
-    if (!video) return;
+function initInteractiveVideo(videoEl, badgeEl, centerPlayEl, wrapperEl) {
+    if (!videoEl) return;
 
     // Reset initial state
     const resetToAutoplayMuted = () => {
-        video.muted = true;
-        video.loop = true;
-        video.removeAttribute('controls');
-        if (badge) badge.classList.remove('hidden');
-        if (centerPlay) centerPlay.classList.remove('hidden');
+        videoEl.muted = true;
+        videoEl.loop = true;
+        videoEl.removeAttribute('controls');
+        if (badgeEl) badgeEl.classList.remove('hidden');
+        if (centerPlayEl) centerPlayEl.classList.remove('hidden');
         
-        video.play().catch(err => {
+        videoEl.play().catch(err => {
             console.warn("Muted autoplay failed to start:", err);
         });
     };
@@ -1406,27 +1403,27 @@ function initAccessibleAimVideo() {
     resetToAutoplayMuted();
 
     const handleUnmuteAndPlay = () => {
-        video.muted = false;
-        video.loop = false; // Disable looping for unmuted playthrough
-        video.currentTime = 0;
-        video.setAttribute('controls', 'true');
-        if (badge) badge.classList.add('hidden');
-        if (centerPlay) centerPlay.classList.add('hidden');
+        videoEl.muted = false;
+        videoEl.loop = false; // Disable looping for unmuted playthrough
+        videoEl.currentTime = 0;
+        videoEl.setAttribute('controls', 'true');
+        if (badgeEl) badgeEl.classList.add('hidden');
+        if (centerPlayEl) centerPlayEl.classList.add('hidden');
         
-        video.play().catch(err => {
+        videoEl.play().catch(err => {
             console.error("Failed to play video after interaction:", err);
         });
     };
 
     // When the wrapper (entire window of the video) is clicked, unmute and play
-    if (wrapper) {
-        wrapper.addEventListener('click', (e) => {
+    if (wrapperEl) {
+        wrapperEl.addEventListener('click', (e) => {
             // Check if overlays are currently visible
-            const badgeVisible = badge && !badge.classList.contains('hidden');
-            const centerPlayVisible = centerPlay && !centerPlay.classList.contains('hidden');
+            const badgeVisible = badgeEl && !badgeEl.classList.contains('hidden');
+            const centerPlayVisible = centerPlayEl && !centerPlayEl.classList.contains('hidden');
             
             // If overlays are visible, or the video is muted, intercept the click
-            if (badgeVisible || centerPlayVisible || video.muted) {
+            if (badgeVisible || centerPlayVisible || videoEl.muted) {
                 e.preventDefault();
                 e.stopPropagation();
                 handleUnmuteAndPlay();
@@ -1435,9 +1432,31 @@ function initAccessibleAimVideo() {
     }
 
     // Reset to default at the end of the video
-    video.addEventListener('ended', () => {
+    videoEl.addEventListener('ended', () => {
         resetToAutoplayMuted();
     });
+}
+
+/**
+ * Accessible AIM Video custom overlay play handler
+ */
+function initAccessibleAimVideo() {
+    const video = document.getElementById('aim-video');
+    const badge = document.getElementById('aim-sound-badge');
+    const centerPlay = document.getElementById('aim-center-play');
+    const wrapper = document.getElementById('aim-video-wrapper');
+    initInteractiveVideo(video, badge, centerPlay, wrapper);
+}
+
+/**
+ * Speaking Page Video custom overlay play handler
+ */
+function initSpeakingVideo() {
+    const video = document.getElementById('speaking-video');
+    const badge = document.getElementById('speaking-sound-badge');
+    const centerPlay = document.getElementById('speaking-center-play');
+    const wrapper = document.getElementById('speaking-video-wrapper');
+    initInteractiveVideo(video, badge, centerPlay, wrapper);
 }
 
 /**

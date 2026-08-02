@@ -2060,11 +2060,19 @@ Router.register('/speaking', () => `
                 <!-- Left Column (70%): Keynote Video -->
                 <div>
                     <h3 style="text-align: center; margin-bottom: 15px; color: var(--color-navy); font-family: var(--font-heading); font-weight: 700; font-size: 2.2rem;">A quick message from Marchello</h3>
-                    <div class="video-container" style="position: relative; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-lg); border: 1px solid rgba(10, 216, 173, 0.2); background: var(--color-navy-dark); line-height: 0; aspect-ratio: 16 / 9;">
-                        <video controls style="width: 100%; height: 100%; display: block; object-fit: cover; border-radius: var(--radius-md);" poster="assets/hero-bg.jpg">
-                            <source src="assets/videos/W.mp4" type="video/mp4">
+                    <div class="aim-video-wrapper" id="speaking-video-wrapper">
+                        <video id="speaking-video" autoplay muted loop playsinline poster="assets/hero-bg.jpg">
+                            <source src="assets/videos/speaking-reel.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
+                        <div class="aim-sound-badge" id="speaking-sound-badge">
+                            <img src="assets/click-to-turn-on-sound.png" alt="Click to turn on sound">
+                        </div>
+                        <div class="aim-center-play" id="speaking-center-play">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z" fill="currentColor"/>
+                            </svg>
+                        </div>
                     </div>
                     <p style="font-size: 0.98rem; line-height: 1.6; color: var(--color-gray-steel); margin-top: 20px; font-style: italic; background: rgba(10, 216, 173, 0.05); padding: 15px 20px; border-left: 4px solid var(--color-teal); border-radius: 0 var(--radius-md) var(--radius-md) 0;">
                         <strong>A note on my delivery:</strong> My approach to presentations is unique, which is by design. Due to my mobility and energy levels, I utilize assistance for longer speaking engagements. Although my delivery can sound weary at times, I am fully engaged. I have found this approach fosters greater attention and understanding from audiences, allowing us to connect more deeply.
