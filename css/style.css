@@ -3022,8 +3022,9 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5);
-    /* 50% opacity black */
+    background-color: rgba(3, 11, 19, 0.65);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     z-index: 10000;
     display: flex;
     justify-content: center;
@@ -3315,7 +3316,9 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(3, 11, 19, 0.65);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     z-index: 10005;
     display: flex;
     justify-content: center;
@@ -5021,9 +5024,9 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(3, 11, 19, 0.95);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    background: rgba(3, 11, 19, 0.65);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     z-index: 100000;
     display: flex;
     flex-direction: column;

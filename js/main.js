@@ -1262,12 +1262,98 @@ const GlobalMediaLightbox = {
     bindEvents() {
         // Event delegation for clickable media across all pages & routes
         document.body.addEventListener('click', (e) => {
-            // Check if click target or parent is a zoomable media element
+            // Exclude portfolio cards and services visual preview pane (handled by ServicesPortfolio)
+            if (e.target.closest('.portfolio-card') || e.target.closest('.explorer-visual-pane')) {
+                return;
+            }
+
+            // 1. Check if click target is a link pointing to a media file (or inside one)
+            const link = e.target.closest('a');
+            if (link) {
+                const href = link.getAttribute('href');
+                if (href) {
+                    // Check if it's a media URL
+                    const mediaRegex = /\.(mp4|webm|ogg|mp3|wav|png|jpg|jpeg|gif|svg|webp|pdf)(\?|#|$)/i;
+                    const isMedia = mediaRegex.test(href);
+
+                    // Check for YouTube / Vimeo URLs
+                    const ytRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
+                    const vimeoRegex = /vimeo\.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|video\/|)(\d+)/i;
+                    const isVideoPlatform = ytRegex.test(href) || vimeoRegex.test(href);
+
+                    if (isMedia || isVideoPlatform) {
+                        // Don't intercept if clicking inside active lightbox
+                        if (e.target.closest('#global-media-lightbox')) return;
+
+                        // If it has a download attribute, download it programmatically in background
+                        if (link.hasAttribute('download')) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            const filename = link.getAttribute('download') || '';
+                            this.downloadFile(href, filename);
+                            return;
+                        }
+
+                        // Otherwise, open in lightbox to prevent leaving the page
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        let type = 'image';
+                        if (isVideoPlatform || /\.(mp4|webm|ogg)(\?|#|$)/i.test(href)) {
+                            type = 'video';
+                        } else if (/\.(mp3|wav|m4a|ogg)(\?|#|$)/i.test(href)) {
+                            type = 'audio';
+                        } else if (/\.pdf(\?|#|$)/i.test(href)) {
+                            type = 'pdf';
+                        }
+
+                        const title = link.getAttribute('download') || link.title || link.textContent.trim() || 'Media Viewer';
+                        this.open(type, href, title);
+                        return;
+                    }
+                }
+            }
+
+            // 2. Intercept ANY img tag click globally (excluding header, footer, active lightboxes, and logo/social/badge icons)
+            const imgEl = e.target.closest('img');
+            const clickedMedia = imgEl;
+
+            if (clickedMedia) {
+                // Exclude header, footer, active lightboxes, and elements with logo/avatar/icon class
+                const inHeader = clickedMedia.closest('header') || clickedMedia.closest('.main-header');
+                const inFooter = clickedMedia.closest('footer') || clickedMedia.closest('.main-footer');
+                const inLightbox = clickedMedia.closest('#global-media-lightbox') || 
+                                   clickedMedia.closest('#portfolio-lightbox-overlay') || 
+                                   clickedMedia.closest('#gallery-lightbox-overlay');
+                
+                const classStr = clickedMedia.className || '';
+                const idStr = clickedMedia.id || '';
+                const parentClassStr = (clickedMedia.parentElement && clickedMedia.parentElement.className) || '';
+                
+                const isLogoOrWidget = classStr.includes('logo') || classStr.includes('icon') || classStr.includes('avatar') || classStr.includes('badge') ||
+                                       idStr.includes('logo') || idStr.includes('icon') || idStr.includes('badge') ||
+                                       parentClassStr.includes('badge') || parentClassStr.includes('logo') || parentClassStr.includes('icon') ||
+                                       (clickedMedia.src && (clickedMedia.src.includes('logo') || clickedMedia.src.includes('sound') || clickedMedia.src.includes('click-to')));
+
+                if (!inHeader && !inFooter && !inLightbox && !isLogoOrWidget) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    const src = clickedMedia.src || clickedMedia.getAttribute('data-src') || '';
+                    const alt = clickedMedia.alt || clickedMedia.title || clickedMedia.getAttribute('aria-label') || '';
+
+                    if (src) {
+                        this.open('image', src, alt);
+                        return;
+                    }
+                }
+            }
+
+            // 3. Fallback: check other zoomable targets (excluding portfolio cards now handled exclusively by ServicesPortfolio)
             const mediaTarget = e.target.closest(
                 '.timeline-img, .articulated-img, .contact-image-column img, ' +
                 '.resource-cover-image, .blog-card-img, .blog-card img, ' +
-                '.media-gallery-grid img, .instagram-post img, .zoomable-media, ' +
-                '.portfolio-card[data-type="image"], .portfolio-card[data-type="video"]'
+                '.media-gallery-grid img, .instagram-post img, .zoomable-media'
             );
 
             if (!mediaTarget) return;
@@ -1278,18 +1364,6 @@ const GlobalMediaLightbox = {
             let type = 'image';
             let src = mediaTarget.src || mediaTarget.getAttribute('data-src') || '';
             let alt = mediaTarget.alt || mediaTarget.title || mediaTarget.getAttribute('aria-label') || '';
-
-            // Handle portfolio card targets
-            if (mediaTarget.classList.contains('portfolio-card')) {
-                const cardType = mediaTarget.getAttribute('data-type');
-                if (cardType === 'video') {
-                    type = 'video';
-                    src = mediaTarget.getAttribute('data-src') || src;
-                } else if (cardType === 'image') {
-                    type = 'image';
-                    src = mediaTarget.getAttribute('data-src') || src;
-                }
-            }
 
             if (src) {
                 e.preventDefault();
@@ -1338,13 +1412,63 @@ const GlobalMediaLightbox = {
         content.innerHTML = '';
 
         if (type === 'video') {
-            const video = document.createElement('video');
-            video.src = src;
-            video.controls = true;
-            video.autoplay = true;
-            video.playsInline = true;
-            video.className = 'lightbox-media-element';
-            content.appendChild(video);
+            const ytRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
+            const vimeoRegex = /vimeo\.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|video\/|)(\d+)/i;
+            
+            const ytMatch = src.match(ytRegex);
+            const vimeoMatch = src.match(vimeoRegex);
+            
+            if (ytMatch) {
+                const videoId = ytMatch[1];
+                content.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" class="lightbox-media-element" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width: 80vw; height: 60vh; min-height: 320px; border: none; border-radius: var(--radius-md);"></iframe>`;
+            } else if (vimeoMatch) {
+                const videoId = vimeoMatch[3];
+                content.innerHTML = `<iframe src="https://player.vimeo.com/video/${videoId}?autoplay=1" class="lightbox-media-element" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="width: 80vw; height: 60vh; min-height: 320px; border: none; border-radius: var(--radius-md);"></iframe>`;
+            } else {
+                const video = document.createElement('video');
+                video.src = src;
+                video.controls = true;
+                video.autoplay = true;
+                video.playsInline = true;
+                video.className = 'lightbox-media-element';
+                content.appendChild(video);
+            }
+        } else if (type === 'audio') {
+            const audioWrapper = document.createElement('div');
+            audioWrapper.className = 'lightbox-media-element';
+            audioWrapper.style.display = 'flex';
+            audioWrapper.style.flexDirection = 'column';
+            audioWrapper.style.alignItems = 'center';
+            audioWrapper.style.justifyContent = 'center';
+            audioWrapper.style.padding = '40px';
+            audioWrapper.style.background = 'var(--color-navy-dark, #051622)';
+            audioWrapper.style.borderRadius = 'var(--radius-md)';
+            audioWrapper.style.width = '90%';
+            audioWrapper.style.maxWidth = '500px';
+
+            const audioIcon = document.createElement('div');
+            audioIcon.style.fontSize = '3.5rem';
+            audioIcon.style.marginBottom = '20px';
+            audioIcon.textContent = '🎵';
+
+            const audio = document.createElement('audio');
+            audio.src = src;
+            audio.controls = true;
+            audio.autoplay = true;
+            audio.style.width = '100%';
+
+            audioWrapper.appendChild(audioIcon);
+            audioWrapper.appendChild(audio);
+            content.appendChild(audioWrapper);
+        } else if (type === 'pdf') {
+            const iframe = document.createElement('iframe');
+            iframe.src = src;
+            iframe.className = 'lightbox-media-element';
+            iframe.style.width = '85vw';
+            iframe.style.height = '80vh';
+            iframe.style.border = 'none';
+            iframe.style.borderRadius = 'var(--radius-md)';
+            content.appendChild(iframe);
         } else {
             const img = document.createElement('img');
             img.src = src;
@@ -1372,12 +1496,35 @@ const GlobalMediaLightbox = {
             if (video) {
                 video.pause();
             }
+            const audio = content.querySelector('audio');
+            if (audio) {
+                audio.pause();
+            }
             content.innerHTML = '';
         }
 
         overlay.classList.remove('active');
         overlay.setAttribute('aria-hidden', 'true');
         document.body.style.overflow = '';
+    },
+
+    async downloadFile(url, filename) {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error('Network response was not ok');
+            const blob = await response.blob();
+            const blobUrl = URL.createObjectURL(blob);
+            const tempLink = document.createElement('a');
+            tempLink.href = blobUrl;
+            tempLink.download = filename || url.substring(url.lastIndexOf('/') + 1);
+            document.body.appendChild(tempLink);
+            tempLink.click();
+            document.body.removeChild(tempLink);
+            URL.revokeObjectURL(blobUrl);
+        } catch (e) {
+            console.error("Programmatic download failed, falling back to window.open", e);
+            window.open(url, '_blank');
+        }
     }
 };
 
