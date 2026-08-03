@@ -537,8 +537,8 @@ function initHeroParallax() {
             const scrollY = window.scrollY;
             const yOffset = scrollY * 0.45; // Smooth 0.45 scroll speed coefficient
             const isMobile = window.innerWidth <= 768;
-            const xPos = isMobile ? '65%' : 'center';
-            hero.style.backgroundPosition = `${xPos} calc(50% + ${yOffset}px)`;
+            const xPos = isMobile ? 'calc(65% + 50px)' : 'calc(50% + 50px)';
+            hero.style.backgroundPosition = `${xPos} calc(50% - 35px + ${yOffset}px)`;
         } else {
             hero.style.backgroundPosition = '';
         }
