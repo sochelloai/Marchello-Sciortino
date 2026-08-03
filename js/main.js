@@ -524,34 +524,8 @@ function initHeroParallax() {
     const hero = document.querySelector('.hero-sec');
     if (!hero) return;
 
-    const handleScroll = () => {
-        const rect = hero.getBoundingClientRect();
-        // Skip computations if hero is out of viewport
-        if (rect.bottom < 0 || rect.top > window.innerHeight) return;
-
-        // Check if the container aspect ratio crops the 16:9 image horizontally (ratio < 16/9)
-        const aspectRatio = window.innerWidth / window.innerHeight;
-        const isCropped = aspectRatio < (16 / 9);
-
-        if (isCropped) {
-            const scrollY = window.scrollY;
-            const yOffset = scrollY * 0.45; // Smooth 0.45 scroll speed coefficient
-            const isMobile = window.innerWidth <= 768;
-            const xPos = isMobile ? 'calc(65% + 50px)' : 'calc(50% + 50px)';
-            hero.style.backgroundPosition = `${xPos} calc(50% - 35px + ${yOffset}px)`;
-        } else {
-            hero.style.backgroundPosition = '';
-        }
-    };
-
-    heroScrollListener = handleScroll;
-    heroResizeListener = handleScroll;
-
-    window.addEventListener('scroll', heroScrollListener, { passive: true });
-    window.addEventListener('resize', heroResizeListener);
-
-    // Run initial frame
-    handleScroll();
+    // Clear any inline background position styles to respect stylesheet static styles
+    hero.style.backgroundPosition = '';
 }
 
 /**
