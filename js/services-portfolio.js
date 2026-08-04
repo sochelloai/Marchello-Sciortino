@@ -407,8 +407,10 @@ const ServicesPortfolio = {
                             ${title}
                         </div>
                     </div>
-                    <!-- Browser Content (IFrame) -->
-                    <iframe src="${link || src}" class="portfolio-lightbox-iframe" scrolling="yes"></iframe>
+                    <!-- Browser Content (IFrame) wrapped for scroll and mobile viewport constraints -->
+                    <div class="portfolio-lightbox-iframe-wrapper">
+                        <iframe src="${link || src}" class="portfolio-lightbox-iframe" scrolling="yes"></iframe>
+                    </div>
                 </div>
             `;
         } else {
