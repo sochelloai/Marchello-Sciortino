@@ -43,12 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
             initStoryTimelineScroll();
         } else if (page === 'services') {
             ServicesPortfolio.init();
-        } else if (page === 'brain') {
-            Brain.init();
         } else if (page === 'chelloai') {
             Chat.init();
-        } else if (page === 'music') {
-            Music.init();
         } else if (page === 'hub' || page === 'marchellos-blog') {
             Hub.init();
         } else if (page === 'mission') {
