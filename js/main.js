@@ -1232,21 +1232,27 @@ async function initInstagramMarquee() {
         if (trackRTL && row1Posts.length > 0) {
             // Double the items for seamless infinite marquee loop
             const doublePosts = [...row1Posts, ...row1Posts];
-            trackRTL.innerHTML = doublePosts.map(post => `
-                <div class="instagram-post">
-                    <img src="${post.media_url}" alt="${escapeHtml(post.caption)}" loading="eager">
-                </div>
-            `).join('');
+            trackRTL.innerHTML = doublePosts.map((post, idx) => {
+                const fallback = `assets/timeline-${(idx % 5) + 1}.png`;
+                return `
+                    <div class="instagram-post">
+                        <img src="${post.media_url}" alt="${escapeHtml(post.caption)}" loading="eager" onerror="this.onerror=null; this.src='${fallback}';">
+                    </div>
+                `;
+            }).join('');
         }
 
         if (trackLTR && row2Posts.length > 0) {
             // Double the items for seamless infinite marquee loop
             const doublePosts = [...row2Posts, ...row2Posts];
-            trackLTR.innerHTML = doublePosts.map(post => `
-                <div class="instagram-post">
-                    <img src="${post.media_url}" alt="${escapeHtml(post.caption)}" loading="eager">
-                </div>
-            `).join('');
+            trackLTR.innerHTML = doublePosts.map((post, idx) => {
+                const fallback = `assets/headshot_${(idx % 3) + 1}.jpg`;
+                return `
+                    <div class="instagram-post">
+                        <img src="${post.media_url}" alt="${escapeHtml(post.caption)}" loading="eager" onerror="this.onerror=null; this.src='${fallback}';">
+                    </div>
+                `;
+            }).join('');
         }
     } catch (e) {
         console.error("Failed to load Instagram marquee feed:", e);
