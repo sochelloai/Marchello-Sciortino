@@ -462,16 +462,52 @@ function bindFormHandlers() {
     // 6. Accessibility Feedback Form
     const accessForm = document.getElementById('access-feedback-form');
     if (accessForm) {
-        accessForm.addEventListener('submit', (e) => {
+        accessForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const data = {
-                email: document.getElementById('access-email').value,
-                description: document.getElementById('access-desc').value,
+            
+            const submitBtn = accessForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn ? submitBtn.textContent : "Submit Accessibility Feedback";
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = "Logging Feedback...";
+            }
+
+            const email = document.getElementById('access-email').value;
+            const barrier = document.getElementById('access-desc').value;
+
+            // Log locally for backup
+            saveFormEntry('access-feedback', {
+                email,
+                description: barrier,
                 timestamp: new Date().toISOString()
-            };
-            saveFormEntry('access-feedback', data);
-            showSuccessModal("Feedback Logged", "Thank you for helping me improve this site. I review all feedback to make the layouts work better.");
-            accessForm.reset();
+            });
+
+            try {
+                const formData = new FormData();
+                formData.append('email', email);
+                formData.append('barrier', barrier);
+
+                const response = await fetch('/api/submit-accessibility', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+
+                if (response.ok) {
+                    showSuccessModal("Feedback Logged", "Thank you for helping me improve this site. The details have been successfully synced and logged.");
+                    accessForm.reset();
+                } else {
+                    alert(result.message || "Could not sync feedback. Please try again.");
+                }
+            } catch (err) {
+                console.error("Accessibility form submission failed:", err);
+                alert("A network error occurred. Please try again.");
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalText;
+                }
+            }
         });
     }
 }
