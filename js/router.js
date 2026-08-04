@@ -2773,7 +2773,7 @@ Router.register('/accessibility-statement', () => `
             
             <h2 style="margin-top: 25px;">Keyboard & Screen-Reader Optimization</h2>
             <p>
-                This Single Page Application includes semantic HTML tags, skip-to-content links, active focus management when transitioning routes, and keyboard-tab equivalent listings for all interactive visual modules (such as the SVG neural Brain Map).
+                This website is fully optimized for keyboard navigation and screen-readers. We use standard HTML structures, skip-to-content links, and clear focus styling to make the site easy to navigate for everyone.
             </p>
             
             <div class="card" style="margin-top: 30px;">
