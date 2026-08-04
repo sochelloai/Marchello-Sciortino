@@ -3790,43 +3790,58 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
         padding-top: 1.5rem;
     }
 
-    .explorer-grid-layout {
-        display: flex;
-        flex-direction: column;
-        gap: 3rem;
+    /* Tab content container becomes the main grid on mobile */
+    .explorer-tab-content.active {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
     }
 
-    .explorer-grid-center {
-        order: -1;
-        /* Stack the text and button at the top */
-        padding: 0;
+    /* Sub-containers use display: contents so children are directly inside the tab grid */
+    .explorer-grid-layout {
+        display: contents;
     }
 
     .explorer-grid-left,
     .explorer-grid-right {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 1.5rem;
+        display: contents;
+    }
+
+    .explorer-grid-center {
+        grid-column: 1 / -1;
+        grid-row: 1;
+        text-align: center;
+        padding: 0;
+    }
+
+    .explorer-features-row {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .explorer-tab-content .portfolio-card {
+        aspect-ratio: 1 / 1;
         width: 100%;
+        max-width: 280px;
+        margin: 0 auto;
+        grid-row: auto; /* flows naturally into row 3+ */
     }
 }
 
 @media (max-width: 768px) {
-
-    .explorer-grid-left,
-    .explorer-grid-right {
+    .explorer-tab-content.active {
         grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
+        gap: 1.25rem;
     }
 }
 
 @media (max-width: 480px) {
-
-    .explorer-grid-left,
-    .explorer-grid-right {
+    .explorer-tab-content.active {
         grid-template-columns: 1fr;
-        max-width: 280px;
-        margin: 0 auto;
+        gap: 1rem;
     }
 }
 
