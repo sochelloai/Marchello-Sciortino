@@ -171,6 +171,7 @@ Router.register('/', () => `
             <div class="hero-ctas">
                 <a href="/services" class="btn btn-teal">MY SERVICES</a>
                 <a href="/accessible-aim" class="btn btn-outline-white">EXPLORE ACCESSIBLE AIM</a>
+                <a href="/speaking" class="btn btn-orange mobile-only-inline-flex">BOOK ME TO SPEAK &rarr;</a>
             </div>
         </div>
     </section>
