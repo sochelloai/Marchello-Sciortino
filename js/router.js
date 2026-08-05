@@ -970,15 +970,15 @@ Router.register('/services', () => `
                                 <div class="explorer-grid-layout">
                                     <!-- Left Column: 3 Portfolio Squares -->
                                     <div class="explorer-grid-col explorer-grid-left">
-                                        <div class="portfolio-card" data-type="image" data-src="assets/funnel_building.png" aria-label="View Client Portal Design Mockup" role="button" tabindex="0">
-                                            <div class="portfolio-card-bg" style="background-image: url('assets/funnel_building.png');"></div>
+                                        <div class="portfolio-card" data-type="image" data-src="assets/clickfunnels-integration-guide.jpg" aria-label="View ClickFunnels 2.0 External Form Integration Guide Image" role="button" tabindex="0">
+                                            <div class="portfolio-card-bg" style="background-image: url('assets/clickfunnels-integration-guide.jpg');"></div>
                                             <div class="portfolio-card-overlay"></div>
                                             <div class="portfolio-card-icon">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
                                             </div>
                                             <div class="portfolio-card-content">
                                                 <span class="portfolio-badge">Image</span>
-                                                <h4 class="portfolio-title">Client Portal Design</h4>
+                                                <h4 class="portfolio-title">ClickFunnels Integration Guide</h4>
                                             </div>
                                         </div>
                                         <div class="portfolio-card" data-type="video" data-src="assets/videos/I.mp4" aria-label="Play Platform Logic Video" role="button" tabindex="0">
