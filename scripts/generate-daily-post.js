@@ -29,11 +29,112 @@ const MONTHLY_THEMES = {
     11: "December — Hope, Giving & Vision (focus on Christmastime, generosity, miracles, and closing the year strong)"
 };
 
+// Define monthly art styles and visual themes for image generation
+const MONTHLY_ART_STYLES = {
+    0: { // January
+        name: "January — New Beginnings & Fresh Start (New Year's theme)",
+        colorPalette: "cool crisp blues, silver metallic, frosty whites, subtle platinum gradients, with a single warm golden spark of dawn",
+        mood: "optimistic, clean, focused, reflecting fresh determination and clear vision",
+        style: "Minimalist crisp geometry, icy textures, sharp crystal structures, generous negative space",
+        geometry: "linear paths, crystalline polygons, clean sharp horizons",
+        textures: "frosted glass, ice, platinum, brushed silver"
+    },
+    1: { // February
+        name: "February — Love, Service & Connection (Valentine's theme)",
+        colorPalette: "deep crimson, warm rose gold, soft burgundy gradients, glowing amber accents, rich dark plum background",
+        mood: "warm, heart-centered, compassionate, highlighting connection and service",
+        style: "Soft curves, fluid overlapping circular shapes, warm internal glows, translucent layering",
+        geometry: "intertwined circles, infinity loops, soft rounded paths",
+        textures: "polished rose quartz, translucent acrylic, warm glowing glass"
+    },
+    2: { // March
+        name: "March — Growth, Renewal & Spring Equinox",
+        colorPalette: "vibrant emerald green, fresh lime accents, warm gold highlights, deep forest green background, light spring yellow beams",
+        mood: "courageous, creative, energetic, reflecting renewed thinking and breaking constraints",
+        style: "Organic geometries, leaf-like folding planes, ascending spiral patterns, spring energy",
+        geometry: "ascending spirals, organic curves, expanding hexagonal grids",
+        textures: "polished jade, fresh dew-like glass, metallic gold leaf"
+    },
+    3: { // April
+        name: "April — Faith, Resurrection & Restoration (Easter / Spring Bloom theme)",
+        colorPalette: "radiant lavender, royal purple accents, soft pastel pinks, gold beams, clean sky blue gradients",
+        mood: "spiritual, hopeful, restorative, reflecting new life and light after hardship",
+        style: "Volumetric light shafts, ascending vertical elements, delicate glass-like floral geometry, radiant halo effects",
+        geometry: "vertical lines, intersecting light rays, expanding circles",
+        textures: "crystal prisms, opal, pearlescent surfaces, soft light diffusers"
+    },
+    4: { // May
+        name: "May — Strength, Family & Legacy (Mother's Day & Memorial Day theme)",
+        colorPalette: "earthy copper, rich bronze gradients, warm terracotta, soft cream, fresh mint green highlights",
+        mood: "grounded, grateful, steady, honoring sacrifice and strong foundations",
+        style: "Solid grounding forms, interlocking bands, concentric circles, structural integrity",
+        geometry: "concentric rings, interlocking shapes, square bases",
+        textures: "patinated bronze, polished copper, textured stone, matte ceramics"
+    },
+    5: { // June
+        name: "June — Courage, Consistency & Father's Day (Summer Solstice theme)",
+        colorPalette: "bright solar gold, vibrant saffron orange, deep cobalt blue base, fiery amber highlights",
+        mood: "radiant, consistent, bold, representing midyear momentum and summer energy",
+        style: "Expanding triangular vectors, sharp geometric arrows, high contrast shadows, solar rays",
+        geometry: "triangles, expanding angles, radiating lines",
+        textures: "gold leaf, polished brass, solar cells, light-guiding glass"
+    },
+    6: { // July
+        name: "July — Freedom, Responsibility & Independence (Independence Day theme)",
+        colorPalette: "deep navy background, rich crimson/ruby red accents, electric blue gradients, brilliant white-gold starbursts",
+        mood: "liberated, dynamic, visionary, reflecting personal freedom and expanding horizons",
+        style: "Bursting radial patterns, star-like intersecting points, dynamic expanding waves, soaring forms",
+        geometry: "starbursts, radiating vectors, rising curves",
+        textures: "shattered glass, glowing steel, electric wires, carbon fiber"
+    },
+    7: { // August
+        name: "August — Preparation, Mentorship & Learning (Back-to-School theme)",
+        colorPalette: "warm honey gold, copper, deep teal base, bright golden yellow accents",
+        mood: "reflective, disciplined, eager, reflecting preparation and structured growth",
+        style: "Isometric blocks, layered staircases, clean intersecting lines, crystalline architectural structures",
+        geometry: "cubes, isometric grids, step structures, grid lines",
+        textures: "frosted acrylic blocks, copper wire, polished wood grains, paper layers"
+    },
+    8: { // September
+        name: "September — Work, Calling & Resilience (Labor Day & Harvest theme)",
+        colorPalette: "deep amber, burnt orange, golden yellow, dark chocolate brown, warm brass accents",
+        mood: "resilient, industrious, productive, reflecting autumn warmth and harvest calling",
+        style: "Interlocking circular gears, leaf-like chevron patterns, warm harvest lighting, structured progress",
+        geometry: "interlocking circles, gear teeth, chevrons, organic curves",
+        textures: "brushed brass, amber, warm glass, wood veneer"
+    },
+    9: { // October
+        name: "October — Courage, Awareness & Faith Under Pressure (Disability Awareness theme)",
+        colorPalette: "midnight blue, rich pumpkin orange, violet gradients, warm flame-like gold highlights",
+        mood: "fearless, focused, strong, highlighting disability awareness and facing fear",
+        style: "High contrast chiaroscuro lighting, lantern-like glowing prisms, sharp protective triangles, inner light",
+        geometry: "prisms, octahedrons, protective borders, single point perspectives",
+        textures: "obsidian, glowing glass facets, burnished steel, dark quartz"
+    },
+    10: { // November
+        name: "November — Gratitude & Thanksgiving",
+        colorPalette: "warm mahogany, metallic gold, burnt copper, warm olive green, soft peach gradients",
+        mood: "grateful, humble, peaceful, reflecting abounding warmth and cozy reflections",
+        style: "Soft concentric ripples, overlapping organic shapes, warm cozy ambient lighting, full vessels",
+        geometry: "concentric ripples, rounded vessels, horizontal flows",
+        textures: "brushed copper, warm mahogany wood, polished amber, velvet-like surfaces"
+    },
+    11: { // December
+        name: "December — Hope, Generosity & Miracles (Christmas theme)",
+        colorPalette: "deep forest green, rich crimson red, shimmering gold rays, brilliant diamond white light",
+        mood: "wonder, joy, hope, closing the year strong with faith and generous vision",
+        style: "Starry focal points, crystalline snowflake geometry, glowing evergreen structures, festive light refractions",
+        geometry: "stars, snowflake hexagons, vertical cones, intersecting light beams",
+        textures: "glittering ice crystals, emerald glass, ruby enamel, polished gold"
+    }
+};
+
 // Calculate Date in Central Time (US)
 const centralDate = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Chicago" }));
 const monthIndex = centralDate.getMonth(); // 0-11
 const currentYear = centralDate.getFullYear();
 const currentMonthTheme = MONTHLY_THEMES[monthIndex];
+const currentMonthArtStyle = MONTHLY_ART_STYLES[monthIndex];
 
 const dateOptions = { month: 'long', day: 'numeric', year: 'numeric' };
 const todayDateStr = centralDate.toLocaleDateString('en-US', dateOptions);
@@ -44,6 +145,7 @@ const articleId = `daily-${sanitizeId(todayDateStr)}`;
 
 console.log(`Starting generation for: ${todayDateStr}`);
 console.log(`Month Theme: ${currentMonthTheme}`);
+console.log(`Month Art Style Theme: ${currentMonthArtStyle.name}`);
 console.log(`Article ID: ${articleId}`);
 
 // Helper to make HTTPS POST requests with promise
@@ -262,13 +364,18 @@ TONE, CADENCE & STYLE:
 - Disability: Refuse pity or sympathy. Frame challenges as simple parameters. Do not say "look what I overcame"; focus on "look what became possible." Refer to your condition as "Friedrich's ataxia" (never say "suffer from" or "sufferer").
 - AI Role & Articulated Inspiration: Describe AI as a tool, leverage, or assistance. AI is a creative/cognitive prosthetic. Articulated Inspiration is joining ideas, feelings, and technology together like joints in a body, allowing them to move, resonate, and come alive.
 
-CONTENT FORMULA & STORYTELLING:
+CONTENT FORMULA, STORYTELLING & DIVERSITY:
 1. Acknowledge a real struggle.
-2. Shift perspective (focus on what God has left in your hands, rather than what was lost).
-3. Introduce an opportunity (AI, system automation, funnel building, or creative adapting).
-4. Offer practical guidance.
-5. Point back toward hope.
-6. End with encouragement (rather than hype).
+2. Shift perspective using other ideas, scientific research studies, history, or pop culture:
+   - To make the content rich and creative, do NOT just tell Marchello's personal story again and again.
+   - For today's post, choose and highlight ONE of the following angles to explore in depth:
+     * A scientific research study, psychological concept, or neurological finding (e.g., neuroplasticity, growth mindset, cognitive reframing, the science of constraints in problem-solving). Explain the study simply and how it proves we can adapt.
+     * A historical event, figure, or invention (e.g., historical builders, artists, or innovators who succeeded under immense limitations or constraints). Explain how their historical constraint created an advantage.
+     * A pop culture story, modern business case study, or creative industry analogy that illustrates finding the hidden advantage within constraints.
+3. Weave this external idea/study/history into Marchello's voice and worldview (resilience, faith in God, counting what's left in your hands rather than what was lost).
+4. Introduce an opportunity (AI as an accessibility/creative bridge, system automation, funnel building, or creative adapting) that connects to the theme.
+5. Offer practical guidance.
+6. Point back toward hope and end with encouragement (rather than hype).
 
 KEY CONCEPTS TO REFERENCE DYNAMICALLY:
 - Constraint Advantage / Constraint-Based Thinking: Limitations force you to prioritize ruthlessly, focus on high-impact activities, and build automated systems.
@@ -285,6 +392,15 @@ BRAND VOCABULARY & STRICT CONSTRAINTS:
 
 Write a daily blog post for today: ${todayDateStr}.
 The theme for this month is: ${currentMonthTheme}.
+
+The visual design style for this month is: ${currentMonthArtStyle.name}.
+Visual theme parameters:
+- Color Palette: ${currentMonthArtStyle.colorPalette}.
+- Mood: ${currentMonthArtStyle.mood}.
+- Style: ${currentMonthArtStyle.style}.
+- Geometry: ${currentMonthArtStyle.geometry}.
+- Textures: ${currentMonthArtStyle.textures}.
+When generating the "image_prompt" in the JSON response, make sure it matches these visual theme elements (e.g., suggest geometric shapes, layouts, colors, and textures that fit this specific monthly theme).
 
 CRITICAL - BLOG CONTENT DIVERSITY RULE (AVOID REPETITION):
 To ensure every automated daily blog post feels fresh, unique, and timely, you MUST NOT repeat themes, stories, or lessons from recent posts. Avoid repetitive time-based themes or references (such as end-of-the-month reflections, midyear momentum, weekly or Monday motivation, seasonal transitions, holidays, or similar calendar topics) on consecutive days. Each post must introduce a new perspective, lesson, story, insight, or real-world application that provides readers with a genuinely different experience from previous posts.
@@ -322,7 +438,7 @@ You must return a raw JSON object containing exactly these fields (no markdown w
   "desc": "A one-sentence summary of the daily lesson",
   "tag": "Choose exactly one: 'Story Notes', 'AI and Accessibility', 'Lessons From Limitation', 'Tools I Use', 'Daily Inspiration'",
   "body": "HTML formatted body content matching the heading hierarchy, list formatting, FAQ, and internal/external links instructions above. Do not output markdown inside the body string, only HTML.",
-  "image_prompt": "A detailed descriptive prompt for generating a premium featured image representing the article's theme. The prompt must strictly follow the Marchello Brand Image Style Guide: it must be a purely symbolic visual metaphor (e.g., using pathways, bridges, expanding circles, rising forms, connected nodes, or geometric structures) rather than literal people or scenes. It must communicate optimism, hope, and human potential. Do NOT mention any medical terms, diseases, physical limitations, or wheelchairs to avoid safety filters. Do NOT request text, logos, watermarks, or UI elements.",
+  "image_prompt": "A detailed descriptive prompt for generating a premium featured image representing the article's theme. The prompt must strictly follow the Marchello Brand Image Style Guide for this month: it must be a purely symbolic visual metaphor using this month's geometry and color palette. It must communicate optimism, hope, and human potential. Do NOT mention any medical terms, diseases, physical limitations, or wheelchairs to avoid safety filters. Do NOT request text, logos, watermarks, or UI elements.",
   "meta_title": "A compelling meta title designed to maximize click-through rate",
   "meta_description": "A compelling meta description designed to maximize click-through rate (under 160 characters)",
   "url_slug": "A clean, URL-safe slug containing the primary keyword (lowercase, hyphen-separated)",
@@ -430,14 +546,14 @@ You must return a raw JSON object containing exactly these fields (no markdown w
         // Step 2: Generate the image (Try OpenAI DALL-E 3 first, then Google Imagen 3)
         let imageBuffer = null;
         let relativeImageSrc = "";
-        // Define unified Marchello Brand Image Style Guide parameters
+        // Define unified Marchello Brand Image Style Guide parameters (customized dynamically for this month)
         const brandStyleInstructions = [
-            "Style: Premium abstract conceptual artwork, geometric composition, layered symbolism, flowing dimensional shapes, modern visual storytelling, sophisticated artistic balance, museum-quality digital illustration, contemporary brand design, editorial artwork, generous negative space, crisp details.",
-            "Mood: optimistic, hopeful, communicating possibility, momentum, faith, resilience, growth, confidence, creativity, human potential, calm determination.",
-            "Color Palette: deep navy blue background, rich teal gradients, vibrant turquoise highlights, with warm orange and golden amber accents, soft glowing white light.",
-            "Geometry: circles, hexagons, polygon networks, dynamic pathways, glass-like structures, architectural balance, dimensional depth.",
+            `Style: Premium abstract conceptual artwork, geometric composition, layered symbolism, ${currentMonthArtStyle.style}, modern visual storytelling, sophisticated artistic balance, museum-quality digital illustration, contemporary brand design, editorial artwork, generous negative space, crisp details.`,
+            `Mood: ${currentMonthArtStyle.mood}.`,
+            `Color Palette: ${currentMonthArtStyle.colorPalette}.`,
+            `Geometry: ${currentMonthArtStyle.geometry}, architectural balance, dimensional depth.`,
             "Lighting: cinematic volumetric light beams, soft glowing edges, internal glow, ambient illumination.",
-            "Textures & Surfaces: frosted glass, crystal, acrylic, metallic gradients, transparent layers, depth fog.",
+            `Textures & Surfaces: ${currentMonthArtStyle.textures}, transparent layers, depth fog.`,
             "Quality Standards: ultra-high-resolution, clean luxury aesthetic, no clutter, no stock-photo appearance, strictly no text, no captions, no logos, no watermarks, no borders, no UI elements."
         ].join(" ");
 
