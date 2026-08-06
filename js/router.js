@@ -981,15 +981,15 @@ Router.register('/services', () => `
                                                 <h4 class="portfolio-title">ClickFunnels Integration Guide</h4>
                                             </div>
                                         </div>
-                                        <div class="portfolio-card" data-type="video" data-src="assets/videos/I.mp4" aria-label="Play Platform Logic Video" role="button" tabindex="0">
-                                            <div class="portfolio-card-bg" style="background-image: url('assets/accessible_ai.png');"></div>
+                                        <div class="portfolio-card" data-type="image" data-src="assets/accessible-aim-membership-site.png" aria-label="View Accessible AIM Membership Site Image" role="button" tabindex="0">
+                                            <div class="portfolio-card-bg" style="background-image: url('assets/accessible-aim-membership-site.png');"></div>
                                             <div class="portfolio-card-overlay"></div>
                                             <div class="portfolio-card-icon">
-                                                <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"></polygon></svg>
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
                                             </div>
                                             <div class="portfolio-card-content">
-                                                <span class="portfolio-badge">Video</span>
-                                                <h4 class="portfolio-title">Platform Logic Demo</h4>
+                                                <span class="portfolio-badge">Image</span>
+                                                <h4 class="portfolio-title">Accessible AIM Membership Site</h4>
                                             </div>
                                         </div>
                                         <div class="portfolio-card" data-type="video" data-src="assets/videos/W.mp4" aria-label="Play Funnel Architecture Demo Video" role="button" tabindex="0">
