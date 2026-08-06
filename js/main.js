@@ -1199,7 +1199,7 @@ function cleanupImmersiveMission() {
  */
 async function initInstagramMarquee() {
     try {
-        const response = await fetch('/api/instagram?v=20260805');
+        const response = await fetch('/api/instagram?v=20260805-2');
         if (!response.ok) return;
 
         const result = await response.json();

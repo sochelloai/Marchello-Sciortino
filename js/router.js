@@ -717,7 +717,7 @@ Router.register('/story', () => `
                 <div class="timeline-row">
                     <div class="timeline-col timeline-content-left">
                         <div class="timeline-image-placeholder">
-                            <img src="assets/marchello_story_marketing.jpg?v=20260805" alt="Marchello Sciortino holding ClickFunnels Certified Funnel Builder award plaque with partners" class="timeline-img">
+                            <img src="assets/marchello_story_marketing.jpg?v=20260805-2" alt="Marchello Sciortino holding ClickFunnels Certified Funnel Builder award plaque with partners" class="timeline-img">
                         </div>
                     </div>
                     <div class="timeline-col timeline-center">
@@ -746,7 +746,7 @@ Router.register('/story', () => `
                     </div>
                     <div class="timeline-col timeline-content-right">
                         <div class="timeline-image-placeholder">
-                            <img src="assets/marchello_story_wheelchair.jpg?v=20260805" alt="Marchello Sciortino in a wheelchair speaking on stage in front of a presentation screen displaying 'Learning Different'" class="timeline-img">
+                            <img src="assets/marchello_story_wheelchair.jpg?v=20260805-2" alt="Marchello Sciortino in a wheelchair speaking on stage in front of a presentation screen displaying 'Learning Different'" class="timeline-img">
                         </div>
                     </div>
                 </div>
