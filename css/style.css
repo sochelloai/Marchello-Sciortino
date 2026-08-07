@@ -3400,8 +3400,7 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
 }
 
 .portfolio-lightbox-close:hover {
-    transform: scale(1.1);
-    background-color: var(--color-orange-brush);
+    background-color: var(--color-teal);
 }
 
 .portfolio-lightbox-close svg {
