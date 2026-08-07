@@ -118,11 +118,11 @@ const ServicesPortfolio = {
                         pane.innerHTML = `<img src="${bgUrl}" alt="${title}" class="explorer-visual-img" data-type="video" data-media-src="${src}" data-id="${id}">`;
                     }
                     this.openLightbox('video', src, title);
-                } else if (type === 'website') {
+                } else if (type === 'website' || type === 'funnel') {
                     if (pane) {
-                        pane.innerHTML = `<img src="${src}" alt="${title}" class="explorer-visual-img" data-type="website" data-media-src="${src}" data-link="${card.getAttribute('data-link') || ''}" data-id="${id}">`;
+                        pane.innerHTML = `<img src="${src}" alt="${title}" class="explorer-visual-img" data-type="${type}" data-media-src="${src}" data-link="${card.getAttribute('data-link') || ''}" data-id="${id}">`;
                     }
-                    this.openLightbox('website', src, title, null, null, card);
+                    this.openLightbox(type, src, title, null, null, card);
                 } else if (type === 'audio' || type === 'song') {
                     if (pane) {
                         pane.innerHTML = `<img src="${bgUrl}" alt="${title}" class="explorer-visual-img" data-type="${type}" data-media-src="${src || ''}" data-id="${id}">`;
@@ -153,9 +153,9 @@ const ServicesPortfolio = {
                         this.openLightbox('image', mediaSrc, alt);
                     } else if (type === 'video') {
                         this.openLightbox('video', mediaSrc, alt);
-                    } else if (type === 'website') {
+                    } else if (type === 'website' || type === 'funnel') {
                         const matchingCard = document.querySelector(`.portfolio-card[data-src="${mediaSrc}"]`) || document.querySelector(`.portfolio-card[data-id="${mediaId}"]`);
-                        this.openLightbox('website', mediaSrc, alt, null, null, matchingCard);
+                        this.openLightbox(type, mediaSrc, alt, null, null, matchingCard);
                     } else if (type === 'audio' || type === 'song') {
                         const matchingCard = document.querySelector(`.portfolio-card[data-id="${mediaId}"], .portfolio-card[data-src="${mediaSrc}"]`);
                         this.openLightbox(type, img.getAttribute('src'), alt, mediaSrc, mediaId, matchingCard);
@@ -390,7 +390,7 @@ const ServicesPortfolio = {
             `;
             // Play audio track
             this.playAudio(audioId, card);
-        } else if (type === 'website') {
+        } else if (type === 'website' || type === 'funnel') {
             const link = card ? card.getAttribute('data-link') : '';
             const previewImg = src || (card ? card.querySelector('.portfolio-card-bg').style.backgroundImage.slice(5, -2).replace(/"/g, "") : '');
             content.innerHTML = `
@@ -426,7 +426,7 @@ const ServicesPortfolio = {
             return;
         }
 
-        if (type === 'website') {
+        if (type === 'website' || type === 'funnel') {
             caption.style.display = 'none';
         } else {
             caption.style.display = '';

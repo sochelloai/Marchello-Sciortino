@@ -992,14 +992,14 @@ Router.register('/services', () => `
                                                 <h4 class="portfolio-title">Accessible AIM Membership Site</h4>
                                             </div>
                                         </div>
-                                        <div class="portfolio-card" data-type="website" data-src="assets/book_cover_mockup.png" data-link="https://www.limitationstoliberation.com" aria-label="View Book Sales Funnel Website" role="button" tabindex="0">
+                                        <div class="portfolio-card" data-type="funnel" data-src="assets/book_cover_mockup.png" data-link="https://www.limitationstoliberation.com/" aria-label="View Book Sales Funnel" role="button" tabindex="0">
                                             <div class="portfolio-card-bg" style="background-image: url('assets/book_cover_mockup.png');"></div>
                                             <div class="portfolio-card-overlay"></div>
                                             <div class="portfolio-card-icon">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
                                             </div>
                                             <div class="portfolio-card-content">
-                                                <span class="portfolio-badge">Website</span>
+                                                <span class="portfolio-badge">Funnel</span>
                                                 <h4 class="portfolio-title">Book Sales Funnel</h4>
                                             </div>
                                         </div>
