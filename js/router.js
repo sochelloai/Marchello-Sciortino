@@ -169,9 +169,8 @@ Router.register('/', () => `
                 I help people reframe daily constraints, adapt through changes, and use AI as an accessibility bridge to build creative outcomes and professional momentum.
             </p>
             <div class="hero-ctas">
-                <a href="/services" class="btn btn-teal">MY SERVICES</a>
+                <a href="/speaking" class="btn btn-orange">BOOK ME TO SPEAK &rarr;</a>
                 <a href="/accessible-aim" class="btn btn-outline-white">EXPLORE ACCESSIBLE AIM</a>
-                <a href="/speaking" class="btn btn-orange mobile-only-inline-flex">BOOK ME TO SPEAK &rarr;</a>
             </div>
         </div>
     </section>
