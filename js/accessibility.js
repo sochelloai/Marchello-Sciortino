@@ -29,6 +29,10 @@ const Accessibility = {
     rulerMoveHandler: null,
     spotlightMoveHandler: null,
     
+    isMobile() {
+        return window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    },
+    
     // Audio synthesis context and oscillators
     playChime(isTurnOn) {
         if (!this.soundEffects) return;
@@ -189,6 +193,9 @@ const Accessibility = {
     },
 
     handleAction(action, btn) {
+        if ((action === 'large-cursor' || action === 'reading-ruler' || action === 'focus-spotlight') && this.isMobile()) {
+            return;
+        }
         if (this.toggles[action]) {
             // Standard html class toggle to avoid fixed positioning stacking bugs
             const className = this.toggles[action];
@@ -429,7 +436,7 @@ const Accessibility = {
         // 2. Load standard body toggles
         for (const [action, className] of Object.entries(this.toggles)) {
             const saved = localStorage.getItem(`ms-access-${action}`);
-            if (saved === 'true') {
+            if (saved === 'true' && !(action === 'large-cursor' && this.isMobile())) {
                 document.documentElement.classList.add(className);
                 this.syncButtonState(action, true);
             } else {
@@ -439,7 +446,7 @@ const Accessibility = {
         
         // 3. Load ADHD reading ruler
         const savedRuler = localStorage.getItem('ms-access-reading-ruler');
-        if (savedRuler === 'true') {
+        if (savedRuler === 'true' && !this.isMobile()) {
             this.readingRulerActive = true;
             this.syncButtonState('reading-ruler', true);
             this.initRuler();
@@ -447,7 +454,7 @@ const Accessibility = {
         
         // 4. Load Focus Spotlight
         const savedSpotlight = localStorage.getItem('ms-access-focus-spotlight');
-        if (savedSpotlight === 'true') {
+        if (savedSpotlight === 'true' && !this.isMobile()) {
             this.focusSpotlightActive = true;
             this.syncButtonState('focus-spotlight', true);
             this.initSpotlight();

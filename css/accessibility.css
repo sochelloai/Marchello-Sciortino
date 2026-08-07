@@ -592,3 +592,10 @@ html.accessibility-contrast-high .accessibility-speaking-highlight {
     background-color: #000000 !important;
     color: #FFFF00 !important;
 }
+
+/* Hide features that do not work or apply on mobile devices (ruler, spotlight, large cursor) */
+@media (max-width: 768px) {
+    .accessibility-panel .desktop-only {
+        display: none !important;
+    }
+}
