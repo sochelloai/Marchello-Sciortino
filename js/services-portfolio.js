@@ -392,6 +392,7 @@ const ServicesPortfolio = {
             this.playAudio(audioId, card);
         } else if (type === 'website') {
             const link = card ? card.getAttribute('data-link') : '';
+            const previewImg = src || (card ? card.querySelector('.portfolio-card-bg').style.backgroundImage.slice(5, -2).replace(/"/g, "") : '');
             content.innerHTML = `
                 <div class="portfolio-lightbox-browser">
                     <!-- Browser Top Bar -->
@@ -407,9 +408,17 @@ const ServicesPortfolio = {
                             ${title}
                         </div>
                     </div>
-                    <!-- Browser Content (IFrame) wrapped for scroll and mobile viewport constraints -->
-                    <div class="portfolio-lightbox-iframe-wrapper">
-                        <iframe src="${link || src}" class="portfolio-lightbox-iframe" scrolling="yes"></iframe>
+                    <!-- Browser Content (Image Preview + Visit Button) -->
+                    <div class="portfolio-lightbox-image-preview-wrapper">
+                        <div class="portfolio-lightbox-image-scroll-container">
+                            <img src="${previewImg}" alt="${title} Preview" class="portfolio-lightbox-preview-image">
+                        </div>
+                        <div class="portfolio-lightbox-external-link-overlay">
+                            <a href="${link}" target="_blank" rel="noopener noreferrer" class="portfolio-lightbox-visit-btn">
+                                Visit Live Website
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 16px; height: 16px;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                            </a>
+                        </div>
                     </div>
                 </div>
             `;
