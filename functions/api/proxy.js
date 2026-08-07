@@ -42,6 +42,9 @@ export async function onRequest(context) {
         
         let html = await response.text();
 
+        // Strip integrity attributes to prevent CORS/SRI blocks
+        html = html.replace(/\sintegrity="[^"]*"/g, "");
+
         // Inject <base href="..."> inside <head> to resolve all relative assets
         const baseTag = `<base href="${targetUrl.origin}${targetUrl.pathname}">`;
         if (html.includes("<head>")) {

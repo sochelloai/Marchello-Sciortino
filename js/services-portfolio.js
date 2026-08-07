@@ -408,9 +408,9 @@ const ServicesPortfolio = {
                             ${title}
                         </div>
                     </div>
-                    <!-- Browser Content (IFrame via Proxy) wrapped for scroll and mobile viewport constraints -->
+                    <!-- Browser Content (IFrame) wrapped for scroll and mobile viewport constraints -->
                     <div class="portfolio-lightbox-iframe-wrapper">
-                        <iframe src="/api/proxy?url=${encodeURIComponent(targetUrl)}" class="portfolio-lightbox-iframe" scrolling="yes"></iframe>
+                        <iframe src="${type === 'funnel' ? `/api/proxy?url=${encodeURIComponent(targetUrl)}` : targetUrl}" class="portfolio-lightbox-iframe" scrolling="yes"></iframe>
                     </div>
                 </div>
             `;
