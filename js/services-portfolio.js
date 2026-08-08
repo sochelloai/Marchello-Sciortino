@@ -26,13 +26,27 @@ const ServicesPortfolio = {
         this.ensureLightboxInDOM();
         this.bindEvents();
         this.initFileExplorerTabs();
+
+        // Auto-select tab based on URL path
+        const path = window.location.pathname;
+        if (path === '/services-create') {
+            if (this.switchTabDirect) this.switchTabDirect('create');
+        } else if (path === '/services-build') {
+            if (this.switchTabDirect) this.switchTabDirect('build');
+        } else if (path === '/services-overcome') {
+            if (this.switchTabDirect) this.switchTabDirect('overcome');
+        } else if (path === '/services') {
+            // Default to 'create' and replace state in history
+            if (this.switchTabDirect) this.switchTabDirect('create');
+            history.replaceState(null, '', '/services-create');
+        }
     },
 
     initFileExplorerTabs() {
         const tabs = document.querySelectorAll('.explorer-tab');
         const contents = document.querySelectorAll('.explorer-tab-content');
 
-        const switchTab = (tabId) => {
+        const switchTab = (tabId, updateUrl = true) => {
             // Stop any playing audio
             this.stopAudio();
 
@@ -52,13 +66,24 @@ const ServicesPortfolio = {
                 const isActive = content.id === `tab-content-${tabId}`;
                 content.classList.toggle('active', isActive);
             });
+
+            // Update URL in address bar without full page reload
+            if (updateUrl) {
+                const newPath = `/services-${tabId}`;
+                if (window.location.pathname !== newPath) {
+                    history.pushState(null, '', newPath);
+                }
+            }
         };
+
+        // Expose switchTab so init can use it
+        this.switchTabDirect = (tabId) => switchTab(tabId, false);
 
         // Click handlers for top tabs
         tabs.forEach(tab => {
             tab.addEventListener('click', () => {
                 const tabId = tab.getAttribute('data-tab');
-                switchTab(tabId);
+                switchTab(tabId, true);
             });
         });
 
@@ -81,7 +106,7 @@ const ServicesPortfolio = {
             const nextElement = elements[nextIndex];
             nextElement.focus();
             const tabId = nextElement.getAttribute('data-tab');
-            switchTab(tabId);
+            switchTab(tabId, true);
         };
 
         tabs.forEach((tab, index) => {

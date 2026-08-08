@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
             initHeroParallax();
         } else if (page === 'story') {
             initStoryTimelineScroll();
-        } else if (page === 'services') {
+        } else if (page === 'services' || page === 'services-create' || page === 'services-build' || page === 'services-overcome') {
             ServicesPortfolio.init();
         } else if (page === 'chelloai') {
             Chat.init();

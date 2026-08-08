@@ -87,6 +87,9 @@ const Router = {
                 '/': "Marchello Sciortino | Official Digital Hub",
                 '/story': "My Story | Marchello Sciortino",
                 '/services': "Services | Marchello Sciortino",
+                '/services-create': "Services - Create | Marchello Sciortino",
+                '/services-build': "Services - Build | Marchello Sciortino",
+                '/services-overcome': "Services - Overcome | Marchello Sciortino",
                 '/mission': "The Mission | Marchello Sciortino",
                 '/speaking': "Speaking | Marchello Sciortino",
                 '/chelloai': "ChelloAI | Marchello Sciortino",
@@ -117,7 +120,14 @@ const Router = {
         const cleanRoute = route.split('?')[0];
         navLinks.forEach(link => {
             const href = link.getAttribute('href');
-            if (href === cleanRoute || href === '#' + cleanRoute) {
+            let isMatch = (href === cleanRoute || href === '#' + cleanRoute);
+            
+            // Highlight Services menu item for services sub-paths
+            if (href === '/services' && (cleanRoute === '/services-create' || cleanRoute === '/services-build' || cleanRoute === '/services-overcome')) {
+                isMatch = true;
+            }
+            
+            if (isMatch) {
                 link.classList.add('active');
             } else {
                 link.classList.remove('active');
@@ -1280,6 +1290,10 @@ Router.register('/services', () => `
         </div>
     </section>
 `);
+
+Router.register('/services-create', () => Router.routes['/services']());
+Router.register('/services-build', () => Router.routes['/services']());
+Router.register('/services-overcome', () => Router.routes['/services']());
 
 // 3. Mission Page Template
 Router.register('/mission', () => `
