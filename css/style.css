@@ -5803,3 +5803,124 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     from, to { color: transparent; }
     50% { color: var(--color-teal); }
 }
+
+/* ==========================================================================
+   Gated Content Modal for Free Gifts page
+   ========================================================================== */
+.free-gifts-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(11, 19, 43, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    z-index: 999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.free-gifts-modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.free-gifts-modal-card {
+    background: #0f172a;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-lg);
+    width: 100%;
+    max-width: 480px;
+    padding: 40px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 30px rgba(10, 216, 173, 0.15);
+    text-align: center;
+    position: relative;
+    transform: scale(0.9);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.free-gifts-modal-overlay.active .free-gifts-modal-card {
+    transform: scale(1);
+}
+
+.free-gifts-modal-card h2 {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--color-white);
+    margin-top: 0;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    line-height: 1.2;
+}
+
+.free-gifts-modal-card p {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--color-gray-light);
+    margin-bottom: 30px;
+}
+
+.free-gifts-unlock-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+}
+
+.free-gifts-input {
+    width: 100%;
+    padding: 14px 18px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(8, 27, 41, 0.4);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--color-white);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    outline: none;
+    transition: border-color 0.25s, box-shadow 0.25s;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.free-gifts-input:focus {
+    border-color: var(--color-teal);
+    box-shadow: 0 0 0 3px rgba(10, 216, 173, 0.2);
+}
+
+.free-gifts-unlock-btn {
+    background: linear-gradient(135deg, #FF5E00 0%, #FF8500 100%);
+    color: var(--color-pure-white) !important;
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 14px 24px;
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 4px 15px rgba(255, 94, 0, 0.25);
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-sizing: border-box;
+}
+
+.free-gifts-unlock-btn:hover {
+    transform: translateY(-1.5px);
+    box-shadow: 0 6px 20px rgba(255, 94, 0, 0.4);
+}
+

@@ -2608,7 +2608,22 @@ Router.register('/contact', () => {
 });
 
 // 14. Free Gifts Page Template
-Router.register('/free-gifts', () => `
+Router.register('/free-gifts', () => {
+    const isUnlocked = localStorage.getItem('free-gifts-unlocked') === 'true';
+    const modalHtml = isUnlocked ? '' : `
+        <div id="free-gifts-modal" class="free-gifts-modal-overlay active">
+            <div class="free-gifts-modal-card">
+                <h2>Unlock the Free Gifts</h2>
+                <p>Please enter your email to get immediate access to all prompt templates, checklists, and worksheets.</p>
+                <form id="free-gifts-unlock-form" class="free-gifts-unlock-form">
+                    <input type="email" id="free-gifts-email" class="free-gifts-input" placeholder="yourname@email.com" required>
+                    <button type="submit" class="free-gifts-unlock-btn">Unlock Downloads &rarr;</button>
+                </form>
+            </div>
+        </div>
+    `;
+    return `
+    ${modalHtml}
     <div class="page-intro">
         <div class="container text-center">
             <span class="section-tag text-teal">Tools</span>
@@ -2666,7 +2681,8 @@ Router.register('/free-gifts', () => `
             </div>
         </div>
     </section>
-`);
+`;
+});
 
 
 

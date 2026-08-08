@@ -60,6 +60,8 @@ document.addEventListener('DOMContentLoaded', () => {
             initSpeakingVideo();
         } else if (page === 'accessible-aim') {
             initAccessibleAimVideo();
+        } else if (page === 'free-gifts') {
+            initFreeGiftsUnlock();
         }
 
         // Always bind forms rendered inside the page view
@@ -510,6 +512,77 @@ function bindFormHandlers() {
             }
         });
     }
+}
+
+/**
+ * Redesigned Gated Content Unlocker for Free Gifts
+ */
+function initFreeGiftsUnlock() {
+    const form = document.getElementById('free-gifts-unlock-form');
+    if (!form) return;
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const submitBtn = form.querySelector('button[type="submit"]') || form.querySelector('.free-gifts-unlock-btn');
+        const emailInput = document.getElementById('free-gifts-email');
+        if (!emailInput) return;
+
+        const email = emailInput.value;
+        const originalBtnText = submitBtn ? submitBtn.textContent : "Unlock Downloads →";
+
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Unlocking...";
+        }
+
+        // Save locally as database backup
+        saveFormEntry('free-gifts', {
+            email,
+            timestamp: new Date().toISOString()
+        });
+
+        try {
+            const formData = new FormData();
+            formData.append('email', email);
+
+            const response = await fetch('/api/submit-free-gifts', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`CF Function Error: ${response.status} - ${errorText}`);
+            }
+
+            const result = await response.json();
+            console.log("[ClickFunnels Free Gifts API Success]", result);
+            
+            // Set unlocked preference and close modal
+            localStorage.setItem('free-gifts-unlocked', 'true');
+            const modal = document.getElementById('free-gifts-modal');
+            if (modal) {
+                modal.classList.remove('active');
+                setTimeout(() => modal.remove(), 400);
+            }
+            showSuccessModal("Gifts Unlocked", "Thank you! All prompt templates, checklists, and worksheets are now unlocked for download.");
+        } catch (error) {
+            console.error("[ClickFunnels Free Gifts Integration Error]", error);
+            // Graceful fallback for local development or missing secrets so UX does not block
+            localStorage.setItem('free-gifts-unlocked', 'true');
+            const modal = document.getElementById('free-gifts-modal');
+            if (modal) {
+                modal.classList.remove('active');
+                setTimeout(() => modal.remove(), 400);
+            }
+            showSuccessModal("Gifts Unlocked", "Thank you! All prompt templates, checklists, and worksheets are now unlocked for download.");
+        } finally {
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalBtnText;
+            }
+        }
+    });
 }
 
 /**
