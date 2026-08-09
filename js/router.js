@@ -3016,14 +3016,21 @@ Router.register('/accessible-aim', () => `
         
         <div class="container text-center" style="position: relative; z-index: 2;">
             <span class="section-tag text-teal">Articulated Inspiration Method</span>
-            <h1 style="color: white;">Accessible AIM</h1>
+            <h1 style="color: white; text-transform: uppercase;">My Signature Program</h1>
             <p class="section-desc" style="color: var(--color-gray-light);">
-                A Brand New Way to Build by Voice
+                Treating generative artificial intelligence as a helper for human capability and a bridge for creation.
             </p>
         </div>
     </div>
     
-    <section class="aim-showcase-section">
+    <!-- Centered One-Column Section: Accessible AIM -->
+    <section class="aim-title-section" style="background-color: var(--color-white); padding: 45px 0 10px 0; text-align: center;">
+        <div class="container">
+            <h2 style="color: var(--color-navy); font-size: 2.4rem; font-family: 'Oswald', sans-serif; font-weight: 800; font-style: italic; text-transform: uppercase; letter-spacing: -0.01em; margin: 0;">Accessible AIM</h2>
+        </div>
+    </section>
+    
+    <section class="aim-showcase-section" style="padding-top: 15px;">
         <div class="container">
             <div class="aim-grid">
                 <!-- Left Column: Video -->
