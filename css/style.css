@@ -491,7 +491,7 @@ img {
 
 .footer-mission {
     font-size: 0.95rem;
-    color: var(--color-gray-steel);
+    color: var(--color-gray-light);
     max-width: 350px;
 }
 
@@ -519,12 +519,12 @@ img {
 }
 
 .footer-nav-col ul li a {
-    color: var(--color-gray-steel);
+    color: var(--color-gray-light);
     font-size: 0.95rem;
 }
 
 .footer-nav-col ul li a:hover {
-    color: var(--color-white);
+    color: var(--color-teal);
     padding-left: 5px;
 }
 
@@ -536,7 +536,7 @@ img {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: var(--color-gray-steel);
+    color: var(--color-gray-light);
     font-size: 0.9rem;
 }
 
