@@ -176,7 +176,7 @@ Router.register('/', () => `
                 </span>
             </h1>
             <p class="hero-tagline">
-                I help people reframe daily constraints, adapt through changes, and use AI as an accessibility bridge to build creative outcomes and professional momentum.
+                Using AI as an accessible bridge to find more of what is meant by the creative outcome, I help people adapt when their constraints change through shifts in perspective.
             </p>
             <div class="hero-ctas">
                 <a href="/speaking" class="btn btn-orange">BOOK ME TO SPEAK &rarr;</a>
