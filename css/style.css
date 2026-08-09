@@ -5987,22 +5987,19 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     display: flex;
     align-items: center;
     gap: 8px;
-    background: linear-gradient(135deg, rgba(10, 216, 173, 0.15) 0%, rgba(10, 216, 173, 0.05) 100%);
-    border: 1px solid rgba(10, 216, 173, 0.4);
+    background: rgba(7, 24, 39, 0.96);
+    border: 2px solid #0ad8ad;
     padding: 6px 14px;
     border-radius: 20px;
-    color: var(--color-teal);
-    font-family: var(--font-body);
+    color: var(--color-gold);
+    font-family: 'Oswald', sans-serif;
     font-weight: 700;
-    font-size: 0.72rem;
-    letter-spacing: 0.06em;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
     white-space: nowrap;
-    box-shadow: 0 4px 15px rgba(10, 216, 173, 0.12);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
     z-index: 10;
-    animation: badge-float 3s ease-in-out infinite alternate;
+    animation: badge-float 3s ease-in-out infinite alternate, glow-pulse 3s ease-in-out infinite alternate;
 }
 
 /* Float animation for the badge wrapper */
@@ -6012,6 +6009,18 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     }
     100% {
         transform: translateY(-50%) translateX(6px);
+    }
+}
+
+/* Glow pulse animation for premium neon aesthetic */
+@keyframes glow-pulse {
+    0% {
+        box-shadow: 0 0 10px rgba(10, 216, 173, 0.35), inset 0 0 5px rgba(10, 216, 173, 0.15);
+        border-color: rgba(10, 216, 173, 0.6);
+    }
+    100% {
+        box-shadow: 0 0 20px rgba(10, 216, 173, 0.85), inset 0 0 10px rgba(10, 216, 173, 0.4);
+        border-color: rgba(10, 216, 173, 1);
     }
 }
 
@@ -6031,49 +6040,52 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
         transform: translateX(0);
     }
     100% {
-        transform: translateX(-4px);
+        transform: translateX(-5px);
     }
 }
 
 /* Mobile responsive layout (max-width: 768px) */
 @media (max-width: 768px) {
     .signature-cta-container {
-        display: flex;
-        flex-direction: column;
+        display: inline-block;
+        position: relative;
+        margin-top: 35px;
         width: 100%;
     }
     
     .signature-program-badge {
-        position: relative;
-        left: 0;
-        top: auto;
-        transform: none;
-        margin-top: 10px;
-        align-self: center;
+        position: absolute;
+        left: 50%;
+        top: -38px;
+        transform: translateX(-50%);
+        margin-top: 0;
+        align-self: auto;
         display: inline-flex;
-        animation: badge-float-mobile 3s ease-in-out infinite alternate;
+        flex-direction: column-reverse;
+        gap: 4px;
+        animation: badge-float-mobile 3s ease-in-out infinite alternate, glow-pulse 3s ease-in-out infinite alternate;
     }
 
     @keyframes badge-float-mobile {
         0% {
-            transform: translateY(0);
+            transform: translateX(-50%) translateY(0);
         }
         100% {
-            transform: translateY(5px);
+            transform: translateX(-50%) translateY(4px);
         }
     }
 
     .badge-arrow-svg {
-        transform: rotate(90deg); /* Points up towards the stacked button above */
+        transform: rotate(-90deg); /* Points down towards the stacked button below */
         animation: arrow-pointing-mobile 1.2s ease-in-out infinite alternate;
     }
 
     @keyframes arrow-pointing-mobile {
         0% {
-            transform: rotate(90deg) translateY(0);
+            transform: rotate(-90deg) translateX(0);
         }
         100% {
-            transform: rotate(90deg) translateY(-4px);
+            transform: rotate(-90deg) translateX(-4px);
         }
     }
 }
