@@ -186,7 +186,8 @@ const Hub = {
             title.textContent = art.title;
             
             // Build shareable link URL using url_slug if present
-            const shareUrl = encodeURIComponent(window.location.origin + '/hub?article=' + (art.url_slug || art.id));
+            const rawShareUrl = window.location.origin + '/hub?article=' + (art.url_slug || art.id);
+            const shareUrl = encodeURIComponent(rawShareUrl);
             const shareTitle = encodeURIComponent(art.title);
             
             body.innerHTML = `
@@ -204,6 +205,12 @@ const Hub = {
                         </a>
                         <a href="https://www.facebook.com/sharer/sharer.php?u=${shareUrl}" target="_blank" rel="noopener noreferrer" class="share-btn" style="display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--color-gray-border); color: var(--color-navy); transition: var(--transition-fast); text-decoration: none;" title="Share on Facebook">
                             <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
+                        </a>
+                        <a href="https://api.whatsapp.com/send?text=${shareTitle}%20${shareUrl}" target="_blank" rel="noopener noreferrer" class="share-btn" style="display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--color-gray-border); color: var(--color-navy); transition: var(--transition-fast); text-decoration: none;" title="Share on WhatsApp">
+                            <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.66.986 3.284 1.503 4.908 1.504 5.244 0 9.512-4.225 9.515-9.423.001-2.518-.977-4.887-2.753-6.666C16.544 2.791 14.19 1.812 11.67 1.812c-5.247 0-9.516 4.226-9.519 9.426-.002 1.765.485 3.42 1.411 4.794L2.516 20.2l4.13-1.046z"/></svg>
+                        </a>
+                        <a href="mailto:?subject=${shareTitle}&body=Check%20out%20this%20article:%20${shareUrl}" class="share-btn" style="display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--color-gray-border); color: var(--color-navy); transition: var(--transition-fast); text-decoration: none;" title="Share via Email">
+                            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
                         </a>
                         <button id="copy-share-link" class="share-btn" style="display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--color-gray-border); color: var(--color-navy); background: transparent; cursor: pointer; transition: var(--transition-fast);" title="Copy Link">
                             <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
@@ -231,6 +238,12 @@ const Hub = {
                     <a href="https://www.facebook.com/sharer/sharer.php?u=${shareUrl}" target="_blank" rel="noopener noreferrer" class="share-btn" style="display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--color-gray-border); color: var(--color-navy); transition: var(--transition-fast); text-decoration: none;" title="Share on Facebook">
                         <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
                     </a>
+                    <a href="https://api.whatsapp.com/send?text=${shareTitle}%20${shareUrl}" target="_blank" rel="noopener noreferrer" class="share-btn" style="display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--color-gray-border); color: var(--color-navy); transition: var(--transition-fast); text-decoration: none;" title="Share on WhatsApp">
+                        <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.66.986 3.284 1.503 4.908 1.504 5.244 0 9.512-4.225 9.515-9.423.001-2.518-.977-4.887-2.753-6.666C16.544 2.791 14.19 1.812 11.67 1.812c-5.247 0-9.516 4.226-9.519 9.426-.002 1.765.485 3.42 1.411 4.794L2.516 20.2l4.13-1.046z"/></svg>
+                    </a>
+                    <a href="mailto:?subject=${shareTitle}&body=Check%20out%20this%20article:%20${shareUrl}" class="share-btn" style="display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--color-gray-border); color: var(--color-navy); transition: var(--transition-fast); text-decoration: none;" title="Share via Email">
+                        <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                    </a>
                     <button id="copy-share-link-bottom" class="share-btn" style="display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--color-gray-border); color: var(--color-navy); background: transparent; cursor: pointer; transition: var(--transition-fast);" title="Copy Link">
                         <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                     </button>
@@ -250,7 +263,7 @@ const Hub = {
                     if (copyBtn) {
                         copyBtn.addEventListener('click', async () => {
                             try {
-                                const fullUrl = window.location.origin + '/hub?article=' + art.id;
+                                const fullUrl = rawShareUrl;
                                 await navigator.clipboard.writeText(fullUrl);
                                 
                                 // Visual feedback (check icon)
