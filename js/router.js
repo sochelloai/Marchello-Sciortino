@@ -183,11 +183,18 @@ Router.register('/', () => `
                 <div class="signature-cta-container">
                     <a href="/accessible-aim" class="btn btn-outline-white">EXPLORE ACCESSIBLE AIM</a>
                     <a href="/accessible-aim" class="signature-program-badge" aria-label="Learn about My Signature Program">
-                        <span>My Signature Program</span>
+                        <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
+                            <polygon points="114.00,60.00 105.12,68.97 109.89,80.66 98.25,85.56 98.18,98.18 85.56,98.25 80.66,109.89 68.97,105.12 60.00,114.00 51.03,105.12 39.34,109.89 34.44,98.25 21.82,98.18 21.75,85.56 10.11,80.66 14.88,68.97 6.00,60.00 14.88,51.03 10.11,39.34 21.75,34.44 21.82,21.82 34.44,21.75 39.34,10.11 51.03,14.88 60.00,6.00 68.97,14.88 80.66,10.11 85.56,21.75 98.18,21.82 98.25,34.44 109.89,39.34 105.12,51.03" fill="#FFFFFF" stroke="#0ad8ad" stroke-width="2.5"/>
+                        </svg>
+                        <div class="badge-text-overlay">
+                            <span>MY</span>
+                            <span>SIGNATURE</span>
+                            <span>PROGRAM</span>
+                        </div>
                     </a>
                     <svg class="signature-arrow-svg" viewBox="0 0 150 70" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path class="arrow-line" d="M135,15 C115,50 95,50 85,30 C75,10 55,20 45,45 C35,70 20,60 10,45" stroke="#0ad8ad" stroke-width="2.5" stroke-linecap="round"/>
-                        <path class="arrow-head" d="M16,51 L7,43 L11,35" stroke="#0ad8ad" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path class="arrow-line" d="M130,15 Q75,45 15,35" stroke="#0ad8ad" stroke-width="2.5" stroke-linecap="round"/>
+                        <path class="arrow-head" d="M25,25 L10,35 L23,47" stroke="#0ad8ad" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </div>
             </div>
