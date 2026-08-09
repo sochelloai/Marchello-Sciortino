@@ -3055,7 +3055,7 @@ Router.register('/accessible-aim', () => `
                 
                 <!-- Right Column: Content and Opt-in Form -->
                 <div class="aim-content-col">
-                    <h2 style="color: var(--color-navy); font-size: 2rem; margin-bottom: 5px;">There's a brand new way to build by voice</h2>
+                    <h2 style="color: var(--color-navy); font-size: clamp(1.15rem, 3.8vw, 2.1rem); margin-bottom: 5px; white-space: nowrap;">There's a brand new way to Win!</h2>
                     <p style="font-size: 1.05rem; line-height: 1.6; color: var(--color-gray-steel);">
                         Accessible AIM is designed for anyone facing a constraint—whether physical, mental, or circumstantial. We teach you to rise above obstacles by putting faith and perspective first, combining guidance with the helpful reality of artificial intelligence.
                     </p>
