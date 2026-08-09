@@ -5983,64 +5983,68 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     position: absolute;
     left: calc(100% + 20px);
     top: 50%;
-    transform: translateY(-50%);
     display: flex;
     align-items: center;
-    gap: 8px;
-    background: rgba(7, 24, 39, 0.96);
-    border: 2px solid #0ad8ad;
+    justify-content: center;
+    background-color: var(--color-pure-white);
+    border: 2px solid var(--color-teal);
     padding: 6px 14px;
     border-radius: 20px;
-    color: var(--color-gold);
+    color: #030d17;
     font-family: 'Oswald', sans-serif;
-    font-weight: 700;
+    font-weight: 800;
     font-size: 0.75rem;
     letter-spacing: 0.05em;
     text-transform: uppercase;
     white-space: nowrap;
+    text-decoration: none;
     z-index: 10;
-    animation: badge-float 3s ease-in-out infinite alternate, glow-pulse 3s ease-in-out infinite alternate;
+    animation: badge-float-glowing 2.5s ease-in-out infinite alternate;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+    cursor: pointer;
 }
 
-/* Float animation for the badge wrapper */
-@keyframes badge-float {
-    0% {
-        transform: translateY(-50%) translateX(0);
-    }
-    100% {
-        transform: translateY(-50%) translateX(6px);
-    }
-}
-
-/* Glow pulse animation for premium neon aesthetic */
-@keyframes glow-pulse {
-    0% {
-        box-shadow: 0 0 10px rgba(10, 216, 173, 0.35), inset 0 0 5px rgba(10, 216, 173, 0.15);
-        border-color: rgba(10, 216, 173, 0.6);
-    }
-    100% {
-        box-shadow: 0 0 20px rgba(10, 216, 173, 0.85), inset 0 0 10px rgba(10, 216, 173, 0.4);
-        border-color: rgba(10, 216, 173, 1);
-    }
-}
-
-/* Arrow pointing to the button */
-.badge-arrow-svg {
-    width: 22px;
-    height: 12px;
+.signature-program-badge:hover {
+    background-color: #030d17;
     color: var(--color-teal);
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    animation: arrow-pointing 1.2s ease-in-out infinite alternate;
+    border-color: var(--color-teal);
 }
 
-/* Arrow pointing pulsation */
-@keyframes arrow-pointing {
+/* Float and glow scale animation */
+@keyframes badge-float-glowing {
     0% {
-        transform: translateX(0);
+        transform: translateY(-50%) scale(1);
+        box-shadow: 0 0 10px rgba(10, 216, 173, 0.4);
     }
     100% {
-        transform: translateX(-5px);
+        transform: translateY(-58%) scale(1.03);
+        box-shadow: 0 0 25px rgba(10, 216, 173, 0.85), 0 0 8px rgba(10, 216, 173, 0.4);
+    }
+}
+
+/* Separate Looping Arrow SVG */
+.signature-arrow-svg {
+    position: absolute;
+    left: 100%;
+    top: 25px;
+    width: 140px;
+    height: 60px;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.arrow-line {
+    stroke-dasharray: 6 4;
+    animation: arrow-flow 1.5s linear infinite;
+}
+
+/* Animated flow of dashes toward the button */
+@keyframes arrow-flow {
+    0% {
+        stroke-dashoffset: 0;
+    }
+    100% {
+        stroke-dashoffset: -20;
     }
 }
 
@@ -6049,43 +6053,34 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     .signature-cta-container {
         display: inline-block;
         position: relative;
-        margin-top: 35px;
+        margin-top: 45px;
         width: 100%;
     }
     
     .signature-program-badge {
         position: absolute;
         left: 50%;
-        top: -38px;
+        top: -45px;
         transform: translateX(-50%);
-        margin-top: 0;
-        align-self: auto;
-        display: inline-flex;
-        flex-direction: column-reverse;
-        gap: 4px;
-        animation: badge-float-mobile 3s ease-in-out infinite alternate, glow-pulse 3s ease-in-out infinite alternate;
+        animation: badge-float-glowing-mobile 2.5s ease-in-out infinite alternate;
     }
 
-    @keyframes badge-float-mobile {
+    @keyframes badge-float-glowing-mobile {
         0% {
-            transform: translateX(-50%) translateY(0);
+            transform: translateX(-50%) translateY(0) scale(1);
+            box-shadow: 0 0 10px rgba(10, 216, 173, 0.4);
         }
         100% {
-            transform: translateX(-50%) translateY(4px);
+            transform: translateX(-50%) translateY(-6px) scale(1.03);
+            box-shadow: 0 0 25px rgba(10, 216, 173, 0.85), 0 0 8px rgba(10, 216, 173, 0.4);
         }
     }
 
-    .badge-arrow-svg {
-        transform: rotate(-90deg); /* Points down towards the stacked button below */
-        animation: arrow-pointing-mobile 1.2s ease-in-out infinite alternate;
-    }
-
-    @keyframes arrow-pointing-mobile {
-        0% {
-            transform: rotate(-90deg) translateX(0);
-        }
-        100% {
-            transform: rotate(-90deg) translateX(-4px);
-        }
+    .signature-arrow-svg {
+        left: 50%;
+        top: -20px;
+        width: 50px;
+        height: 30px;
+        transform: translateX(-50%) rotate(-90deg); /* Points down towards the stacked button below */
     }
 }

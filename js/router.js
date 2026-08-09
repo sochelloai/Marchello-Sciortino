@@ -182,12 +182,13 @@ Router.register('/', () => `
                 <a href="/speaking" class="btn btn-orange">BOOK ME TO SPEAK &rarr;</a>
                 <div class="signature-cta-container">
                     <a href="/accessible-aim" class="btn btn-outline-white">EXPLORE ACCESSIBLE AIM</a>
-                    <div class="signature-program-badge">
-                        <svg class="badge-arrow-svg" viewBox="0 0 30 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M28 7.5H2M2 7.5L8 1.5M2 7.5L8 13.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
+                    <a href="/accessible-aim" class="signature-program-badge" aria-label="Learn about My Signature Program">
                         <span>My Signature Program</span>
-                    </div>
+                    </a>
+                    <svg class="signature-arrow-svg" viewBox="0 0 150 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path class="arrow-line" d="M135,15 C115,50 95,50 85,30 C75,10 55,20 45,45 C35,70 20,60 10,45" stroke="#0ad8ad" stroke-width="2.5" stroke-linecap="round"/>
+                        <path class="arrow-head" d="M16,51 L7,43 L11,35" stroke="#0ad8ad" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
                 </div>
             </div>
         </div>
