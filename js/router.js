@@ -176,7 +176,7 @@ Router.register('/', () => `
                 </span>
             </h1>
             <p class="hero-tagline">
-                Using AI as an accessible bridge to find more of what is meant by the creative outcome, I help people adapt when their constraints change through shifts in perspective.
+                I use AI as an accessibility bridge to build creative outcomes and professional momentum, help people reframe daily challenges, and find the clarity in the chaos.
             </p>
             <div class="hero-ctas">
                 <a href="/speaking" class="btn btn-orange">BOOK ME TO SPEAK &rarr;</a>
