@@ -3851,7 +3851,8 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
         width: 100%;
         max-width: 280px;
         margin: 0 auto;
-        grid-row: auto; /* flows naturally into row 3+ */
+        grid-row: auto;
+        /* flows naturally into row 3+ */
     }
 }
 
@@ -3965,12 +3966,14 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     width: 44px;
     height: 44px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.5); /* 50% transparency */
+    background: rgba(255, 255, 255, 0.5);
+    /* 50% transparency */
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     border: 1px solid rgba(0, 0, 0, 0.15);
     color: var(--color-navy);
-    display: none; /* hidden on desktop */
+    display: none;
+    /* hidden on desktop */
     align-items: center;
     justify-content: center;
     cursor: pointer;
@@ -4794,7 +4797,8 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
 @media (max-width: 768px) {
     .portfolio-lightbox-browser {
         width: 95vw;
-        max-width: 450px; /* Constrain viewport to force mobile views */
+        max-width: 450px;
+        /* Constrain viewport to force mobile views */
         height: 80vh;
         min-height: 400px;
         border-radius: 12px;
@@ -4818,7 +4822,8 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
 @media (max-width: 480px) {
     .portfolio-lightbox-browser {
         width: 98vw;
-        max-width: 100%; /* Take full width on small screens */
+        max-width: 100%;
+        /* Take full width on small screens */
         height: 85vh;
         min-height: 350px;
     }
@@ -5253,7 +5258,7 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
 }
 
-/* Cursor Indicator for Zoomable Clickable Media */
+/* Zoom and Hover Animations for Media */
 .timeline-img,
 .articulated-img,
 .contact-image-column img,
@@ -5264,8 +5269,13 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
 .instagram-post img,
 .zoomable-media,
 .portfolio-card {
-    cursor: pointer;
     transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Pointer Cursor is restricted to clickable services tabs/cards & speaking gallery preview images */
+.portfolio-card,
+.media-gallery-grid img {
+    cursor: pointer;
 }
 
 .timeline-img:hover,
@@ -5364,6 +5374,7 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
 
 /* Reviews Carousel Navigation (Mobile & Tablet specific layout up to 1024px) */
 @media (max-width: 1024px) {
+
     .reviews-marquee-wrapper::before,
     .reviews-marquee-wrapper::after {
         display: none !important;
@@ -5381,7 +5392,7 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
         width: 100%;
         padding: 20px 0;
     }
-    
+
     .reviews-marquee-track {
         display: flex;
         width: 100% !important;
@@ -5389,28 +5400,33 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
         scroll-snap-type: x mandatory !important;
         scroll-behavior: smooth !important;
         -webkit-overflow-scrolling: touch !important;
-        animation: none !important; /* Disables marquee animation */
+        animation: none !important;
+        /* Disables marquee animation */
         animation-name: none !important;
         animation-play-state: paused !important;
-        scrollbar-width: none !important; /* Hide scrollbar Firefox */
-        -ms-overflow-style: none !important; /* Hide scrollbar IE/Edge */
+        scrollbar-width: none !important;
+        /* Hide scrollbar Firefox */
+        -ms-overflow-style: none !important;
+        /* Hide scrollbar IE/Edge */
     }
-    
+
     .reviews-marquee-track::-webkit-scrollbar {
-        display: none !important; /* Hide scrollbar Chrome/Safari */
+        display: none !important;
+        /* Hide scrollbar Chrome/Safari */
     }
-    
+
     .reviews-marquee-group[aria-hidden="true"] {
-        display: none !important; /* Hide duplicate marquee group */
+        display: none !important;
+        /* Hide duplicate marquee group */
     }
-    
+
     .reviews-marquee-group {
         display: flex !important;
         gap: 0 !important;
         padding-right: 0 !important;
         width: 100% !important;
     }
-    
+
     .reviews-marquee-card {
         width: 100% !important;
         flex-shrink: 0 !important;
@@ -5421,7 +5437,8 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     }
 
     .reviews-arrow {
-        display: flex !important; /* Show navigation arrows on mobile & tablet */
+        display: flex !important;
+        /* Show navigation arrows on mobile & tablet */
         opacity: 0.65;
         transition: opacity 0.3s ease, background 0.3s ease, transform 0.3s ease;
     }
@@ -5493,11 +5510,13 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
 }
 
 @keyframes dashPulse {
-    to { stroke-dashoffset: -200px; }
+    to {
+        stroke-dashoffset: -200px;
+    }
 }
 
 /* Hover and Active states */
-.brain-node:hover circle, 
+.brain-node:hover circle,
 .brain-node:focus circle {
     fill: rgba(0, 209, 193, 0.15);
     stroke: var(--color-teal);
@@ -5505,7 +5524,7 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     filter: drop-shadow(0 0 8px rgba(0, 209, 193, 0.6));
 }
 
-.brain-node:hover text, 
+.brain-node:hover text,
 .brain-node:focus text {
     fill: var(--color-white);
     font-size: 14px;
@@ -5565,7 +5584,8 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     text-align: center;
 }
 
-.brain-list-btn:hover, .brain-list-btn:focus {
+.brain-list-btn:hover,
+.brain-list-btn:focus {
     background: var(--color-teal);
     color: var(--color-navy);
     border-color: var(--color-teal);
@@ -5697,8 +5717,15 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
 }
 
 @keyframes bubblePop {
-    from { transform: scale(0.9); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 .message-bubble.incoming {
@@ -5738,12 +5765,25 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     animation: bounce 1.4s infinite ease-in-out both;
 }
 
-.typing-dot:nth-child(1) { animation-delay: -0.32s; }
-.typing-dot:nth-child(2) { animation-delay: -0.16s; }
+.typing-dot:nth-child(1) {
+    animation-delay: -0.32s;
+}
+
+.typing-dot:nth-child(2) {
+    animation-delay: -0.16s;
+}
 
 @keyframes bounce {
-    0%, 80%, 100% { transform: scale(0); }
-    40% { transform: scale(1.0); }
+
+    0%,
+    80%,
+    100% {
+        transform: scale(0);
+    }
+
+    40% {
+        transform: scale(1.0);
+    }
 }
 
 /* Suggestions Area */
@@ -5800,8 +5840,15 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
 }
 
 @keyframes blink {
-    from, to { color: transparent; }
-    50% { color: var(--color-teal); }
+
+    from,
+    to {
+        color: transparent;
+    }
+
+    50% {
+        color: var(--color-teal);
+    }
 }
 
 /* ==========================================================================
@@ -5923,4 +5970,3 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     transform: translateY(-1.5px);
     box-shadow: 0 6px 20px rgba(255, 94, 0, 0.4);
 }
-

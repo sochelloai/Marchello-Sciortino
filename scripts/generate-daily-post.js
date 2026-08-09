@@ -257,8 +257,8 @@ async function callGeminiWithRetry(geminiUrl, promptSystem, maxRetries = 3) {
                         properties: {
                             title: { type: "string" },
                             desc: { type: "string" },
-                            tag: { 
-                                type: "string", 
+                            tag: {
+                                type: "string",
                                 enum: ["Story Notes", "AI and Accessibility", "Lessons From Limitation", "Tools I Use", "Daily Inspiration"]
                             },
                             body: { type: "string" },
@@ -292,9 +292,9 @@ async function callGeminiWithRetry(geminiUrl, promptSystem, maxRetries = 3) {
             return res;
         } catch (apiErr) {
             const isTransient = apiErr.message && (
-                apiErr.message.includes("503") || 
-                apiErr.message.includes("429") || 
-                apiErr.message.includes("500") || 
+                apiErr.message.includes("503") ||
+                apiErr.message.includes("429") ||
+                apiErr.message.includes("500") ||
                 apiErr.message.includes("UNAVAILABLE")
             );
             if (isTransient && attempt < maxRetries) {
@@ -313,7 +313,7 @@ async function run() {
         // Load articles.json first to serve as context for non-repetition
         const articlesJsonPath = path.join(__dirname, '..', 'data', 'articles.json');
         let articles = [];
-        
+
         if (fs.existsSync(articlesJsonPath)) {
             try {
                 const rawJson = fs.readFileSync(articlesJsonPath, 'utf8');
@@ -512,7 +512,7 @@ You must return a raw JSON object containing exactly these fields (no markdown w
 
         const rawText = candidate.content.parts[0].text;
         let cleanedText = rawText.trim();
-        
+
         // Strip markdown code block wrapping if present
         if (cleanedText.startsWith("```")) {
             cleanedText = cleanedText.replace(/^```(json)?\s*/i, "");
@@ -535,11 +535,11 @@ You must return a raw JSON object containing exactly these fields (no markdown w
             // Clean any existing signatures or forms of it in the body to avoid double signatures
             const signatureCleanRegex = /<p[^>]*>\s*(<strong>|<em>|"|'|“|”)*\s*Much\s*love,?\s*party\s*people!.*?(<\/strong>|<\/em>|"|'|“|”)*\s*<\/p>/gi;
             generatedArticle.body = generatedArticle.body.replace(signatureCleanRegex, "");
-            
+
             // Also replace naked references if any
             const nakedRegex = /"??Much\s*love,?\s*party\s*people!.*?better!"??/gi;
             generatedArticle.body = generatedArticle.body.replace(nakedRegex, "");
-            
+
             generatedArticle.body = generatedArticle.body.trim();
             // Append the exact signature formatted as bold, italicized, and in quotation marks
             generatedArticle.body += `\n<p style="margin-top: 20px; color: var(--color-teal);"><strong><em>"Much love, party people! That was awesome, the next one will only be better!"</em></strong></p>`;
@@ -591,7 +591,7 @@ You must return a raw JSON object containing exactly these fields (no markdown w
                     const res = await postJson(openaiUrl, headers, body);
                     const b64Data = res?.data?.[0]?.b64_json;
                     const imageUrl = res?.data?.[0]?.url;
-                    
+
                     if (b64Data) {
                         imageBuffer = Buffer.from(b64Data, 'base64');
                         console.log("Image generated successfully via OpenAI DALL-E (base64).");
@@ -605,7 +605,7 @@ You must return a raw JSON object containing exactly these fields (no markdown w
                         const imageSlug = sanitizeId(generatedArticle.url_slug || articleId);
                         const localImageName = `${imageSlug}.png`;
                         const localImagePath = path.join(blogAssetsDir, localImageName);
-                        
+
                         await downloadFile(imageUrl, localImagePath);
                         imageBuffer = fs.readFileSync(localImagePath);
                         relativeImageSrc = `assets/blog/${localImageName}`;
@@ -624,7 +624,7 @@ You must return a raw JSON object containing exactly these fields (no markdown w
 
         if (!imageBuffer && GEMINI_API_KEY) {
             console.log("Attempting Google image generation...");
-            
+
             // 1. Fetch available models from Google AI Studio to adapt programmatically
             let availableModels = [];
             try {
@@ -638,9 +638,9 @@ You must return a raw JSON object containing exactly these fields (no markdown w
             }
 
             // 2. Identify candidate image models in the list
-            const imageModels = availableModels.filter(m => 
-                m.name.includes("imagen") || 
-                m.name.includes("image") || 
+            const imageModels = availableModels.filter(m =>
+                m.name.includes("imagen") ||
+                m.name.includes("image") ||
                 (m.supportedMethods && m.supportedMethods.some(method => method.toLowerCase().includes("image")))
             );
 
@@ -650,10 +650,10 @@ You must return a raw JSON object containing exactly these fields (no markdown w
 
                 for (const model of imageModels) {
                     console.log(`Attempting image generation using auto-detected model: "${model.name}"...`);
-                    
+
                     // Attempt based on supported methods
                     const methods = model.supportedMethods.map(m => m.split('/').pop() || m);
-                    
+
                     if (methods.includes("generateContent")) {
                         try {
                             console.log(`Calling generateContent on "${model.name}"...`);
@@ -674,7 +674,7 @@ You must return a raw JSON object containing exactly these fields (no markdown w
                             console.warn(`Auto-detected method generateContent failed for "${model.name}": ${err.message}`);
                         }
                     }
-                    
+
                     if (methods.includes("predict")) {
                         try {
                             console.log(`Calling predict on "${model.name}"...`);

@@ -1356,108 +1356,16 @@ const GlobalMediaLightbox = {
                 return;
             }
 
-            // 1. Check if click target is a link pointing to a media file (or inside one)
+            // Check if click target is a link with a download attribute
             const link = e.target.closest('a');
-            if (link) {
+            if (link && link.hasAttribute('download')) {
                 const href = link.getAttribute('href');
                 if (href) {
-                    // Check if it's a media URL
-                    const mediaRegex = /\.(mp4|webm|ogg|mp3|wav|png|jpg|jpeg|gif|svg|webp|pdf)(\?|#|$)/i;
-                    const isMedia = mediaRegex.test(href);
-
-                    // Check for YouTube / Vimeo URLs
-                    const ytRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
-                    const vimeoRegex = /vimeo\.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|video\/|)(\d+)/i;
-                    const isVideoPlatform = ytRegex.test(href) || vimeoRegex.test(href);
-
-                    if (isMedia || isVideoPlatform) {
-                        // Don't intercept if clicking inside active lightbox
-                        if (e.target.closest('#global-media-lightbox')) return;
-
-                        // If it has a download attribute, download it programmatically in background
-                        if (link.hasAttribute('download')) {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            const filename = link.getAttribute('download') || '';
-                            this.downloadFile(href, filename);
-                            return;
-                        }
-
-                        // Otherwise, open in lightbox to prevent leaving the page
-                        e.preventDefault();
-                        e.stopPropagation();
-
-                        let type = 'image';
-                        if (isVideoPlatform || /\.(mp4|webm|ogg)(\?|#|$)/i.test(href)) {
-                            type = 'video';
-                        } else if (/\.(mp3|wav|m4a|ogg)(\?|#|$)/i.test(href)) {
-                            type = 'audio';
-                        } else if (/\.pdf(\?|#|$)/i.test(href)) {
-                            type = 'pdf';
-                        }
-
-                        const title = link.getAttribute('download') || link.title || link.textContent.trim() || 'Media Viewer';
-                        this.open(type, href, title);
-                        return;
-                    }
-                }
-            }
-
-            // 2. Intercept ANY img tag click globally (excluding header, footer, active lightboxes, and logo/social/badge icons)
-            const imgEl = e.target.closest('img');
-            const clickedMedia = imgEl;
-
-            if (clickedMedia) {
-                // Exclude header, footer, active lightboxes, and elements with logo/avatar/icon class
-                const inHeader = clickedMedia.closest('header') || clickedMedia.closest('.main-header');
-                const inFooter = clickedMedia.closest('footer') || clickedMedia.closest('.main-footer');
-                const inLightbox = clickedMedia.closest('#global-media-lightbox') || 
-                                   clickedMedia.closest('#portfolio-lightbox-overlay') || 
-                                   clickedMedia.closest('#gallery-lightbox-overlay');
-                
-                const classStr = clickedMedia.className || '';
-                const idStr = clickedMedia.id || '';
-                const parentClassStr = (clickedMedia.parentElement && clickedMedia.parentElement.className) || '';
-                
-                const isLogoOrWidget = classStr.includes('logo') || classStr.includes('icon') || classStr.includes('avatar') || classStr.includes('badge') ||
-                                       idStr.includes('logo') || idStr.includes('icon') || idStr.includes('badge') ||
-                                       parentClassStr.includes('badge') || parentClassStr.includes('logo') || parentClassStr.includes('icon') ||
-                                       (clickedMedia.src && (clickedMedia.src.includes('logo') || clickedMedia.src.includes('sound') || clickedMedia.src.includes('click-to')));
-
-                if (!inHeader && !inFooter && !inLightbox && !isLogoOrWidget) {
                     e.preventDefault();
                     e.stopPropagation();
-
-                    const src = clickedMedia.src || clickedMedia.getAttribute('data-src') || '';
-                    const alt = clickedMedia.alt || clickedMedia.title || clickedMedia.getAttribute('aria-label') || '';
-
-                    if (src) {
-                        this.open('image', src, alt);
-                        return;
-                    }
+                    const filename = link.getAttribute('download') || '';
+                    this.downloadFile(href, filename);
                 }
-            }
-
-            // 3. Fallback: check other zoomable targets (excluding portfolio cards now handled exclusively by ServicesPortfolio)
-            const mediaTarget = e.target.closest(
-                '.timeline-img, .articulated-img, .contact-image-column img, ' +
-                '.resource-cover-image, .blog-card-img, .blog-card img, ' +
-                '.media-gallery-grid img, .instagram-post img, .zoomable-media'
-            );
-
-            if (!mediaTarget) return;
-
-            // Don't intercept if clicking inside active lightbox
-            if (e.target.closest('#global-media-lightbox')) return;
-
-            let type = 'image';
-            let src = mediaTarget.src || mediaTarget.getAttribute('data-src') || '';
-            let alt = mediaTarget.alt || mediaTarget.title || mediaTarget.getAttribute('aria-label') || '';
-
-            if (src) {
-                e.preventDefault();
-                e.stopPropagation();
-                this.open(type, src, alt);
             }
         });
 
