@@ -5970,3 +5970,110 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     transform: translateY(-1.5px);
     box-shadow: 0 6px 20px rgba(255, 94, 0, 0.4);
 }
+
+/* ==========================================================================
+   Signature Program CTA Callout Card & Arrow
+   ========================================================================== */
+.signature-cta-container {
+    position: relative;
+    display: inline-block;
+}
+
+.signature-program-badge {
+    position: absolute;
+    left: calc(100% + 20px);
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, rgba(10, 216, 173, 0.15) 0%, rgba(10, 216, 173, 0.05) 100%);
+    border: 1px solid rgba(10, 216, 173, 0.4);
+    padding: 6px 14px;
+    border-radius: 20px;
+    color: var(--color-teal);
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    box-shadow: 0 4px 15px rgba(10, 216, 173, 0.12);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 10;
+    animation: badge-float 3s ease-in-out infinite alternate;
+}
+
+/* Float animation for the badge wrapper */
+@keyframes badge-float {
+    0% {
+        transform: translateY(-50%) translateX(0);
+    }
+    100% {
+        transform: translateY(-50%) translateX(6px);
+    }
+}
+
+/* Arrow pointing to the button */
+.badge-arrow-svg {
+    width: 22px;
+    height: 12px;
+    color: var(--color-teal);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    animation: arrow-pointing 1.2s ease-in-out infinite alternate;
+}
+
+/* Arrow pointing pulsation */
+@keyframes arrow-pointing {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-4px);
+    }
+}
+
+/* Mobile responsive layout (max-width: 768px) */
+@media (max-width: 768px) {
+    .signature-cta-container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .signature-program-badge {
+        position: relative;
+        left: 0;
+        top: auto;
+        transform: none;
+        margin-top: 10px;
+        align-self: center;
+        display: inline-flex;
+        animation: badge-float-mobile 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes badge-float-mobile {
+        0% {
+            transform: translateY(0);
+        }
+        100% {
+            transform: translateY(5px);
+        }
+    }
+
+    .badge-arrow-svg {
+        transform: rotate(90deg); /* Points up towards the stacked button above */
+        animation: arrow-pointing-mobile 1.2s ease-in-out infinite alternate;
+    }
+
+    @keyframes arrow-pointing-mobile {
+        0% {
+            transform: rotate(90deg) translateY(0);
+        }
+        100% {
+            transform: rotate(90deg) translateY(-4px);
+        }
+    }
+}

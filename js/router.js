@@ -180,7 +180,15 @@ Router.register('/', () => `
             </p>
             <div class="hero-ctas">
                 <a href="/speaking" class="btn btn-orange">BOOK ME TO SPEAK &rarr;</a>
-                <a href="/accessible-aim" class="btn btn-outline-white">EXPLORE ACCESSIBLE AIM</a>
+                <div class="signature-cta-container">
+                    <a href="/accessible-aim" class="btn btn-outline-white">EXPLORE ACCESSIBLE AIM</a>
+                    <div class="signature-program-badge">
+                        <svg class="badge-arrow-svg" viewBox="0 0 30 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M28 7.5H2M2 7.5L8 1.5M2 7.5L8 13.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>My Signature Program</span>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
