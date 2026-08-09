@@ -559,7 +559,7 @@ Router.register('/', () => `
                         <span style="font-size: 1.6rem; color: var(--color-teal); line-height: 1;">💡</span>
                         <div>
                             <strong style="color: var(--color-teal); display: block; margin-bottom: 6px; font-size: 1rem; letter-spacing: 0.05em;">THE METHOD IN ACTION:</strong>
-                            <span style="font-size: 1rem; color: var(--color-gray-steel); line-height: 1.5; display: block;">
+                            <span style="font-size: 1rem; color: var(--color-gray-light); line-height: 1.5; display: block;">
                                 When physical coordination makes typing a struggle, I use custom prompt setups to act as the moving joint—turning a spoken draft into a clean, functional webpage.
                             </span>
                         </div>
@@ -2475,7 +2475,7 @@ Router.register('/chelloai', () => `
                         <span style="font-size: 1.6rem; color: var(--color-teal); line-height: 1;">💡</span>
                         <div>
                             <strong style="color: var(--color-teal); display: block; margin-bottom: 6px; font-size: 1rem; letter-spacing: 0.05em;">THE METHOD IN ACTION:</strong>
-                            <span style="font-size: 1rem; color: var(--color-gray-steel); line-height: 1.5; display: block;">
+                            <span style="font-size: 1rem; color: var(--color-navy); line-height: 1.5; display: block;">
                                 ChelloAI acts as this moving joint. When motor coordination restricts typing speed, this digital partner translates my thoughts and memories directly into natural conversations.
                             </span>
                         </div>
