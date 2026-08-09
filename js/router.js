@@ -3024,9 +3024,10 @@ Router.register('/accessible-aim', () => `
     </div>
     
     <!-- Centered One-Column Section: Accessible AIM -->
-    <section class="aim-title-section" style="background-color: var(--color-white); padding: 45px 0 10px 0; text-align: center;">
+    <section class="aim-title-section" style="background-color: var(--color-white); padding: 50px 0 15px 0; text-align: center;">
         <div class="container">
-            <h2 style="color: var(--color-navy); font-size: 2.4rem; font-family: 'Oswald', sans-serif; font-weight: 800; font-style: italic; text-transform: uppercase; letter-spacing: -0.01em; margin: 0;">Accessible AIM</h2>
+            <h2 style="color: var(--color-navy); font-size: 2.8rem; font-family: 'Oswald', sans-serif; font-weight: 800; font-style: italic; text-transform: uppercase; letter-spacing: 0.01em; margin: 0; text-shadow: 2px 2px 0px rgba(10, 216, 173, 0.35), 4px 4px 8px rgba(8, 27, 41, 0.15);">Accessible AIM</h2>
+            <div style="width: 80px; height: 4px; background-color: var(--color-teal); margin: 15px auto 0 auto; border-radius: 2px; box-shadow: 0 1px 5px rgba(10, 216, 173, 0.3);"></div>
         </div>
     </section>
     
