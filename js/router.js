@@ -2038,10 +2038,10 @@ Router.register('/speaking', () => `
         </svg>
         
         <div class="container text-center" style="position: relative; z-index: 2;">
-            <span class="section-tag text-teal">Keynotes</span>
-            <h1 style="color: white;">Speaking & Keynotes</h1>
-            <p class="section-desc" style="color: var(--color-gray-light);">
-                An honest, practical talk about adapting to change for leadership and advocacy events.
+            <span class="section-tag text-teal">Speaking</span>
+            <h1 style="color: white;">Book Me to Speak</h1>
+            <p class="section-desc" style="color: var(--color-gray-light); max-width: 750px; margin: 0 auto;">
+                I deliver practical keynotes on how to reframe daily constraints, find clarity in the chaos, and use AI as an accessibility bridge to build creative outcomes and professional momentum. Through honest sharing and live voice-building, I show audiences how to adapt when their perspective shifts and turn limits into starting lines.
             </p>
         </div>
     </div>
