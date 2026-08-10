@@ -5871,6 +5871,7 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.4s ease, visibility 0.4s ease;
+    overflow-y: auto;
 }
 
 .free-gifts-modal-overlay.active {
@@ -5890,6 +5891,7 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     position: relative;
     transform: scale(0.9);
     transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    margin: auto;
 }
 
 .free-gifts-modal-overlay.active .free-gifts-modal-card {
@@ -6000,6 +6002,25 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     border-color: var(--color-teal);
     box-shadow: 0 0 15px rgba(10, 216, 173, 0.1);
     transform: translateY(-1.5px);
+}
+
+@media (max-width: 480px), (max-height: 650px) {
+    .free-gifts-modal-card {
+        padding: 24px 20px;
+    }
+    .free-gifts-modal-card h2 {
+        font-size: 1.4rem;
+        margin-bottom: 8px;
+    }
+    .free-gifts-modal-card p {
+        font-size: 0.9rem;
+        margin-bottom: 20px;
+    }
+    .free-gifts-input,
+    .free-gifts-unlock-btn,
+    .free-gifts-back-btn {
+        padding: 10px 16px;
+    }
 }
 
 /* ==========================================================================
