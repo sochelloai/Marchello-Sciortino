@@ -5971,6 +5971,37 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     box-shadow: 0 6px 20px rgba(255, 94, 0, 0.4);
 }
 
+.free-gifts-back-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 14px 24px;
+    margin-top: 16px;
+    background: transparent;
+    color: var(--color-gray-light);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    box-sizing: border-box;
+    transition: all 0.25s ease;
+    cursor: pointer;
+}
+
+.free-gifts-back-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--color-white);
+    border-color: var(--color-teal);
+    box-shadow: 0 0 15px rgba(10, 216, 173, 0.1);
+    transform: translateY(-1.5px);
+}
+
 /* ==========================================================================
    Signature Program CTA Callout Card & Arrow
    ========================================================================== */

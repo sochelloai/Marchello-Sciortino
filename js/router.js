@@ -2649,6 +2649,7 @@ Router.register('/free-gifts', () => {
                     <input type="email" id="free-gifts-email" class="free-gifts-input" placeholder="yourname@email.com" required>
                     <button type="submit" class="free-gifts-unlock-btn">Unlock Downloads &rarr;</button>
                 </form>
+                <a href="/" class="free-gifts-back-btn">&larr; Back to Home</a>
             </div>
         </div>
     `;
