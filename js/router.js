@@ -474,7 +474,7 @@ Router.register('/', () => `
                     <div class="book-promo-content">
                         <span class="section-tag text-teal">New Book Release</span>
                         <h2 class="book-promo-headline">LIMITATIONS TO LIBERATION</h2>
-                        <p class="book-promo-subheadline">Learn the mental models and daily systems to build freedom from limitation and write your own story.</p>
+                        <p class="book-promo-subheadline">Discover the mental models and daily systems that turn constraints into creative freedom. Explore the book below, grab your copy today, and start writing your own story of liberation!</p>
                         <div style="margin-top: var(--spacing-sm);">
                             <a href="https://www.limitationstoliberation.com/" target="_blank" rel="noopener noreferrer" class="btn-cta-orange">Get The Book <span class="arrow">&rarr;</span></a>
                         </div>
