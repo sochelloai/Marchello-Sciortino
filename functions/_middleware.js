@@ -19,7 +19,7 @@ export async function onRequest(context) {
     // Default metadata values
     let title = "Marchello Sciortino | Official Digital Hub";
     let description = "Official digital hub of Marchello Sciortino: keynote speaker, ClickFunnels certified builder, creator, and disability advocate turning limitations into creative agency through AI.";
-    let image = new URL('/assets/logo-light.png', url.origin).toString();
+    let image = new URL('/assets/hero-share.png', url.origin).toString();
     let pageUrl = url.toString();
     let foundArticle = false;
 
