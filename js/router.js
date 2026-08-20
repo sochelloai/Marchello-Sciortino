@@ -2316,6 +2316,13 @@ Router.register('/speaking', () => {
                         <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 1.25rem;">
                             <li style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 6px;">
                                 <div>
+                                    <strong style="display:block; color: white; font-size: 0.9rem;">Speaking Resume</strong>
+                                    <span style="font-size:0.75rem; color:rgba(255, 255, 255, 0.7);">PDF (542 KB)</span>
+                                </div>
+                                <a href="assets/speaker_resume.pdf" download="Marchello_Sciortino_Speaking_Resume.pdf" class="btn btn-teal btn-sm" style="padding: 4px 10px; font-size: 0.8rem;">Download</a>
+                            </li>
+                            <li style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 6px;">
+                                <div>
                                     <strong style="display:block; color: white; font-size: 0.9rem;">Speaking One-Sheet</strong>
                                     <span style="font-size:0.75rem; color:rgba(255, 255, 255, 0.7);">PNG (1.7 MB)</span>
                                 </div>
@@ -2342,6 +2349,9 @@ Router.register('/speaking', () => {
                             <h4 class="text-white" style="margin-bottom: 3px; font-family: var(--font-heading); font-size: 1rem;">Preview Speaker Materials</h4>
                             <p style="font-size: 0.8rem; color: var(--color-gray-light); margin-bottom: 8px;">Preview of assets included in the Download Media Kit package.</p>
                             <div class="media-gallery-grid" style="grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 0.25rem;">
+                                <div class="gallery-item">
+                                    <img src="assets/speaker_resume.png" alt="Speaking Resume" title="Speaking Resume" loading="lazy" decoding="async">
+                                </div>
                                 <div class="gallery-item">
                                     <img src="assets/speaker_1_sheet.png" alt="Speaking One-Sheet" title="Speaking One-Sheet" loading="lazy" decoding="async">
                                 </div>
