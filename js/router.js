@@ -2225,59 +2225,120 @@ Router.register('/speaking', () => `
                     </div>
                 </div>
                 
-                <div class="card bg-navy" style="border: 1px solid rgba(0, 209, 193, 0.2); color: white; padding: 1.5rem;">
-                    <span class="section-tag text-teal">Media Assets</span>
-                    <h3 class="text-white">Download Media Kit</h3>
-                    <p style="font-size: 0.9rem; margin-bottom: 12px; color: var(--color-gray-light);">Select files to download for event programs, promotional flyers, or articles.</p>
-                    <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 1.25rem;">
-                        <li style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 6px;">
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    <!-- Speaker Age & Live Birthday Countdown Card -->
+                    <div class="card speaker-age-card" style="border: 1px solid rgba(0, 209, 193, 0.35); background: linear-gradient(145deg, rgba(16, 26, 46, 0.95), rgba(10, 16, 30, 0.98)); color: white; padding: 1.5rem; border-radius: var(--radius-md); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); margin: 0;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
+                            <span class="section-tag text-teal" style="margin: 0; font-size: 0.8rem; letter-spacing: 0.1em;">SPEAKER PROFILE</span>
+                            <span class="bday-pill-badge" style="background: rgba(10, 216, 173, 0.12); color: var(--color-teal); border: 1px solid rgba(10, 216, 173, 0.3); font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+                                <span class="bday-pulse-dot"></span> Live Age Tracker
+                            </span>
+                        </div>
+                        
+                        <div class="speaker-age-hero" style="display: flex; align-items: center; justify-content: space-between; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-sm); padding: 14px 18px; margin-bottom: 16px;">
                             <div>
-                                <strong style="display:block; color: white; font-size: 0.9rem;">Speaking One-Sheet</strong>
-                                <span style="font-size:0.75rem; color:rgba(255, 255, 255, 0.7);">PNG (1.7 MB)</span>
+                                <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-gray-light); display: block; margin-bottom: 2px;">Current Age</span>
+                                <div style="display: flex; align-items: baseline; gap: 8px;">
+                                    <span id="speaker-current-age" class="speaker-age-number" style="font-size: 2.5rem; font-weight: 800; font-family: var(--font-heading); color: #FFFFFF; line-height: 1; text-shadow: 0 0 20px rgba(10, 216, 173, 0.5);">--</span>
+                                    <span style="font-size: 1.05rem; font-weight: 700; color: var(--color-teal); text-transform: uppercase; letter-spacing: 0.05em;">Years Old</span>
+                                </div>
                             </div>
-                            <a href="assets/speaker_1_sheet.png" download="Speaker_1_Sheet.png" class="btn btn-teal btn-sm" style="padding: 4px 10px; font-size: 0.8rem;">Download</a>
-                        </li>
-                        <li style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 6px;">
-                            <div>
-                                <strong style="display:block; color: white; font-size: 0.9rem;">Headshot Gallery</strong>
-                                <span style="font-size:0.75rem; color:rgba(255, 255, 255, 0.7);">ZIP (9.6 MB)</span>
+                            <div style="text-align: right;">
+                                <span style="font-size: 0.75rem; color: var(--color-gray-light); display: block;">Birthdate</span>
+                                <strong style="font-size: 0.88rem; color: #FFFFFF; font-family: var(--font-heading);">June 23, 1996</strong>
                             </div>
-                            <a href="assets/Headshots.zip" download="Headshots.zip" class="btn btn-teal btn-sm" style="padding: 4px 10px; font-size: 0.8rem;">Download</a>
-                        </li>
-                        <li style="display:flex; justify-content:space-between; align-items:center;">
-                            <div>
-                                <strong style="display:block; color: white; font-size: 0.9rem;">Marchello Logo Assets</strong>
-                                <span style="font-size:0.75rem; color:rgba(255, 255, 255, 0.7);">ZIP (39 KB)</span>
-                            </div>
-                            <a href="assets/Marchello_Sciortino_Logo_Assets.zip" download="Marchello_Sciortino_Logo_Assets.zip" class="btn btn-teal btn-sm" style="padding: 4px 10px; font-size: 0.8rem;">Download</a>
-                        </li>
-                    </ul>
+                        </div>
 
-                    <!-- Media kit preview gallery inside the card -->
-                    <div style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 1rem;">
-                        <h4 class="text-white" style="margin-bottom: 3px; font-family: var(--font-heading); font-size: 1rem;">Preview Speaker Materials</h4>
-                        <p style="font-size: 0.8rem; color: var(--color-gray-light); margin-bottom: 8px;">Preview of assets included in the Download Media Kit package.</p>
-                        <div class="media-gallery-grid" style="grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 0.25rem;">
-                            <div class="gallery-item">
-                                <img src="assets/speaker_1_sheet.png" alt="Speaking One-Sheet" title="Speaking One-Sheet" loading="lazy" decoding="async">
+                        <!-- Birthday Celebration Banner (Shown if today is June 23) -->
+                        <div id="bday-celebration" class="bday-celebration-banner" style="display: none; background: linear-gradient(90deg, #ff6b35, #0ad8ad); color: white; padding: 12px 16px; border-radius: var(--radius-sm); text-align: center; font-weight: 700; font-size: 0.95rem; margin-bottom: 14px; box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4); animation: bday-glow 2s infinite alternate;">
+                            🎉 Happy Birthday Marchello! Turning <span id="bday-turning-age"></span> Today! 🎂🎈
+                        </div>
+
+                        <!-- Countdown Section -->
+                        <div class="speaker-bday-countdown-wrap">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 4px;">
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                    <strong style="font-size: 0.88rem; color: white; font-family: var(--font-heading);">Birthday Countdown</strong>
+                                </div>
+                                <span id="speaker-next-bday-target" style="font-size: 0.78rem; color: var(--color-gray-light);">Target: <span id="speaker-next-bday-year" style="color: var(--color-teal); font-weight: 600;">June 23</span></span>
                             </div>
-                            <div class="gallery-item">
-                                <img src="assets/headshot_1.jpg" alt="Headshot 1" title="Headshot 1" loading="lazy" decoding="async">
+
+                            <div id="bday-countdown-grid" class="bday-countdown-grid">
+                                <div class="bday-time-box">
+                                    <span id="bday-days" class="bday-time-val">00</span>
+                                    <span class="bday-time-lbl">Days</span>
+                                </div>
+                                <div class="bday-time-box">
+                                    <span id="bday-hours" class="bday-time-val">00</span>
+                                    <span class="bday-time-lbl">Hours</span>
+                                </div>
+                                <div class="bday-time-box">
+                                    <span id="bday-minutes" class="bday-time-val">00</span>
+                                    <span class="bday-time-lbl">Minutes</span>
+                                </div>
+                                <div class="bday-time-box">
+                                    <span id="bday-seconds" class="bday-time-val">00</span>
+                                    <span class="bday-time-lbl">Seconds</span>
+                                </div>
                             </div>
-                            <div class="gallery-item">
-                                <img src="assets/headshot_2.jpg" alt="Headshot 2" title="Headshot 2" loading="lazy" decoding="async">
-                            </div>
-                            <div class="gallery-item">
-                                <img src="assets/headshot_3.jpg" alt="Headshot 3" title="Headshot 3" loading="lazy" decoding="async">
-                            </div>
-                            <div class="gallery-item">
-                                <img src="assets/headshot_4.jpg" alt="Headshot 4" title="Headshot 4" loading="lazy" decoding="async">
-                            </div>
-                            <div class="gallery-item">
-                                <img src="assets/marchello_logo_dark.png" alt="Marchello Sciortino Logo Dark" title="Marchello Sciortino Logo Dark" loading="lazy" decoding="async">
-                            </div>
-                            <div class="gallery-item">
-                                <img src="assets/marchello_logo_light.png" alt="Marchello Sciortino Logo Light" title="Marchello Sciortino Logo Light" loading="lazy" decoding="async">
+                        </div>
+                    </div>
+
+                    <div class="card bg-navy" style="border: 1px solid rgba(0, 209, 193, 0.2); color: white; padding: 1.5rem; margin: 0;">
+                        <span class="section-tag text-teal">Media Assets</span>
+                        <h3 class="text-white">Download Media Kit</h3>
+                        <p style="font-size: 0.9rem; margin-bottom: 12px; color: var(--color-gray-light);">Select files to download for event programs, promotional flyers, or articles.</p>
+                        <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 1.25rem;">
+                            <li style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 6px;">
+                                <div>
+                                    <strong style="display:block; color: white; font-size: 0.9rem;">Speaking One-Sheet</strong>
+                                    <span style="font-size:0.75rem; color:rgba(255, 255, 255, 0.7);">PNG (1.7 MB)</span>
+                                </div>
+                                <a href="assets/speaker_1_sheet.png" download="Speaker_1_Sheet.png" class="btn btn-teal btn-sm" style="padding: 4px 10px; font-size: 0.8rem;">Download</a>
+                            </li>
+                            <li style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 6px;">
+                                <div>
+                                    <strong style="display:block; color: white; font-size: 0.9rem;">Headshot Gallery</strong>
+                                    <span style="font-size:0.75rem; color:rgba(255, 255, 255, 0.7);">ZIP (9.6 MB)</span>
+                                </div>
+                                <a href="assets/Headshots.zip" download="Headshots.zip" class="btn btn-teal btn-sm" style="padding: 4px 10px; font-size: 0.8rem;">Download</a>
+                            </li>
+                            <li style="display:flex; justify-content:space-between; align-items:center;">
+                                <div>
+                                    <strong style="display:block; color: white; font-size: 0.9rem;">Marchello Logo Assets</strong>
+                                    <span style="font-size:0.75rem; color:rgba(255, 255, 255, 0.7);">ZIP (39 KB)</span>
+                                </div>
+                                <a href="assets/Marchello_Sciortino_Logo_Assets.zip" download="Marchello_Sciortino_Logo_Assets.zip" class="btn btn-teal btn-sm" style="padding: 4px 10px; font-size: 0.8rem;">Download</a>
+                            </li>
+                        </ul>
+
+                        <!-- Media kit preview gallery inside the card -->
+                        <div style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 1rem;">
+                            <h4 class="text-white" style="margin-bottom: 3px; font-family: var(--font-heading); font-size: 1rem;">Preview Speaker Materials</h4>
+                            <p style="font-size: 0.8rem; color: var(--color-gray-light); margin-bottom: 8px;">Preview of assets included in the Download Media Kit package.</p>
+                            <div class="media-gallery-grid" style="grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 0.25rem;">
+                                <div class="gallery-item">
+                                    <img src="assets/speaker_1_sheet.png" alt="Speaking One-Sheet" title="Speaking One-Sheet" loading="lazy" decoding="async">
+                                </div>
+                                <div class="gallery-item">
+                                    <img src="assets/headshot_1.jpg" alt="Headshot 1" title="Headshot 1" loading="lazy" decoding="async">
+                                </div>
+                                <div class="gallery-item">
+                                    <img src="assets/headshot_2.jpg" alt="Headshot 2" title="Headshot 2" loading="lazy" decoding="async">
+                                </div>
+                                <div class="gallery-item">
+                                    <img src="assets/headshot_3.jpg" alt="Headshot 3" title="Headshot 3" loading="lazy" decoding="async">
+                                </div>
+                                <div class="gallery-item">
+                                    <img src="assets/headshot_4.jpg" alt="Headshot 4" title="Headshot 4" loading="lazy" decoding="async">
+                                </div>
+                                <div class="gallery-item">
+                                    <img src="assets/marchello_logo_dark.png" alt="Marchello Sciortino Logo Dark" title="Marchello Sciortino Logo Dark" loading="lazy" decoding="async">
+                                </div>
+                                <div class="gallery-item">
+                                    <img src="assets/marchello_logo_light.png" alt="Marchello Sciortino Logo Light" title="Marchello Sciortino Logo Light" loading="lazy" decoding="async">
+                                </div>
                             </div>
                         </div>
                     </div>

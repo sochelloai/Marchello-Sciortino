@@ -37,6 +37,9 @@ document.addEventListener('DOMContentLoaded', () => {
             ServicesPortfolio.cleanup();
         }
 
+        // Clean up birthday countdown interval
+        cleanupBirthdayCountdown();
+
         if (page === 'home') {
             initHeroParallax();
         } else if (page === 'story') {
@@ -58,6 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 ServicesPortfolio.init();
             }
             initSpeakingVideo();
+            initBirthdayCountdown();
         } else if (page === 'accessible-aim') {
             initAccessibleAimVideo();
         } else if (page === 'free-gifts') {
@@ -1706,6 +1710,109 @@ function setupReviewsCarousel() {
         }
     });
 }
+
+/**
+ * ==========================================================================
+ * Birthday & Real-Time Age Tracker for Marchello Sciortino
+ * Birthdate: June 23, 1996
+ * Dynamically calculates age and countdown timer to next birthday.
+ * Automatically increments age and updates timer in real-time when birthday arrives.
+ * ==========================================================================
+ */
+let birthdayCountdownInterval = null;
+
+function cleanupBirthdayCountdown() {
+    if (birthdayCountdownInterval) {
+        clearInterval(birthdayCountdownInterval);
+        birthdayCountdownInterval = null;
+    }
+}
+
+function initBirthdayCountdown() {
+    cleanupBirthdayCountdown();
+
+    const birthYear = 1996;
+    const birthMonth = 5; // June is index 5 (0-indexed)
+    const birthDay = 23;
+
+    function updateAgeAndCountdown() {
+        const now = new Date();
+        const currentYear = now.getFullYear();
+        const currentMonth = now.getMonth();
+        const currentDate = now.getDate();
+
+        // Accurate Age Calculation
+        let age = currentYear - birthYear;
+        const hasHadBirthdayThisYear = (currentMonth > birthMonth) || (currentMonth === birthMonth && currentDate >= birthDay);
+        if (!hasHadBirthdayThisYear) {
+            age -= 1;
+        }
+
+        // Check if today is his birthday (June 23)
+        const isTodayBirthday = (currentMonth === birthMonth && currentDate === birthDay);
+
+        // Determine next upcoming birthday target (00:00:00)
+        let targetBirthday;
+        if (currentMonth > birthMonth || (currentMonth === birthMonth && currentDate > birthDay)) {
+            // Birthday for this year has passed -> next birthday is June 23 of next year
+            targetBirthday = new Date(currentYear + 1, birthMonth, birthDay, 0, 0, 0, 0);
+        } else if (isTodayBirthday) {
+            // Today is the birthday! Target next countdown for next year
+            targetBirthday = new Date(currentYear + 1, birthMonth, birthDay, 0, 0, 0, 0);
+        } else {
+            // Birthday is coming up later this year
+            targetBirthday = new Date(currentYear, birthMonth, birthDay, 0, 0, 0, 0);
+        }
+
+        // Update age in DOM
+        const ageEl = document.getElementById('speaker-current-age');
+        if (ageEl) {
+            ageEl.textContent = age;
+        }
+
+        // Update target year text
+        const targetYearEl = document.getElementById('speaker-next-bday-year');
+        if (targetYearEl) {
+            targetYearEl.textContent = `June 23, ${targetBirthday.getFullYear()}`;
+        }
+
+        // Celebration banner handling
+        const celebrationBanner = document.getElementById('bday-celebration');
+        const turningAgeEl = document.getElementById('bday-turning-age');
+        if (celebrationBanner) {
+            if (isTodayBirthday) {
+                celebrationBanner.style.display = 'block';
+                if (turningAgeEl) turningAgeEl.textContent = age;
+            } else {
+                celebrationBanner.style.display = 'none';
+            }
+        }
+
+        // Calculate remaining time
+        const diff = Math.max(0, targetBirthday.getTime() - now.getTime());
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        const daysEl = document.getElementById('bday-days');
+        const hoursEl = document.getElementById('bday-hours');
+        const minutesEl = document.getElementById('bday-minutes');
+        const secondsEl = document.getElementById('bday-seconds');
+
+        if (daysEl) daysEl.textContent = String(days).padStart(2, '0');
+        if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
+        if (minutesEl) minutesEl.textContent = String(minutes).padStart(2, '0');
+        if (secondsEl) secondsEl.textContent = String(seconds).padStart(2, '0');
+    }
+
+    // Run immediately to populate DOM without delay
+    updateAgeAndCountdown();
+
+    // Ticking interval every second
+    birthdayCountdownInterval = setInterval(updateAgeAndCountdown, 1000);
+}
+
 
 
 

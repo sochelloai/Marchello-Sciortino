@@ -6152,3 +6152,113 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
         transform: translateX(-50%) rotate(-90deg); /* Points down towards the stacked button below */
     }
 }
+
+/* ==========================================================================
+   Speaker Birthday & Real-Time Age Tracker Widget
+   ========================================================================== */
+.speaker-age-card {
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.speaker-age-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(10, 216, 173, 0.6) !important;
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.45), 0 0 25px rgba(10, 216, 173, 0.18) !important;
+}
+
+.bday-pulse-dot {
+    width: 8px;
+    height: 8px;
+    background-color: var(--color-teal);
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 8px var(--color-teal);
+    animation: bdayPulse 1.8s infinite ease-in-out;
+}
+
+@keyframes bdayPulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+        box-shadow: 0 0 8px var(--color-teal);
+    }
+    50% {
+        opacity: 0.35;
+        transform: scale(0.7);
+        box-shadow: 0 0 2px var(--color-teal);
+    }
+}
+
+.speaker-age-number {
+    background: linear-gradient(135deg, #FFFFFF 40%, var(--color-teal) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
+
+.bday-countdown-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.bday-time-box {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(10, 216, 173, 0.22);
+    border-radius: var(--radius-sm);
+    padding: 10px 4px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
+}
+
+.bday-time-box:hover {
+    background: rgba(10, 216, 173, 0.08);
+    border-color: rgba(10, 216, 173, 0.45);
+    transform: translateY(-1px);
+}
+
+.bday-time-val {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #FFFFFF;
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+}
+
+.bday-time-lbl {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--color-teal);
+    font-weight: 700;
+    margin-top: 4px;
+}
+
+@keyframes bday-glow {
+    0% {
+        box-shadow: 0 4px 15px rgba(255, 107, 53, 0.35);
+    }
+    100% {
+        box-shadow: 0 6px 22px rgba(10, 216, 173, 0.6);
+    }
+}
+
+@media (max-width: 480px) {
+    .bday-countdown-grid {
+        gap: 6px;
+    }
+    .bday-time-box {
+        padding: 8px 2px;
+    }
+    .bday-time-val {
+        font-size: 1.15rem;
+    }
+    .bday-time-lbl {
+        font-size: 0.62rem;
+    }
+}
