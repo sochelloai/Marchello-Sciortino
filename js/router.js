@@ -2027,7 +2027,31 @@ Router.register('/mission', () => `
     </div>
 `);
 // 5. Speaking Page Template
-Router.register('/speaking', () => `
+Router.register('/speaking', () => {
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const birthYear = 1996;
+    const birthMonth = 5;
+    const birthDay = 23;
+    let initialAge = currentYear - birthYear;
+    const hasHadBday = (now.getMonth() > birthMonth) || (now.getMonth() === birthMonth && now.getDate() >= birthDay);
+    if (!hasHadBday) initialAge--;
+
+    const isToday = (now.getMonth() === birthMonth && now.getDate() === birthDay);
+    let targetBday;
+    if (now.getMonth() > birthMonth || (now.getMonth() === birthMonth && now.getDate() > birthDay) || isToday) {
+        targetBday = new Date(currentYear + 1, birthMonth, birthDay, 0, 0, 0, 0);
+    } else {
+        targetBday = new Date(currentYear, birthMonth, birthDay, 0, 0, 0, 0);
+    }
+    const diff = Math.max(0, targetBday.getTime() - now.getTime());
+    const initDays = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
+    const initHours = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+    const initMins = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+    const initSecs = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
+    const targetYear = targetBday.getFullYear();
+
+    return `
     <div class="page-intro" style="position: relative; overflow: hidden;">
         <!-- Curved background gold lines using inline SVG -->
         <svg style="position: absolute; left: 0; top: 0; height: 100%; width: 220px; pointer-events: none; opacity: 0.25;" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -2239,7 +2263,7 @@ Router.register('/speaking', () => `
                             <div>
                                 <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-gray-light); display: block; margin-bottom: 2px;">Current Age</span>
                                 <div style="display: flex; align-items: baseline; gap: 8px;">
-                                    <span id="speaker-current-age" class="speaker-age-number" style="font-size: 2.5rem; font-weight: 800; font-family: var(--font-heading); color: #FFFFFF; line-height: 1; text-shadow: 0 0 20px rgba(10, 216, 173, 0.5);">--</span>
+                                    <span id="speaker-current-age" class="speaker-age-number" style="font-size: 2.5rem; font-weight: 800; font-family: var(--font-heading); color: #FFFFFF; line-height: 1; text-shadow: 0 0 20px rgba(10, 216, 173, 0.5);">${initialAge}</span>
                                     <span style="font-size: 1.05rem; font-weight: 700; color: var(--color-teal); text-transform: uppercase; letter-spacing: 0.05em;">Years Old</span>
                                 </div>
                             </div>
@@ -2250,8 +2274,8 @@ Router.register('/speaking', () => `
                         </div>
 
                         <!-- Birthday Celebration Banner (Shown if today is June 23) -->
-                        <div id="bday-celebration" class="bday-celebration-banner" style="display: none; background: linear-gradient(90deg, #ff6b35, #0ad8ad); color: white; padding: 12px 16px; border-radius: var(--radius-sm); text-align: center; font-weight: 700; font-size: 0.95rem; margin-bottom: 14px; box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4); animation: bday-glow 2s infinite alternate;">
-                            🎉 Happy Birthday Marchello! Turning <span id="bday-turning-age"></span> Today! 🎂🎈
+                        <div id="bday-celebration" class="bday-celebration-banner" style="${isToday ? 'display: block;' : 'display: none;'} background: linear-gradient(90deg, #ff6b35, #0ad8ad); color: white; padding: 12px 16px; border-radius: var(--radius-sm); text-align: center; font-weight: 700; font-size: 0.95rem; margin-bottom: 14px; box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4); animation: bday-glow 2s infinite alternate;">
+                            🎉 Happy Birthday Marchello! Turning <span id="bday-turning-age">${initialAge}</span> Today! 🎂🎈
                         </div>
 
                         <!-- Countdown Section -->
@@ -2261,24 +2285,24 @@ Router.register('/speaking', () => `
                                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                                     <strong style="font-size: 0.88rem; color: white; font-family: var(--font-heading);">Birthday Countdown</strong>
                                 </div>
-                                <span id="speaker-next-bday-target" style="font-size: 0.78rem; color: var(--color-gray-light);">Target: <span id="speaker-next-bday-year" style="color: var(--color-teal); font-weight: 600;">June 23</span></span>
+                                <span id="speaker-next-bday-target" style="font-size: 0.78rem; color: var(--color-gray-light);">Target: <span id="speaker-next-bday-year" style="color: var(--color-teal); font-weight: 600;">June 23, ${targetYear}</span></span>
                             </div>
 
                             <div id="bday-countdown-grid" class="bday-countdown-grid">
                                 <div class="bday-time-box">
-                                    <span id="bday-days" class="bday-time-val">00</span>
+                                    <span id="bday-days" class="bday-time-val">${initDays}</span>
                                     <span class="bday-time-lbl">Days</span>
                                 </div>
                                 <div class="bday-time-box">
-                                    <span id="bday-hours" class="bday-time-val">00</span>
+                                    <span id="bday-hours" class="bday-time-val">${initHours}</span>
                                     <span class="bday-time-lbl">Hours</span>
                                 </div>
                                 <div class="bday-time-box">
-                                    <span id="bday-minutes" class="bday-time-val">00</span>
+                                    <span id="bday-minutes" class="bday-time-val">${initMins}</span>
                                     <span class="bday-time-lbl">Minutes</span>
                                 </div>
                                 <div class="bday-time-box">
-                                    <span id="bday-seconds" class="bday-time-val">00</span>
+                                    <span id="bday-seconds" class="bday-time-val">${initSecs}</span>
                                     <span class="bday-time-lbl">Seconds</span>
                                 </div>
                             </div>
