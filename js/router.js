@@ -2250,7 +2250,7 @@ Router.register('/speaking', () => {
                 </div>
                 
                 <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-                    <!-- Speaker Age & Live Birthday Countdown Card -->
+                    <!-- Speaker Age & Live Birthday Tracker Card -->
                     <div class="card speaker-age-card" style="border: 1px solid rgba(0, 209, 193, 0.35); background: linear-gradient(145deg, rgba(16, 26, 46, 0.95), rgba(10, 16, 30, 0.98)); color: white; padding: 1.5rem; border-radius: var(--radius-md); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); margin: 0;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
                             <span class="section-tag text-teal" style="margin: 0; font-size: 0.8rem; letter-spacing: 0.1em;">SPEAKER PROFILE</span>
@@ -2259,7 +2259,7 @@ Router.register('/speaking', () => {
                             </span>
                         </div>
                         
-                        <div class="speaker-age-hero" style="display: flex; align-items: center; justify-content: space-between; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-sm); padding: 14px 18px; margin-bottom: 16px;">
+                        <div class="speaker-age-hero" style="display: flex; align-items: center; justify-content: space-between; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-sm); padding: 16px 20px;">
                             <div>
                                 <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-gray-light); display: block; margin-bottom: 2px;">Current Age</span>
                                 <div style="display: flex; align-items: baseline; gap: 8px;">
@@ -2274,38 +2274,8 @@ Router.register('/speaking', () => {
                         </div>
 
                         <!-- Birthday Celebration Banner (Shown if today is June 23) -->
-                        <div id="bday-celebration" class="bday-celebration-banner" style="${isToday ? 'display: block;' : 'display: none;'} background: linear-gradient(90deg, #ff6b35, #0ad8ad); color: white; padding: 12px 16px; border-radius: var(--radius-sm); text-align: center; font-weight: 700; font-size: 0.95rem; margin-bottom: 14px; box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4); animation: bday-glow 2s infinite alternate;">
+                        <div id="bday-celebration" class="bday-celebration-banner" style="${isToday ? 'display: block;' : 'display: none;'} background: linear-gradient(90deg, #ff6b35, #0ad8ad); color: white; padding: 12px 16px; border-radius: var(--radius-sm); text-align: center; font-weight: 700; font-size: 0.95rem; margin-top: 14px; box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4); animation: bday-glow 2s infinite alternate;">
                             🎉 Happy Birthday Marchello! Turning <span id="bday-turning-age">${initialAge}</span> Today! 🎂🎈
-                        </div>
-
-                        <!-- Countdown Section -->
-                        <div class="speaker-bday-countdown-wrap">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 4px;">
-                                <div style="display: flex; align-items: center; gap: 6px;">
-                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                                    <strong style="font-size: 0.88rem; color: white; font-family: var(--font-heading);">Birthday Countdown</strong>
-                                </div>
-                                <span id="speaker-next-bday-target" style="font-size: 0.78rem; color: var(--color-gray-light);">Target: <span id="speaker-next-bday-year" style="color: var(--color-teal); font-weight: 600;">June 23, ${targetYear}</span></span>
-                            </div>
-
-                            <div id="bday-countdown-grid" class="bday-countdown-grid">
-                                <div class="bday-time-box">
-                                    <span id="bday-days" class="bday-time-val">${initDays}</span>
-                                    <span class="bday-time-lbl">Days</span>
-                                </div>
-                                <div class="bday-time-box">
-                                    <span id="bday-hours" class="bday-time-val">${initHours}</span>
-                                    <span class="bday-time-lbl">Hours</span>
-                                </div>
-                                <div class="bday-time-box">
-                                    <span id="bday-minutes" class="bday-time-val">${initMins}</span>
-                                    <span class="bday-time-lbl">Minutes</span>
-                                </div>
-                                <div class="bday-time-box">
-                                    <span id="bday-seconds" class="bday-time-val">${initSecs}</span>
-                                    <span class="bday-time-lbl">Seconds</span>
-                                </div>
-                            </div>
                         </div>
                     </div>
 
