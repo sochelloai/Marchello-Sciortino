@@ -2423,7 +2423,8 @@ Router.register('/speaking', () => {
             </div>
         </div>
     </section>
-`);
+`;
+});
 
 // 8. ChelloAI Page Template
 Router.register('/chelloai', () => `
