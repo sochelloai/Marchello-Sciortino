@@ -8,7 +8,7 @@
         content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: https: blob:; media-src 'self' data: https: blob:; connect-src 'self' https:; frame-src 'self' https:; frame-ancestors 'none';">
     <title>Free Digital Library | Marchello Sciortino</title>
     <meta name="description"
-        content="Official Free Digital Library by Marchello Sciortino featuring upcoming worksheets, AI prompt cheat sheets, audio lessons, and strategic frameworks.">
+        content="Download Creative Amplification Through AI by Marchello Sciortino - a guide on using AI tools to expand creative agency.">
     <link rel="canonical" href="https://library.marchellosciortino.com">
 
     <!-- Favicon -->
@@ -25,542 +25,233 @@
     <link rel="stylesheet" href="../css/style.css?v=20260820-4">
     <link rel="stylesheet" href="../css/accessibility.css?v=20260820-4">
 
-    <!-- Social Feed Scoped Styles -->
+    <!-- Light Theme Scoped Styles -->
     <style>
         :root {
-            --social-bg: #061523;
-            --social-card-bg: rgba(13, 39, 61, 0.85);
-            --social-border: rgba(10, 216, 173, 0.2);
-            --social-teal: #0ad8ad;
-            --social-gold: #F6B84B;
-            --social-silver: #cbd5e1;
-            /* Gradient: Teal to Silver to Yellow */
-            --btn-gradient: linear-gradient(135deg, #0ad8ad 0%, #cbd5e1 50%, #F6B84B 100%);
-            --btn-gradient-hover: linear-gradient(135deg, #0ce6b9 0%, #e2e8f0 50%, #ffc459 100%);
+            --light-bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-heading: #0f172a;
+            --text-body: #475569;
+            --brand-navy: #081b29;
+            --brand-teal: #0ad8ad;
+            --brand-teal-hover: #08b893;
+            --border-color: #e2e8f0;
         }
 
         body {
-            background-color: var(--social-bg);
-            color: #F7FAFC;
+            background-color: var(--light-bg);
+            color: var(--text-body);
             font-family: var(--font-body);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
 
-        /* Top Brand Header */
-        .social-nav-header {
-            background: rgba(6, 21, 35, 0.95);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(10, 216, 173, 0.2);
+        /* Light Header */
+        .lib-light-header {
+            background: #ffffff;
+            border-bottom: 1px solid var(--border-color);
+            padding: 18px 0;
             position: sticky;
             top: 0;
             z-index: 1000;
-            padding: 14px 0;
         }
 
-        .social-nav-inner {
+        .lib-light-header-inner {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .social-brand-logo {
+        .lib-brand-logo {
             display: flex;
             align-items: center;
             gap: 12px;
             text-decoration: none;
         }
 
-        .social-brand-logo img {
+        .lib-brand-logo img {
             height: 38px;
             width: auto;
         }
 
-        .social-verified-badge {
-            background: linear-gradient(135deg, rgba(10, 216, 173, 0.2), rgba(246, 184, 75, 0.2));
-            border: 1px solid var(--social-teal);
-            color: var(--social-teal);
+        .lib-header-tag {
+            background: #f1f5f9;
+            border: 1px solid var(--border-color);
+            color: var(--text-heading);
             font-size: 0.78rem;
             font-weight: 700;
             padding: 4px 12px;
             border-radius: 20px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
         }
 
-        .social-return-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 8px 16px;
-            border-radius: 20px;
+        .lib-return-link {
+            color: var(--text-body);
             text-decoration: none;
             font-weight: 600;
-            font-size: 0.88rem;
-            transition: all var(--transition-fast);
-        }
-
-        .social-return-btn:hover {
-            background: var(--social-teal);
-            color: var(--color-navy);
-            border-color: var(--social-teal);
-            box-shadow: 0 0 15px rgba(10, 216, 173, 0.3);
-        }
-
-        /* Disclaimer Announcement Banner */
-        .disclaimer-banner {
-            background: linear-gradient(135deg, rgba(10, 216, 173, 0.12) 0%, rgba(246, 184, 75, 0.12) 100%);
-            border: 1px solid rgba(10, 216, 173, 0.3);
-            border-radius: 16px;
-            padding: 20px 24px;
-            margin: 24px auto 0;
-            max-width: 1200px;
-            display: flex;
-            align-items: flex-start;
-            gap: 16px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-        }
-
-        .disclaimer-icon {
-            font-size: 1.6rem;
-            background: rgba(10, 216, 173, 0.2);
-            border: 1px solid var(--social-teal);
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .disclaimer-content h4 {
-            color: #ffffff;
-            font-size: 1.05rem;
-            margin: 0 0 6px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .disclaimer-content p {
-            color: #cbd5e1;
-            font-size: 0.92rem;
-            margin: 0;
-            line-height: 1.6;
-        }
-
-        .disclaimer-tag {
-            background: var(--social-gold);
-            color: #061523;
-            font-size: 0.72rem;
-            font-weight: 800;
-            padding: 2px 8px;
-            border-radius: 10px;
-            text-transform: uppercase;
-        }
-
-        /* Profile Feed Header */
-        .creator-profile-card {
-            max-width: 1200px;
-            margin: 24px auto 32px;
-            background: var(--social-card-bg);
-            border: 1px solid var(--social-border);
-            border-radius: 20px;
-            padding: 28px 32px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 24px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .creator-profile-info {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .creator-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--social-teal);
-            box-shadow: 0 0 20px rgba(10, 216, 173, 0.3);
-        }
-
-        .creator-details h2 {
-            font-family: var(--font-heading);
-            color: #ffffff;
-            font-size: 1.6rem;
-            margin: 0 0 4px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .creator-handle {
-            color: var(--social-teal);
-            font-weight: 600;
-            font-size: 0.92rem;
-        }
-
-        .creator-bio {
-            color: #94a3b8;
-            font-size: 0.95rem;
-            margin-top: 6px;
-        }
-
-        .creator-stats {
-            display: flex;
-            gap: 24px;
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 1.3rem;
-            font-weight: 800;
-            color: #ffffff;
-            display: block;
-        }
-
-        .stat-label {
-            font-size: 0.78rem;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        /* 3-Column Grid Layout */
-        .social-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 28px;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding-bottom: 80px;
-        }
-
-        @media (max-width: 992px) {
-            .social-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .creator-profile-card {
-                flex-direction: column;
-                text-align: center;
-            }
-            .creator-profile-info {
-                flex-direction: column;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .social-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Social Media Style Post Cards */
-        .social-card {
-            background: var(--social-card-bg);
-            border: 1px solid var(--social-border);
-            border-radius: 18px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), border-color 0.4s;
-            position: relative;
-        }
-
-        .social-card:hover {
-            transform: translateY(-8px);
-            border-color: var(--social-teal);
-            box-shadow: 0 16px 36px rgba(10, 216, 173, 0.22);
-        }
-
-        /* Top card social bar */
-        .card-social-header {
-            padding: 14px 18px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-            background: rgba(6, 21, 35, 0.4);
-        }
-
-        .card-author {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .card-author-img {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 1.5px solid var(--social-teal);
-        }
-
-        .card-author-name {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: #ffffff;
-        }
-
-        .card-badge {
-            background: rgba(10, 216, 173, 0.15);
-            border: 1px solid var(--social-teal);
-            color: var(--social-teal);
-            font-size: 0.7rem;
-            font-weight: 800;
-            padding: 3px 8px;
-            border-radius: 10px;
-            text-transform: uppercase;
-        }
-
-        /* Animated Image Wrapper */
-        .social-img-wrapper {
-            position: relative;
-            width: 100%;
-            height: 220px;
-            background: #030d17;
-            overflow: hidden;
-            cursor: pointer;
-        }
-
-        .social-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1), filter 0.5s;
-        }
-
-        /* Image hover animation & liquid glass shine */
-        .social-card:hover .social-img {
-            transform: scale(1.08) rotate(0.5deg);
-            filter: brightness(1.05);
-        }
-
-        .social-img-wrapper::after {
-            content: '';
-            position: absolute;
-            top: -100%;
-            left: -100%;
-            width: 300%;
-            height: 300%;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0) 100%);
-            transform: rotate(25deg);
-            transition: transform 0.8s ease;
-            pointer-events: none;
-        }
-
-        .social-card:hover .social-img-wrapper::after {
-            transform: translate(60%, 60%) rotate(25deg);
-        }
-
-        .preview-overlay-tag {
-            position: absolute;
-            bottom: 12px;
-            left: 12px;
-            background: rgba(6, 21, 35, 0.88);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(246, 184, 75, 0.4);
-            color: var(--social-gold);
-            font-size: 0.72rem;
-            font-weight: 700;
-            padding: 4px 10px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        /* Card Content Body */
-        .social-card-body {
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-        }
-
-        .social-card-title {
-            font-family: var(--font-heading);
-            font-size: 1.2rem;
-            color: #ffffff;
-            margin: 0 0 10px;
-            line-height: 1.35;
-        }
-
-        .social-card-desc {
-            color: #94a3b8;
-            font-size: 0.92rem;
-            line-height: 1.6;
-            margin-bottom: 18px;
-            flex-grow: 1;
-        }
-
-        /* Engagement Bar */
-        .social-meta-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 0 16px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            font-size: 0.82rem;
-            color: #64748b;
-        }
-
-        .meta-group {
-            display: flex;
-            gap: 14px;
-        }
-
-        .meta-item {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            cursor: pointer;
+            font-size: 0.9rem;
             transition: color 0.2s;
         }
 
-        .meta-item:hover {
-            color: var(--social-teal);
+        .lib-return-link:hover {
+            color: var(--brand-navy);
         }
 
-        /* Gradient Button: Teal -> Silver -> Yellow */
-        .btn-gradient {
-            width: 100%;
-            background: var(--btn-gradient);
-            color: #061523;
-            font-family: var(--font-heading);
-            font-weight: 800;
-            font-size: 0.95rem;
-            padding: 14px 20px;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
+        /* Hero Section */
+        .lib-hero-section {
+            padding: 60px 0 40px;
             text-align: center;
+        }
+
+        .lib-hero-tag {
+            color: var(--brand-teal);
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+
+        .lib-hero-title {
+            color: var(--text-heading);
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 0 0 16px;
+            line-height: 1.25;
+        }
+
+        .lib-hero-desc {
+            max-width: 680px;
+            margin: 0 auto;
+            color: var(--text-body);
+            font-size: 1.1rem;
+            line-height: 1.65;
+        }
+
+        /* Single Asset Download Box */
+        .single-resource-card {
+            max-width: 720px;
+            margin: 20px auto 80px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .resource-icon-badge {
+            width: 72px;
+            height: 72px;
+            background: #e6fdf7;
+            border: 2px solid var(--brand-teal);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 24px;
+        }
+
+        .resource-card-title {
+            font-family: var(--font-heading);
+            font-size: 1.6rem;
+            color: var(--text-heading);
+            margin: 0 0 12px;
+        }
+
+        .resource-card-meta {
+            font-size: 0.88rem;
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+
+        .resource-card-text {
+            color: var(--text-body);
+            font-size: 1rem;
+            line-height: 1.65;
+            margin-bottom: 32px;
+            max-width: 580px;
+        }
+
+        /* Unlock Form */
+        .unlock-form-box {
+            width: 100%;
+            max-width: 480px;
+        }
+
+        .unlock-input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 1rem;
+            color: var(--text-heading);
+            background: #f8fafc;
+            outline: none;
+            margin-bottom: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .unlock-input:focus {
+            border-color: var(--brand-teal);
+            box-shadow: 0 0 0 3px rgba(10, 216, 173, 0.15);
+            background: #ffffff;
+        }
+
+        .btn-teal-action {
+            width: 100%;
+            background: var(--brand-navy);
+            color: #ffffff;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            letter-spacing: 0.5px;
-            transition: transform 0.2s ease, box-shadow 0.3s ease, background 0.3s ease;
-            box-shadow: 0 4px 15px rgba(10, 216, 173, 0.25);
+            transition: background 0.2s, transform 0.15s;
         }
 
-        .btn-gradient:hover {
-            background: var(--btn-gradient-hover);
-            transform: scale(1.02);
-            box-shadow: 0 6px 22px rgba(246, 184, 75, 0.4);
-            color: #030d17;
+        .btn-teal-action:hover {
+            background: var(--brand-teal);
+            color: var(--brand-navy);
         }
 
-        /* Notification Modal Popup */
-        .notify-modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(3, 13, 23, 0.85);
-            backdrop-filter: blur(12px);
-            z-index: 3000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-
-        .notify-modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .notify-modal-card {
-            background: #0d273d;
-            border: 2px solid var(--social-teal);
-            border-radius: 20px;
-            padding: 36px;
+        /* Download Success Box */
+        .download-unlocked-box {
+            width: 100%;
             max-width: 480px;
-            width: 100%;
-            text-align: center;
-            box-shadow: 0 20px 50px rgba(10, 216, 173, 0.3);
-            position: relative;
-            transform: translateY(20px);
-            transition: transform 0.3s ease;
+            display: none;
         }
 
-        .notify-modal-overlay.active .notify-modal-card {
-            transform: translateY(0);
-        }
-
-        .notify-close-btn {
-            position: absolute;
-            top: 14px;
-            right: 18px;
-            background: transparent;
-            border: none;
-            color: #94a3b8;
-            font-size: 1.6rem;
-            cursor: pointer;
-        }
-
-        .notify-close-btn:hover {
-            color: #ffffff;
-        }
-
-        .notify-modal-card h3 {
-            font-size: 1.4rem;
-            color: #ffffff;
-            margin-bottom: 8px;
-        }
-
-        .notify-modal-card p {
-            color: #cbd5e1;
-            font-size: 0.95rem;
-            margin-bottom: 20px;
-        }
-
-        .notify-input {
-            width: 100%;
-            background: rgba(6, 21, 35, 0.8);
-            border: 1px solid rgba(10, 216, 173, 0.4);
-            border-radius: 10px;
-            padding: 14px 16px;
-            color: #ffffff;
-            font-size: 1rem;
-            margin-bottom: 14px;
-            outline: none;
-        }
-
-        .notify-input:focus {
-            border-color: var(--social-teal);
-            box-shadow: 0 0 15px rgba(10, 216, 173, 0.3);
+        .unlocked-badge {
+            background: #dcfce7;
+            color: #166534;
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 16px;
         }
 
         /* Footer */
-        .social-footer {
+        .lib-light-footer {
             margin-top: auto;
-            background: #030d17;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 36px 0;
+            background: #ffffff;
+            border-top: 1px solid var(--border-color);
+            padding: 30px 0;
             text-align: center;
             color: #64748b;
             font-size: 0.88rem;
@@ -569,320 +260,82 @@
 </head>
 
 <body>
-    <!-- Top Header -->
-    <header class="social-nav-header">
-        <div class="container social-nav-inner">
-            <a href="/" class="social-brand-logo" aria-label="Marchello Sciortino Home">
-                <img src="../assets/logo-light.png" alt="Marchello Sciortino Logo">
-                <span class="social-verified-badge">&#10003; Official Digital Hub</span>
+    <!-- Light Header -->
+    <header class="lib-light-header">
+        <div class="container lib-light-header-inner">
+            <a href="/" class="lib-brand-logo" aria-label="Marchello Sciortino Home">
+                <img src="../assets/marchello_logo_dark.png" alt="Marchello Sciortino Logo" onerror="this.src='../assets/logo-dark.png'">
+                <span class="lib-header-tag">Free Resource</span>
             </a>
-            <a href="/" class="social-return-btn">&larr; Return to Main Site</a>
+            <a href="/" class="lib-return-link">&larr; Return to Marchello Sciortino Hub</a>
         </div>
     </header>
 
     <main id="main-focus">
         <div class="container">
-            <!-- Disclaimer Banner -->
-            <div class="disclaimer-banner">
-                <div class="disclaimer-icon">&#128276;</div>
-                <div class="disclaimer-content">
-                    <h4>
-                        Official Announcement
-                        <span class="disclaimer-tag">New Page</span>
-                    </h4>
-                    <p>
-                        Welcome to Marchello Sciortino's official <strong>Free Digital Library</strong>! This standalone page is dedicated to featuring Marchello's upcoming collection of free tools, worksheets, prompt cheat sheets, audio lessons, and strategic frameworks. Items are currently in preview as they are prepared for release. Click <strong>Get Notified</strong> on any item below to receive instant access the moment downloads go live!
-                    </p>
-                </div>
+            <!-- Hero Section -->
+            <div class="lib-hero-section">
+                <span class="lib-hero-tag">Official Free Digital Download</span>
+                <h1 class="lib-hero-title">Creative Amplification Through AI</h1>
+                <p class="lib-hero-desc">
+                    A comprehensive guide by Marchello Sciortino exploring how Artificial Intelligence serves as a cognitive prosthetic to reframe physical and technical constraints, amplify human expression, and unlock digital agency.
+                </p>
             </div>
 
-            <!-- Creator Social Profile Bar -->
-            <div class="creator-profile-card">
-                <div class="creator-profile-info">
-                    <img src="../assets/chello_ai_avatar.png" alt="Marchello Sciortino" class="creator-avatar">
-                    <div class="creator-details">
-                        <h2>
-                            Marchello Sciortino
-                            <span style="color: var(--social-teal); font-size: 1.1rem;">&#10004;</span>
-                        </h2>
-                        <span class="creator-handle">@marchellosciortino &bull; Keynote Speaker & Builder</span>
-                        <p class="creator-bio">
-                            Turning limitations into digital momentum. Free tools, prompt frameworks, and spoken word lessons for creators & builders.
-                        </p>
-                    </div>
-                </div>
-                <div class="creator-stats">
-                    <div class="stat-item">
-                        <span class="stat-value">6</span>
-                        <span class="stat-label">Digital Assets</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-value">100%</span>
-                        <span class="stat-label">Free Access</span>
-                    </div>
-                </div>
-            </div>
+            <!-- Single Card Download -->
+            <div class="single-resource-card">
+                <div class="resource-icon-badge">&#128196;</div>
+                <h2 class="resource-card-title">Creative Amplification Through AI</h2>
+                <div class="resource-card-meta">PDF Guide &bull; By Marchello Sciortino &bull; Instant Access</div>
+                <p class="resource-card-text">
+                    Learn the core principles of Articulated Inspiration: turning obstacles into strategic leverage by pairing human intentionality with modern AI tools.
+                </p>
 
-            <!-- 3-Column Social Feed Card Grid -->
-            <div class="social-grid">
-
-                <!-- Card 1: WIN Reframe Matrix -->
-                <div class="social-card">
-                    <div class="card-social-header">
-                        <div class="card-author">
-                            <img src="../assets/chello_ai_avatar.png" alt="Marchello Sciortino" class="card-author-img">
-                            <span class="card-author-name">Marchello Sciortino</span>
-                        </div>
-                        <span class="card-badge">PDF Worksheet</span>
-                    </div>
-                    <div class="social-img-wrapper js-trigger-notify" data-item="W.I.N. Reframe Matrix">
-                        <img src="../assets/free-gifts/WIN_Reframe_Matrix_cover_image.png" alt="W.I.N. Reframe Matrix" class="social-img">
-                        <span class="preview-overlay-tag">&#128065; Preview Item</span>
-                    </div>
-                    <div class="social-card-body">
-                        <h3 class="social-card-title">W.I.N. Reframe Matrix</h3>
-                        <p class="social-card-desc">
-                            A step-by-step reflection grid to audit active constraints, break mental loops, and construct a custom action plan.
-                        </p>
-                        <div class="social-meta-bar">
-                            <div class="meta-group">
-                                <span class="meta-item">&#10084; 248</span>
-                                <span class="meta-item">&#128278; 112</span>
-                            </div>
-                            <span>Coming Soon</span>
-                        </div>
-                        <button class="btn-gradient js-trigger-notify" data-item="W.I.N. Reframe Matrix">
-                            &#128276; Get Notified
-                        </button>
-                    </div>
+                <!-- Signup / Unlock Form -->
+                <div class="unlock-form-box" id="unlock-form-box">
+                    <form id="free-library-form">
+                        <input type="email" class="unlock-input" id="user-email" placeholder="Enter your email to unlock..." required>
+                        <button type="submit" class="btn-teal-action">Unlock & Download PDF &rarr;</button>
+                    </form>
                 </div>
 
-                <!-- Card 2: AI Accessibility Commands -->
-                <div class="social-card">
-                    <div class="card-social-header">
-                        <div class="card-author">
-                            <img src="../assets/chello_ai_avatar.png" alt="Marchello Sciortino" class="card-author-img">
-                            <span class="card-author-name">Marchello Sciortino</span>
-                        </div>
-                        <span class="card-badge">Prompt Guide</span>
-                    </div>
-                    <div class="social-img-wrapper js-trigger-notify" data-item="AI Accessibility Commands">
-                        <img src="../assets/free-gifts/Prompt_Cheat_Sheat_cover_image.png" alt="AI Accessibility Commands" class="social-img">
-                        <span class="preview-overlay-tag">&#128065; Preview Item</span>
-                    </div>
-                    <div class="social-card-body">
-                        <h3 class="social-card-title">AI Accessibility Commands</h3>
-                        <p class="social-card-desc">
-                            Sketch Notebook Edition: Prompt templates to configure AI writing assistants as voice transcription guides.
-                        </p>
-                        <div class="social-meta-bar">
-                            <div class="meta-group">
-                                <span class="meta-item">&#10084; 319</span>
-                                <span class="meta-item">&#128278; 145</span>
-                            </div>
-                            <span>Coming Soon</span>
-                        </div>
-                        <button class="btn-gradient js-trigger-notify" data-item="AI Accessibility Commands">
-                            &#128276; Get Notified
-                        </button>
-                    </div>
+                <!-- Unlocked Download Link -->
+                <div class="download-unlocked-box" id="download-unlocked-box">
+                    <span class="unlocked-badge">&#10004; Resource Unlocked</span>
+                    <a href="../assets/free-gifts/Creative_amplification_through_AI.pdf" download="Creative_amplification_through_AI.pdf" class="btn-teal-action" style="background: var(--brand-teal); color: var(--brand-navy);">
+                        &#128190; Download PDF Now
+                    </a>
                 </div>
-
-                <!-- Card 3: Digital Flow Audit -->
-                <div class="social-card">
-                    <div class="card-social-header">
-                        <div class="card-author">
-                            <img src="../assets/chello_ai_avatar.png" alt="Marchello Sciortino" class="card-author-img">
-                            <span class="card-author-name">Marchello Sciortino</span>
-                        </div>
-                        <span class="card-badge">Audit Checklist</span>
-                    </div>
-                    <div class="social-img-wrapper js-trigger-notify" data-item="Digital Flow Audit Checklist">
-                        <img src="../assets/free-gifts/Digital_Flow_Audit_cover_image.png" alt="Digital Flow Audit Checklist" class="social-img">
-                        <span class="preview-overlay-tag">&#128065; Preview Item</span>
-                    </div>
-                    <div class="social-card-body">
-                        <h3 class="social-card-title">Digital Flow Audit Checklist</h3>
-                        <p class="social-card-desc">
-                            An actionable check sheet to audit landing pages for ADA accessibility compliance, user experience, and speed friction blocks.
-                        </p>
-                        <div class="social-meta-bar">
-                            <div class="meta-group">
-                                <span class="meta-item">&#10084; 194</span>
-                                <span class="meta-item">&#128278; 87</span>
-                            </div>
-                            <span>Coming Soon</span>
-                        </div>
-                        <button class="btn-gradient js-trigger-notify" data-item="Digital Flow Audit Checklist">
-                            &#128276; Get Notified
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Card 4: Speaker Media Deck -->
-                <div class="social-card">
-                    <div class="card-social-header">
-                        <div class="card-author">
-                            <img src="../assets/chello_ai_avatar.png" alt="Marchello Sciortino" class="card-author-img">
-                            <span class="card-author-name">Marchello Sciortino</span>
-                        </div>
-                        <span class="card-badge">Media Kit</span>
-                    </div>
-                    <div class="social-img-wrapper js-trigger-notify" data-item="Speaker 1-Sheet & Media Kit">
-                        <img src="../assets/speaker_resume_page_1.png" alt="Speaker 1-Sheet & Media Kit" class="social-img">
-                        <span class="preview-overlay-tag">&#128065; Preview Item</span>
-                    </div>
-                    <div class="social-card-body">
-                        <h3 class="social-card-title">Speaker 1-Sheet & Media Deck</h3>
-                        <p class="social-card-desc">
-                            Official keynote speaker summary, event topics, bio, and technical rider for conference hosts.
-                        </p>
-                        <div class="social-meta-bar">
-                            <div class="meta-group">
-                                <span class="meta-item">&#10084; 412</span>
-                                <span class="meta-item">&#128278; 201</span>
-                            </div>
-                            <span>Coming Soon</span>
-                        </div>
-                        <button class="btn-gradient js-trigger-notify" data-item="Speaker 1-Sheet & Media Kit">
-                            &#128276; Get Notified
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Card 5: Audio Spoken Word Lessons -->
-                <div class="social-card">
-                    <div class="card-social-header">
-                        <div class="card-author">
-                            <img src="../assets/chello_ai_avatar.png" alt="Marchello Sciortino" class="card-author-img">
-                            <span class="card-author-name">Marchello Sciortino</span>
-                        </div>
-                        <span class="card-badge">Audio Series</span>
-                    </div>
-                    <div class="social-img-wrapper js-trigger-notify" data-item="Chosen Anyway & Spoken Word Series">
-                        <img src="../assets/chosen-anyway.png" alt="Chosen Anyway Spoken Word" class="social-img">
-                        <span class="preview-overlay-tag">&#128065; Preview Item</span>
-                    </div>
-                    <div class="social-card-body">
-                        <h3 class="social-card-title">Chosen Anyway & Spoken Word Series</h3>
-                        <p class="social-card-desc">
-                            An inspiring series of audio messages on stepping forward despite physical and emotional obstacles.
-                        </p>
-                        <div class="social-meta-bar">
-                            <div class="meta-group">
-                                <span class="meta-item">&#10084; 560</span>
-                                <span class="meta-item">&#128278; 310</span>
-                            </div>
-                            <span>Coming Soon</span>
-                        </div>
-                        <button class="btn-gradient js-trigger-notify" data-item="Chosen Anyway & Spoken Word Series">
-                            &#128276; Get Notified
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Card 6: Accessible AIM Blueprint -->
-                <div class="social-card">
-                    <div class="card-social-header">
-                        <div class="card-author">
-                            <img src="../assets/chello_ai_avatar.png" alt="Marchello Sciortino" class="card-author-img">
-                            <span class="card-author-name">Marchello Sciortino</span>
-                        </div>
-                        <span class="card-badge">Blueprint</span>
-                    </div>
-                    <div class="social-img-wrapper js-trigger-notify" data-item="Accessible AIM Framework Blueprint">
-                        <img src="../assets/resources/Accessible_AIM_cover_image.png" alt="Accessible AIM Framework Blueprint" class="social-img">
-                        <span class="preview-overlay-tag">&#128065; Preview Item</span>
-                    </div>
-                    <div class="social-card-body">
-                        <h3 class="social-card-title">Accessible AIM Framework</h3>
-                        <p class="social-card-desc">
-                            Core roadmap for pairing Artificial Intelligence with human intentionality to create accessible digital assets.
-                        </p>
-                        <div class="social-meta-bar">
-                            <div class="meta-group">
-                                <span class="meta-item">&#10084; 284</span>
-                                <span class="meta-item">&#128278; 129</span>
-                            </div>
-                            <span>Coming Soon</span>
-                        </div>
-                        <button class="btn-gradient js-trigger-notify" data-item="Accessible AIM Framework Blueprint">
-                            &#128276; Get Notified
-                        </button>
-                    </div>
-                </div>
-
             </div>
         </div>
     </main>
 
-    <!-- Notification Overlay Modal -->
-    <div class="notify-modal-overlay" id="notify-modal">
-        <div class="notify-modal-card">
-            <button class="notify-close-btn" id="notify-close">&times;</button>
-            <div id="notify-form-container">
-                <h3>&#128276; Get Instant VIP Access</h3>
-                <p id="notify-target-item">Enter your email to receive an alert as soon as this item releases.</p>
-                <form id="notify-submit-form">
-                    <input type="email" class="notify-input" id="notify-email" placeholder="yourname@email.com" required>
-                    <button type="submit" class="btn-gradient">Notify Me First &rarr;</button>
-                </form>
-            </div>
-            <div id="notify-success-msg" style="display: none; padding: 20px 0;">
-                <h3 style="color: var(--social-teal);">&#10004; You're on the VIP Release List!</h3>
-                <p style="color: #cbd5e1; margin-top: 10px;">
-                    Thank you! Marchello will send a direct download link to your email as soon as this digital item is released.
-                </p>
-            </div>
-        </div>
-    </div>
-
     <!-- Footer -->
-    <footer class="social-footer">
+    <footer class="lib-light-footer">
         <div class="container">
-            <p style="color: #cbd5e1; max-width: 600px; margin: 0 auto 14px; font-style: italic;">
-                "God gives every person purpose, regardless of their limitations. Limitations do not eliminate calling; they change the strategy."
-            </p>
-            <p>&copy; 2026 Marchello Sciortino. Standalone Free Digital Library. Official Creator Hub.</p>
+            <p>&copy; 2026 Marchello Sciortino. All rights reserved. | Standalone Free Digital Resource</p>
         </div>
     </footer>
 
     <!-- Interactive Script -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const notifyModal = document.getElementById('notify-modal');
-            const notifyClose = document.getElementById('notify-close');
-            const notifyTargetItem = document.getElementById('notify-target-item');
-            const notifyForm = document.getElementById('notify-submit-form');
-            const formContainer = document.getElementById('notify-form-container');
-            const successMsg = document.getElementById('notify-success-msg');
-            const triggers = document.querySelectorAll('.js-trigger-notify');
+            const formBox = document.getElementById('unlock-form-box');
+            const downloadBox = document.getElementById('download-unlocked-box');
+            const form = document.getElementById('free-library-form');
 
-            triggers.forEach(trigger => {
-                trigger.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const itemTitle = trigger.getAttribute('data-item') || 'Free Digital Item';
-                    notifyTargetItem.textContent = `Get an instant alert when "${itemTitle}" goes live!`;
-                    formContainer.style.display = 'block';
-                    successMsg.style.display = 'none';
-                    notifyModal.classList.add('active');
-                });
-            });
+            const isUnlocked = localStorage.getItem('free-library-unlocked') === 'true';
 
-            notifyClose.addEventListener('click', () => {
-                notifyModal.classList.remove('active');
-            });
+            if (isUnlocked) {
+                formBox.style.display = 'none';
+                downloadBox.style.display = 'block';
+            }
 
-            notifyModal.addEventListener('click', (e) => {
-                if (e.target === notifyModal) {
-                    notifyModal.classList.remove('active');
-                }
-            });
-
-            notifyForm.addEventListener('submit', (e) => {
+            form.addEventListener('submit', (e) => {
                 e.preventDefault();
-                formContainer.style.display = 'none';
-                successMsg.style.display = 'block';
+                localStorage.setItem('free-library-unlocked', 'true');
+                formBox.style.display = 'none';
+                downloadBox.style.display = 'block';
             });
         });
     </script>

@@ -2724,431 +2724,191 @@ Router.register('/contact', () => {
 `;
 });
 
-// 14. Free Gifts & Free Library Page Template (Social Media Feed Aesthetic)
+// 14. Free Gifts & Free Library Page Template (Light Minimalist Single Resource)
 const freeGiftsTemplate = () => {
+    const isUnlocked = localStorage.getItem('free-library-unlocked') === 'true';
+    const formStyle = isUnlocked ? 'display: none;' : 'display: block;';
+    const downloadStyle = isUnlocked ? 'display: block;' : 'display: none;';
+
     return `
     <style>
-        .social-feed-wrapper {
-            background-color: #061523;
-            color: #F7FAFC;
-            padding: 40px 0 80px;
+        .light-lib-wrapper {
+            background-color: #f8fafc;
+            color: #475569;
+            padding: 50px 0 90px;
         }
 
-        .disclaimer-banner {
-            background: linear-gradient(135deg, rgba(10, 216, 173, 0.12) 0%, rgba(246, 184, 75, 0.12) 100%);
-            border: 1px solid rgba(10, 216, 173, 0.3);
-            border-radius: 16px;
-            padding: 20px 24px;
-            margin: 0 auto 32px;
-            max-width: 1200px;
+        .light-hero-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .light-hero-tag {
+            color: #0ad8ad;
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+
+        .light-hero-title {
+            color: #0f172a;
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 0 0 16px;
+            line-height: 1.25;
+        }
+
+        .light-hero-desc {
+            max-width: 680px;
+            margin: 0 auto;
+            color: #475569;
+            font-size: 1.1rem;
+            line-height: 1.65;
+        }
+
+        .light-resource-card {
+            max-width: 720px;
+            margin: 0 auto;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            padding: 40px;
             display: flex;
-            align-items: flex-start;
-            gap: 16px;
-            backdrop-filter: blur(10px);
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
         }
 
-        .disclaimer-icon {
-            font-size: 1.6rem;
-            background: rgba(10, 216, 173, 0.2);
-            border: 1px solid #0ad8ad;
-            width: 44px;
-            height: 44px;
+        .light-resource-icon {
+            width: 72px;
+            height: 72px;
+            background: #e6fdf7;
+            border: 2px solid #0ad8ad;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-shrink: 0;
+            font-size: 2rem;
+            margin-bottom: 24px;
         }
 
-        .disclaimer-content h4 {
-            color: #ffffff;
-            font-size: 1.05rem;
-            margin: 0 0 6px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .disclaimer-content p {
-            color: #cbd5e1;
-            font-size: 0.92rem;
-            margin: 0;
-            line-height: 1.6;
-        }
-
-        .disclaimer-tag {
-            background: #F6B84B;
-            color: #061523;
-            font-size: 0.72rem;
-            font-weight: 800;
-            padding: 2px 8px;
-            border-radius: 10px;
-            text-transform: uppercase;
-        }
-
-        .creator-profile-card {
-            max-width: 1200px;
-            margin: 0 auto 36px;
-            background: rgba(13, 39, 61, 0.85);
-            border: 1px solid rgba(10, 216, 173, 0.2);
-            border-radius: 20px;
-            padding: 28px 32px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 24px;
-        }
-
-        .creator-profile-info {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .creator-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #0ad8ad;
-            box-shadow: 0 0 20px rgba(10, 216, 173, 0.3);
-        }
-
-        .creator-details h2 {
+        .light-card-title {
             font-family: var(--font-heading);
-            color: #ffffff;
             font-size: 1.6rem;
-            margin: 0 0 4px;
+            color: #0f172a;
+            margin: 0 0 12px;
         }
 
-        .creator-handle {
-            color: #0ad8ad;
-            font-weight: 600;
-            font-size: 0.92rem;
-        }
-
-        .creator-bio {
-            color: #94a3b8;
-            font-size: 0.95rem;
-            margin-top: 6px;
-        }
-
-        .social-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 28px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        @media (max-width: 992px) {
-            .social-grid { grid-template-columns: repeat(2, 1fr); }
-            .creator-profile-card { flex-direction: column; text-align: center; }
-            .creator-profile-info { flex-direction: column; }
-        }
-
-        @media (max-width: 640px) {
-            .social-grid { grid-template-columns: 1fr; }
-        }
-
-        .social-card {
-            background: rgba(13, 39, 61, 0.85);
-            border: 1px solid rgba(10, 216, 173, 0.2);
-            border-radius: 18px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s;
-        }
-
-        .social-card:hover {
-            transform: translateY(-8px);
-            border-color: #0ad8ad;
-            box-shadow: 0 16px 36px rgba(10, 216, 173, 0.22);
-        }
-
-        .card-social-header {
-            padding: 14px 18px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-            background: rgba(6, 21, 35, 0.4);
-        }
-
-        .card-author {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .card-author-img {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 1.5px solid #0ad8ad;
-        }
-
-        .card-author-name {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: #ffffff;
-        }
-
-        .card-badge {
-            background: rgba(10, 216, 173, 0.15);
-            border: 1px solid #0ad8ad;
-            color: #0ad8ad;
-            font-size: 0.7rem;
-            font-weight: 800;
-            padding: 3px 8px;
-            border-radius: 10px;
-            text-transform: uppercase;
-        }
-
-        .social-img-wrapper {
-            position: relative;
-            width: 100%;
-            height: 220px;
-            background: #030d17;
-            overflow: hidden;
-            cursor: pointer;
-        }
-
-        .social-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.6s ease, filter 0.5s;
-        }
-
-        .social-card:hover .social-img {
-            transform: scale(1.08) rotate(0.5deg);
-            filter: brightness(1.05);
-        }
-
-        .social-card-body {
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-        }
-
-        .social-card-title {
-            font-family: var(--font-heading);
-            font-size: 1.2rem;
-            color: #ffffff;
-            margin: 0 0 10px;
-        }
-
-        .social-card-desc {
-            color: #94a3b8;
-            font-size: 0.92rem;
-            line-height: 1.6;
-            margin-bottom: 18px;
-            flex-grow: 1;
-        }
-
-        .social-meta-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 0 16px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            font-size: 0.82rem;
+        .light-card-meta {
+            font-size: 0.88rem;
             color: #64748b;
+            margin-bottom: 20px;
         }
 
-        /* Teal -> Silver -> Yellow Gradient Button */
-        .btn-gradient {
+        .light-card-text {
+            color: #475569;
+            font-size: 1rem;
+            line-height: 1.65;
+            margin-bottom: 32px;
+            max-width: 580px;
+        }
+
+        .light-unlock-box {
             width: 100%;
-            background: linear-gradient(135deg, #0ad8ad 0%, #cbd5e1 50%, #F6B84B 100%);
-            color: #061523;
+            max-width: 480px;
+        }
+
+        .light-input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            color: #0f172a;
+            background: #f8fafc;
+            outline: none;
+            margin-bottom: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .light-input:focus {
+            border-color: #0ad8ad;
+            box-shadow: 0 0 0 3px rgba(10, 216, 173, 0.15);
+            background: #ffffff;
+        }
+
+        .light-btn-action {
+            width: 100%;
+            background: #081b29;
+            color: #ffffff;
             font-family: var(--font-heading);
-            font-weight: 800;
-            font-size: 0.95rem;
-            padding: 14px 20px;
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 16px 24px;
             border: none;
-            border-radius: 12px;
+            border-radius: 10px;
             cursor: pointer;
-            text-align: center;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            transition: transform 0.2s ease, box-shadow 0.3s ease;
-            box-shadow: 0 4px 15px rgba(10, 216, 173, 0.25);
+            transition: background 0.2s, transform 0.15s;
         }
 
-        .btn-gradient:hover {
-            transform: scale(1.02);
-            box-shadow: 0 6px 22px rgba(246, 184, 75, 0.4);
-            color: #030d17;
+        .light-btn-action:hover {
+            background: #0ad8ad;
+            color: #081b29;
+        }
+
+        .light-unlocked-badge {
+            background: #dcfce7;
+            color: #166534;
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 16px;
         }
     </style>
 
-    <div class="social-feed-wrapper">
+    <div class="light-lib-wrapper">
         <div class="container">
-            <!-- Disclaimer Banner -->
-            <div class="disclaimer-banner">
-                <div class="disclaimer-icon">&#128276;</div>
-                <div class="disclaimer-content">
-                    <h4>Official Announcement <span class="disclaimer-tag">New Page</span></h4>
-                    <p>
-                        Welcome to Marchello Sciortino's official <strong>Free Digital Library</strong>! This page features Marchello's upcoming collection of free tools, worksheets, prompt cheat sheets, audio lessons, and strategic frameworks. Items are currently in preview as they are prepared for release. Click <strong>Get Notified</strong> below to be alerted the moment downloads open!
-                    </p>
-                </div>
+            <div class="light-hero-section">
+                <span class="light-hero-tag">Official Free Digital Download</span>
+                <h1 class="light-hero-title">Creative Amplification Through AI</h1>
+                <p class="light-hero-desc">
+                    A comprehensive guide by Marchello Sciortino exploring how Artificial Intelligence serves as a cognitive prosthetic to reframe constraints, amplify human expression, and unlock digital agency.
+                </p>
             </div>
 
-            <!-- Profile Bar -->
-            <div class="creator-profile-card">
-                <div class="creator-profile-info">
-                    <img src="assets/chello_ai_avatar.png" alt="Marchello Sciortino" class="creator-avatar">
-                    <div class="creator-details">
-                        <h2>Marchello Sciortino <span style="color: #0ad8ad;">&#10004;</span></h2>
-                        <span class="creator-handle">@marchellosciortino &bull; Keynote Speaker & Builder</span>
-                        <p class="creator-bio">Turning limitations into digital momentum. Free tools, prompt frameworks, and spoken word lessons.</p>
-                    </div>
-                </div>
-            </div>
+            <div class="light-resource-card">
+                <div class="light-resource-icon">&#128196;</div>
+                <h2 class="light-card-title">Creative Amplification Through AI</h2>
+                <div class="light-card-meta">PDF Guide &bull; By Marchello Sciortino &bull; Instant Access</div>
+                <p class="light-card-text">
+                    Learn the core principles of Articulated Inspiration: turning obstacles into strategic leverage by pairing human intentionality with modern AI tools.
+                </p>
 
-            <!-- 3 Column Social Feed Cards -->
-            <div class="social-grid">
-
-                <div class="social-card">
-                    <div class="card-social-header">
-                        <div class="card-author">
-                            <img src="assets/chello_ai_avatar.png" alt="Marchello" class="card-author-img">
-                            <span class="card-author-name">Marchello Sciortino</span>
-                        </div>
-                        <span class="card-badge">PDF Worksheet</span>
-                    </div>
-                    <div class="social-img-wrapper">
-                        <img src="assets/free-gifts/WIN_Reframe_Matrix_cover_image.png" alt="WIN Reframe Matrix" class="social-img">
-                    </div>
-                    <div class="social-card-body">
-                        <h3 class="social-card-title">W.I.N. Reframe Matrix</h3>
-                        <p class="social-card-desc">A step-by-step reflection grid to audit active constraints and construct a custom action plan.</p>
-                        <div class="social-meta-bar">
-                            <span>&#10084; 248 Likes</span>
-                            <span>Coming Soon</span>
-                        </div>
-                        <a href="/contact" class="btn-gradient">&#128276; Get Notified</a>
-                    </div>
+                <div class="light-unlock-box" id="spa-unlock-form-box" style="${formStyle}">
+                    <form id="spa-free-library-form">
+                        <input type="email" class="light-input" id="spa-user-email" placeholder="Enter your email to unlock..." required>
+                        <button type="submit" class="light-btn-action">Unlock & Download PDF &rarr;</button>
+                    </form>
                 </div>
 
-                <div class="social-card">
-                    <div class="card-social-header">
-                        <div class="card-author">
-                            <img src="assets/chello_ai_avatar.png" alt="Marchello" class="card-author-img">
-                            <span class="card-author-name">Marchello Sciortino</span>
-                        </div>
-                        <span class="card-badge">Prompt Guide</span>
-                    </div>
-                    <div class="social-img-wrapper">
-                        <img src="assets/free-gifts/Prompt_Cheat_Sheat_cover_image.png" alt="AI Accessibility Commands" class="social-img">
-                    </div>
-                    <div class="social-card-body">
-                        <h3 class="social-card-title">AI Accessibility Commands</h3>
-                        <p class="social-card-desc">Sketch Notebook Edition: Core templates to turn AI assistants into voice transcription guides.</p>
-                        <div class="social-meta-bar">
-                            <span>&#10084; 319 Likes</span>
-                            <span>Coming Soon</span>
-                        </div>
-                        <a href="/contact" class="btn-gradient">&#128276; Get Notified</a>
-                    </div>
+                <div class="light-unlock-box" id="spa-download-unlocked-box" style="${downloadStyle}">
+                    <span class="light-unlocked-badge">&#10004; Resource Unlocked</span>
+                    <a href="assets/free-gifts/Creative_amplification_through_AI.pdf" download="Creative_amplification_through_AI.pdf" class="light-btn-action" style="background: #0ad8ad; color: #081b29;">
+                        &#128190; Download PDF Now
+                    </a>
                 </div>
-
-                <div class="social-card">
-                    <div class="card-social-header">
-                        <div class="card-author">
-                            <img src="assets/chello_ai_avatar.png" alt="Marchello" class="card-author-img">
-                            <span class="card-author-name">Marchello Sciortino</span>
-                        </div>
-                        <span class="card-badge">Audit Checklist</span>
-                    </div>
-                    <div class="social-img-wrapper">
-                        <img src="assets/free-gifts/Digital_Flow_Audit_cover_image.png" alt="Digital Flow Audit" class="social-img">
-                    </div>
-                    <div class="social-card-body">
-                        <h3 class="social-card-title">Digital Flow Audit Checklist</h3>
-                        <p class="social-card-desc">An actionable check sheet to audit landing pages for ADA accessibility compliance and speed friction blocks.</p>
-                        <div class="social-meta-bar">
-                            <span>&#10084; 194 Likes</span>
-                            <span>Coming Soon</span>
-                        </div>
-                        <a href="/contact" class="btn-gradient">&#128276; Get Notified</a>
-                    </div>
-                </div>
-
-                <div class="social-card">
-                    <div class="card-social-header">
-                        <div class="card-author">
-                            <img src="assets/chello_ai_avatar.png" alt="Marchello" class="card-author-img">
-                            <span class="card-author-name">Marchello Sciortino</span>
-                        </div>
-                        <span class="card-badge">Media Kit</span>
-                    </div>
-                    <div class="social-img-wrapper">
-                        <img src="assets/speaker_resume_page_1.png" alt="Speaker 1-Sheet" class="social-img">
-                    </div>
-                    <div class="social-card-body">
-                        <h3 class="social-card-title">Speaker 1-Sheet & Media Deck</h3>
-                        <p class="social-card-desc">Official keynote speaker summary, event topics, bio, and technical rider for conference hosts.</p>
-                        <div class="social-meta-bar">
-                            <span>&#10084; 412 Likes</span>
-                            <span>Coming Soon</span>
-                        </div>
-                        <a href="/contact" class="btn-gradient">&#128276; Get Notified</a>
-                    </div>
-                </div>
-
-                <div class="social-card">
-                    <div class="card-social-header">
-                        <div class="card-author">
-                            <img src="assets/chello_ai_avatar.png" alt="Marchello" class="card-author-img">
-                            <span class="card-author-name">Marchello Sciortino</span>
-                        </div>
-                        <span class="card-badge">Audio Series</span>
-                    </div>
-                    <div class="social-img-wrapper">
-                        <img src="assets/chosen-anyway.png" alt="Chosen Anyway" class="social-img">
-                    </div>
-                    <div class="social-card-body">
-                        <h3 class="social-card-title">Chosen Anyway Spoken Word</h3>
-                        <p class="social-card-desc">An inspiring series of audio messages on stepping forward despite physical and emotional obstacles.</p>
-                        <div class="social-meta-bar">
-                            <span>&#10084; 560 Likes</span>
-                            <span>Coming Soon</span>
-                        </div>
-                        <a href="/contact" class="btn-gradient">&#128276; Get Notified</a>
-                    </div>
-                </div>
-
-                <div class="social-card">
-                    <div class="card-social-header">
-                        <div class="card-author">
-                            <img src="assets/chello_ai_avatar.png" alt="Marchello" class="card-author-img">
-                            <span class="card-author-name">Marchello Sciortino</span>
-                        </div>
-                        <span class="card-badge">Blueprint</span>
-                    </div>
-                    <div class="social-img-wrapper">
-                        <img src="assets/resources/Accessible_AIM_cover_image.png" alt="Accessible AIM Framework" class="social-img">
-                    </div>
-                    <div class="social-card-body">
-                        <h3 class="social-card-title">Accessible AIM Framework</h3>
-                        <p class="social-card-desc">Core roadmap for pairing Artificial Intelligence with human intentionality to create accessible content.</p>
-                        <div class="social-meta-bar">
-                            <span>&#10084; 284 Likes</span>
-                            <span>Coming Soon</span>
-                        </div>
-                        <a href="/contact" class="btn-gradient">&#128276; Get Notified</a>
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>
@@ -3157,6 +2917,21 @@ const freeGiftsTemplate = () => {
 
 Router.register('/free-gifts', freeGiftsTemplate);
 Router.register('/free-library', freeGiftsTemplate);
+
+// Form unlock listener for SPA mode
+document.addEventListener('submit', (e) => {
+    if (e.target && e.target.id === 'spa-free-library-form') {
+        e.preventDefault();
+        localStorage.setItem('free-library-unlocked', 'true');
+        const formBox = document.getElementById('spa-unlock-form-box');
+        const downloadBox = document.getElementById('spa-download-unlocked-box');
+        if (formBox && downloadBox) {
+            formBox.style.display = 'none';
+            downloadBox.style.display = 'block';
+        }
+    }
+});
+
 
 
 
