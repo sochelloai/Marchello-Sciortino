@@ -5,6 +5,14 @@
  */
 export async function onRequest(context) {
     const { request } = context;
+    const url = new URL(request.url);
+
+    // Redirect library.marchellosciortino.com subdomain to https://marchellosciortino.com/free-library
+    const hostname = url.hostname.toLowerCase();
+    if (hostname.includes('library.marchellosciortino.com') || hostname.startsWith('library.')) {
+        return Response.redirect('https://marchellosciortino.com/free-library', 301);
+    }
+
     const response = await context.next();
     
     // Check if the response is an HTML page
@@ -13,8 +21,8 @@ export async function onRequest(context) {
         return response;
     }
 
-    const url = new URL(request.url);
     const articleId = url.searchParams.get('article');
+
 
     // Default metadata values
     let title = "Marchello Sciortino | Official Digital Hub";
