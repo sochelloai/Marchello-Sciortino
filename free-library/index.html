@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="../css/style.css?v=20260820-4">
     <link rel="stylesheet" href="../css/accessibility.css?v=20260820-4">
 
-    <!-- Light Theme Teaser Scoped Styles -->
+    <!-- Teaser Card Grid Scoped Styles -->
     <style>
         :root {
             --lib-bg: #f8fafc;
@@ -47,96 +47,63 @@
             flex-direction: column;
         }
 
-        /* Light Header */
-        .teaser-header {
-            background: #ffffff;
-            border-bottom: 1px solid var(--border-line);
+        /* Standard Main Header */
+        .site-header {
+            background: var(--color-navy);
+            border-bottom: 1px solid rgba(10, 216, 173, 0.2);
             padding: 16px 0;
             position: sticky;
             top: 0;
             z-index: 1000;
         }
 
-        .teaser-header-inner {
+        .site-header-inner {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .teaser-logo {
+        .site-brand-logo {
             display: flex;
             align-items: center;
             gap: 12px;
             text-decoration: none;
         }
 
-        .teaser-logo img {
+        .site-brand-logo img {
             height: 38px;
             width: auto;
         }
 
-        .teaser-badge {
-            background: #f1f5f9;
-            border: 1px solid var(--border-line);
-            color: var(--text-title);
-            font-size: 0.78rem;
-            font-weight: 700;
-            padding: 4px 12px;
-            border-radius: 20px;
-        }
-
-        .teaser-return-link {
-            color: var(--text-body);
+        .site-return-link {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 8px;
             text-decoration: none;
             font-weight: 600;
-            font-size: 0.9rem;
-            transition: color 0.2s;
+            font-size: 0.88rem;
+            transition: all 0.2s;
         }
 
-        .teaser-return-link:hover {
-            color: var(--navy-dark);
+        .site-return-link:hover {
+            background: var(--color-teal);
+            color: var(--color-navy);
+            border-color: var(--color-teal);
         }
 
-        /* Hero Section */
-        .teaser-hero {
-            padding: 50px 0 36px;
-            text-align: center;
+        /* Library Teaser Card Grid Section */
+        .teaser-section {
+            padding: 60px 0 90px;
         }
 
-        .teaser-hero-tag {
-            color: var(--teal-accent);
-            font-weight: 700;
-            font-size: 0.85rem;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-            display: inline-block;
-        }
-
-        .teaser-hero-title {
-            color: var(--text-title);
-            font-family: var(--font-heading);
-            font-size: 2.4rem;
-            font-weight: 800;
-            margin: 0 0 14px;
-        }
-
-        .teaser-hero-desc {
-            max-width: 660px;
-            margin: 0 auto;
-            color: var(--text-body);
-            font-size: 1.05rem;
-            line-height: 1.65;
-        }
-
-        /* Library Teaser Card Grid */
         .teaser-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 28px;
             max-width: 1200px;
             margin: 0 auto;
-            padding-bottom: 80px;
         }
 
         .teaser-card {
@@ -147,7 +114,7 @@
             display: flex;
             flex-direction: column;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s;
             position: relative;
         }
 
@@ -351,109 +318,120 @@
 </head>
 
 <body>
-    <!-- Light Header -->
-    <header class="teaser-header">
-        <div class="container teaser-header-inner">
-            <a href="/" class="teaser-logo" aria-label="Marchello Sciortino Home">
-                <img src="../assets/marchello_logo_dark.png" alt="Marchello Sciortino Logo" onerror="this.src='../assets/logo-dark.png'">
-                <span class="teaser-badge">Digital Library</span>
+    <!-- Top Site Header -->
+    <header class="site-header">
+        <div class="container site-header-inner">
+            <a href="/" class="site-brand-logo" aria-label="Marchello Sciortino Home">
+                <img src="../assets/logo-light.png" alt="Marchello Sciortino Logo">
             </a>
-            <a href="/" class="teaser-return-link">&larr; Return to Main Site</a>
+            <a href="/" class="site-return-link">&larr; Return to Main Site</a>
         </div>
     </header>
 
     <main id="main-focus">
-        <div class="container">
-            <!-- Hero Section -->
-            <div class="teaser-hero">
-                <span class="teaser-hero-tag">Free Resource Collection</span>
-                <h1 class="teaser-hero-title">Free Digital Library</h1>
-                <p class="teaser-hero-desc">
-                    Preview and teaser Marchello Sciortino's collection of free digital guides, prompt cheat sheets, audio lessons, and strategic frameworks. Click download on any item below to proceed.
+        <!-- Site-Wide Standard Hero Component (.page-intro) -->
+        <div class="page-intro" style="position: relative; overflow: hidden;">
+            <!-- Curved background SVG line flourishes -->
+            <svg style="position: absolute; left: 0; top: 0; height: 100%; width: 220px; pointer-events: none; opacity: 0.25;" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path d="M -10,0 Q 20,40 100,50 M -10,15 Q 20,55 100,65 M -10,30 Q 20,70 100,80 M -10,45 Q 20,85 100,95 M -10,60 Q 20,100 100,110" fill="none" stroke="var(--color-teal)" stroke-width="0.3" />
+            </svg>
+            <svg style="position: absolute; right: 0; top: 0; height: 100%; width: 220px; pointer-events: none; opacity: 0.25;" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path d="M 110,0 Q 80,40 0,50 M 110,15 Q 80,55 0,65 M 110,30 Q 80,70 0,80 M 110,45 Q 80,85 0,95 M 110,60 Q 80,100 0,110" fill="none" stroke="var(--color-teal)" stroke-width="0.3" />
+            </svg>
+
+            <div class="container text-center" style="position: relative; z-index: 2;">
+                <span class="section-tag text-teal">Tools & Resources</span>
+                <h1 style="color: white;">Free Digital Library</h1>
+                <p class="section-desc" style="color: var(--color-gray-light);">
+                    Worksheets, prompt templates, PDF guides, and audio lessons to help you reframe obstacles and build your projects.
                 </p>
             </div>
-
-            <!-- Library Teaser Cards Grid -->
-            <div class="teaser-grid">
-
-                <!-- Item 1: Featured Live Release -->
-                <div class="teaser-card">
-                    <div class="card-cover-wrapper">
-                        <img src="../assets/free-gifts/creative_amplification_cover.png" alt="Creative Amplification Cover" class="card-cover-img">
-                        <span class="card-status-badge active">&#10004; Available Now</span>
-                    </div>
-                    <div class="teaser-card-body">
-                        <h3 class="teaser-card-title">Creative Amplification Through AI</h3>
-                        <ul class="teaser-bullets">
-                            <li>Principles of Articulated Inspiration.</li>
-                            <li>Turning constraints into strategic leverage.</li>
-                            <li>Practical prompt configurations for creators.</li>
-                        </ul>
-                        <button class="btn-download-trigger js-open-modal" data-title="Creative Amplification Through AI" data-file="../assets/free-gifts/Creative_amplification_through_AI.pdf">
-                            Download PDF &darr;
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Item 2: Teaser W.I.N. Reframe Matrix -->
-                <div class="teaser-card">
-                    <div class="card-cover-wrapper">
-                        <img src="../assets/free-gifts/WIN_Reframe_Matrix_cover_image.png" alt="WIN Reframe Matrix Cover" class="card-cover-img">
-                        <span class="card-status-badge">Teaser / Upcoming</span>
-                    </div>
-                    <div class="teaser-card-body">
-                        <h3 class="teaser-card-title">W.I.N. Reframe Matrix</h3>
-                        <ul class="teaser-bullets">
-                            <li>Reflection grid for active constraints.</li>
-                            <li>Breaking mental friction loops.</li>
-                            <li>Custom tactical action plan builder.</li>
-                        </ul>
-                        <button class="btn-download-trigger js-open-modal" data-title="W.I.N. Reframe Matrix" data-file="../assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf">
-                            Download Teaser &darr;
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Item 3: Teaser AI Accessibility Commands -->
-                <div class="teaser-card">
-                    <div class="card-cover-wrapper">
-                        <img src="../assets/free-gifts/Prompt_Cheat_Sheat_cover_image.png" alt="AI Accessibility Commands Cover" class="card-cover-img">
-                        <span class="card-status-badge">Teaser / Upcoming</span>
-                    </div>
-                    <div class="teaser-card-body">
-                        <h3 class="teaser-card-title">AI Accessibility Commands</h3>
-                        <ul class="teaser-bullets">
-                            <li>Sketch notebook prompt cheat sheet.</li>
-                            <li>Voice transcription guide templates.</li>
-                            <li>Configuring AI as a cognitive prosthetic.</li>
-                        </ul>
-                        <button class="btn-download-trigger js-open-modal" data-title="AI Accessibility Commands" data-file="../assets/free-gifts/Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf">
-                            Download Teaser &darr;
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Item 4: Teaser Digital Flow Audit -->
-                <div class="teaser-card">
-                    <div class="card-cover-wrapper">
-                        <img src="../assets/free-gifts/Digital_Flow_Audit_cover_image.png" alt="Digital Flow Audit Cover" class="card-cover-img">
-                        <span class="card-status-badge">Teaser / Upcoming</span>
-                    </div>
-                    <div class="teaser-card-body">
-                        <h3 class="teaser-card-title">Digital Flow Audit Checklist</h3>
-                        <ul class="teaser-bullets">
-                            <li>ADA accessibility compliance audit.</li>
-                            <li>Speed & user experience friction check.</li>
-                            <li>Landing page conversion optimization.</li>
-                        </ul>
-                        <button class="btn-download-trigger js-open-modal" data-title="Digital Flow Audit Checklist" data-file="../assets/free-gifts/Digital_Flow_Audit_Checklist_Enhanced.pdf">
-                            Download Teaser &darr;
-                        </button>
-                    </div>
-                </div>
-
-            </div>
         </div>
+
+        <!-- Library Teaser Cards Grid Section -->
+        <section class="teaser-section">
+            <div class="container">
+                <div class="teaser-grid">
+
+                    <!-- Item 1: Featured Live Release -->
+                    <div class="teaser-card">
+                        <div class="card-cover-wrapper">
+                            <img src="../assets/free-gifts/creative_amplification_cover.png" alt="Creative Amplification Cover" class="card-cover-img">
+                            <span class="card-status-badge active">&#10004; Available Now</span>
+                        </div>
+                        <div class="teaser-card-body">
+                            <h3 class="teaser-card-title">Creative Amplification Through AI</h3>
+                            <ul class="teaser-bullets">
+                                <li>Principles of Articulated Inspiration.</li>
+                                <li>Turning constraints into strategic leverage.</li>
+                                <li>Practical prompt configurations for creators.</li>
+                            </ul>
+                            <button class="btn-download-trigger js-open-modal" data-title="Creative Amplification Through AI" data-file="../assets/free-gifts/Creative_amplification_through_AI.pdf">
+                                Download PDF &darr;
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Item 2: Teaser W.I.N. Reframe Matrix -->
+                    <div class="teaser-card">
+                        <div class="card-cover-wrapper">
+                            <img src="../assets/free-gifts/WIN_Reframe_Matrix_cover_image.png" alt="WIN Reframe Matrix Cover" class="card-cover-img">
+                            <span class="card-status-badge">Teaser / Upcoming</span>
+                        </div>
+                        <div class="teaser-card-body">
+                            <h3 class="teaser-card-title">W.I.N. Reframe Matrix</h3>
+                            <ul class="teaser-bullets">
+                                <li>Reflection grid for active constraints.</li>
+                                <li>Breaking mental friction loops.</li>
+                                <li>Custom tactical action plan builder.</li>
+                            </ul>
+                            <button class="btn-download-trigger js-open-modal" data-title="W.I.N. Reframe Matrix" data-file="../assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf">
+                                Download Teaser &darr;
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Item 3: Teaser AI Accessibility Commands -->
+                    <div class="teaser-card">
+                        <div class="card-cover-wrapper">
+                            <img src="../assets/free-gifts/Prompt_Cheat_Sheat_cover_image.png" alt="AI Accessibility Commands Cover" class="card-cover-img">
+                            <span class="card-status-badge">Teaser / Upcoming</span>
+                        </div>
+                        <div class="teaser-card-body">
+                            <h3 class="teaser-card-title">AI Accessibility Commands</h3>
+                            <ul class="teaser-bullets">
+                                <li>Sketch notebook prompt cheat sheet.</li>
+                                <li>Voice transcription guide templates.</li>
+                                <li>Configuring AI as a cognitive prosthetic.</li>
+                            </ul>
+                            <button class="btn-download-trigger js-open-modal" data-title="AI Accessibility Commands" data-file="../assets/free-gifts/Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf">
+                                Download Teaser &darr;
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Item 4: Teaser Digital Flow Audit -->
+                    <div class="teaser-card">
+                        <div class="card-cover-wrapper">
+                            <img src="../assets/free-gifts/Digital_Flow_Audit_cover_image.png" alt="Digital Flow Audit Cover" class="card-cover-img">
+                            <span class="card-status-badge">Teaser / Upcoming</span>
+                        </div>
+                        <div class="teaser-card-body">
+                            <h3 class="teaser-card-title">Digital Flow Audit Checklist</h3>
+                            <ul class="teaser-bullets">
+                                <li>ADA accessibility compliance audit.</li>
+                                <li>Speed & user experience friction check.</li>
+                                <li>Landing page conversion optimization.</li>
+                            </ul>
+                            <button class="btn-download-trigger js-open-modal" data-title="Digital Flow Audit Checklist" data-file="../assets/free-gifts/Digital_Flow_Audit_Checklist_Enhanced.pdf">
+                                Download Teaser &darr;
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
     </main>
 
     <!-- Login / Email Modal Window -->
@@ -512,7 +490,6 @@
 
                     const savedEmail = localStorage.getItem('free-library-user-email');
                     if (savedEmail) {
-                        // User already logged in, trigger direct download
                         directDownloadBtn.href = selectedFileUrl;
                         formView.style.display = 'none';
                         successView.style.display = 'block';

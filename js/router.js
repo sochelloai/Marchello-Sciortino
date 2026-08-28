@@ -2973,15 +2973,27 @@ const freeGiftsTemplate = () => {
         }
     </style>
 
-    <div class="teaser-lib-wrapper">
+    <div class="page-intro" style="position: relative; overflow: hidden;">
+        <!-- Curved background SVG line flourishes -->
+        <svg style="position: absolute; left: 0; top: 0; height: 100%; width: 220px; pointer-events: none; opacity: 0.25;" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path d="M -10,0 Q 20,40 100,50 M -10,15 Q 20,55 100,65 M -10,30 Q 20,70 100,80 M -10,45 Q 20,85 100,95 M -10,60 Q 20,100 100,110" fill="none" stroke="var(--color-teal)" stroke-width="0.3" />
+        </svg>
+        <svg style="position: absolute; right: 0; top: 0; height: 100%; width: 220px; pointer-events: none; opacity: 0.25;" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path d="M 110,0 Q 80,40 0,50 M 110,15 Q 80,55 0,65 M 110,30 Q 80,70 0,80 M 110,45 Q 80,85 0,95 M 110,60 Q 80,100 0,110" fill="none" stroke="var(--color-teal)" stroke-width="0.3" />
+        </svg>
+
+        <div class="container text-center" style="position: relative; z-index: 2;">
+            <span class="section-tag text-teal">Tools & Resources</span>
+            <h1 style="color: white;">Free Digital Library</h1>
+            <p class="section-desc" style="color: var(--color-gray-light);">
+                Worksheets, prompt templates, PDF guides, and audio lessons to help you reframe obstacles and build your projects.
+            </p>
+        </div>
+    </div>
+
+    <section class="section bg-white" style="padding: 60px 0 90px; background-color: #f8fafc;">
         <div class="container">
-            <div class="teaser-hero-section">
-                <span class="teaser-hero-tag">Free Resource Collection</span>
-                <h1 class="teaser-hero-title">Free Digital Library</h1>
-                <p class="teaser-hero-desc">
-                    Preview Marchello Sciortino's collection of free digital guides, prompt cheat sheets, audio lessons, and strategic frameworks. Click download on any item to proceed.
-                </p>
-            </div>
+
 
             <div class="teaser-grid">
 
@@ -3063,9 +3075,10 @@ const freeGiftsTemplate = () => {
 
             </div>
         </div>
-    </div>
+    </section>
 
     <!-- Login Modal -->
+
     <div class="spa-modal-overlay" id="spa-download-modal">
         <div class="spa-modal-card">
             <button class="spa-modal-close" id="spa-modal-close">&times;</button>
