@@ -8,7 +8,7 @@
         content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: https: blob:; media-src 'self' data: https: blob:; connect-src 'self' https:; frame-src 'self' https:; frame-ancestors 'none';">
     <title>Free Digital Library | Marchello Sciortino</title>
     <meta name="description"
-        content="Access free PDF worksheets, AI prompt cheat sheets, audio lessons, and strategic frameworks by Marchello Sciortino to reframe constraints and build digital freedom.">
+        content="Official Free Digital Library by Marchello Sciortino featuring upcoming worksheets, AI prompt cheat sheets, audio lessons, and strategic frameworks.">
     <link rel="canonical" href="https://library.marchellosciortino.com">
 
     <!-- Favicon -->
@@ -19,25 +19,28 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Oswald:wght@700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- Global Stylesheets -->
     <link rel="stylesheet" href="../css/style.css?v=20260820-4">
     <link rel="stylesheet" href="../css/accessibility.css?v=20260820-4">
 
-    <!-- Standalone Library Scoped Styles -->
+    <!-- Social Feed Scoped Styles -->
     <style>
         :root {
-            --lib-bg-dark: #05131f;
-            --lib-card-bg: rgba(13, 39, 61, 0.75);
-            --lib-card-border: rgba(10, 216, 173, 0.2);
-            --lib-teal: #0ad8ad;
-            --lib-teal-glow: rgba(10, 216, 173, 0.25);
-            --lib-gold: #F6B84B;
+            --social-bg: #061523;
+            --social-card-bg: rgba(13, 39, 61, 0.85);
+            --social-border: rgba(10, 216, 173, 0.2);
+            --social-teal: #0ad8ad;
+            --social-gold: #F6B84B;
+            --social-silver: #cbd5e1;
+            /* Gradient: Teal to Silver to Yellow */
+            --btn-gradient: linear-gradient(135deg, #0ad8ad 0%, #cbd5e1 50%, #F6B84B 100%);
+            --btn-gradient-hover: linear-gradient(135deg, #0ce6b9 0%, #e2e8f0 50%, #ffc459 100%);
         }
 
         body {
-            background-color: var(--lib-bg-dark);
+            background-color: var(--social-bg);
             color: #F7FAFC;
             font-family: var(--font-body);
             min-height: 100vh;
@@ -45,972 +48,841 @@
             flex-direction: column;
         }
 
-        /* Library Header */
-        .lib-header {
-            background: rgba(8, 27, 41, 0.9);
+        /* Top Brand Header */
+        .social-nav-header {
+            background: rgba(6, 21, 35, 0.95);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(10, 216, 173, 0.15);
+            border-bottom: 1px solid rgba(10, 216, 173, 0.2);
             position: sticky;
             top: 0;
             z-index: 1000;
-            padding: 1rem 0;
+            padding: 14px 0;
         }
 
-        .lib-header-inner {
+        .social-nav-inner {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .lib-logo {
+        .social-brand-logo {
             display: flex;
             align-items: center;
             gap: 12px;
             text-decoration: none;
         }
 
-        .lib-logo img {
+        .social-brand-logo img {
             height: 38px;
             width: auto;
         }
 
-        .lib-badge-tag {
-            background: linear-gradient(135deg, rgba(10, 216, 173, 0.15), rgba(246, 184, 75, 0.15));
-            border: 1px solid var(--lib-teal);
-            color: var(--lib-teal);
-            font-size: 0.75rem;
+        .social-verified-badge {
+            background: linear-gradient(135deg, rgba(10, 216, 173, 0.2), rgba(246, 184, 75, 0.2));
+            border: 1px solid var(--social-teal);
+            color: var(--social-teal);
+            font-size: 0.78rem;
             font-weight: 700;
-            letter-spacing: 1px;
-            padding: 4px 10px;
+            padding: 4px 12px;
             border-radius: 20px;
-            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .lib-back-btn {
+        .social-return-btn {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            color: var(--color-white);
+            color: #ffffff;
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.2);
             padding: 8px 16px;
-            border-radius: 8px;
+            border-radius: 20px;
             text-decoration: none;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             transition: all var(--transition-fast);
         }
 
-        .lib-back-btn:hover {
-            background: var(--lib-teal);
+        .social-return-btn:hover {
+            background: var(--social-teal);
             color: var(--color-navy);
-            border-color: var(--lib-teal);
-            box-shadow: 0 0 15px var(--lib-teal-glow);
+            border-color: var(--social-teal);
+            box-shadow: 0 0 15px rgba(10, 216, 173, 0.3);
         }
 
-        /* Hero Section */
-        .lib-hero {
-            position: relative;
-            padding: 70px 0 40px;
-            text-align: center;
-            background: radial-gradient(circle at 50% 20%, rgba(10, 216, 173, 0.12) 0%, rgba(5, 19, 31, 0) 70%);
-            overflow: hidden;
-        }
-
-        .lib-hero-subtitle {
-            max-width: 780px;
-            margin: 16px auto 36px;
-            color: #cbd5e1;
-            font-size: 1.15rem;
-            line-height: 1.7;
-        }
-
-        /* Search & Filter Controls */
-        .lib-controls-wrapper {
-            max-width: 900px;
-            margin: 0 auto;
+        /* Disclaimer Announcement Banner */
+        .disclaimer-banner {
+            background: linear-gradient(135deg, rgba(10, 216, 173, 0.12) 0%, rgba(246, 184, 75, 0.12) 100%);
+            border: 1px solid rgba(10, 216, 173, 0.3);
+            border-radius: 16px;
+            padding: 20px 24px;
+            margin: 24px auto 0;
+            max-width: 1200px;
             display: flex;
-            flex-direction: column;
+            align-items: flex-start;
+            gap: 16px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .disclaimer-icon {
+            font-size: 1.6rem;
+            background: rgba(10, 216, 173, 0.2);
+            border: 1px solid var(--social-teal);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .disclaimer-content h4 {
+            color: #ffffff;
+            font-size: 1.05rem;
+            margin: 0 0 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .disclaimer-content p {
+            color: #cbd5e1;
+            font-size: 0.92rem;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .disclaimer-tag {
+            background: var(--social-gold);
+            color: #061523;
+            font-size: 0.72rem;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 10px;
+            text-transform: uppercase;
+        }
+
+        /* Profile Feed Header */
+        .creator-profile-card {
+            max-width: 1200px;
+            margin: 24px auto 32px;
+            background: var(--social-card-bg);
+            border: 1px solid var(--social-border);
+            border-radius: 20px;
+            padding: 28px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .creator-profile-info {
+            display: flex;
+            align-items: center;
             gap: 20px;
         }
 
-        .lib-search-box {
-            position: relative;
-            width: 100%;
+        .creator-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--social-teal);
+            box-shadow: 0 0 20px rgba(10, 216, 173, 0.3);
         }
 
-        .lib-search-input {
-            width: 100%;
-            background: rgba(13, 39, 61, 0.85);
-            border: 2px solid rgba(10, 216, 173, 0.3);
-            border-radius: 50px;
-            padding: 16px 24px 16px 56px;
+        .creator-details h2 {
+            font-family: var(--font-heading);
             color: #ffffff;
-            font-size: 1.05rem;
-            outline: none;
-            transition: all var(--transition-smooth);
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .lib-search-input:focus {
-            border-color: var(--lib-teal);
-            box-shadow: 0 0 20px rgba(10, 216, 173, 0.3), inset 0 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .lib-search-icon {
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--lib-teal);
-            font-size: 1.2rem;
-            pointer-events: none;
-        }
-
-        .lib-filter-tabs {
+            font-size: 1.6rem;
+            margin: 0 0 4px;
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            align-items: center;
             gap: 10px;
         }
 
-        .lib-tab-btn {
-            background: rgba(13, 39, 61, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: #cbd5e1;
-            padding: 8px 18px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 0.92rem;
+        .creator-handle {
+            color: var(--social-teal);
             font-weight: 600;
-            transition: all var(--transition-fast);
+            font-size: 0.92rem;
         }
 
-        .lib-tab-btn:hover,
-        .lib-tab-btn.active {
-            background: var(--lib-teal);
-            color: var(--color-navy);
-            border-color: var(--lib-teal);
-            box-shadow: 0 0 15px rgba(10, 216, 173, 0.35);
-        }
-
-        /* Results Counter */
-        .lib-results-bar {
-            margin: 30px 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .creator-bio {
             color: #94a3b8;
             font-size: 0.95rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            padding-bottom: 12px;
+            margin-top: 6px;
         }
 
-        /* Card Grid Layout */
-        .lib-grid {
+        .creator-stats {
+            display: flex;
+            gap: 24px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #ffffff;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.78rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* 3-Column Grid Layout */
+        .social-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 28px;
+            max-width: 1200px;
+            margin: 0 auto;
             padding-bottom: 80px;
         }
 
-        .lib-card {
-            background: var(--lib-card-bg);
-            border: 1px solid var(--lib-card-border);
-            border-radius: 16px;
+        @media (max-width: 992px) {
+            .social-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .creator-profile-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            .creator-profile-info {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .social-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Social Media Style Post Cards */
+        .social-card {
+            background: var(--social-card-bg);
+            border: 1px solid var(--social-border);
+            border-radius: 18px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            transition: transform var(--transition-smooth), box-shadow var(--transition-smooth), border-color var(--transition-smooth);
+            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), border-color 0.4s;
             position: relative;
         }
 
-        .lib-card:hover {
-            transform: translateY(-6px);
-            border-color: var(--lib-teal);
-            box-shadow: 0 12px 30px rgba(10, 216, 173, 0.2);
+        .social-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--social-teal);
+            box-shadow: 0 16px 36px rgba(10, 216, 173, 0.22);
         }
 
-        .lib-card-img-wrapper {
-            position: relative;
-            width: 100%;
-            height: 210px;
-            background: #030d17;
-            overflow: hidden;
+        /* Top card social bar */
+        .card-social-header {
+            padding: 14px 18px;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(6, 21, 35, 0.4);
         }
 
-        .lib-card-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .lib-card:hover .lib-card-img {
-            transform: scale(1.05);
-        }
-
-        .lib-card-type-badge {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background: rgba(8, 27, 41, 0.88);
-            border: 1px solid var(--lib-teal);
-            color: var(--lib-teal);
-            font-size: 0.72rem;
-            font-weight: 700;
-            padding: 4px 10px;
-            border-radius: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            backdrop-filter: blur(8px);
-        }
-
-        .lib-card-body {
-            padding: 24px;
+        .card-author {
             display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-        }
-
-        .lib-card-title {
-            font-family: var(--font-heading);
-            font-size: 1.25rem;
-            color: #ffffff;
-            margin-bottom: 10px;
-            line-height: 1.35;
-        }
-
-        .lib-card-desc {
-            color: #94a3b8;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            margin-bottom: 20px;
-            flex-grow: 1;
-        }
-
-        .lib-card-footer {
-            margin-top: auto;
-            display: flex;
+            align-items: center;
             gap: 10px;
         }
 
-        .lib-btn {
-            width: 100%;
-            text-align: center;
-            padding: 12px 18px;
-            border-radius: 8px;
+        .card-author-img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1.5px solid var(--social-teal);
+        }
+
+        .card-author-name {
+            font-size: 0.85rem;
             font-weight: 700;
-            font-size: 0.92rem;
-            text-decoration: none;
+            color: #ffffff;
+        }
+
+        .card-badge {
+            background: rgba(10, 216, 173, 0.15);
+            border: 1px solid var(--social-teal);
+            color: var(--social-teal);
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 10px;
+            text-transform: uppercase;
+        }
+
+        /* Animated Image Wrapper */
+        .social-img-wrapper {
+            position: relative;
+            width: 100%;
+            height: 220px;
+            background: #030d17;
+            overflow: hidden;
             cursor: pointer;
-            transition: all var(--transition-fast);
+        }
+
+        .social-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1), filter 0.5s;
+        }
+
+        /* Image hover animation & liquid glass shine */
+        .social-card:hover .social-img {
+            transform: scale(1.08) rotate(0.5deg);
+            filter: brightness(1.05);
+        }
+
+        .social-img-wrapper::after {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            width: 300%;
+            height: 300%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0) 100%);
+            transform: rotate(25deg);
+            transition: transform 0.8s ease;
+            pointer-events: none;
+        }
+
+        .social-card:hover .social-img-wrapper::after {
+            transform: translate(60%, 60%) rotate(25deg);
+        }
+
+        .preview-overlay-tag {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            background: rgba(6, 21, 35, 0.88);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(246, 184, 75, 0.4);
+            color: var(--social-gold);
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Card Content Body */
+        .social-card-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .social-card-title {
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            color: #ffffff;
+            margin: 0 0 10px;
+            line-height: 1.35;
+        }
+
+        .social-card-desc {
+            color: #94a3b8;
+            font-size: 0.92rem;
+            line-height: 1.6;
+            margin-bottom: 18px;
+            flex-grow: 1;
+        }
+
+        /* Engagement Bar */
+        .social-meta-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 0.82rem;
+            color: #64748b;
+        }
+
+        .meta-group {
+            display: flex;
+            gap: 14px;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .meta-item:hover {
+            color: var(--social-teal);
+        }
+
+        /* Gradient Button: Teal -> Silver -> Yellow */
+        .btn-gradient {
+            width: 100%;
+            background: var(--btn-gradient);
+            color: #061523;
+            font-family: var(--font-heading);
+            font-weight: 800;
+            font-size: 0.95rem;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            border: none;
+            letter-spacing: 0.5px;
+            transition: transform 0.2s ease, box-shadow 0.3s ease, background 0.3s ease;
+            box-shadow: 0 4px 15px rgba(10, 216, 173, 0.25);
         }
 
-        .lib-btn-primary {
-            background: var(--lib-teal);
-            color: var(--color-navy);
+        .btn-gradient:hover {
+            background: var(--btn-gradient-hover);
+            transform: scale(1.02);
+            box-shadow: 0 6px 22px rgba(246, 184, 75, 0.4);
+            color: #030d17;
         }
 
-        .lib-btn-primary:hover {
-            background: #09c29b;
-            box-shadow: 0 0 15px rgba(10, 216, 173, 0.4);
-        }
-
-        .lib-btn-outline {
-            background: transparent;
-            border: 1px solid var(--lib-teal);
-            color: var(--lib-teal);
-        }
-
-        .lib-btn-outline:hover {
-            background: var(--lib-teal);
-            color: var(--color-navy);
-        }
-
-        .lib-btn-gold {
-            background: var(--lib-gold);
-            color: var(--color-navy);
-        }
-
-        .lib-btn-gold:hover {
-            background: #e5a73b;
-            box-shadow: 0 0 15px rgba(246, 184, 75, 0.4);
-        }
-
-        /* Sticky Audio Player Drawer */
-        .lib-audio-bar {
+        /* Notification Modal Popup */
+        .notify-modal-overlay {
             position: fixed;
-            bottom: 0;
+            top: 0;
             left: 0;
             right: 0;
-            background: rgba(3, 13, 23, 0.96);
-            backdrop-filter: blur(20px);
-            border-top: 1px solid var(--lib-teal);
-            padding: 14px 24px;
-            z-index: 2000;
-            transform: translateY(100%);
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        .lib-audio-bar.active {
-            transform: translateY(0);
-        }
-
-        .lib-audio-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-        }
-
-        .lib-audio-track-info {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            min-width: 240px;
-        }
-
-        .lib-audio-thumb {
-            width: 48px;
-            height: 48px;
-            border-radius: 8px;
-            object-fit: cover;
-            border: 1px solid var(--lib-teal);
-        }
-
-        .lib-audio-details h4 {
-            font-size: 0.95rem;
-            color: #ffffff;
-            margin: 0 0 2px;
-        }
-
-        .lib-audio-details p {
-            font-size: 0.8rem;
-            color: var(--lib-teal);
-            margin: 0;
-        }
-
-        .lib-audio-controls {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            flex-grow: 1;
-            max-width: 600px;
-        }
-
-        .lib-audio-play-btn {
-            background: var(--lib-teal);
-            color: var(--color-navy);
-            border: none;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            cursor: pointer;
+            bottom: 0;
+            background: rgba(3, 13, 23, 0.85);
+            backdrop-filter: blur(12px);
+            z-index: 3000;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.1rem;
-            flex-shrink: 0;
-            transition: transform 0.2s;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
         }
 
-        .lib-audio-play-btn:hover {
-            transform: scale(1.08);
+        .notify-modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
         }
 
-        .lib-audio-progress-container {
-            flex-grow: 1;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .lib-audio-time {
-            font-size: 0.8rem;
-            color: #94a3b8;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .lib-audio-progress-bar {
-            flex-grow: 1;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 3px;
-            cursor: pointer;
+        .notify-modal-card {
+            background: #0d273d;
+            border: 2px solid var(--social-teal);
+            border-radius: 20px;
+            padding: 36px;
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(10, 216, 173, 0.3);
             position: relative;
-            overflow: hidden;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
         }
 
-        .lib-audio-progress-fill {
-            height: 100%;
-            background: var(--lib-teal);
-            width: 0%;
-            border-radius: 3px;
+        .notify-modal-overlay.active .notify-modal-card {
+            transform: translateY(0);
         }
 
-        .lib-audio-close-btn {
+        .notify-close-btn {
+            position: absolute;
+            top: 14px;
+            right: 18px;
             background: transparent;
             border: none;
             color: #94a3b8;
-            font-size: 1.4rem;
+            font-size: 1.6rem;
             cursor: pointer;
-            padding: 4px;
         }
 
-        .lib-audio-close-btn:hover {
+        .notify-close-btn:hover {
             color: #ffffff;
         }
 
-        /* Empty state */
-        .lib-empty-state {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 60px 20px;
-            background: var(--lib-card-bg);
-            border: 1px dashed rgba(255, 255, 255, 0.2);
-            border-radius: 16px;
-            display: none;
-        }
-
-        .lib-empty-state h3 {
+        .notify-modal-card h3 {
+            font-size: 1.4rem;
             color: #ffffff;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
-        .lib-empty-state p {
-            color: #94a3b8;
+        .notify-modal-card p {
+            color: #cbd5e1;
+            font-size: 0.95rem;
             margin-bottom: 20px;
         }
 
+        .notify-input {
+            width: 100%;
+            background: rgba(6, 21, 35, 0.8);
+            border: 1px solid rgba(10, 216, 173, 0.4);
+            border-radius: 10px;
+            padding: 14px 16px;
+            color: #ffffff;
+            font-size: 1rem;
+            margin-bottom: 14px;
+            outline: none;
+        }
+
+        .notify-input:focus {
+            border-color: var(--social-teal);
+            box-shadow: 0 0 15px rgba(10, 216, 173, 0.3);
+        }
+
         /* Footer */
-        .lib-footer {
+        .social-footer {
             margin-top: auto;
             background: #030d17;
             border-top: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 40px 0;
+            padding: 36px 0;
             text-align: center;
             color: #64748b;
-            font-size: 0.9rem;
-        }
-
-        .lib-footer-quote {
-            max-width: 600px;
-            margin: 0 auto 20px;
-            color: #cbd5e1;
-            font-style: italic;
-            line-height: 1.6;
+            font-size: 0.88rem;
         }
     </style>
 </head>
 
 <body>
     <!-- Top Header -->
-    <header class="lib-header">
-        <div class="container lib-header-inner">
-            <a href="/" class="lib-logo" aria-label="Marchello Sciortino Home">
+    <header class="social-nav-header">
+        <div class="container social-nav-inner">
+            <a href="/" class="social-brand-logo" aria-label="Marchello Sciortino Home">
                 <img src="../assets/logo-light.png" alt="Marchello Sciortino Logo">
-                <span class="lib-badge-tag">Free Library</span>
+                <span class="social-verified-badge">&#10003; Official Digital Hub</span>
             </a>
-            <a href="/" class="lib-back-btn">&larr; Return to Main Site</a>
+            <a href="/" class="social-return-btn">&larr; Return to Main Site</a>
         </div>
     </header>
 
-    <!-- Main Content -->
     <main id="main-focus">
-        <!-- Hero Section -->
-        <section class="lib-hero">
-            <div class="container">
-                <span class="section-tag text-teal">Articulated Inspiration</span>
-                <h1 style="color: #ffffff; margin-top: 12px; font-size: 2.75rem;">Free Digital Library</h1>
-                <p class="lib-hero-subtitle">
-                    Worksheets, AI prompt cheat sheets, audio lessons, and strategic frameworks designed to reframe limitations, eliminate friction, and build digital momentum.
-                </p>
+        <div class="container">
+            <!-- Disclaimer Banner -->
+            <div class="disclaimer-banner">
+                <div class="disclaimer-icon">&#128276;</div>
+                <div class="disclaimer-content">
+                    <h4>
+                        Official Announcement
+                        <span class="disclaimer-tag">New Page</span>
+                    </h4>
+                    <p>
+                        Welcome to Marchello Sciortino's official <strong>Free Digital Library</strong>! This standalone page is dedicated to featuring Marchello's upcoming collection of free tools, worksheets, prompt cheat sheets, audio lessons, and strategic frameworks. Items are currently in preview as they are prepared for release. Click <strong>Get Notified</strong> on any item below to receive instant access the moment downloads go live!
+                    </p>
+                </div>
+            </div>
 
-                <!-- Search & Filters -->
-                <div class="lib-controls-wrapper">
-                    <div class="lib-search-box">
-                        <span class="lib-search-icon">&#128269;</span>
-                        <input type="text" id="lib-search-input" class="lib-search-input" placeholder="Search resources, cheat sheets, topics, or audio lessons..." aria-label="Search resources">
+            <!-- Creator Social Profile Bar -->
+            <div class="creator-profile-card">
+                <div class="creator-profile-info">
+                    <img src="../assets/chello_ai_avatar.png" alt="Marchello Sciortino" class="creator-avatar">
+                    <div class="creator-details">
+                        <h2>
+                            Marchello Sciortino
+                            <span style="color: var(--social-teal); font-size: 1.1rem;">&#10004;</span>
+                        </h2>
+                        <span class="creator-handle">@marchellosciortino &bull; Keynote Speaker & Builder</span>
+                        <p class="creator-bio">
+                            Turning limitations into digital momentum. Free tools, prompt frameworks, and spoken word lessons for creators & builders.
+                        </p>
                     </div>
-
-                    <div class="lib-filter-tabs" id="lib-filter-tabs">
-                        <button class="lib-tab-btn active" data-category="all">All Resources</button>
-                        <button class="lib-tab-btn" data-category="worksheets">Worksheets & Guides</button>
-                        <button class="lib-tab-btn" data-category="ai">AI & Prompts</button>
-                        <button class="lib-tab-btn" data-category="audio">Audio Lessons</button>
-                        <button class="lib-tab-btn" data-category="speaker">Speaker & Media</button>
-                        <button class="lib-tab-btn" data-category="blueprints">Strategic Blueprints</button>
+                </div>
+                <div class="creator-stats">
+                    <div class="stat-item">
+                        <span class="stat-value">6</span>
+                        <span class="stat-label">Digital Assets</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">100%</span>
+                        <span class="stat-label">Free Access</span>
                     </div>
                 </div>
             </div>
-        </section>
 
-        <!-- Library Collection Section -->
-        <section class="section" style="padding-top: 0;">
-            <div class="container">
-                <div class="lib-results-bar">
-                    <span id="lib-count-text">Showing 12 resources</span>
-                    <span>Free for personal & professional use</span>
+            <!-- 3-Column Social Feed Card Grid -->
+            <div class="social-grid">
+
+                <!-- Card 1: WIN Reframe Matrix -->
+                <div class="social-card">
+                    <div class="card-social-header">
+                        <div class="card-author">
+                            <img src="../assets/chello_ai_avatar.png" alt="Marchello Sciortino" class="card-author-img">
+                            <span class="card-author-name">Marchello Sciortino</span>
+                        </div>
+                        <span class="card-badge">PDF Worksheet</span>
+                    </div>
+                    <div class="social-img-wrapper js-trigger-notify" data-item="W.I.N. Reframe Matrix">
+                        <img src="../assets/free-gifts/WIN_Reframe_Matrix_cover_image.png" alt="W.I.N. Reframe Matrix" class="social-img">
+                        <span class="preview-overlay-tag">&#128065; Preview Item</span>
+                    </div>
+                    <div class="social-card-body">
+                        <h3 class="social-card-title">W.I.N. Reframe Matrix</h3>
+                        <p class="social-card-desc">
+                            A step-by-step reflection grid to audit active constraints, break mental loops, and construct a custom action plan.
+                        </p>
+                        <div class="social-meta-bar">
+                            <div class="meta-group">
+                                <span class="meta-item">&#10084; 248</span>
+                                <span class="meta-item">&#128278; 112</span>
+                            </div>
+                            <span>Coming Soon</span>
+                        </div>
+                        <button class="btn-gradient js-trigger-notify" data-item="W.I.N. Reframe Matrix">
+                            &#128276; Get Notified
+                        </button>
+                    </div>
                 </div>
 
-                <div class="lib-grid" id="lib-grid">
-                    
-                    <!-- Resource 1: WIN Reframe Matrix -->
-                    <div class="lib-card" data-category="worksheets" data-tags="win reframe matrix pdf worksheet constraint action plan">
-                        <div class="lib-card-img-wrapper">
-                            <span class="lib-card-type-badge">PDF Worksheet</span>
-                            <img src="../assets/free-gifts/WIN_Reframe_Matrix_cover_image.png" alt="W.I.N. Reframe Matrix Cover" class="lib-card-img">
+                <!-- Card 2: AI Accessibility Commands -->
+                <div class="social-card">
+                    <div class="card-social-header">
+                        <div class="card-author">
+                            <img src="../assets/chello_ai_avatar.png" alt="Marchello Sciortino" class="card-author-img">
+                            <span class="card-author-name">Marchello Sciortino</span>
                         </div>
-                        <div class="lib-card-body">
-                            <h3 class="lib-card-title">W.I.N. Reframe Matrix</h3>
-                            <p class="lib-card-desc">
-                                A step-by-step reflection grid to audit active constraints, break mental friction, and build a custom tactical action plan.
-                            </p>
-                            <div class="lib-card-footer">
-                                <a href="../assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf" download="WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf" class="lib-btn lib-btn-primary">
-                                    &#128190; Download PDF
-                                </a>
+                        <span class="card-badge">Prompt Guide</span>
+                    </div>
+                    <div class="social-img-wrapper js-trigger-notify" data-item="AI Accessibility Commands">
+                        <img src="../assets/free-gifts/Prompt_Cheat_Sheat_cover_image.png" alt="AI Accessibility Commands" class="social-img">
+                        <span class="preview-overlay-tag">&#128065; Preview Item</span>
+                    </div>
+                    <div class="social-card-body">
+                        <h3 class="social-card-title">AI Accessibility Commands</h3>
+                        <p class="social-card-desc">
+                            Sketch Notebook Edition: Prompt templates to configure AI writing assistants as voice transcription guides.
+                        </p>
+                        <div class="social-meta-bar">
+                            <div class="meta-group">
+                                <span class="meta-item">&#10084; 319</span>
+                                <span class="meta-item">&#128278; 145</span>
                             </div>
+                            <span>Coming Soon</span>
                         </div>
+                        <button class="btn-gradient js-trigger-notify" data-item="AI Accessibility Commands">
+                            &#128276; Get Notified
+                        </button>
                     </div>
-
-                    <!-- Resource 2: AI Accessibility Commands -->
-                    <div class="lib-card" data-category="ai" data-tags="ai prompt cheat sheet accessibility sketch notebook commands templates">
-                        <div class="lib-card-img-wrapper">
-                            <span class="lib-card-type-badge">Prompt Cheat Sheet</span>
-                            <img src="../assets/free-gifts/Prompt_Cheat_Sheat_cover_image.png" alt="AI Accessibility Commands Cover" class="lib-card-img">
-                        </div>
-                        <div class="lib-card-body">
-                            <h3 class="lib-card-title">AI Accessibility Commands</h3>
-                            <p class="lib-card-desc">
-                                Sketch Notebook Edition: Core templates to turn AI assistants into voice transcription guides and cognitive prosthetics.
-                            </p>
-                            <div class="lib-card-footer">
-                                <a href="../assets/free-gifts/Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf" download="Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf" class="lib-btn lib-btn-primary">
-                                    &#128190; Download Guide
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Resource 3: Digital Flow Audit -->
-                    <div class="lib-card" data-category="worksheets blueprints" data-tags="digital flow audit checklist accessibility ada speed friction landing page">
-                        <div class="lib-card-img-wrapper">
-                            <span class="lib-card-type-badge">Audit Checklist</span>
-                            <img src="../assets/free-gifts/Digital_Flow_Audit_cover_image.png" alt="Digital Flow Audit Cover" class="lib-card-img">
-                        </div>
-                        <div class="lib-card-body">
-                            <h3 class="lib-card-title">Digital Flow Audit Checklist</h3>
-                            <p class="lib-card-desc">
-                                An actionable check sheet to audit landing pages for ADA accessibility compliance, user experience, and speed friction blocks.
-                            </p>
-                            <div class="lib-card-footer">
-                                <a href="../assets/free-gifts/Digital_Flow_Audit_Checklist_Enhanced.pdf" download="Digital_Flow_Audit_Checklist_Enhanced.pdf" class="lib-btn lib-btn-primary">
-                                    &#128190; Download Checklist
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Resource 4: Speaker 1-Sheet & Media Kit -->
-                    <div class="lib-card" data-category="speaker" data-tags="speaker resume 1-sheet media kit keynote events keynote topics">
-                        <div class="lib-card-img-wrapper">
-                            <span class="lib-card-type-badge">Speaker & Media Kit</span>
-                            <img src="../assets/speaker_resume_page_1.png" alt="Marchello Sciortino Speaker Resume" class="lib-card-img">
-                        </div>
-                        <div class="lib-card-body">
-                            <h3 class="lib-card-title">Speaker 1-Sheet & Media Deck</h3>
-                            <p class="lib-card-desc">
-                                Official keynote speaker summary, event topics, bio, and technical rider for conference organizers and event hosts.
-                            </p>
-                            <div class="lib-card-footer">
-                                <a href="../assets/Marchello_Sciortino_Speaking_Resume.pdf" download="Marchello_Sciortino_Speaking_Resume.pdf" class="lib-btn lib-btn-gold">
-                                    &#128190; Download Media Kit
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Resource 5: Audio Lesson - Chosen Anyway -->
-                    <div class="lib-card" data-category="audio" data-tags="chosen anyway audio spoken word track podcast inspiration faith">
-                        <div class="lib-card-img-wrapper">
-                            <span class="lib-card-type-badge">Audio Lesson</span>
-                            <img src="../assets/chosen-anyway.png" alt="Chosen Anyway Cover" class="lib-card-img">
-                        </div>
-                        <div class="lib-card-body">
-                            <h3 class="lib-card-title">Chosen Anyway (Spoken Word)</h3>
-                            <p class="lib-card-desc">
-                                An inspiring audio message on stepping forward despite physical and emotional obstacles.
-                            </p>
-                            <div class="lib-card-footer">
-                                <button class="lib-btn lib-btn-outline js-play-audio" data-src="../assets/chosen-anyway.mp3" data-title="Chosen Anyway" data-artist="Marchello Sciortino" data-thumb="../assets/chosen-anyway.png">
-                                    &#9654; Listen Online
-                                </button>
-                                <a href="../assets/chosen-anyway.mp3" download="Chosen_Anyway_Marchello_Sciortino.mp3" class="lib-btn lib-btn-primary" style="width: 48px; padding: 12px 0;" title="Download MP3">
-                                    &#128190;
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Resource 6: Audio Lesson - Endgame Shadows -->
-                    <div class="lib-card" data-category="audio" data-tags="endgame shadows audio track lesson dark night purpose victory">
-                        <div class="lib-card-img-wrapper">
-                            <span class="lib-card-type-badge">Audio Lesson</span>
-                            <img src="../assets/endgame-shadows_cover-art.jpeg" alt="Endgame Shadows Cover" class="lib-card-img">
-                        </div>
-                        <div class="lib-card-body">
-                            <h3 class="lib-card-title">Endgame Shadows</h3>
-                            <p class="lib-card-desc">
-                                A powerful audio narrative about pushing past perceived limitations when shadows seem overwhelming.
-                            </p>
-                            <div class="lib-card-footer">
-                                <button class="lib-btn lib-btn-outline js-play-audio" data-src="../assets/endgame-shadows.mp3" data-title="Endgame Shadows" data-artist="Marchello Sciortino" data-thumb="../assets/endgame-shadows_cover-art.jpeg">
-                                    &#9654; Listen Online
-                                </button>
-                                <a href="../assets/endgame-shadows.mp3" download="Endgame_Shadows_Marchello_Sciortino.mp3" class="lib-btn lib-btn-primary" style="width: 48px; padding: 12px 0;" title="Download MP3">
-                                    &#128190;
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Resource 7: Audio Lesson - The Battle of the Illusions -->
-                    <div class="lib-card" data-category="audio" data-tags="battle of the illusions audio track truth perspective mindset">
-                        <div class="lib-card-img-wrapper">
-                            <span class="lib-card-type-badge">Audio Lesson</span>
-                            <img src="../assets/the-battle-of-the-illusions_cover-art.jpeg" alt="The Battle of the Illusions Cover" class="lib-card-img">
-                        </div>
-                        <div class="lib-card-body">
-                            <h3 class="lib-card-title">The Battle of the Illusions</h3>
-                            <p class="lib-card-desc">
-                                Deconstructing false barriers and mental illusions that try to convince you success is out of reach.
-                            </p>
-                            <div class="lib-card-footer">
-                                <button class="lib-btn lib-btn-outline js-play-audio" data-src="../assets/the-battle-of-the-illusions.mp3" data-title="The Battle of the Illusions" data-artist="Marchello Sciortino" data-thumb="../assets/the-battle-of-the-illusions_cover-art.jpeg">
-                                    &#9654; Listen Online
-                                </button>
-                                <a href="../assets/the-battle-of-the-illusions.mp3" download="The_Battle_of_the_Illusions.mp3" class="lib-btn lib-btn-primary" style="width: 48px; padding: 12px 0;" title="Download MP3">
-                                    &#128190;
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Resource 8: Audio Lesson - What Does It Mean -->
-                    <div class="lib-card" data-category="audio" data-tags="what does it mean audio perspective purpose disability resilience">
-                        <div class="lib-card-img-wrapper">
-                            <span class="lib-card-type-badge">Audio Lesson</span>
-                            <img src="../assets/what-does-it-mean_cover-art.jpeg" alt="What Does It Mean Cover" class="lib-card-img">
-                        </div>
-                        <div class="lib-card-body">
-                            <h3 class="lib-card-title">What Does It Mean?</h3>
-                            <p class="lib-card-desc">
-                                Reframing hardship: How shifting your questions from 'Why me?' to 'What does God want to build through this?' changes everything.
-                            </p>
-                            <div class="lib-card-footer">
-                                <button class="lib-btn lib-btn-outline js-play-audio" data-src="../assets/what-does-it-mean.mp3" data-title="What Does It Mean?" data-artist="Marchello Sciortino" data-thumb="../assets/what-does-it-mean_cover-art.jpeg">
-                                    &#9654; Listen Online
-                                </button>
-                                <a href="../assets/what-does-it-mean.mp3" download="What_Does_It_Mean.mp3" class="lib-btn lib-btn-primary" style="width: 48px; padding: 12px 0;" title="Download MP3">
-                                    &#128190;
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Resource 9: Accessible AIM Blueprint -->
-                    <div class="lib-card" data-category="blueprints ai" data-tags="accessible aim framework membership ai system guide">
-                        <div class="lib-card-img-wrapper">
-                            <span class="lib-card-type-badge">Strategic Blueprint</span>
-                            <img src="../assets/resources/Accessible_AIM_cover_image.png" alt="Accessible AIM Framework Cover" class="lib-card-img">
-                        </div>
-                        <div class="lib-card-body">
-                            <h3 class="lib-card-title">Accessible AIM Framework</h3>
-                            <p class="lib-card-desc">
-                                Core roadmap for pairing Artificial Intelligence with human intentionality to create high-impact, accessible content.
-                            </p>
-                            <div class="lib-card-footer">
-                                <a href="../assets/resources/Accessible_AIM_cover_image.png" target="_blank" class="lib-btn lib-btn-outline">
-                                    &#128065; Preview Blueprint
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Resource 10: Book & Digital Creation Blueprint -->
-                    <div class="lib-card" data-category="blueprints" data-tags="book website digital builder funnel system release">
-                        <div class="lib-card-img-wrapper">
-                            <span class="lib-card-type-badge">Digital Blueprint</span>
-                            <img src="../assets/resources/Book_Website_cover_image.png" alt="Book Launch Architecture Cover" class="lib-card-img">
-                        </div>
-                        <div class="lib-card-body">
-                            <h3 class="lib-card-title">Book & Funnel Release Architecture</h3>
-                            <p class="lib-card-desc">
-                                Visual breakdown of a multi-stage author sales funnel and digital distribution system.
-                            </p>
-                            <div class="lib-card-footer">
-                                <a href="../assets/resources/Book_Website_cover_image.png" target="_blank" class="lib-btn lib-btn-outline">
-                                    &#128065; Preview Architecture
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Resource 11: Sources & Recommended Reading -->
-                    <div class="lib-card" data-category="worksheets blueprints" data-tags="sources reading books mindset strategic learning">
-                        <div class="lib-card-img-wrapper">
-                            <span class="lib-card-type-badge">Reading Index</span>
-                            <img src="../assets/resources/Sources_cover_image.png" alt="Sources Cover" class="lib-card-img">
-                        </div>
-                        <div class="lib-card-body">
-                            <h3 class="lib-card-title">Foundational Sources & Books</h3>
-                            <p class="lib-card-desc">
-                                Marchello's curated list of top books on digital architecture, conversion marketing, and mental resilience.
-                            </p>
-                            <div class="lib-card-footer">
-                                <a href="../assets/resources/Sources_cover_image.png" target="_blank" class="lib-btn lib-btn-outline">
-                                    &#128065; View Index
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Resource 12: Chello AI Audio Track -->
-                    <div class="lib-card" data-category="audio ai" data-tags="chello ai music audio track sound articulated inspiration">
-                        <div class="lib-card-img-wrapper">
-                            <span class="lib-card-type-badge">Audio Track</span>
-                            <img src="../assets/chello-ai-music_cover-art.jpeg" alt="Chello AI Music Cover" class="lib-card-img">
-                        </div>
-                        <div class="lib-card-body">
-                            <h3 class="lib-card-title">Chello AI Theme Composition</h3>
-                            <p class="lib-card-desc">
-                                Original AI-assisted music composition demonstrating human-directed Articulated Inspiration in sound production.
-                            </p>
-                            <div class="lib-card-footer">
-                                <button class="lib-btn lib-btn-outline js-play-audio" data-src="../assets/chello-ai-music.mp3" data-title="Chello AI Theme" data-artist="Marchello Sciortino" data-thumb="../assets/chello-ai-music_cover-art.jpeg">
-                                    &#9654; Listen Online
-                                </button>
-                                <a href="../assets/chello-ai-music.mp3" download="Chello_AI_Theme.mp3" class="lib-btn lib-btn-primary" style="width: 48px; padding: 12px 0;" title="Download MP3">
-                                    &#128190;
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Empty Search Result Container -->
-                    <div class="lib-empty-state" id="lib-empty-state">
-                        <h3>No matching resources found</h3>
-                        <p>Try searching for different keywords or select a different category tab.</p>
-                        <button class="lib-btn lib-btn-primary" style="max-width: 200px; margin: 0 auto;" id="lib-reset-btn">Reset Filters</button>
-                    </div>
-
                 </div>
+
+                <!-- Card 3: Digital Flow Audit -->
+                <div class="social-card">
+                    <div class="card-social-header">
+                        <div class="card-author">
+                            <img src="../assets/chello_ai_avatar.png" alt="Marchello Sciortino" class="card-author-img">
+                            <span class="card-author-name">Marchello Sciortino</span>
+                        </div>
+                        <span class="card-badge">Audit Checklist</span>
+                    </div>
+                    <div class="social-img-wrapper js-trigger-notify" data-item="Digital Flow Audit Checklist">
+                        <img src="../assets/free-gifts/Digital_Flow_Audit_cover_image.png" alt="Digital Flow Audit Checklist" class="social-img">
+                        <span class="preview-overlay-tag">&#128065; Preview Item</span>
+                    </div>
+                    <div class="social-card-body">
+                        <h3 class="social-card-title">Digital Flow Audit Checklist</h3>
+                        <p class="social-card-desc">
+                            An actionable check sheet to audit landing pages for ADA accessibility compliance, user experience, and speed friction blocks.
+                        </p>
+                        <div class="social-meta-bar">
+                            <div class="meta-group">
+                                <span class="meta-item">&#10084; 194</span>
+                                <span class="meta-item">&#128278; 87</span>
+                            </div>
+                            <span>Coming Soon</span>
+                        </div>
+                        <button class="btn-gradient js-trigger-notify" data-item="Digital Flow Audit Checklist">
+                            &#128276; Get Notified
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card 4: Speaker Media Deck -->
+                <div class="social-card">
+                    <div class="card-social-header">
+                        <div class="card-author">
+                            <img src="../assets/chello_ai_avatar.png" alt="Marchello Sciortino" class="card-author-img">
+                            <span class="card-author-name">Marchello Sciortino</span>
+                        </div>
+                        <span class="card-badge">Media Kit</span>
+                    </div>
+                    <div class="social-img-wrapper js-trigger-notify" data-item="Speaker 1-Sheet & Media Kit">
+                        <img src="../assets/speaker_resume_page_1.png" alt="Speaker 1-Sheet & Media Kit" class="social-img">
+                        <span class="preview-overlay-tag">&#128065; Preview Item</span>
+                    </div>
+                    <div class="social-card-body">
+                        <h3 class="social-card-title">Speaker 1-Sheet & Media Deck</h3>
+                        <p class="social-card-desc">
+                            Official keynote speaker summary, event topics, bio, and technical rider for conference hosts.
+                        </p>
+                        <div class="social-meta-bar">
+                            <div class="meta-group">
+                                <span class="meta-item">&#10084; 412</span>
+                                <span class="meta-item">&#128278; 201</span>
+                            </div>
+                            <span>Coming Soon</span>
+                        </div>
+                        <button class="btn-gradient js-trigger-notify" data-item="Speaker 1-Sheet & Media Kit">
+                            &#128276; Get Notified
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card 5: Audio Spoken Word Lessons -->
+                <div class="social-card">
+                    <div class="card-social-header">
+                        <div class="card-author">
+                            <img src="../assets/chello_ai_avatar.png" alt="Marchello Sciortino" class="card-author-img">
+                            <span class="card-author-name">Marchello Sciortino</span>
+                        </div>
+                        <span class="card-badge">Audio Series</span>
+                    </div>
+                    <div class="social-img-wrapper js-trigger-notify" data-item="Chosen Anyway & Spoken Word Series">
+                        <img src="../assets/chosen-anyway.png" alt="Chosen Anyway Spoken Word" class="social-img">
+                        <span class="preview-overlay-tag">&#128065; Preview Item</span>
+                    </div>
+                    <div class="social-card-body">
+                        <h3 class="social-card-title">Chosen Anyway & Spoken Word Series</h3>
+                        <p class="social-card-desc">
+                            An inspiring series of audio messages on stepping forward despite physical and emotional obstacles.
+                        </p>
+                        <div class="social-meta-bar">
+                            <div class="meta-group">
+                                <span class="meta-item">&#10084; 560</span>
+                                <span class="meta-item">&#128278; 310</span>
+                            </div>
+                            <span>Coming Soon</span>
+                        </div>
+                        <button class="btn-gradient js-trigger-notify" data-item="Chosen Anyway & Spoken Word Series">
+                            &#128276; Get Notified
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card 6: Accessible AIM Blueprint -->
+                <div class="social-card">
+                    <div class="card-social-header">
+                        <div class="card-author">
+                            <img src="../assets/chello_ai_avatar.png" alt="Marchello Sciortino" class="card-author-img">
+                            <span class="card-author-name">Marchello Sciortino</span>
+                        </div>
+                        <span class="card-badge">Blueprint</span>
+                    </div>
+                    <div class="social-img-wrapper js-trigger-notify" data-item="Accessible AIM Framework Blueprint">
+                        <img src="../assets/resources/Accessible_AIM_cover_image.png" alt="Accessible AIM Framework Blueprint" class="social-img">
+                        <span class="preview-overlay-tag">&#128065; Preview Item</span>
+                    </div>
+                    <div class="social-card-body">
+                        <h3 class="social-card-title">Accessible AIM Framework</h3>
+                        <p class="social-card-desc">
+                            Core roadmap for pairing Artificial Intelligence with human intentionality to create accessible digital assets.
+                        </p>
+                        <div class="social-meta-bar">
+                            <div class="meta-group">
+                                <span class="meta-item">&#10084; 284</span>
+                                <span class="meta-item">&#128278; 129</span>
+                            </div>
+                            <span>Coming Soon</span>
+                        </div>
+                        <button class="btn-gradient js-trigger-notify" data-item="Accessible AIM Framework Blueprint">
+                            &#128276; Get Notified
+                        </button>
+                    </div>
+                </div>
+
             </div>
-        </section>
+        </div>
     </main>
 
-    <!-- Sticky Audio Player Widget -->
-    <div class="lib-audio-bar" id="lib-audio-bar" aria-label="Audio Player">
-        <div class="lib-audio-inner">
-            <div class="lib-audio-track-info">
-                <img src="../assets/chosen-anyway.png" alt="Track Cover" class="lib-audio-thumb" id="audio-bar-thumb">
-                <div class="lib-audio-details">
-                    <h4 id="audio-bar-title">Select a Track</h4>
-                    <p id="audio-bar-artist">Marchello Sciortino</p>
-                </div>
+    <!-- Notification Overlay Modal -->
+    <div class="notify-modal-overlay" id="notify-modal">
+        <div class="notify-modal-card">
+            <button class="notify-close-btn" id="notify-close">&times;</button>
+            <div id="notify-form-container">
+                <h3>&#128276; Get Instant VIP Access</h3>
+                <p id="notify-target-item">Enter your email to receive an alert as soon as this item releases.</p>
+                <form id="notify-submit-form">
+                    <input type="email" class="notify-input" id="notify-email" placeholder="yourname@email.com" required>
+                    <button type="submit" class="btn-gradient">Notify Me First &rarr;</button>
+                </form>
             </div>
-
-            <div class="lib-audio-controls">
-                <button class="lib-audio-play-btn" id="audio-bar-play-toggle" aria-label="Play or Pause Track">&#9654;</button>
-                <div class="lib-audio-progress-container">
-                    <span class="lib-audio-time" id="audio-current-time">0:00</span>
-                    <div class="lib-audio-progress-bar" id="audio-progress-bar">
-                        <div class="lib-audio-progress-fill" id="audio-progress-fill"></div>
-                    </div>
-                    <span class="lib-audio-time" id="audio-duration">0:00</span>
-                </div>
+            <div id="notify-success-msg" style="display: none; padding: 20px 0;">
+                <h3 style="color: var(--social-teal);">&#10004; You're on the VIP Release List!</h3>
+                <p style="color: #cbd5e1; margin-top: 10px;">
+                    Thank you! Marchello will send a direct download link to your email as soon as this digital item is released.
+                </p>
             </div>
-
-            <button class="lib-audio-close-btn" id="audio-bar-close" aria-label="Close Audio Player">&times;</button>
         </div>
     </div>
 
-    <!-- Hidden HTML5 Audio Element -->
-    <audio id="global-library-audio" preload="metadata"></audio>
-
     <!-- Footer -->
-    <footer class="lib-footer">
+    <footer class="social-footer">
         <div class="container">
-            <p class="lib-footer-quote">
+            <p style="color: #cbd5e1; max-width: 600px; margin: 0 auto 14px; font-style: italic;">
                 "God gives every person purpose, regardless of their limitations. Limitations do not eliminate calling; they change the strategy."
             </p>
-            <p>&copy; 2026 Marchello Sciortino. All rights reserved. | Standalone Free Resource Library</p>
+            <p>&copy; 2026 Marchello Sciortino. Standalone Free Digital Library. Official Creator Hub.</p>
         </div>
     </footer>
 
     <!-- Interactive Script -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const searchInput = document.getElementById('lib-search-input');
-            const filterTabs = document.querySelectorAll('.lib-tab-btn');
-            const cards = document.querySelectorAll('.lib-card');
-            const emptyState = document.getElementById('lib-empty-state');
-            const resetBtn = document.getElementById('lib-reset-btn');
-            const countText = document.getElementById('lib-count-text');
+            const notifyModal = document.getElementById('notify-modal');
+            const notifyClose = document.getElementById('notify-close');
+            const notifyTargetItem = document.getElementById('notify-target-item');
+            const notifyForm = document.getElementById('notify-submit-form');
+            const formContainer = document.getElementById('notify-form-container');
+            const successMsg = document.getElementById('notify-success-msg');
+            const triggers = document.querySelectorAll('.js-trigger-notify');
 
-            let activeCategory = 'all';
-            let searchQuery = '';
-
-            // Filter logic
-            function filterResources() {
-                let visibleCount = 0;
-
-                cards.forEach(card => {
-                    const cardCategory = card.getAttribute('data-category') || '';
-                    const cardTags = (card.getAttribute('data-tags') || '').toLowerCase();
-                    const cardTitle = card.querySelector('.lib-card-title').textContent.toLowerCase();
-                    const cardDesc = card.querySelector('.lib-card-desc').textContent.toLowerCase();
-
-                    const matchesCategory = activeCategory === 'all' || cardCategory.includes(activeCategory);
-                    const matchesSearch = searchQuery === '' || 
-                        cardTags.includes(searchQuery) || 
-                        cardTitle.includes(searchQuery) || 
-                        cardDesc.includes(searchQuery);
-
-                    if (matchesCategory && matchesSearch) {
-                        card.style.display = 'flex';
-                        visibleCount++;
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-
-                if (visibleCount === 0) {
-                    emptyState.style.display = 'block';
-                } else {
-                    emptyState.style.display = 'none';
-                }
-
-                countText.textContent = `Showing ${visibleCount} resource${visibleCount === 1 ? '' : 's'}`;
-            }
-
-            // Category Tab Click Handlers
-            filterTabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    filterTabs.forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    activeCategory = tab.getAttribute('data-category');
-                    filterResources();
+            triggers.forEach(trigger => {
+                trigger.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const itemTitle = trigger.getAttribute('data-item') || 'Free Digital Item';
+                    notifyTargetItem.textContent = `Get an instant alert when "${itemTitle}" goes live!`;
+                    formContainer.style.display = 'block';
+                    successMsg.style.display = 'none';
+                    notifyModal.classList.add('active');
                 });
             });
 
-            // Live Search Input Handler
-            searchInput.addEventListener('input', (e) => {
-                searchQuery = e.target.value.toLowerCase().trim();
-                filterResources();
+            notifyClose.addEventListener('click', () => {
+                notifyModal.classList.remove('active');
             });
 
-            // Reset Filters
-            resetBtn.addEventListener('click', () => {
-                searchInput.value = '';
-                searchQuery = '';
-                activeCategory = 'all';
-                filterTabs.forEach(t => t.classList.remove('active'));
-                filterTabs[0].classList.add('active');
-                filterResources();
-            });
-
-            // Audio Player Engine
-            const audioElement = document.getElementById('global-library-audio');
-            const audioBar = document.getElementById('lib-audio-bar');
-            const playToggle = document.getElementById('audio-bar-play-toggle');
-            const trackTitle = document.getElementById('audio-bar-title');
-            const trackArtist = document.getElementById('audio-bar-artist');
-            const trackThumb = document.getElementById('audio-bar-thumb');
-            const currentTimeEl = document.getElementById('audio-current-time');
-            const durationEl = document.getElementById('audio-duration');
-            const progressBar = document.getElementById('audio-progress-bar');
-            const progressFill = document.getElementById('audio-progress-fill');
-            const closeBtn = document.getElementById('audio-bar-close');
-
-            const playButtons = document.querySelectorAll('.js-play-audio');
-
-            function formatTime(seconds) {
-                if (isNaN(seconds)) return '0:00';
-                const mins = Math.floor(seconds / 60);
-                const secs = Math.floor(seconds % 60);
-                return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-            }
-
-            playButtons.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const src = btn.getAttribute('data-src');
-                    const title = btn.getAttribute('data-title');
-                    const artist = btn.getAttribute('data-artist') || 'Marchello Sciortino';
-                    const thumb = btn.getAttribute('data-thumb');
-
-                    if (audioElement.src.includes(src.replace('../', '')) && !audioElement.paused) {
-                        audioElement.pause();
-                        playToggle.innerHTML = '&#9654;';
-                        return;
-                    }
-
-                    audioElement.src = src;
-                    trackTitle.textContent = title;
-                    trackArtist.textContent = artist;
-                    if (thumb) trackThumb.src = thumb;
-
-                    audioBar.classList.add('active');
-                    audioElement.play();
-                    playToggle.innerHTML = '&#10074;&#10074;';
-                });
-            });
-
-            playToggle.addEventListener('click', () => {
-                if (audioElement.paused) {
-                    audioElement.play();
-                    playToggle.innerHTML = '&#10074;&#10074;';
-                } else {
-                    audioElement.pause();
-                    playToggle.innerHTML = '&#9654;';
+            notifyModal.addEventListener('click', (e) => {
+                if (e.target === notifyModal) {
+                    notifyModal.classList.remove('active');
                 }
             });
 
-            audioElement.addEventListener('timeupdate', () => {
-                if (audioElement.duration) {
-                    const pct = (audioElement.currentTime / audioElement.duration) * 100;
-                    progressFill.style.width = `${pct}%`;
-                    currentTimeEl.textContent = formatTime(audioElement.currentTime);
-                    durationEl.textContent = formatTime(audioElement.duration);
-                }
-            });
-
-            progressBar.addEventListener('click', (e) => {
-                const rect = progressBar.getBoundingClientRect();
-                const clickX = e.clientX - rect.left;
-                const width = rect.width;
-                if (audioElement.duration) {
-                    audioElement.currentTime = (clickX / width) * audioElement.duration;
-                }
-            });
-
-            closeBtn.addEventListener('click', () => {
-                audioElement.pause();
-                audioBar.classList.remove('active');
+            notifyForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                formContainer.style.display = 'none';
+                successMsg.style.display = 'block';
             });
         });
     </script>
