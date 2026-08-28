@@ -2724,26 +2724,22 @@ Router.register('/contact', () => {
 `;
 });
 
-// 14. Free Gifts & Free Library Page Template (Light Minimalist Single Resource)
+// 14. Free Gifts & Free Library Page Template (Scalable Teaser Library Grid)
 const freeGiftsTemplate = () => {
-    const isUnlocked = localStorage.getItem('free-library-unlocked') === 'true';
-    const formStyle = isUnlocked ? 'display: none;' : 'display: block;';
-    const downloadStyle = isUnlocked ? 'display: block;' : 'display: none;';
-
     return `
     <style>
-        .light-lib-wrapper {
+        .teaser-lib-wrapper {
             background-color: #f8fafc;
             color: #475569;
             padding: 50px 0 90px;
         }
 
-        .light-hero-section {
+        .teaser-hero-section {
             text-align: center;
             margin-bottom: 40px;
         }
 
-        .light-hero-tag {
+        .teaser-hero-tag {
             color: #0ad8ad;
             font-weight: 700;
             font-size: 0.85rem;
@@ -2753,7 +2749,7 @@ const freeGiftsTemplate = () => {
             display: inline-block;
         }
 
-        .light-hero-title {
+        .teaser-hero-title {
             color: #0f172a;
             font-family: var(--font-heading);
             font-size: 2.5rem;
@@ -2762,107 +2758,119 @@ const freeGiftsTemplate = () => {
             line-height: 1.25;
         }
 
-        .light-hero-desc {
+        .teaser-hero-desc {
             max-width: 680px;
             margin: 0 auto;
             color: #475569;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             line-height: 1.65;
         }
 
-        .light-resource-card {
-            max-width: 720px;
+        .teaser-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 28px;
+            max-width: 1200px;
             margin: 0 auto;
+        }
+
+        .teaser-card {
             background: #ffffff;
             border: 1px solid #e2e8f0;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            padding: 40px;
+            border-radius: 18px;
+            overflow: hidden;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s;
+            position: relative;
         }
 
-        .light-resource-cover-wrapper {
-            width: 100%;
-            max-width: 340px;
-            border-radius: 16px;
-            overflow: hidden;
-            margin-bottom: 24px;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-            border: 1px solid #e2e8f0;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .light-resource-cover-wrapper:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 16px 36px rgba(10, 216, 173, 0.2);
-        }
-
-        .light-resource-cover-img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-
-        .light-card-title {
-            font-family: var(--font-heading);
-            font-size: 1.6rem;
-            color: #0f172a;
-            margin: 0 0 12px;
-        }
-
-        .light-card-meta {
-            font-size: 0.88rem;
-            color: #64748b;
-            margin-bottom: 20px;
-        }
-
-        .light-card-text {
-            color: #475569;
-            font-size: 1rem;
-            line-height: 1.65;
-            margin-bottom: 32px;
-            max-width: 580px;
-        }
-
-        .light-unlock-box {
-            width: 100%;
-            max-width: 480px;
-        }
-
-        .light-input {
-            width: 100%;
-            padding: 14px 18px;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            font-size: 1rem;
-            color: #0f172a;
-            background: #f8fafc;
-            outline: none;
-            margin-bottom: 14px;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-
-        .light-input:focus {
+        .teaser-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 35px rgba(10, 216, 173, 0.15);
             border-color: #0ad8ad;
-            box-shadow: 0 0 0 3px rgba(10, 216, 173, 0.15);
-            background: #ffffff;
         }
 
-        .light-btn-action {
+        .card-cover-wrapper {
+            position: relative;
+            width: 100%;
+            height: 220px;
+            background: #f1f5f9;
+            overflow: hidden;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .card-cover-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .teaser-card:hover .card-cover-img {
+            transform: scale(1.05);
+        }
+
+        .card-status-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            color: #0f172a;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .card-status-badge.active {
+            background: #dcfce7;
+            color: #166534;
+            border-color: #bbf7d0;
+        }
+
+        .teaser-card-body {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .teaser-card-title {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            color: #0f172a;
+            margin: 0 0 10px;
+        }
+
+        .teaser-bullets {
+            margin: 0 0 20px;
+            padding-left: 18px;
+            color: #475569;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+
+        .teaser-bullets li {
+            margin-bottom: 6px;
+        }
+
+        .btn-download-trigger {
             width: 100%;
             background: #081b29;
             color: #ffffff;
             font-family: var(--font-heading);
             font-weight: 700;
-            font-size: 1rem;
-            padding: 16px 24px;
+            font-size: 0.95rem;
+            padding: 13px 20px;
             border: none;
             border-radius: 10px;
             cursor: pointer;
+            text-align: center;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
@@ -2871,57 +2879,214 @@ const freeGiftsTemplate = () => {
             transition: background 0.2s, transform 0.15s;
         }
 
-        .light-btn-action:hover {
+        .btn-download-trigger:hover {
             background: #0ad8ad;
             color: #081b29;
         }
 
-        .light-unlocked-badge {
-            background: #dcfce7;
-            color: #166534;
-            font-size: 0.85rem;
-            font-weight: 700;
-            padding: 6px 14px;
+        /* Modal Overlay */
+        .spa-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(8px);
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .spa-modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .spa-modal-card {
+            background: #ffffff;
             border-radius: 20px;
-            display: inline-block;
-            margin-bottom: 16px;
+            padding: 36px;
+            max-width: 460px;
+            width: 100%;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            text-align: center;
+        }
+
+        .spa-modal-overlay.active .spa-modal-card {
+            transform: translateY(0);
+        }
+
+        .spa-modal-close {
+            position: absolute;
+            top: 14px;
+            right: 18px;
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            font-size: 1.6rem;
+            cursor: pointer;
+        }
+
+        .spa-modal-close:hover {
+            color: #0f172a;
+        }
+
+        .spa-modal-card h3 {
+            font-family: var(--font-heading);
+            font-size: 1.4rem;
+            color: #0f172a;
+            margin: 0 0 10px;
+        }
+
+        .spa-modal-card p {
+            color: #475569;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 22px;
+        }
+
+        .spa-modal-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            color: #0f172a;
+            background: #f8fafc;
+            outline: none;
+            margin-bottom: 14px;
+        }
+
+        .spa-modal-input:focus {
+            border-color: #0ad8ad;
+            box-shadow: 0 0 0 3px rgba(10, 216, 173, 0.15);
+            background: #ffffff;
         }
     </style>
 
-    <div class="light-lib-wrapper">
+    <div class="teaser-lib-wrapper">
         <div class="container">
-            <div class="light-hero-section">
-                <span class="light-hero-tag">Official Free Digital Download</span>
-                <h1 class="light-hero-title">Creative Amplification Through AI</h1>
-                <p class="light-hero-desc">
-                    A comprehensive guide by Marchello Sciortino exploring how Artificial Intelligence serves as a cognitive prosthetic to reframe constraints, amplify human expression, and unlock digital agency.
+            <div class="teaser-hero-section">
+                <span class="teaser-hero-tag">Free Resource Collection</span>
+                <h1 class="teaser-hero-title">Free Digital Library</h1>
+                <p class="teaser-hero-desc">
+                    Preview Marchello Sciortino's collection of free digital guides, prompt cheat sheets, audio lessons, and strategic frameworks. Click download on any item to proceed.
                 </p>
             </div>
 
-            <div class="light-resource-card">
-                <div class="light-resource-cover-wrapper">
-                    <img src="assets/free-gifts/creative_amplification_cover.png" alt="Creative Amplification Through AI Cover" class="light-resource-cover-img">
-                </div>
-                <h2 class="light-card-title">Creative Amplification Through AI</h2>
+            <div class="teaser-grid">
 
-                <div class="light-card-meta">PDF Guide &bull; By Marchello Sciortino &bull; Instant Access</div>
-                <p class="light-card-text">
-                    Learn the core principles of Articulated Inspiration: turning obstacles into strategic leverage by pairing human intentionality with modern AI tools.
+                <!-- Item 1: Featured Live Release -->
+                <div class="teaser-card">
+                    <div class="card-cover-wrapper">
+                        <img src="assets/free-gifts/creative_amplification_cover.png" alt="Creative Amplification Cover" class="card-cover-img">
+                        <span class="card-status-badge active">&#10004; Available Now</span>
+                    </div>
+                    <div class="teaser-card-body">
+                        <h3 class="teaser-card-title">Creative Amplification Through AI</h3>
+                        <ul class="teaser-bullets">
+                            <li>Principles of Articulated Inspiration.</li>
+                            <li>Turning constraints into strategic leverage.</li>
+                            <li>Practical prompt configurations for creators.</li>
+                        </ul>
+                        <button class="btn-download-trigger js-spa-download-btn" data-title="Creative Amplification Through AI" data-file="assets/free-gifts/Creative_amplification_through_AI.pdf">
+                            Download PDF &darr;
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Item 2: Teaser W.I.N. Reframe Matrix -->
+                <div class="teaser-card">
+                    <div class="card-cover-wrapper">
+                        <img src="assets/free-gifts/WIN_Reframe_Matrix_cover_image.png" alt="WIN Reframe Matrix Cover" class="card-cover-img">
+                        <span class="card-status-badge">Teaser / Upcoming</span>
+                    </div>
+                    <div class="teaser-card-body">
+                        <h3 class="teaser-card-title">W.I.N. Reframe Matrix</h3>
+                        <ul class="teaser-bullets">
+                            <li>Reflection grid for active constraints.</li>
+                            <li>Breaking mental friction loops.</li>
+                            <li>Custom tactical action plan builder.</li>
+                        </ul>
+                        <button class="btn-download-trigger js-spa-download-btn" data-title="W.I.N. Reframe Matrix" data-file="assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf">
+                            Download Teaser &darr;
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Item 3: Teaser AI Accessibility Commands -->
+                <div class="teaser-card">
+                    <div class="card-cover-wrapper">
+                        <img src="assets/free-gifts/Prompt_Cheat_Sheat_cover_image.png" alt="AI Accessibility Commands Cover" class="card-cover-img">
+                        <span class="card-status-badge">Teaser / Upcoming</span>
+                    </div>
+                    <div class="teaser-card-body">
+                        <h3 class="teaser-card-title">AI Accessibility Commands</h3>
+                        <ul class="teaser-bullets">
+                            <li>Sketch notebook prompt cheat sheet.</li>
+                            <li>Voice transcription guide templates.</li>
+                            <li>Configuring AI as a cognitive prosthetic.</li>
+                        </ul>
+                        <button class="btn-download-trigger js-spa-download-btn" data-title="AI Accessibility Commands" data-file="assets/free-gifts/Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf">
+                            Download Teaser &darr;
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Item 4: Teaser Digital Flow Audit -->
+                <div class="teaser-card">
+                    <div class="card-cover-wrapper">
+                        <img src="assets/free-gifts/Digital_Flow_Audit_cover_image.png" alt="Digital Flow Audit Cover" class="card-cover-img">
+                        <span class="card-status-badge">Teaser / Upcoming</span>
+                    </div>
+                    <div class="teaser-card-body">
+                        <h3 class="teaser-card-title">Digital Flow Audit Checklist</h3>
+                        <ul class="teaser-bullets">
+                            <li>ADA accessibility compliance audit.</li>
+                            <li>Speed & user experience friction check.</li>
+                            <li>Landing page conversion optimization.</li>
+                        </ul>
+                        <button class="btn-download-trigger js-spa-download-btn" data-title="Digital Flow Audit Checklist" data-file="assets/free-gifts/Digital_Flow_Audit_Checklist_Enhanced.pdf">
+                            Download Teaser &darr;
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="spa-modal-overlay" id="spa-download-modal">
+        <div class="spa-modal-card">
+            <button class="spa-modal-close" id="spa-modal-close">&times;</button>
+            <div id="spa-form-view">
+                <h3>Before proceeding, please log in</h3>
+                <p id="spa-copy-text">
+                    Before proceeding, please enter your email so we can contact you further, send you direct updates, and unlock your download.
                 </p>
-
-                <div class="light-unlock-box" id="spa-unlock-form-box" style="${formStyle}">
-                    <form id="spa-free-library-form">
-                        <input type="email" class="light-input" id="spa-user-email" placeholder="Enter your email to unlock..." required>
-                        <button type="submit" class="light-btn-action">Unlock & Download PDF &rarr;</button>
-                    </form>
-                </div>
-
-                <div class="light-unlock-box" id="spa-download-unlocked-box" style="${downloadStyle}">
-                    <span class="light-unlocked-badge">&#10004; Resource Unlocked</span>
-                    <a href="assets/free-gifts/Creative_amplification_through_AI.pdf" download="Creative_amplification_through_AI.pdf" class="light-btn-action" style="background: #0ad8ad; color: #081b29;">
-                        &#128190; Download PDF Now
-                    </a>
-                </div>
+                <form id="spa-modal-login-form">
+                    <input type="email" class="spa-modal-input" id="spa-modal-email" placeholder="yourname@email.com" required>
+                    <button type="submit" class="btn-download-trigger" style="background: #0ad8ad; color: #081b29;">
+                        Continue & Download &rarr;
+                    </button>
+                </form>
+            </div>
+            <div id="spa-success-view" style="display: none;">
+                <h3 style="color: #0ad8ad;">&#10004; Access Granted!</h3>
+                <p>Click the link below to download your file.</p>
+                <a href="#" id="spa-direct-download-link" download class="btn-download-trigger" style="background: #0ad8ad; color: #081b29;">
+                    &#128190; Download File Now
+                </a>
             </div>
         </div>
     </div>
@@ -2931,19 +3096,56 @@ const freeGiftsTemplate = () => {
 Router.register('/free-gifts', freeGiftsTemplate);
 Router.register('/free-library', freeGiftsTemplate);
 
-// Form unlock listener for SPA mode
-document.addEventListener('submit', (e) => {
-    if (e.target && e.target.id === 'spa-free-library-form') {
+// Global click event listener for SPA download triggers
+document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.js-spa-download-btn');
+    if (btn) {
         e.preventDefault();
-        localStorage.setItem('free-library-unlocked', 'true');
-        const formBox = document.getElementById('spa-unlock-form-box');
-        const downloadBox = document.getElementById('spa-download-unlocked-box');
-        if (formBox && downloadBox) {
-            formBox.style.display = 'none';
-            downloadBox.style.display = 'block';
+        const fileUrl = btn.getAttribute('data-file');
+        const title = btn.getAttribute('data-title');
+        const modal = document.getElementById('spa-download-modal');
+        const copyText = document.getElementById('spa-copy-text');
+        const formView = document.getElementById('spa-form-view');
+        const successView = document.getElementById('spa-success-view');
+        const directLink = document.getElementById('spa-direct-download-link');
+
+        if (!modal) return;
+
+        const savedEmail = localStorage.getItem('free-library-user-email');
+        if (savedEmail && directLink) {
+            directLink.href = fileUrl;
+            formView.style.display = 'none';
+            successView.style.display = 'block';
+        } else if (copyText && formView && successView) {
+            copyText.textContent = `Before proceeding with "${title}", please enter your email so we can contact you further and send you updates.`;
+            formView.style.display = 'block';
+            successView.style.display = 'none';
+            if (directLink) directLink.href = fileUrl;
+        }
+        modal.classList.add('active');
+    }
+
+    if (e.target && e.target.id === 'spa-modal-close') {
+        const modal = document.getElementById('spa-download-modal');
+        if (modal) modal.classList.remove('active');
+    }
+});
+
+// Submit event listener for SPA modal form
+document.addEventListener('submit', (e) => {
+    if (e.target && e.target.id === 'spa-modal-login-form') {
+        e.preventDefault();
+        const email = document.getElementById('spa-modal-email').value;
+        localStorage.setItem('free-library-user-email', email);
+        const formView = document.getElementById('spa-form-view');
+        const successView = document.getElementById('spa-success-view');
+        if (formView && successView) {
+            formView.style.display = 'none';
+            successView.style.display = 'block';
         }
     }
 });
+
 
 
 
