@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: https: blob:; media-src 'self' data: https: blob:; connect-src 'self' https:; frame-src 'self' https:; frame-ancestors 'none';">
+    <title>Free Digital Library | Marchello Sciortino</title>
+    <meta name="description"
+        content="Access free PDF worksheets, AI prompt cheat sheets, audio lessons, and strategic frameworks by Marchello Sciortino to reframe constraints and build digital freedom.">
+    <link rel="canonical" href="https://library.marchellosciortino.com">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="../favicon.ico?v=20260809">
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon.png?v=20260809">
+    <link rel="icon" type="image/png" sizes="16x16" href="../favicon.png?v=20260809">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Oswald:wght@700;800&display=swap" rel="stylesheet">
+
+    <!-- Global Stylesheets -->
+    <link rel="stylesheet" href="../css/style.css?v=20260820-4">
+    <link rel="stylesheet" href="../css/accessibility.css?v=20260820-4">
+
+    <!-- Standalone Library Scoped Styles -->
+    <style>
+        :root {
+            --lib-bg-dark: #05131f;
+            --lib-card-bg: rgba(13, 39, 61, 0.75);
+            --lib-card-border: rgba(10, 216, 173, 0.2);
+            --lib-teal: #0ad8ad;
+            --lib-teal-glow: rgba(10, 216, 173, 0.25);
+            --lib-gold: #F6B84B;
+        }
+
+        body {
+            background-color: var(--lib-bg-dark);
+            color: #F7FAFC;
+            font-family: var(--font-body);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Library Header */
+        .lib-header {
+            background: rgba(8, 27, 41, 0.9);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(10, 216, 173, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        .lib-header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .lib-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .lib-logo img {
+            height: 38px;
+            width: auto;
+        }
+
+        .lib-badge-tag {
+            background: linear-gradient(135deg, rgba(10, 216, 173, 0.15), rgba(246, 184, 75, 0.15));
+            border: 1px solid var(--lib-teal);
+            color: var(--lib-teal);
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+
+        .lib-back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--color-white);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all var(--transition-fast);
+        }
+
+        .lib-back-btn:hover {
+            background: var(--lib-teal);
+            color: var(--color-navy);
+            border-color: var(--lib-teal);
+            box-shadow: 0 0 15px var(--lib-teal-glow);
+        }
+
+        /* Hero Section */
+        .lib-hero {
+            position: relative;
+            padding: 70px 0 40px;
+            text-align: center;
+            background: radial-gradient(circle at 50% 20%, rgba(10, 216, 173, 0.12) 0%, rgba(5, 19, 31, 0) 70%);
+            overflow: hidden;
+        }
+
+        .lib-hero-subtitle {
+            max-width: 780px;
+            margin: 16px auto 36px;
+            color: #cbd5e1;
+            font-size: 1.15rem;
+            line-height: 1.7;
+        }
+
+        /* Search & Filter Controls */
+        .lib-controls-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .lib-search-box {
+            position: relative;
+            width: 100%;
+        }
+
+        .lib-search-input {
+            width: 100%;
+            background: rgba(13, 39, 61, 0.85);
+            border: 2px solid rgba(10, 216, 173, 0.3);
+            border-radius: 50px;
+            padding: 16px 24px 16px 56px;
+            color: #ffffff;
+            font-size: 1.05rem;
+            outline: none;
+            transition: all var(--transition-smooth);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .lib-search-input:focus {
+            border-color: var(--lib-teal);
+            box-shadow: 0 0 20px rgba(10, 216, 173, 0.3), inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .lib-search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--lib-teal);
+            font-size: 1.2rem;
+            pointer-events: none;
+        }
+
+        .lib-filter-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .lib-tab-btn {
+            background: rgba(13, 39, 61, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #cbd5e1;
+            padding: 8px 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.92rem;
+            font-weight: 600;
+            transition: all var(--transition-fast);
+        }
+
+        .lib-tab-btn:hover,
+        .lib-tab-btn.active {
+            background: var(--lib-teal);
+            color: var(--color-navy);
+            border-color: var(--lib-teal);
+            box-shadow: 0 0 15px rgba(10, 216, 173, 0.35);
+        }
+
+        /* Results Counter */
+        .lib-results-bar {
+            margin: 30px 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #94a3b8;
+            font-size: 0.95rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 12px;
+        }
+
+        /* Card Grid Layout */
+        .lib-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 28px;
+            padding-bottom: 80px;
+        }
+
+        .lib-card {
+            background: var(--lib-card-bg);
+            border: 1px solid var(--lib-card-border);
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform var(--transition-smooth), box-shadow var(--transition-smooth), border-color var(--transition-smooth);
+            position: relative;
+        }
+
+        .lib-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--lib-teal);
+            box-shadow: 0 12px 30px rgba(10, 216, 173, 0.2);
+        }
+
+        .lib-card-img-wrapper {
+            position: relative;
+            width: 100%;
+            height: 210px;
+            background: #030d17;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lib-card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .lib-card:hover .lib-card-img {
+            transform: scale(1.05);
+        }
+
+        .lib-card-type-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(8, 27, 41, 0.88);
+            border: 1px solid var(--lib-teal);
+            color: var(--lib-teal);
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(8px);
+        }
+
+        .lib-card-body {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .lib-card-title {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            color: #ffffff;
+            margin-bottom: 10px;
+            line-height: 1.35;
+        }
+
+        .lib-card-desc {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .lib-card-footer {
+            margin-top: auto;
+            display: flex;
+            gap: 10px;
+        }
+
+        .lib-btn {
+            width: 100%;
+            text-align: center;
+            padding: 12px 18px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.92rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: none;
+        }
+
+        .lib-btn-primary {
+            background: var(--lib-teal);
+            color: var(--color-navy);
+        }
+
+        .lib-btn-primary:hover {
+            background: #09c29b;
+            box-shadow: 0 0 15px rgba(10, 216, 173, 0.4);
+        }
+
+        .lib-btn-outline {
+            background: transparent;
+            border: 1px solid var(--lib-teal);
+            color: var(--lib-teal);
+        }
+
+        .lib-btn-outline:hover {
+            background: var(--lib-teal);
+            color: var(--color-navy);
+        }
+
+        .lib-btn-gold {
+            background: var(--lib-gold);
+            color: var(--color-navy);
+        }
+
+        .lib-btn-gold:hover {
+            background: #e5a73b;
+            box-shadow: 0 0 15px rgba(246, 184, 75, 0.4);
+        }
+
+        /* Sticky Audio Player Drawer */
+        .lib-audio-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(3, 13, 23, 0.96);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--lib-teal);
+            padding: 14px 24px;
+            z-index: 2000;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .lib-audio-bar.active {
+            transform: translateY(0);
+        }
+
+        .lib-audio-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .lib-audio-track-info {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-width: 240px;
+        }
+
+        .lib-audio-thumb {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 1px solid var(--lib-teal);
+        }
+
+        .lib-audio-details h4 {
+            font-size: 0.95rem;
+            color: #ffffff;
+            margin: 0 0 2px;
+        }
+
+        .lib-audio-details p {
+            font-size: 0.8rem;
+            color: var(--lib-teal);
+            margin: 0;
+        }
+
+        .lib-audio-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-grow: 1;
+            max-width: 600px;
+        }
+
+        .lib-audio-play-btn {
+            background: var(--lib-teal);
+            color: var(--color-navy);
+            border: none;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            transition: transform 0.2s;
+        }
+
+        .lib-audio-play-btn:hover {
+            transform: scale(1.08);
+        }
+
+        .lib-audio-progress-container {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .lib-audio-time {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .lib-audio-progress-bar {
+            flex-grow: 1;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 3px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lib-audio-progress-fill {
+            height: 100%;
+            background: var(--lib-teal);
+            width: 0%;
+            border-radius: 3px;
+        }
+
+        .lib-audio-close-btn {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            font-size: 1.4rem;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .lib-audio-close-btn:hover {
+            color: #ffffff;
+        }
+
+        /* Empty state */
+        .lib-empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            background: var(--lib-card-bg);
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            display: none;
+        }
+
+        .lib-empty-state h3 {
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .lib-empty-state p {
+            color: #94a3b8;
+            margin-bottom: 20px;
+        }
+
+        /* Footer */
+        .lib-footer {
+            margin-top: auto;
+            background: #030d17;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 40px 0;
+            text-align: center;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .lib-footer-quote {
+            max-width: 600px;
+            margin: 0 auto 20px;
+            color: #cbd5e1;
+            font-style: italic;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Top Header -->
+    <header class="lib-header">
+        <div class="container lib-header-inner">
+            <a href="/" class="lib-logo" aria-label="Marchello Sciortino Home">
+                <img src="../assets/logo-light.png" alt="Marchello Sciortino Logo">
+                <span class="lib-badge-tag">Free Library</span>
+            </a>
+            <a href="/" class="lib-back-btn">&larr; Return to Main Site</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="main-focus">
+        <!-- Hero Section -->
+        <section class="lib-hero">
+            <div class="container">
+                <span class="section-tag text-teal">Articulated Inspiration</span>
+                <h1 style="color: #ffffff; margin-top: 12px; font-size: 2.75rem;">Free Digital Library</h1>
+                <p class="lib-hero-subtitle">
+                    Worksheets, AI prompt cheat sheets, audio lessons, and strategic frameworks designed to reframe limitations, eliminate friction, and build digital momentum.
+                </p>
+
+                <!-- Search & Filters -->
+                <div class="lib-controls-wrapper">
+                    <div class="lib-search-box">
+                        <span class="lib-search-icon">&#128269;</span>
+                        <input type="text" id="lib-search-input" class="lib-search-input" placeholder="Search resources, cheat sheets, topics, or audio lessons..." aria-label="Search resources">
+                    </div>
+
+                    <div class="lib-filter-tabs" id="lib-filter-tabs">
+                        <button class="lib-tab-btn active" data-category="all">All Resources</button>
+                        <button class="lib-tab-btn" data-category="worksheets">Worksheets & Guides</button>
+                        <button class="lib-tab-btn" data-category="ai">AI & Prompts</button>
+                        <button class="lib-tab-btn" data-category="audio">Audio Lessons</button>
+                        <button class="lib-tab-btn" data-category="speaker">Speaker & Media</button>
+                        <button class="lib-tab-btn" data-category="blueprints">Strategic Blueprints</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Library Collection Section -->
+        <section class="section" style="padding-top: 0;">
+            <div class="container">
+                <div class="lib-results-bar">
+                    <span id="lib-count-text">Showing 12 resources</span>
+                    <span>Free for personal & professional use</span>
+                </div>
+
+                <div class="lib-grid" id="lib-grid">
+                    
+                    <!-- Resource 1: WIN Reframe Matrix -->
+                    <div class="lib-card" data-category="worksheets" data-tags="win reframe matrix pdf worksheet constraint action plan">
+                        <div class="lib-card-img-wrapper">
+                            <span class="lib-card-type-badge">PDF Worksheet</span>
+                            <img src="../assets/free-gifts/WIN_Reframe_Matrix_cover_image.png" alt="W.I.N. Reframe Matrix Cover" class="lib-card-img">
+                        </div>
+                        <div class="lib-card-body">
+                            <h3 class="lib-card-title">W.I.N. Reframe Matrix</h3>
+                            <p class="lib-card-desc">
+                                A step-by-step reflection grid to audit active constraints, break mental friction, and build a custom tactical action plan.
+                            </p>
+                            <div class="lib-card-footer">
+                                <a href="../assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf" download="WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf" class="lib-btn lib-btn-primary">
+                                    &#128190; Download PDF
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resource 2: AI Accessibility Commands -->
+                    <div class="lib-card" data-category="ai" data-tags="ai prompt cheat sheet accessibility sketch notebook commands templates">
+                        <div class="lib-card-img-wrapper">
+                            <span class="lib-card-type-badge">Prompt Cheat Sheet</span>
+                            <img src="../assets/free-gifts/Prompt_Cheat_Sheat_cover_image.png" alt="AI Accessibility Commands Cover" class="lib-card-img">
+                        </div>
+                        <div class="lib-card-body">
+                            <h3 class="lib-card-title">AI Accessibility Commands</h3>
+                            <p class="lib-card-desc">
+                                Sketch Notebook Edition: Core templates to turn AI assistants into voice transcription guides and cognitive prosthetics.
+                            </p>
+                            <div class="lib-card-footer">
+                                <a href="../assets/free-gifts/Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf" download="Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf" class="lib-btn lib-btn-primary">
+                                    &#128190; Download Guide
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resource 3: Digital Flow Audit -->
+                    <div class="lib-card" data-category="worksheets blueprints" data-tags="digital flow audit checklist accessibility ada speed friction landing page">
+                        <div class="lib-card-img-wrapper">
+                            <span class="lib-card-type-badge">Audit Checklist</span>
+                            <img src="../assets/free-gifts/Digital_Flow_Audit_cover_image.png" alt="Digital Flow Audit Cover" class="lib-card-img">
+                        </div>
+                        <div class="lib-card-body">
+                            <h3 class="lib-card-title">Digital Flow Audit Checklist</h3>
+                            <p class="lib-card-desc">
+                                An actionable check sheet to audit landing pages for ADA accessibility compliance, user experience, and speed friction blocks.
+                            </p>
+                            <div class="lib-card-footer">
+                                <a href="../assets/free-gifts/Digital_Flow_Audit_Checklist_Enhanced.pdf" download="Digital_Flow_Audit_Checklist_Enhanced.pdf" class="lib-btn lib-btn-primary">
+                                    &#128190; Download Checklist
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resource 4: Speaker 1-Sheet & Media Kit -->
+                    <div class="lib-card" data-category="speaker" data-tags="speaker resume 1-sheet media kit keynote events keynote topics">
+                        <div class="lib-card-img-wrapper">
+                            <span class="lib-card-type-badge">Speaker & Media Kit</span>
+                            <img src="../assets/speaker_resume_page_1.png" alt="Marchello Sciortino Speaker Resume" class="lib-card-img">
+                        </div>
+                        <div class="lib-card-body">
+                            <h3 class="lib-card-title">Speaker 1-Sheet & Media Deck</h3>
+                            <p class="lib-card-desc">
+                                Official keynote speaker summary, event topics, bio, and technical rider for conference organizers and event hosts.
+                            </p>
+                            <div class="lib-card-footer">
+                                <a href="../assets/Marchello_Sciortino_Speaking_Resume.pdf" download="Marchello_Sciortino_Speaking_Resume.pdf" class="lib-btn lib-btn-gold">
+                                    &#128190; Download Media Kit
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resource 5: Audio Lesson - Chosen Anyway -->
+                    <div class="lib-card" data-category="audio" data-tags="chosen anyway audio spoken word track podcast inspiration faith">
+                        <div class="lib-card-img-wrapper">
+                            <span class="lib-card-type-badge">Audio Lesson</span>
+                            <img src="../assets/chosen-anyway.png" alt="Chosen Anyway Cover" class="lib-card-img">
+                        </div>
+                        <div class="lib-card-body">
+                            <h3 class="lib-card-title">Chosen Anyway (Spoken Word)</h3>
+                            <p class="lib-card-desc">
+                                An inspiring audio message on stepping forward despite physical and emotional obstacles.
+                            </p>
+                            <div class="lib-card-footer">
+                                <button class="lib-btn lib-btn-outline js-play-audio" data-src="../assets/chosen-anyway.mp3" data-title="Chosen Anyway" data-artist="Marchello Sciortino" data-thumb="../assets/chosen-anyway.png">
+                                    &#9654; Listen Online
+                                </button>
+                                <a href="../assets/chosen-anyway.mp3" download="Chosen_Anyway_Marchello_Sciortino.mp3" class="lib-btn lib-btn-primary" style="width: 48px; padding: 12px 0;" title="Download MP3">
+                                    &#128190;
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resource 6: Audio Lesson - Endgame Shadows -->
+                    <div class="lib-card" data-category="audio" data-tags="endgame shadows audio track lesson dark night purpose victory">
+                        <div class="lib-card-img-wrapper">
+                            <span class="lib-card-type-badge">Audio Lesson</span>
+                            <img src="../assets/endgame-shadows_cover-art.jpeg" alt="Endgame Shadows Cover" class="lib-card-img">
+                        </div>
+                        <div class="lib-card-body">
+                            <h3 class="lib-card-title">Endgame Shadows</h3>
+                            <p class="lib-card-desc">
+                                A powerful audio narrative about pushing past perceived limitations when shadows seem overwhelming.
+                            </p>
+                            <div class="lib-card-footer">
+                                <button class="lib-btn lib-btn-outline js-play-audio" data-src="../assets/endgame-shadows.mp3" data-title="Endgame Shadows" data-artist="Marchello Sciortino" data-thumb="../assets/endgame-shadows_cover-art.jpeg">
+                                    &#9654; Listen Online
+                                </button>
+                                <a href="../assets/endgame-shadows.mp3" download="Endgame_Shadows_Marchello_Sciortino.mp3" class="lib-btn lib-btn-primary" style="width: 48px; padding: 12px 0;" title="Download MP3">
+                                    &#128190;
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resource 7: Audio Lesson - The Battle of the Illusions -->
+                    <div class="lib-card" data-category="audio" data-tags="battle of the illusions audio track truth perspective mindset">
+                        <div class="lib-card-img-wrapper">
+                            <span class="lib-card-type-badge">Audio Lesson</span>
+                            <img src="../assets/the-battle-of-the-illusions_cover-art.jpeg" alt="The Battle of the Illusions Cover" class="lib-card-img">
+                        </div>
+                        <div class="lib-card-body">
+                            <h3 class="lib-card-title">The Battle of the Illusions</h3>
+                            <p class="lib-card-desc">
+                                Deconstructing false barriers and mental illusions that try to convince you success is out of reach.
+                            </p>
+                            <div class="lib-card-footer">
+                                <button class="lib-btn lib-btn-outline js-play-audio" data-src="../assets/the-battle-of-the-illusions.mp3" data-title="The Battle of the Illusions" data-artist="Marchello Sciortino" data-thumb="../assets/the-battle-of-the-illusions_cover-art.jpeg">
+                                    &#9654; Listen Online
+                                </button>
+                                <a href="../assets/the-battle-of-the-illusions.mp3" download="The_Battle_of_the_Illusions.mp3" class="lib-btn lib-btn-primary" style="width: 48px; padding: 12px 0;" title="Download MP3">
+                                    &#128190;
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resource 8: Audio Lesson - What Does It Mean -->
+                    <div class="lib-card" data-category="audio" data-tags="what does it mean audio perspective purpose disability resilience">
+                        <div class="lib-card-img-wrapper">
+                            <span class="lib-card-type-badge">Audio Lesson</span>
+                            <img src="../assets/what-does-it-mean_cover-art.jpeg" alt="What Does It Mean Cover" class="lib-card-img">
+                        </div>
+                        <div class="lib-card-body">
+                            <h3 class="lib-card-title">What Does It Mean?</h3>
+                            <p class="lib-card-desc">
+                                Reframing hardship: How shifting your questions from 'Why me?' to 'What does God want to build through this?' changes everything.
+                            </p>
+                            <div class="lib-card-footer">
+                                <button class="lib-btn lib-btn-outline js-play-audio" data-src="../assets/what-does-it-mean.mp3" data-title="What Does It Mean?" data-artist="Marchello Sciortino" data-thumb="../assets/what-does-it-mean_cover-art.jpeg">
+                                    &#9654; Listen Online
+                                </button>
+                                <a href="../assets/what-does-it-mean.mp3" download="What_Does_It_Mean.mp3" class="lib-btn lib-btn-primary" style="width: 48px; padding: 12px 0;" title="Download MP3">
+                                    &#128190;
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resource 9: Accessible AIM Blueprint -->
+                    <div class="lib-card" data-category="blueprints ai" data-tags="accessible aim framework membership ai system guide">
+                        <div class="lib-card-img-wrapper">
+                            <span class="lib-card-type-badge">Strategic Blueprint</span>
+                            <img src="../assets/resources/Accessible_AIM_cover_image.png" alt="Accessible AIM Framework Cover" class="lib-card-img">
+                        </div>
+                        <div class="lib-card-body">
+                            <h3 class="lib-card-title">Accessible AIM Framework</h3>
+                            <p class="lib-card-desc">
+                                Core roadmap for pairing Artificial Intelligence with human intentionality to create high-impact, accessible content.
+                            </p>
+                            <div class="lib-card-footer">
+                                <a href="../assets/resources/Accessible_AIM_cover_image.png" target="_blank" class="lib-btn lib-btn-outline">
+                                    &#128065; Preview Blueprint
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resource 10: Book & Digital Creation Blueprint -->
+                    <div class="lib-card" data-category="blueprints" data-tags="book website digital builder funnel system release">
+                        <div class="lib-card-img-wrapper">
+                            <span class="lib-card-type-badge">Digital Blueprint</span>
+                            <img src="../assets/resources/Book_Website_cover_image.png" alt="Book Launch Architecture Cover" class="lib-card-img">
+                        </div>
+                        <div class="lib-card-body">
+                            <h3 class="lib-card-title">Book & Funnel Release Architecture</h3>
+                            <p class="lib-card-desc">
+                                Visual breakdown of a multi-stage author sales funnel and digital distribution system.
+                            </p>
+                            <div class="lib-card-footer">
+                                <a href="../assets/resources/Book_Website_cover_image.png" target="_blank" class="lib-btn lib-btn-outline">
+                                    &#128065; Preview Architecture
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resource 11: Sources & Recommended Reading -->
+                    <div class="lib-card" data-category="worksheets blueprints" data-tags="sources reading books mindset strategic learning">
+                        <div class="lib-card-img-wrapper">
+                            <span class="lib-card-type-badge">Reading Index</span>
+                            <img src="../assets/resources/Sources_cover_image.png" alt="Sources Cover" class="lib-card-img">
+                        </div>
+                        <div class="lib-card-body">
+                            <h3 class="lib-card-title">Foundational Sources & Books</h3>
+                            <p class="lib-card-desc">
+                                Marchello's curated list of top books on digital architecture, conversion marketing, and mental resilience.
+                            </p>
+                            <div class="lib-card-footer">
+                                <a href="../assets/resources/Sources_cover_image.png" target="_blank" class="lib-btn lib-btn-outline">
+                                    &#128065; View Index
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resource 12: Chello AI Audio Track -->
+                    <div class="lib-card" data-category="audio ai" data-tags="chello ai music audio track sound articulated inspiration">
+                        <div class="lib-card-img-wrapper">
+                            <span class="lib-card-type-badge">Audio Track</span>
+                            <img src="../assets/chello-ai-music_cover-art.jpeg" alt="Chello AI Music Cover" class="lib-card-img">
+                        </div>
+                        <div class="lib-card-body">
+                            <h3 class="lib-card-title">Chello AI Theme Composition</h3>
+                            <p class="lib-card-desc">
+                                Original AI-assisted music composition demonstrating human-directed Articulated Inspiration in sound production.
+                            </p>
+                            <div class="lib-card-footer">
+                                <button class="lib-btn lib-btn-outline js-play-audio" data-src="../assets/chello-ai-music.mp3" data-title="Chello AI Theme" data-artist="Marchello Sciortino" data-thumb="../assets/chello-ai-music_cover-art.jpeg">
+                                    &#9654; Listen Online
+                                </button>
+                                <a href="../assets/chello-ai-music.mp3" download="Chello_AI_Theme.mp3" class="lib-btn lib-btn-primary" style="width: 48px; padding: 12px 0;" title="Download MP3">
+                                    &#128190;
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Empty Search Result Container -->
+                    <div class="lib-empty-state" id="lib-empty-state">
+                        <h3>No matching resources found</h3>
+                        <p>Try searching for different keywords or select a different category tab.</p>
+                        <button class="lib-btn lib-btn-primary" style="max-width: 200px; margin: 0 auto;" id="lib-reset-btn">Reset Filters</button>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Sticky Audio Player Widget -->
+    <div class="lib-audio-bar" id="lib-audio-bar" aria-label="Audio Player">
+        <div class="lib-audio-inner">
+            <div class="lib-audio-track-info">
+                <img src="../assets/chosen-anyway.png" alt="Track Cover" class="lib-audio-thumb" id="audio-bar-thumb">
+                <div class="lib-audio-details">
+                    <h4 id="audio-bar-title">Select a Track</h4>
+                    <p id="audio-bar-artist">Marchello Sciortino</p>
+                </div>
+            </div>
+
+            <div class="lib-audio-controls">
+                <button class="lib-audio-play-btn" id="audio-bar-play-toggle" aria-label="Play or Pause Track">&#9654;</button>
+                <div class="lib-audio-progress-container">
+                    <span class="lib-audio-time" id="audio-current-time">0:00</span>
+                    <div class="lib-audio-progress-bar" id="audio-progress-bar">
+                        <div class="lib-audio-progress-fill" id="audio-progress-fill"></div>
+                    </div>
+                    <span class="lib-audio-time" id="audio-duration">0:00</span>
+                </div>
+            </div>
+
+            <button class="lib-audio-close-btn" id="audio-bar-close" aria-label="Close Audio Player">&times;</button>
+        </div>
+    </div>
+
+    <!-- Hidden HTML5 Audio Element -->
+    <audio id="global-library-audio" preload="metadata"></audio>
+
+    <!-- Footer -->
+    <footer class="lib-footer">
+        <div class="container">
+            <p class="lib-footer-quote">
+                "God gives every person purpose, regardless of their limitations. Limitations do not eliminate calling; they change the strategy."
+            </p>
+            <p>&copy; 2026 Marchello Sciortino. All rights reserved. | Standalone Free Resource Library</p>
+        </div>
+    </footer>
+
+    <!-- Interactive Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('lib-search-input');
+            const filterTabs = document.querySelectorAll('.lib-tab-btn');
+            const cards = document.querySelectorAll('.lib-card');
+            const emptyState = document.getElementById('lib-empty-state');
+            const resetBtn = document.getElementById('lib-reset-btn');
+            const countText = document.getElementById('lib-count-text');
+
+            let activeCategory = 'all';
+            let searchQuery = '';
+
+            // Filter logic
+            function filterResources() {
+                let visibleCount = 0;
+
+                cards.forEach(card => {
+                    const cardCategory = card.getAttribute('data-category') || '';
+                    const cardTags = (card.getAttribute('data-tags') || '').toLowerCase();
+                    const cardTitle = card.querySelector('.lib-card-title').textContent.toLowerCase();
+                    const cardDesc = card.querySelector('.lib-card-desc').textContent.toLowerCase();
+
+                    const matchesCategory = activeCategory === 'all' || cardCategory.includes(activeCategory);
+                    const matchesSearch = searchQuery === '' || 
+                        cardTags.includes(searchQuery) || 
+                        cardTitle.includes(searchQuery) || 
+                        cardDesc.includes(searchQuery);
+
+                    if (matchesCategory && matchesSearch) {
+                        card.style.display = 'flex';
+                        visibleCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                if (visibleCount === 0) {
+                    emptyState.style.display = 'block';
+                } else {
+                    emptyState.style.display = 'none';
+                }
+
+                countText.textContent = `Showing ${visibleCount} resource${visibleCount === 1 ? '' : 's'}`;
+            }
+
+            // Category Tab Click Handlers
+            filterTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    filterTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    activeCategory = tab.getAttribute('data-category');
+                    filterResources();
+                });
+            });
+
+            // Live Search Input Handler
+            searchInput.addEventListener('input', (e) => {
+                searchQuery = e.target.value.toLowerCase().trim();
+                filterResources();
+            });
+
+            // Reset Filters
+            resetBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                searchQuery = '';
+                activeCategory = 'all';
+                filterTabs.forEach(t => t.classList.remove('active'));
+                filterTabs[0].classList.add('active');
+                filterResources();
+            });
+
+            // Audio Player Engine
+            const audioElement = document.getElementById('global-library-audio');
+            const audioBar = document.getElementById('lib-audio-bar');
+            const playToggle = document.getElementById('audio-bar-play-toggle');
+            const trackTitle = document.getElementById('audio-bar-title');
+            const trackArtist = document.getElementById('audio-bar-artist');
+            const trackThumb = document.getElementById('audio-bar-thumb');
+            const currentTimeEl = document.getElementById('audio-current-time');
+            const durationEl = document.getElementById('audio-duration');
+            const progressBar = document.getElementById('audio-progress-bar');
+            const progressFill = document.getElementById('audio-progress-fill');
+            const closeBtn = document.getElementById('audio-bar-close');
+
+            const playButtons = document.querySelectorAll('.js-play-audio');
+
+            function formatTime(seconds) {
+                if (isNaN(seconds)) return '0:00';
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+            }
+
+            playButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const src = btn.getAttribute('data-src');
+                    const title = btn.getAttribute('data-title');
+                    const artist = btn.getAttribute('data-artist') || 'Marchello Sciortino';
+                    const thumb = btn.getAttribute('data-thumb');
+
+                    if (audioElement.src.includes(src.replace('../', '')) && !audioElement.paused) {
+                        audioElement.pause();
+                        playToggle.innerHTML = '&#9654;';
+                        return;
+                    }
+
+                    audioElement.src = src;
+                    trackTitle.textContent = title;
+                    trackArtist.textContent = artist;
+                    if (thumb) trackThumb.src = thumb;
+
+                    audioBar.classList.add('active');
+                    audioElement.play();
+                    playToggle.innerHTML = '&#10074;&#10074;';
+                });
+            });
+
+            playToggle.addEventListener('click', () => {
+                if (audioElement.paused) {
+                    audioElement.play();
+                    playToggle.innerHTML = '&#10074;&#10074;';
+                } else {
+                    audioElement.pause();
+                    playToggle.innerHTML = '&#9654;';
+                }
+            });
+
+            audioElement.addEventListener('timeupdate', () => {
+                if (audioElement.duration) {
+                    const pct = (audioElement.currentTime / audioElement.duration) * 100;
+                    progressFill.style.width = `${pct}%`;
+                    currentTimeEl.textContent = formatTime(audioElement.currentTime);
+                    durationEl.textContent = formatTime(audioElement.duration);
+                }
+            });
+
+            progressBar.addEventListener('click', (e) => {
+                const rect = progressBar.getBoundingClientRect();
+                const clickX = e.clientX - rect.left;
+                const width = rect.width;
+                if (audioElement.duration) {
+                    audioElement.currentTime = (clickX / width) * audioElement.duration;
+                }
+            });
+
+            closeBtn.addEventListener('click', () => {
+                audioElement.pause();
+                audioBar.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+
+</html>

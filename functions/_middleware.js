@@ -43,10 +43,19 @@ export async function onRequest(context) {
         }
     }
 
+    // Check if request is coming from library.marchellosciortino.com subdomain
+    const isLibrarySubdomain = url.hostname.includes('library.marchellosciortino.com') || url.hostname.startsWith('library.');
+    let canonicalUrl = `https://marchellosciortino.com${url.pathname === '/' ? '' : url.pathname}`;
+
     // Set page-specific default metadata for non-article routes
     if (!foundArticle) {
         const path = url.pathname.toLowerCase();
-        if (path.startsWith('/speaking')) {
+        if (isLibrarySubdomain || path.startsWith('/free-library') || path.startsWith('/free-gifts')) {
+            title = "Free Digital Library | Marchello Sciortino";
+            description = "Worksheets, AI prompt cheat sheets, audio lessons, and strategic frameworks by Marchello Sciortino to reframe constraints and build digital freedom.";
+            image = new URL('/assets/free-gifts/WIN_Reframe_Matrix_cover_image.png', url.origin).toString();
+            canonicalUrl = "https://library.marchellosciortino.com";
+        } else if (path.startsWith('/speaking')) {
             title = "Speaking & Keynotes | Marchello Sciortino";
             description = "Inquire about booking Marchello Sciortino for keynotes, workshops, and coaching. Helping audiences turn limitations into creative agency.";
             image = new URL('/assets/hero-speaking-stage.jpg', url.origin).toString();
@@ -90,6 +99,7 @@ export async function onRequest(context) {
         })
         .on('head', {
             element(element) {
+                element.append(`<link rel="canonical" href="${escapeHtml(canonicalUrl)}">`, { html: true });
                 element.append(`<meta property="og:title" content="${escapeHtml(title)}">`, { html: true });
                 element.append(`<meta property="og:description" content="${escapeHtml(description)}">`, { html: true });
                 element.append(`<meta property="og:image" content="${image}">`, { html: true });
@@ -103,3 +113,4 @@ export async function onRequest(context) {
         })
         .transform(response);
 }
+

@@ -51,6 +51,12 @@ const Router = {
         // Split route path from query parameters
         let pathOnly = currentPath.split('?')[0];
 
+        // Subdomain check for library.marchellosciortino.com
+        const isLibrarySubdomain = window.location.hostname.includes('library.marchellosciortino.com') || window.location.hostname.startsWith('library.');
+        if (isLibrarySubdomain && (pathOnly === '/' || pathOnly === '/index.html' || pathOnly === '/free-gifts')) {
+            pathOnly = '/free-library';
+        }
+
         // Redirect /home or /index.html to /
         if (pathOnly === '/home' || pathOnly === '/index.html' || pathOnly === '') {
             pathOnly = '/';
@@ -67,7 +73,7 @@ const Router = {
         }
 
         // Match route or redirect to home (/)
-        const templateFn = this.routes[pathOnly] || this.routes['/'];
+        const templateFn = this.routes[pathOnly] || (isLibrarySubdomain ? this.routes['/free-library'] : this.routes['/']);
 
         if (templateFn) {
             // Update current page
@@ -96,14 +102,28 @@ const Router = {
                 '/marchellos-blog': "Marchello's Blog | Marchello Sciortino",
                 '/hub': "Marchello's Blog | Marchello Sciortino",
                 '/contact': "Contact | Marchello Sciortino",
-                '/free-gifts': "Free Gifts | Marchello Sciortino",
+                '/free-gifts': "Free Digital Library | Marchello Sciortino",
+                '/free-library': "Free Digital Library | Marchello Sciortino",
                 '/resources': "Resources | Marchello Sciortino",
                 '/privacy': "Privacy Policy | Marchello Sciortino",
                 '/terms': "Terms of Service | Marchello Sciortino",
                 '/accessibility-statement': "Accessibility Statement | Marchello Sciortino",
                 '/accessible-aim': "Accessible AIM | Marchello Sciortino"
             };
-            document.title = titles[pathOnly] || "Marchello Sciortino";
+            document.title = titles[pathOnly] || (isLibrarySubdomain ? "Free Digital Library | Marchello Sciortino" : "Marchello Sciortino");
+
+            // Dynamic Canonical URL Tag management
+            let canonicalLink = document.querySelector('link[rel="canonical"]');
+            if (!canonicalLink) {
+                canonicalLink = document.createElement('link');
+                canonicalLink.setAttribute('rel', 'canonical');
+                document.head.appendChild(canonicalLink);
+            }
+            if (isLibrarySubdomain || pathOnly === '/free-library' || pathOnly === '/free-gifts') {
+                canonicalLink.setAttribute('href', 'https://library.marchellosciortino.com');
+            } else {
+                canonicalLink.setAttribute('href', `https://marchellosciortino.com${pathOnly === '/' ? '' : pathOnly}`);
+            }
 
             // Post-rendering actions
             this.updateNavLinks(pathOnly);
@@ -114,6 +134,7 @@ const Router = {
             document.dispatchEvent(event);
         }
     },
+
 
     updateNavLinks(route) {
         const navLinks = document.querySelectorAll('.nav-link');
@@ -2703,8 +2724,8 @@ Router.register('/contact', () => {
 `;
 });
 
-// 14. Free Gifts Page Template
-Router.register('/free-gifts', () => {
+// 14. Free Gifts & Free Library Page Template
+const freeGiftsTemplate = () => {
     const isUnlocked = localStorage.getItem('free-gifts-unlocked') === 'true';
     const modalHtml = isUnlocked ? '' : `
         <div id="free-gifts-modal" class="free-gifts-modal-overlay active">
@@ -2724,7 +2745,7 @@ Router.register('/free-gifts', () => {
     <div class="page-intro">
         <div class="container text-center">
             <span class="section-tag text-teal">Tools</span>
-            <h1 style="color: white;">Free Gifts</h1>
+            <h1 style="color: white;">Free Gifts & Library</h1>
             <p class="section-desc" style="color: var(--color-gray-light);">
                 Worksheets, prompt templates, and PDF guides to help you reframe obstacles and build your projects.
             </p>
@@ -2779,7 +2800,11 @@ Router.register('/free-gifts', () => {
         </div>
     </section>
 `;
-});
+};
+
+Router.register('/free-gifts', freeGiftsTemplate);
+Router.register('/free-library', freeGiftsTemplate);
+
 
 
 
