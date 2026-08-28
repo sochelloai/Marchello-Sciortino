@@ -2784,18 +2784,28 @@ const freeGiftsTemplate = () => {
             text-align: center;
         }
 
-        .light-resource-icon {
-            width: 72px;
-            height: 72px;
-            background: #e6fdf7;
-            border: 2px solid #0ad8ad;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
+        .light-resource-cover-wrapper {
+            width: 100%;
+            max-width: 340px;
+            border-radius: 16px;
+            overflow: hidden;
             margin-bottom: 24px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+            border: 1px solid #e2e8f0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+
+        .light-resource-cover-wrapper:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 36px rgba(10, 216, 173, 0.2);
+        }
+
+        .light-resource-cover-img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
 
         .light-card-title {
             font-family: var(--font-heading);
@@ -2889,8 +2899,11 @@ const freeGiftsTemplate = () => {
             </div>
 
             <div class="light-resource-card">
-                <div class="light-resource-icon">&#128196;</div>
+                <div class="light-resource-cover-wrapper">
+                    <img src="assets/free-gifts/creative_amplification_cover.png" alt="Creative Amplification Through AI Cover" class="light-resource-cover-img">
+                </div>
                 <h2 class="light-card-title">Creative Amplification Through AI</h2>
+
                 <div class="light-card-meta">PDF Guide &bull; By Marchello Sciortino &bull; Instant Access</div>
                 <p class="light-card-text">
                     Learn the core principles of Articulated Inspiration: turning obstacles into strategic leverage by pairing human intentionality with modern AI tools.

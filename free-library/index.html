@@ -145,18 +145,28 @@
             text-align: center;
         }
 
-        .resource-icon-badge {
-            width: 72px;
-            height: 72px;
-            background: #e6fdf7;
-            border: 2px solid var(--brand-teal);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
+        .resource-cover-wrapper {
+            width: 100%;
+            max-width: 340px;
+            border-radius: 16px;
+            overflow: hidden;
             margin-bottom: 24px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+
+        .resource-cover-wrapper:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 36px rgba(10, 216, 173, 0.2);
+        }
+
+        .resource-cover-img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
 
         .resource-card-title {
             font-family: var(--font-heading);
@@ -284,12 +294,15 @@
 
             <!-- Single Card Download -->
             <div class="single-resource-card">
-                <div class="resource-icon-badge">&#128196;</div>
+                <div class="resource-cover-wrapper">
+                    <img src="../assets/free-gifts/creative_amplification_cover.png" alt="Creative Amplification Through AI Cover" class="resource-cover-img">
+                </div>
                 <h2 class="resource-card-title">Creative Amplification Through AI</h2>
                 <div class="resource-card-meta">PDF Guide &bull; By Marchello Sciortino &bull; Instant Access</div>
                 <p class="resource-card-text">
                     Learn the core principles of Articulated Inspiration: turning obstacles into strategic leverage by pairing human intentionality with modern AI tools.
                 </p>
+
 
                 <!-- Signup / Unlock Form -->
                 <div class="unlock-form-box" id="unlock-form-box">
