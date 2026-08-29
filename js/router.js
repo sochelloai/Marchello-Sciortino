@@ -3087,9 +3087,9 @@ const freeGiftsTemplate = () => {
         <div class="spa-modal-card">
             <button class="spa-modal-close" id="spa-modal-close">&times;</button>
             <div id="spa-form-view">
-                <h3 style="color: #0f172a; margin-bottom: 8px;">Unlock Free Resources</h3>
+                <h3 style="color: #0f172a; margin-bottom: 8px;">Unlock All Downloads</h3>
                 <p id="spa-copy-text" style="color: #475569; font-size: 0.95rem; margin-bottom: 20px;">
-                    Enter your email to unlock and access all worksheets, guides, and checklists.
+                    Unlock all downloads by entering your email.
                 </p>
                 <form id="spa-modal-login-form">
                     <input type="email" class="spa-modal-input" id="spa-modal-email" placeholder="Enter your email address..." required style="width: 100%; padding: 14px; border: 1px solid #e2e8f0; border-radius: 10px; margin-bottom: 12px; font-size: 1rem; box-sizing: border-box;">
@@ -3121,7 +3121,6 @@ document.addEventListener('click', (e) => {
     const btn = e.target.closest('.js-spa-download-btn');
     if (btn) {
         let fileUrl = btn.getAttribute('data-file') || btn.getAttribute('href');
-        const title = btn.getAttribute('data-title') || 'Free Resource';
         const modal = document.getElementById('spa-download-modal');
         const copyText = document.getElementById('spa-copy-text');
         const formView = document.getElementById('spa-form-view');
@@ -3137,7 +3136,7 @@ document.addEventListener('click', (e) => {
             // Locked: show email modal
             e.preventDefault();
             if (modal) {
-                if (copyText) copyText.textContent = `Before proceeding with "${title}", please enter your email so we can contact you further and send you updates.`;
+                if (copyText) copyText.textContent = 'Unlock all downloads by entering your email.';
                 if (formView) formView.style.display = 'block';
                 if (successView) successView.style.display = 'none';
                 if (directLink) {
