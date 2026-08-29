@@ -3124,8 +3124,8 @@ document.addEventListener('click', (e) => {
 
         if (!modal) return;
 
-        const isUnlocked = localStorage.getItem('free-gifts-unlocked') === 'true' || localStorage.getItem('free-library-user-email');
-        if (isUnlocked && directLink) {
+        const savedEmail = localStorage.getItem('free-library-user-email');
+        if (savedEmail && directLink) {
             directLink.href = fileUrl;
             formView.style.display = 'none';
             successView.style.display = 'block';
@@ -3145,54 +3145,16 @@ document.addEventListener('click', (e) => {
 });
 
 // Submit event listener for SPA modal form
-document.addEventListener('submit', async (e) => {
+document.addEventListener('submit', (e) => {
     if (e.target && e.target.id === 'spa-modal-login-form') {
         e.preventDefault();
-        const form = e.target;
-        const submitBtn = form.querySelector('button[type="submit"]');
-        const emailInput = document.getElementById('spa-modal-email');
-        if (!emailInput) return;
-        const email = emailInput.value;
-        const originalText = submitBtn ? submitBtn.textContent : "Continue & Download →";
-
-        if (submitBtn) {
-            submitBtn.disabled = true;
-            submitBtn.textContent = "Unlocking...";
-        }
-
-        // Persist synchronized unlock state across free-gifts and free-library
-        localStorage.setItem('free-gifts-unlocked', 'true');
+        const email = document.getElementById('spa-modal-email').value;
         localStorage.setItem('free-library-user-email', email);
-
-        try {
-            const formData = new FormData();
-            formData.append('email', email);
-
-            const response = await fetch('/api/submit-free-gifts', {
-                method: 'POST',
-                body: formData
-            });
-
-            if (response.ok) {
-                const result = await response.json();
-                console.log("[ClickFunnels Free Gifts API Success]", result);
-            } else {
-                const errorText = await response.text();
-                console.warn("[ClickFunnels Free Gifts API Notice]", response.status, errorText);
-            }
-        } catch (error) {
-            console.error("[ClickFunnels Free Gifts API Error]", error);
-        } finally {
-            if (submitBtn) {
-                submitBtn.disabled = false;
-                submitBtn.textContent = originalText;
-            }
-            const formView = document.getElementById('spa-form-view');
-            const successView = document.getElementById('spa-success-view');
-            if (formView && successView) {
-                formView.style.display = 'none';
-                successView.style.display = 'block';
-            }
+        const formView = document.getElementById('spa-form-view');
+        const successView = document.getElementById('spa-success-view');
+        if (formView && successView) {
+            formView.style.display = 'none';
+            successView.style.display = 'block';
         }
     }
 });

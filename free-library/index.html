@@ -467,6 +467,7 @@
         </div>
     </footer>
 
+    <!-- Interactive Script -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const modal = document.getElementById('download-login-modal');
@@ -476,69 +477,30 @@
             const loginForm = document.getElementById('modal-login-form');
             const directDownloadBtn = document.getElementById('modal-direct-download-btn');
             const copyText = document.getElementById('modal-copy-text');
-            const gridContainer = document.querySelector('.teaser-grid');
+            const triggers = document.querySelectorAll('.js-open-modal');
 
             let selectedFileUrl = '';
             let selectedTitle = '';
 
-            function attachTriggerEvents() {
-                const triggers = document.querySelectorAll('.js-open-modal');
-                triggers.forEach(btn => {
-                    btn.onclick = (e) => {
-                        e.preventDefault();
-                        selectedFileUrl = btn.getAttribute('data-file');
-                        selectedTitle = btn.getAttribute('data-title');
+            triggers.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    selectedFileUrl = btn.getAttribute('data-file');
+                    selectedTitle = btn.getAttribute('data-title');
 
-                        const isUnlocked = localStorage.getItem('free-gifts-unlocked') === 'true' || localStorage.getItem('free-library-user-email');
-                        if (isUnlocked) {
-                            directDownloadBtn.href = selectedFileUrl;
-                            formView.style.display = 'none';
-                            successView.style.display = 'block';
-                        } else {
-                            copyText.textContent = `Before proceeding with "${selectedTitle}", please enter your email so we can contact you further and send you updates.`;
-                            formView.style.display = 'block';
-                            successView.style.display = 'none';
-                        }
-                        modal.classList.add('active');
-                    };
+                    const savedEmail = localStorage.getItem('free-library-user-email');
+                    if (savedEmail) {
+                        directDownloadBtn.href = selectedFileUrl;
+                        formView.style.display = 'none';
+                        successView.style.display = 'block';
+                    } else {
+                        copyText.textContent = `Before proceeding with "${selectedTitle}", please enter your email so we can contact you further and send you updates.`;
+                        formView.style.display = 'block';
+                        successView.style.display = 'none';
+                    }
+                    modal.classList.add('active');
                 });
-            }
-
-            async function loadDynamicLibraryData() {
-                try {
-                    const response = await fetch('/data/free-library.json');
-                    if (!response.ok) return;
-                    const items = await response.json();
-                    if (!Array.isArray(items) || items.length === 0 || !gridContainer) return;
-
-                    gridContainer.innerHTML = items.map(item => `
-                        <div class="teaser-card">
-                            <div class="card-cover-wrapper">
-                                <img src="${item.coverImage}" alt="${item.title} Cover" class="card-cover-img">
-                                <span class="card-status-badge ${item.isActive ? 'active' : ''}">
-                                    ${item.isActive ? '&#10004; ' : ''}${item.status}
-                                </span>
-                            </div>
-                            <div class="teaser-card-body">
-                                <h3 class="teaser-card-title">${item.title}</h3>
-                                <ul class="teaser-bullets">
-                                    ${item.bullets.map(b => `<li>${b}</li>`).join('')}
-                                </ul>
-                                <button class="btn-download-trigger js-open-modal" data-title="${item.title}" data-file="${item.fileUrl}">
-                                    ${item.buttonText}
-                                </button>
-                            </div>
-                        </div>
-                    `).join('');
-
-                    attachTriggerEvents();
-                } catch (err) {
-                    console.warn("[Free Library Dynamic Sync Notice]", err);
-                }
-            }
-
-            attachTriggerEvents();
-            loadDynamicLibraryData();
+            });
 
             closeBtn.addEventListener('click', () => {
                 modal.classList.remove('active');
@@ -548,48 +510,14 @@
                 if (e.target === modal) modal.classList.remove('active');
             });
 
-            loginForm.addEventListener('submit', async (e) => {
+            loginForm.addEventListener('submit', (e) => {
                 e.preventDefault();
-                const submitBtn = loginForm.querySelector('button[type="submit"]');
                 const emailInput = document.getElementById('modal-email').value;
-                const originalText = submitBtn ? submitBtn.textContent : "Continue & Download →";
-
-                if (submitBtn) {
-                    submitBtn.disabled = true;
-                    submitBtn.textContent = "Unlocking...";
-                }
-
-                // Persist synchronized unlock state across free-gifts and free-library
-                localStorage.setItem('free-gifts-unlocked', 'true');
                 localStorage.setItem('free-library-user-email', emailInput);
 
-                try {
-                    const formData = new FormData();
-                    formData.append('email', emailInput);
-
-                    const response = await fetch('/api/submit-free-gifts', {
-                        method: 'POST',
-                        body: formData
-                    });
-
-                    if (response.ok) {
-                        const result = await response.json();
-                        console.log("[ClickFunnels Free Gifts API Success]", result);
-                    } else {
-                        const errorText = await response.text();
-                        console.warn("[ClickFunnels Free Gifts API Notice]", response.status, errorText);
-                    }
-                } catch (error) {
-                    console.error("[ClickFunnels Free Gifts API Error]", error);
-                } finally {
-                    if (submitBtn) {
-                        submitBtn.disabled = false;
-                        submitBtn.textContent = originalText;
-                    }
-                    directDownloadBtn.href = selectedFileUrl;
-                    formView.style.display = 'none';
-                    successView.style.display = 'block';
-                }
+                directDownloadBtn.href = selectedFileUrl;
+                formView.style.display = 'none';
+                successView.style.display = 'block';
             });
         });
     </script>
