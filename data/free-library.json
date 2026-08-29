@@ -16,11 +16,11 @@
   {
     "id": "win-reframe-matrix",
     "title": "W.I.N. Reframe Matrix",
-    "status": "Available Now",
-    "isActive": true,
+    "status": "Teaser / Upcoming",
+    "isActive": false,
     "coverImage": "/assets/free-gifts/WIN_Reframe_Matrix_cover_image.png",
     "fileUrl": "/assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf",
-    "buttonText": "Download Ebook &darr;",
+    "buttonText": "Download Teaser &darr;",
     "bullets": [
       "Reflection grid for active constraints.",
       "Breaking mental friction loops.",
@@ -30,11 +30,11 @@
   {
     "id": "ai-accessibility-commands",
     "title": "AI Accessibility Commands",
-    "status": "Available Now",
-    "isActive": true,
+    "status": "Teaser / Upcoming",
+    "isActive": false,
     "coverImage": "/assets/free-gifts/Prompt_Cheat_Sheat_cover_image.png",
     "fileUrl": "/assets/free-gifts/Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf",
-    "buttonText": "Download Guide &darr;",
+    "buttonText": "Download Teaser &darr;",
     "bullets": [
       "Sketch notebook prompt cheat sheet.",
       "Voice transcription guide templates.",
@@ -44,11 +44,11 @@
   {
     "id": "digital-flow-audit",
     "title": "Digital Flow Audit Checklist",
-    "status": "Available Now",
-    "isActive": true,
+    "status": "Teaser / Upcoming",
+    "isActive": false,
     "coverImage": "/assets/free-gifts/Digital_Flow_Audit_cover_image.png",
     "fileUrl": "/assets/free-gifts/Digital_Flow_Audit_Checklist_Enhanced.pdf",
-    "buttonText": "Download Checklist &darr;",
+    "buttonText": "Download Teaser &darr;",
     "bullets": [
       "ADA accessibility compliance audit.",
       "Speed & user experience friction check.",
