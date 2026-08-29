@@ -64,8 +64,9 @@ document.addEventListener('DOMContentLoaded', () => {
             initBirthdayCountdown();
         } else if (page === 'accessible-aim') {
             initAccessibleAimVideo();
-        } else if (page === 'free-gifts') {
+        } else if (page === 'free-gifts' || page === 'free-library') {
             initFreeGiftsUnlock();
+            loadDynamicFreeLibraryCardsSPA();
         }
 
         // Always bind forms rendered inside the page view
@@ -587,6 +588,43 @@ function initFreeGiftsUnlock() {
             }
         }
     });
+}
+
+/**
+ * Dynamically populates SPA Free Gifts and Free Library card grid from shared dataset /data/free-library.json
+ */
+async function loadDynamicFreeLibraryCardsSPA() {
+    const gridContainer = document.querySelector('.teaser-grid');
+    if (!gridContainer) return;
+
+    try {
+        const response = await fetch('/data/free-library.json');
+        if (!response.ok) return;
+        const items = await response.json();
+        if (!Array.isArray(items) || items.length === 0) return;
+
+        gridContainer.innerHTML = items.map(item => `
+            <div class="teaser-card">
+                <div class="card-cover-wrapper">
+                    <img src="${item.coverImage}" alt="${item.title} Cover" class="card-cover-img">
+                    <span class="card-status-badge ${item.isActive ? 'active' : ''}">
+                        ${item.isActive ? '&#10004; ' : ''}${item.status}
+                    </span>
+                </div>
+                <div class="teaser-card-body">
+                    <h3 class="teaser-card-title">${item.title}</h3>
+                    <ul class="teaser-bullets">
+                        ${item.bullets.map(b => `<li>${b}</li>`).join('')}
+                    </ul>
+                    <button class="btn-download-trigger js-spa-download-btn" data-title="${item.title}" data-file="${item.fileUrl}">
+                        ${item.buttonText}
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    } catch (err) {
+        console.warn("[SPA Free Library Dynamic Sync Notice]", err);
+    }
 }
 
 /**
