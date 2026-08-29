@@ -3082,27 +3082,29 @@ const freeGiftsTemplate = () => {
         </div>
     </section>
 
-    <!-- Login Modal -->
-
+    <!-- Login / Unlock Modal -->
     <div class="spa-modal-overlay" id="spa-download-modal">
         <div class="spa-modal-card">
             <button class="spa-modal-close" id="spa-modal-close">&times;</button>
             <div id="spa-form-view">
-                <h3>Before proceeding, please log in</h3>
-                <p id="spa-copy-text">
-                    Before proceeding, please enter your email so we can contact you further, send you direct updates, and unlock your download.
+                <h3 style="color: #0f172a; margin-bottom: 8px;">Unlock Free Resources</h3>
+                <p id="spa-copy-text" style="color: #475569; font-size: 0.95rem; margin-bottom: 20px;">
+                    Enter your email to unlock and access all worksheets, guides, and checklists.
                 </p>
                 <form id="spa-modal-login-form">
-                    <input type="email" class="spa-modal-input" id="spa-modal-email" placeholder="yourname@email.com" required>
-                    <button type="submit" class="btn-download-trigger" style="background: #0ad8ad; color: #081b29;">
-                        Continue & Download &rarr;
+                    <input type="email" class="spa-modal-input" id="spa-modal-email" placeholder="Enter your email address..." required style="width: 100%; padding: 14px; border: 1px solid #e2e8f0; border-radius: 10px; margin-bottom: 12px; font-size: 1rem; box-sizing: border-box;">
+                    <button type="submit" class="btn-unlock-orange" style="background: #ff5722; color: #ffffff; width: 100%; padding: 14px 20px; font-size: 1rem; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; transition: background 0.2s, transform 0.15s;">
+                        Unlock Free Access &rarr;
                     </button>
+                    <a href="/" class="btn-decline-home" style="display: block; text-align: center; margin-top: 14px; color: #64748b; font-size: 0.88rem; text-decoration: none; transition: color 0.2s;">
+                        I do not want to unlock. Take me back to the home page.
+                    </a>
                 </form>
             </div>
             <div id="spa-success-view" style="display: none;">
                 <h3 style="color: #0ad8ad;">&#10004; Access Granted!</h3>
-                <p>Click the link below to download your file.</p>
-                <a href="#" id="spa-direct-download-link" target="_blank" rel="noopener noreferrer" class="btn-download-trigger" style="background: #0ad8ad; color: #081b29;">
+                <p style="color: #475569; font-size: 0.95rem; margin-bottom: 18px;">Click below to view your PDF document in a new tab.</p>
+                <a href="#" id="spa-direct-download-link" target="_blank" rel="noopener noreferrer" class="btn-download-trigger" style="background: #ff5722; color: #ffffff; width: 100%; padding: 14px 20px; font-size: 1rem; font-weight: 700; border-radius: 10px; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
                     &#128196; View PDF in New Tab
                 </a>
             </div>
