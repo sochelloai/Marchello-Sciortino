@@ -3010,17 +3010,17 @@ const freeGiftsTemplate = () => {
                             <li>Turning constraints into strategic leverage.</li>
                             <li>Practical prompt configurations for creators.</li>
                         </ul>
-                        <button class="btn-download-trigger js-spa-download-btn" data-title="Creative Amplification Through AI" data-file="assets/free-gifts/Creative_amplification_through_AI.pdf">
+                        <a href="https://www.marchellosciortino.com/assets/free-gifts/Creative_amplification_through_AI.pdf" target="_blank" download class="btn-download-trigger js-spa-download-btn" data-title="Creative Amplification Through AI" data-file="https://www.marchellosciortino.com/assets/free-gifts/Creative_amplification_through_AI.pdf">
                             Download PDF &darr;
-                        </button>
+                        </a>
                     </div>
                 </div>
 
-                <!-- Item 2: Teaser W.I.N. Reframe Matrix -->
+                <!-- Item 2: W.I.N. Reframe Matrix -->
                 <div class="teaser-card">
                     <div class="card-cover-wrapper">
                         <img src="assets/free-gifts/WIN_Reframe_Matrix_cover_image.png" alt="WIN Reframe Matrix Cover" class="card-cover-img">
-                        <span class="card-status-badge">Teaser / Upcoming</span>
+                        <span class="card-status-badge active">&#10004; Available Now</span>
                     </div>
                     <div class="teaser-card-body">
                         <h3 class="teaser-card-title">W.I.N. Reframe Matrix</h3>
@@ -3029,17 +3029,17 @@ const freeGiftsTemplate = () => {
                             <li>Breaking mental friction loops.</li>
                             <li>Custom tactical action plan builder.</li>
                         </ul>
-                        <button class="btn-download-trigger js-spa-download-btn" data-title="W.I.N. Reframe Matrix" data-file="assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf">
-                            Download Teaser &darr;
-                        </button>
+                        <a href="https://www.marchellosciortino.com/assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf" target="_blank" download class="btn-download-trigger js-spa-download-btn" data-title="W.I.N. Reframe Matrix" data-file="https://www.marchellosciortino.com/assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf">
+                            Download Ebook &darr;
+                        </a>
                     </div>
                 </div>
 
-                <!-- Item 3: Teaser AI Accessibility Commands -->
+                <!-- Item 3: AI Accessibility Commands -->
                 <div class="teaser-card">
                     <div class="card-cover-wrapper">
                         <img src="assets/free-gifts/Prompt_Cheat_Sheat_cover_image.png" alt="AI Accessibility Commands Cover" class="card-cover-img">
-                        <span class="card-status-badge">Teaser / Upcoming</span>
+                        <span class="card-status-badge active">&#10004; Available Now</span>
                     </div>
                     <div class="teaser-card-body">
                         <h3 class="teaser-card-title">AI Accessibility Commands</h3>
@@ -3048,17 +3048,17 @@ const freeGiftsTemplate = () => {
                             <li>Voice transcription guide templates.</li>
                             <li>Configuring AI as a cognitive prosthetic.</li>
                         </ul>
-                        <button class="btn-download-trigger js-spa-download-btn" data-title="AI Accessibility Commands" data-file="assets/free-gifts/Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf">
-                            Download Teaser &darr;
-                        </button>
+                        <a href="https://www.marchellosciortino.com/assets/free-gifts/Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf" target="_blank" download class="btn-download-trigger js-spa-download-btn" data-title="AI Accessibility Commands" data-file="https://www.marchellosciortino.com/assets/free-gifts/Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf">
+                            Download Guide &darr;
+                        </a>
                     </div>
                 </div>
 
-                <!-- Item 4: Teaser Digital Flow Audit -->
+                <!-- Item 4: Digital Flow Audit -->
                 <div class="teaser-card">
                     <div class="card-cover-wrapper">
                         <img src="assets/free-gifts/Digital_Flow_Audit_cover_image.png" alt="Digital Flow Audit Cover" class="card-cover-img">
-                        <span class="card-status-badge">Teaser / Upcoming</span>
+                        <span class="card-status-badge active">&#10004; Available Now</span>
                     </div>
                     <div class="teaser-card-body">
                         <h3 class="teaser-card-title">Digital Flow Audit Checklist</h3>
@@ -3067,9 +3067,9 @@ const freeGiftsTemplate = () => {
                             <li>Speed & user experience friction check.</li>
                             <li>Landing page conversion optimization.</li>
                         </ul>
-                        <button class="btn-download-trigger js-spa-download-btn" data-title="Digital Flow Audit Checklist" data-file="assets/free-gifts/Digital_Flow_Audit_Checklist_Enhanced.pdf">
-                            Download Teaser &darr;
-                        </button>
+                        <a href="https://www.marchellosciortino.com/assets/free-gifts/Digital_Flow_Audit_Checklist_Enhanced.pdf" target="_blank" download class="btn-download-trigger js-spa-download-btn" data-title="Digital Flow Audit Checklist" data-file="https://www.marchellosciortino.com/assets/free-gifts/Digital_Flow_Audit_Checklist_Enhanced.pdf">
+                            Download Checklist &darr;
+                        </a>
                     </div>
                 </div>
 
@@ -3097,7 +3097,7 @@ const freeGiftsTemplate = () => {
             <div id="spa-success-view" style="display: none;">
                 <h3 style="color: #0ad8ad;">&#10004; Access Granted!</h3>
                 <p>Click the link below to download your file.</p>
-                <a href="#" id="spa-direct-download-link" download class="btn-download-trigger" style="background: #0ad8ad; color: #081b29;">
+                <a href="#" id="spa-direct-download-link" target="_blank" download class="btn-download-trigger" style="background: #0ad8ad; color: #081b29;">
                     &#128190; Download File Now
                 </a>
             </div>
@@ -3113,29 +3113,37 @@ Router.register('/free-library', freeGiftsTemplate);
 document.addEventListener('click', (e) => {
     const btn = e.target.closest('.js-spa-download-btn');
     if (btn) {
-        e.preventDefault();
-        const fileUrl = btn.getAttribute('data-file');
-        const title = btn.getAttribute('data-title');
+        let fileUrl = btn.getAttribute('data-file') || btn.getAttribute('href');
+        if (fileUrl && !fileUrl.startsWith('/') && !fileUrl.startsWith('http')) {
+            fileUrl = '/' + fileUrl;
+        }
+        const title = btn.getAttribute('data-title') || 'Free Resource';
         const modal = document.getElementById('spa-download-modal');
         const copyText = document.getElementById('spa-copy-text');
         const formView = document.getElementById('spa-form-view');
         const successView = document.getElementById('spa-success-view');
         const directLink = document.getElementById('spa-direct-download-link');
 
-        if (!modal) return;
+        const isUnlocked = localStorage.getItem('free-gifts-unlocked') === 'true' || localStorage.getItem('free-library-user-email');
 
-        const savedEmail = localStorage.getItem('free-library-user-email');
-        if (savedEmail && directLink) {
-            directLink.href = fileUrl;
-            formView.style.display = 'none';
-            successView.style.display = 'block';
-        } else if (copyText && formView && successView) {
-            copyText.textContent = `Before proceeding with "${title}", please enter your email so we can contact you further and send you updates.`;
-            formView.style.display = 'block';
-            successView.style.display = 'none';
-            if (directLink) directLink.href = fileUrl;
+        if (isUnlocked) {
+            // Already unlocked: let native <a href="..." target="_blank" download> open in new tab natively
+            return;
+        } else {
+            // Locked: show email modal
+            e.preventDefault();
+            if (modal) {
+                if (copyText) copyText.textContent = `Before proceeding with "${title}", please enter your email so we can contact you further and send you updates.`;
+                if (formView) formView.style.display = 'block';
+                if (successView) successView.style.display = 'none';
+                if (directLink) {
+                    directLink.href = fileUrl;
+                    directLink.setAttribute('data-file', fileUrl);
+                    directLink.target = '_blank';
+                }
+                modal.classList.add('active');
+            }
         }
-        modal.classList.add('active');
     }
 
     if (e.target && e.target.id === 'spa-modal-close') {
@@ -3145,17 +3153,58 @@ document.addEventListener('click', (e) => {
 });
 
 // Submit event listener for SPA modal form
-document.addEventListener('submit', (e) => {
+document.addEventListener('submit', async (e) => {
     if (e.target && e.target.id === 'spa-modal-login-form') {
         e.preventDefault();
-        const email = document.getElementById('spa-modal-email').value;
-        localStorage.setItem('free-library-user-email', email);
-        const formView = document.getElementById('spa-form-view');
-        const successView = document.getElementById('spa-success-view');
-        if (formView && successView) {
-            formView.style.display = 'none';
-            successView.style.display = 'block';
+        const form = e.target;
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const emailInput = document.getElementById('spa-modal-email');
+        if (!emailInput) return;
+        const email = emailInput.value;
+        const originalText = submitBtn ? submitBtn.textContent : "Continue & Download →";
+
+        const directLink = document.getElementById('spa-direct-download-link');
+        const targetUrl = directLink ? (directLink.getAttribute('data-file') || directLink.getAttribute('href')) : null;
+
+        // Synchronously open target window in new tab during user gesture
+        if (targetUrl && targetUrl !== '#' && !targetUrl.endsWith('#')) {
+            window.open(targetUrl, '_blank');
         }
+
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Unlocking...";
+        }
+
+        localStorage.setItem('free-gifts-unlocked', 'true');
+        localStorage.setItem('free-library-user-email', email);
+
+        try {
+            const formData = new FormData();
+            formData.append('email', email);
+
+            await fetch('/api/submit-free-gifts', {
+                method: 'POST',
+                body: formData
+            });
+        } catch (error) {
+            console.error("[ClickFunnels Free Gifts API Error]", error);
+        } finally {
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+            }
+
+            const formView = document.getElementById('spa-form-view');
+            const successView = document.getElementById('spa-success-view');
+            if (formView && successView) {
+                formView.style.display = 'none';
+                successView.style.display = 'block';
+                if (directLink && targetUrl) directLink.href = targetUrl;
+            }
+        }
+    }
+});
     }
 });
 

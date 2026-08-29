@@ -366,9 +366,9 @@
                                 <li>Turning constraints into strategic leverage.</li>
                                 <li>Practical prompt configurations for creators.</li>
                             </ul>
-                            <button class="btn-download-trigger js-open-modal" data-title="Creative Amplification Through AI" data-file="../assets/free-gifts/Creative_amplification_through_AI.pdf">
+                            <a href="https://www.marchellosciortino.com/assets/free-gifts/Creative_amplification_through_AI.pdf" target="_blank" download class="btn-download-trigger js-open-modal" data-title="Creative Amplification Through AI" data-file="https://www.marchellosciortino.com/assets/free-gifts/Creative_amplification_through_AI.pdf">
                                 Download PDF &darr;
-                            </button>
+                            </a>
                         </div>
                     </div>
 
@@ -376,7 +376,7 @@
                     <div class="teaser-card">
                         <div class="card-cover-wrapper">
                             <img src="../assets/free-gifts/WIN_Reframe_Matrix_cover_image.png" alt="WIN Reframe Matrix Cover" class="card-cover-img">
-                            <span class="card-status-badge">Teaser / Upcoming</span>
+                            <span class="card-status-badge active">&#10004; Available Now</span>
                         </div>
                         <div class="teaser-card-body">
                             <h3 class="teaser-card-title">W.I.N. Reframe Matrix</h3>
@@ -385,9 +385,9 @@
                                 <li>Breaking mental friction loops.</li>
                                 <li>Custom tactical action plan builder.</li>
                             </ul>
-                            <button class="btn-download-trigger js-open-modal" data-title="W.I.N. Reframe Matrix" data-file="../assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf">
-                                Download Teaser &darr;
-                            </button>
+                            <a href="https://www.marchellosciortino.com/assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf" target="_blank" download class="btn-download-trigger js-open-modal" data-title="W.I.N. Reframe Matrix" data-file="https://www.marchellosciortino.com/assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf">
+                                Download Ebook &darr;
+                            </a>
                         </div>
                     </div>
 
@@ -395,7 +395,7 @@
                     <div class="teaser-card">
                         <div class="card-cover-wrapper">
                             <img src="../assets/free-gifts/Prompt_Cheat_Sheat_cover_image.png" alt="AI Accessibility Commands Cover" class="card-cover-img">
-                            <span class="card-status-badge">Teaser / Upcoming</span>
+                            <span class="card-status-badge active">&#10004; Available Now</span>
                         </div>
                         <div class="teaser-card-body">
                             <h3 class="teaser-card-title">AI Accessibility Commands</h3>
@@ -404,9 +404,9 @@
                                 <li>Voice transcription guide templates.</li>
                                 <li>Configuring AI as a cognitive prosthetic.</li>
                             </ul>
-                            <button class="btn-download-trigger js-open-modal" data-title="AI Accessibility Commands" data-file="../assets/free-gifts/Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf">
-                                Download Teaser &darr;
-                            </button>
+                            <a href="https://www.marchellosciortino.com/assets/free-gifts/Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf" target="_blank" download class="btn-download-trigger js-open-modal" data-title="AI Accessibility Commands" data-file="https://www.marchellosciortino.com/assets/free-gifts/Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf">
+                                Download Guide &darr;
+                            </a>
                         </div>
                     </div>
 
@@ -414,7 +414,7 @@
                     <div class="teaser-card">
                         <div class="card-cover-wrapper">
                             <img src="../assets/free-gifts/Digital_Flow_Audit_cover_image.png" alt="Digital Flow Audit Cover" class="card-cover-img">
-                            <span class="card-status-badge">Teaser / Upcoming</span>
+                            <span class="card-status-badge active">&#10004; Available Now</span>
                         </div>
                         <div class="teaser-card-body">
                             <h3 class="teaser-card-title">Digital Flow Audit Checklist</h3>
@@ -423,9 +423,9 @@
                                 <li>Speed & user experience friction check.</li>
                                 <li>Landing page conversion optimization.</li>
                             </ul>
-                            <button class="btn-download-trigger js-open-modal" data-title="Digital Flow Audit Checklist" data-file="../assets/free-gifts/Digital_Flow_Audit_Checklist_Enhanced.pdf">
-                                Download Teaser &darr;
-                            </button>
+                            <a href="https://www.marchellosciortino.com/assets/free-gifts/Digital_Flow_Audit_Checklist_Enhanced.pdf" target="_blank" download class="btn-download-trigger js-open-modal" data-title="Digital Flow Audit Checklist" data-file="https://www.marchellosciortino.com/assets/free-gifts/Digital_Flow_Audit_Checklist_Enhanced.pdf">
+                                Download Checklist &darr;
+                            </a>
                         </div>
                     </div>
 
@@ -453,7 +453,7 @@
             <div id="modal-success-view" style="display: none;">
                 <h3 style="color: var(--teal-accent);">&#10004; Access Granted!</h3>
                 <p id="modal-success-text">Click the link below to download your file.</p>
-                <a href="#" id="modal-direct-download-btn" download class="btn-download-trigger" style="background: var(--teal-accent); color: var(--navy-dark);">
+                <a href="#" id="modal-direct-download-btn" target="_blank" download class="btn-download-trigger" style="background: var(--teal-accent); color: var(--navy-dark);">
                     &#128190; Download File Now
                 </a>
             </div>
@@ -484,41 +484,57 @@
 
             triggers.forEach(btn => {
                 btn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    selectedFileUrl = btn.getAttribute('data-file');
-                    selectedTitle = btn.getAttribute('data-title');
+                    let fileUrl = btn.getAttribute('data-file') || btn.getAttribute('href');
+                    selectedFileUrl = fileUrl;
+                    selectedTitle = btn.getAttribute('data-title') || 'Free Resource';
 
-                    const savedEmail = localStorage.getItem('free-library-user-email');
-                    if (savedEmail) {
-                        directDownloadBtn.href = selectedFileUrl;
-                        formView.style.display = 'none';
-                        successView.style.display = 'block';
+                    const isUnlocked = localStorage.getItem('free-gifts-unlocked') === 'true' || localStorage.getItem('free-library-user-email');
+                    if (isUnlocked) {
+                        return;
                     } else {
-                        copyText.textContent = `Before proceeding with "${selectedTitle}", please enter your email so we can contact you further and send you updates.`;
-                        formView.style.display = 'block';
-                        successView.style.display = 'none';
+                        e.preventDefault();
+                        if (copyText) copyText.textContent = `Before proceeding with "${selectedTitle}", please enter your email so we can contact you further and send you updates.`;
+                        if (formView) formView.style.display = 'block';
+                        if (successView) successView.style.display = 'none';
+                        if (directDownloadBtn) {
+                            directDownloadBtn.href = selectedFileUrl;
+                            directDownloadBtn.target = '_blank';
+                        }
+                        if (modal) modal.classList.add('active');
                     }
-                    modal.classList.add('active');
                 });
             });
 
-            closeBtn.addEventListener('click', () => {
-                modal.classList.remove('active');
-            });
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => {
+                    if (modal) modal.classList.remove('active');
+                });
+            }
 
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) modal.classList.remove('active');
-            });
+            if (modal) {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) modal.classList.remove('active');
+                });
+            }
 
-            loginForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const emailInput = document.getElementById('modal-email').value;
-                localStorage.setItem('free-library-user-email', emailInput);
+            if (loginForm) {
+                loginForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const emailInput = document.getElementById('modal-email');
+                    if (emailInput && emailInput.value) {
+                        localStorage.setItem('free-library-user-email', emailInput.value);
+                        localStorage.setItem('free-gifts-unlocked', 'true');
+                    }
 
-                directDownloadBtn.href = selectedFileUrl;
-                formView.style.display = 'none';
-                successView.style.display = 'block';
-            });
+                    if (selectedFileUrl) {
+                        window.open(selectedFileUrl, '_blank');
+                    }
+
+                    if (directDownloadBtn) directDownloadBtn.href = selectedFileUrl;
+                    if (formView) formView.style.display = 'none';
+                    if (successView) successView.style.display = 'block';
+                });
+            }
         });
     </script>
 </body>
