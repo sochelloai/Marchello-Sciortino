@@ -3127,7 +3127,7 @@ document.addEventListener('click', (e) => {
 
         if (!modal) return;
 
-        const isUnlocked = localStorage.getItem('free-gifts-unlocked') === 'true' || localStorage.getItem('free-library-user-email');
+        const isUnlocked = localStorage.getItem('free-gifts-unlocked') === 'true';
 
         if (isUnlocked) {
             if (directLink) directLink.href = fileUrl;
@@ -3175,7 +3175,6 @@ document.addEventListener('submit', async (e) => {
         }
 
         localStorage.setItem('free-gifts-unlocked', 'true');
-        localStorage.setItem('free-library-user-email', email);
 
         try {
             const formData = new FormData();

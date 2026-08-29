@@ -514,7 +514,7 @@
                         selectedFileUrl = fileUrl;
                         selectedTitle = btn.getAttribute('data-title');
 
-                        const isUnlocked = localStorage.getItem('free-gifts-unlocked') === 'true' || localStorage.getItem('free-library-user-email');
+                        const isUnlocked = localStorage.getItem('free-gifts-unlocked') === 'true';
                         if (isUnlocked) {
                             if (directDownloadBtn) directDownloadBtn.href = selectedFileUrl;
                             if (formView) formView.style.display = 'none';
@@ -613,7 +613,6 @@
                     }
 
                     localStorage.setItem('free-gifts-unlocked', 'true');
-                    localStorage.setItem('free-library-user-email', email);
 
                     try {
                         const formData = new FormData();
