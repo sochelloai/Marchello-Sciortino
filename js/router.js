@@ -19,8 +19,8 @@ const Router = {
 
             // Intercept internal routes (starting with / but not //)
             if (href.startsWith('/') && !href.startsWith('//')) {
-                // Let links with target="_blank" behave normally
-                if (link.target === '_blank') return;
+                // Let links with target="_blank", static assets (/assets/), PDFs, or download attributes behave normally
+                if (link.target === '_blank' || href.startsWith('/assets/') || href.endsWith('.pdf') || link.hasAttribute('download')) return;
 
                 e.preventDefault();
                 this.navigate(href);
@@ -50,6 +50,11 @@ const Router = {
 
         // Split route path from query parameters
         let pathOnly = currentPath.split('?')[0];
+
+        // Bypass static assets and PDF files in SPA router
+        if (pathOnly.startsWith('/assets/') || pathOnly.endsWith('.pdf')) {
+            return;
+        }
 
         // Subdomain check for library.marchellosciortino.com
         const isLibrarySubdomain = window.location.hostname.includes('library.marchellosciortino.com') || window.location.hostname.startsWith('library.');
@@ -3000,7 +3005,7 @@ const freeGiftsTemplate = () => {
                 <!-- Item 1: Featured Live Release -->
                 <div class="teaser-card">
                     <div class="card-cover-wrapper">
-                        <img src="assets/free-gifts/creative_amplification_cover.png" alt="Creative Amplification Cover" class="card-cover-img">
+                        <img src="/assets/free-gifts/creative_amplification_cover.png" alt="Creative Amplification Cover" class="card-cover-img">
                         <span class="card-status-badge active">&#10004; Available Now</span>
                     </div>
                     <div class="teaser-card-body">
@@ -3019,7 +3024,7 @@ const freeGiftsTemplate = () => {
                 <!-- Item 2: W.I.N. Reframe Matrix -->
                 <div class="teaser-card">
                     <div class="card-cover-wrapper">
-                        <img src="assets/free-gifts/WIN_Reframe_Matrix_cover_image.png" alt="WIN Reframe Matrix Cover" class="card-cover-img">
+                        <img src="/assets/free-gifts/WIN_Reframe_Matrix_cover_image.png" alt="WIN Reframe Matrix Cover" class="card-cover-img">
                         <span class="card-status-badge active">&#10004; Available Now</span>
                     </div>
                     <div class="teaser-card-body">
@@ -3038,7 +3043,7 @@ const freeGiftsTemplate = () => {
                 <!-- Item 3: AI Accessibility Commands -->
                 <div class="teaser-card">
                     <div class="card-cover-wrapper">
-                        <img src="assets/free-gifts/Prompt_Cheat_Sheat_cover_image.png" alt="AI Accessibility Commands Cover" class="card-cover-img">
+                        <img src="/assets/free-gifts/Prompt_Cheat_Sheat_cover_image.png" alt="AI Accessibility Commands Cover" class="card-cover-img">
                         <span class="card-status-badge active">&#10004; Available Now</span>
                     </div>
                     <div class="teaser-card-body">
@@ -3057,7 +3062,7 @@ const freeGiftsTemplate = () => {
                 <!-- Item 4: Digital Flow Audit -->
                 <div class="teaser-card">
                     <div class="card-cover-wrapper">
-                        <img src="assets/free-gifts/Digital_Flow_Audit_cover_image.png" alt="Digital Flow Audit Cover" class="card-cover-img">
+                        <img src="/assets/free-gifts/Digital_Flow_Audit_cover_image.png" alt="Digital Flow Audit Cover" class="card-cover-img">
                         <span class="card-status-badge active">&#10004; Available Now</span>
                     </div>
                     <div class="teaser-card-body">
@@ -3114,9 +3119,6 @@ document.addEventListener('click', (e) => {
     const btn = e.target.closest('.js-spa-download-btn');
     if (btn) {
         let fileUrl = btn.getAttribute('data-file') || btn.getAttribute('href');
-        if (fileUrl && !fileUrl.startsWith('/') && !fileUrl.startsWith('http')) {
-            fileUrl = '/' + fileUrl;
-        }
         const title = btn.getAttribute('data-title') || 'Free Resource';
         const modal = document.getElementById('spa-download-modal');
         const copyText = document.getElementById('spa-copy-text');
@@ -3124,7 +3126,7 @@ document.addEventListener('click', (e) => {
         const successView = document.getElementById('spa-success-view');
         const directLink = document.getElementById('spa-direct-download-link');
 
-        const isUnlocked = localStorage.getItem('free-gifts-unlocked') === 'true' || localStorage.getItem('free-library-user-email');
+        const isUnlocked = localStorage.getItem('free-gifts-unlocked') === 'true';
 
         if (isUnlocked) {
             // Already unlocked: let native <a href="..." target="_blank" download> open in new tab natively
@@ -3139,7 +3141,6 @@ document.addEventListener('click', (e) => {
                 if (directLink) {
                     directLink.href = fileUrl;
                     directLink.setAttribute('data-file', fileUrl);
-                    directLink.target = '_blank';
                 }
                 modal.classList.add('active');
             }
@@ -3166,9 +3167,10 @@ document.addEventListener('submit', async (e) => {
         const directLink = document.getElementById('spa-direct-download-link');
         const targetUrl = directLink ? (directLink.getAttribute('data-file') || directLink.getAttribute('href')) : null;
 
-        // Synchronously open target window in new tab during user gesture
+        // Open target window SYNCHRONOUSLY to preserve user gesture and bypass browser popup blockers
+        let targetWin = null;
         if (targetUrl && targetUrl !== '#' && !targetUrl.endsWith('#')) {
-            window.open(targetUrl, '_blank');
+            targetWin = window.open(targetUrl, '_blank');
         }
 
         if (submitBtn) {
@@ -3177,16 +3179,20 @@ document.addEventListener('submit', async (e) => {
         }
 
         localStorage.setItem('free-gifts-unlocked', 'true');
-        localStorage.setItem('free-library-user-email', email);
 
         try {
             const formData = new FormData();
             formData.append('email', email);
 
-            await fetch('/api/submit-free-gifts', {
+            const response = await fetch('/api/submit-free-gifts', {
                 method: 'POST',
                 body: formData
             });
+
+            if (response.ok) {
+                const result = await response.json();
+                console.log("[ClickFunnels Free Gifts API Success]", result);
+            }
         } catch (error) {
             console.error("[ClickFunnels Free Gifts API Error]", error);
         } finally {
@@ -3200,11 +3206,8 @@ document.addEventListener('submit', async (e) => {
             if (formView && successView) {
                 formView.style.display = 'none';
                 successView.style.display = 'block';
-                if (directLink && targetUrl) directLink.href = targetUrl;
             }
         }
-    }
-});
     }
 });
 
