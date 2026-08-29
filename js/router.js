@@ -3010,9 +3010,9 @@ const freeGiftsTemplate = () => {
                             <li>Turning constraints into strategic leverage.</li>
                             <li>Practical prompt configurations for creators.</li>
                         </ul>
-                        <button class="btn-download-trigger js-spa-download-btn" data-title="Creative Amplification Through AI" data-file="/assets/free-gifts/Creative_amplification_through_AI.pdf">
+                        <a href="/assets/free-gifts/Creative_amplification_through_AI.pdf" target="_blank" download class="btn-download-trigger js-spa-download-btn" data-title="Creative Amplification Through AI" data-file="/assets/free-gifts/Creative_amplification_through_AI.pdf">
                             Download PDF &darr;
-                        </button>
+                        </a>
                     </div>
                 </div>
 
@@ -3029,9 +3029,9 @@ const freeGiftsTemplate = () => {
                             <li>Breaking mental friction loops.</li>
                             <li>Custom tactical action plan builder.</li>
                         </ul>
-                        <button class="btn-download-trigger js-spa-download-btn" data-title="W.I.N. Reframe Matrix" data-file="/assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf">
+                        <a href="/assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf" target="_blank" download class="btn-download-trigger js-spa-download-btn" data-title="W.I.N. Reframe Matrix" data-file="/assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf">
                             Download Ebook &darr;
-                        </button>
+                        </a>
                     </div>
                 </div>
 
@@ -3048,9 +3048,9 @@ const freeGiftsTemplate = () => {
                             <li>Voice transcription guide templates.</li>
                             <li>Configuring AI as a cognitive prosthetic.</li>
                         </ul>
-                        <button class="btn-download-trigger js-spa-download-btn" data-title="AI Accessibility Commands" data-file="/assets/free-gifts/Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf">
+                        <a href="/assets/free-gifts/Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf" target="_blank" download class="btn-download-trigger js-spa-download-btn" data-title="AI Accessibility Commands" data-file="/assets/free-gifts/Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf">
                             Download Guide &darr;
-                        </button>
+                        </a>
                     </div>
                 </div>
 
@@ -3067,9 +3067,9 @@ const freeGiftsTemplate = () => {
                             <li>Speed & user experience friction check.</li>
                             <li>Landing page conversion optimization.</li>
                         </ul>
-                        <button class="btn-download-trigger js-spa-download-btn" data-title="Digital Flow Audit Checklist" data-file="/assets/free-gifts/Digital_Flow_Audit_Checklist_Enhanced.pdf">
+                        <a href="/assets/free-gifts/Digital_Flow_Audit_Checklist_Enhanced.pdf" target="_blank" download class="btn-download-trigger js-spa-download-btn" data-title="Digital Flow Audit Checklist" data-file="/assets/free-gifts/Digital_Flow_Audit_Checklist_Enhanced.pdf">
                             Download Checklist &darr;
-                        </button>
+                        </a>
                     </div>
                 </div>
 
@@ -3097,7 +3097,7 @@ const freeGiftsTemplate = () => {
             <div id="spa-success-view" style="display: none;">
                 <h3 style="color: #0ad8ad;">&#10004; Access Granted!</h3>
                 <p>Click the link below to download your file.</p>
-                <a href="#" id="spa-direct-download-link" download class="btn-download-trigger" style="background: #0ad8ad; color: #081b29;">
+                <a href="#" id="spa-direct-download-link" target="_blank" download class="btn-download-trigger" style="background: #0ad8ad; color: #081b29;">
                     &#128190; Download File Now
                 </a>
             </div>
@@ -3113,8 +3113,7 @@ Router.register('/free-library', freeGiftsTemplate);
 document.addEventListener('click', (e) => {
     const btn = e.target.closest('.js-spa-download-btn');
     if (btn) {
-        e.preventDefault();
-        let fileUrl = btn.getAttribute('data-file');
+        let fileUrl = btn.getAttribute('data-file') || btn.getAttribute('href');
         if (fileUrl && !fileUrl.startsWith('/')) {
             fileUrl = '/' + fileUrl;
         }
@@ -3125,30 +3124,17 @@ document.addEventListener('click', (e) => {
         const successView = document.getElementById('spa-success-view');
         const directLink = document.getElementById('spa-direct-download-link');
 
-        if (!modal) return;
-
         const isUnlocked = localStorage.getItem('free-gifts-unlocked') === 'true';
 
-        if (isUnlocked) {
-            if (directLink) directLink.href = fileUrl;
-            if (formView) formView.style.display = 'none';
-            if (successView) successView.style.display = 'block';
-            modal.classList.add('active');
-
-            // Trigger direct download/open in new tab
-            const dlLink = document.createElement('a');
-            dlLink.href = fileUrl;
-            dlLink.target = '_blank';
-            dlLink.download = '';
-            document.body.appendChild(dlLink);
-            dlLink.click();
-            document.body.removeChild(dlLink);
-        } else {
-            if (copyText) copyText.textContent = `Before proceeding with "${title}", please enter your email so we can contact you further and send you updates.`;
-            if (formView) formView.style.display = 'block';
-            if (successView) successView.style.display = 'none';
-            if (directLink) directLink.href = fileUrl;
-            modal.classList.add('active');
+        if (!isUnlocked) {
+            e.preventDefault();
+            if (modal) {
+                if (copyText) copyText.textContent = `Before proceeding with "${title}", please enter your email so we can contact you further and send you updates.`;
+                if (formView) formView.style.display = 'block';
+                if (successView) successView.style.display = 'none';
+                if (directLink) directLink.href = fileUrl;
+                modal.classList.add('active');
+            }
         }
     }
 
@@ -3206,13 +3192,7 @@ document.addEventListener('submit', async (e) => {
             }
 
             if (directLink && directLink.href && directLink.href !== '#') {
-                const dlLink = document.createElement('a');
-                dlLink.href = directLink.href;
-                dlLink.target = '_blank';
-                dlLink.download = '';
-                document.body.appendChild(dlLink);
-                dlLink.click();
-                document.body.removeChild(dlLink);
+                window.open(directLink.href, '_blank');
             }
         }
     }
