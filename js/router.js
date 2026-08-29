@@ -3114,21 +3114,10 @@ const freeGiftsTemplate = () => {
 Router.register('/free-gifts', freeGiftsTemplate);
 Router.register('/free-library', freeGiftsTemplate);
 
-// Direct URL Redirect Helper
-function redirectToUrl(fileUrl) {
-    if (!fileUrl || fileUrl === '#' || fileUrl.endsWith('#')) return;
-    let target = fileUrl;
-    if (!target.startsWith('/') && !target.startsWith('http')) {
-        target = '/' + target;
-    }
-    window.location.href = target;
-}
-
 // Global click event listener for SPA download triggers
 document.addEventListener('click', (e) => {
     const btn = e.target.closest('.js-spa-download-btn');
     if (btn) {
-        e.preventDefault();
         let fileUrl = btn.getAttribute('data-file') || btn.getAttribute('href');
         const title = btn.getAttribute('data-title') || 'Free Resource';
         const modal = document.getElementById('spa-download-modal');
@@ -3140,8 +3129,11 @@ document.addEventListener('click', (e) => {
         const isUnlocked = localStorage.getItem('free-gifts-unlocked') === 'true';
 
         if (isUnlocked) {
-            redirectToUrl(fileUrl);
+            // Already unlocked: let native <a href="..." target="_blank" download> open in new tab natively
+            return;
         } else {
+            // Locked: show email modal
+            e.preventDefault();
             if (modal) {
                 if (copyText) copyText.textContent = `Before proceeding with "${title}", please enter your email so we can contact you further and send you updates.`;
                 if (formView) formView.style.display = 'block';
@@ -3153,13 +3145,6 @@ document.addEventListener('click', (e) => {
                 modal.classList.add('active');
             }
         }
-    }
-
-    const directBtn = e.target.closest('#spa-direct-download-link');
-    if (directBtn) {
-        e.preventDefault();
-        const fileUrl = directBtn.getAttribute('data-file') || directBtn.getAttribute('href');
-        redirectToUrl(fileUrl);
     }
 
     if (e.target && e.target.id === 'spa-modal-close') {
@@ -3210,7 +3195,14 @@ document.addEventListener('submit', async (e) => {
             const targetUrl = directLink ? (directLink.getAttribute('data-file') || directLink.getAttribute('href')) : null;
 
             if (targetUrl && targetUrl !== '#' && !targetUrl.endsWith('#')) {
-                redirectToUrl(targetUrl);
+                window.open(targetUrl, '_blank');
+            }
+
+            const formView = document.getElementById('spa-form-view');
+            const successView = document.getElementById('spa-success-view');
+            if (formView && successView) {
+                formView.style.display = 'none';
+                successView.style.display = 'block';
             }
         }
     }

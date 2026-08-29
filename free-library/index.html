@@ -491,28 +491,19 @@
             let selectedFileUrl = '';
             let selectedTitle = '';
 
-            function redirectToUrl(fileUrl) {
-                if (!fileUrl || fileUrl === '#' || fileUrl.endsWith('#')) return;
-                let target = fileUrl;
-                if (!target.startsWith('/') && !target.startsWith('http')) {
-                    target = '/' + target;
-                }
-                window.location.href = target;
-            }
-
             function attachTriggerEvents() {
                 const triggers = document.querySelectorAll('.js-spa-download-btn');
                 triggers.forEach(btn => {
                     btn.onclick = (e) => {
-                        e.preventDefault();
                         let fileUrl = btn.getAttribute('data-file') || btn.getAttribute('href');
                         selectedFileUrl = fileUrl;
                         selectedTitle = btn.getAttribute('data-title') || 'Free Resource';
 
                         const isUnlocked = localStorage.getItem('free-gifts-unlocked') === 'true';
                         if (isUnlocked) {
-                            redirectToUrl(selectedFileUrl);
+                            return;
                         } else {
+                            e.preventDefault();
                             if (copyText) copyText.textContent = `Before proceeding with "${selectedTitle}", please enter your email so we can contact you further and send you updates.`;
                             if (formView) formView.style.display = 'block';
                             if (successView) successView.style.display = 'none';
@@ -639,7 +630,7 @@
                         if (directDownloadBtn) directDownloadBtn.href = selectedFileUrl;
                         if (formView) formView.style.display = 'none';
                         if (successView) successView.style.display = 'block';
-                        if (selectedFileUrl) redirectToUrl(selectedFileUrl);
+                        if (selectedFileUrl) window.open(selectedFileUrl, '_blank');
                     }
                 });
             }
