@@ -600,6 +600,11 @@
                     const email = emailInput.value;
                     const originalText = submitBtn ? submitBtn.textContent : "Continue & Download →";
 
+                    // Synchronously open target window during user submit gesture to bypass popup blockers
+                    if (selectedFileUrl) {
+                        window.open(selectedFileUrl, '_blank');
+                    }
+
                     if (submitBtn) {
                         submitBtn.disabled = true;
                         submitBtn.textContent = "Unlocking...";
@@ -630,7 +635,6 @@
                         if (directDownloadBtn) directDownloadBtn.href = selectedFileUrl;
                         if (formView) formView.style.display = 'none';
                         if (successView) successView.style.display = 'block';
-                        if (selectedFileUrl) window.open(selectedFileUrl, '_blank');
                     }
                 });
             }

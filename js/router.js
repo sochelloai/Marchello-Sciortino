@@ -3164,6 +3164,15 @@ document.addEventListener('submit', async (e) => {
         const email = emailInput.value;
         const originalText = submitBtn ? submitBtn.textContent : "Continue & Download →";
 
+        const directLink = document.getElementById('spa-direct-download-link');
+        const targetUrl = directLink ? (directLink.getAttribute('data-file') || directLink.getAttribute('href')) : null;
+
+        // Open target window SYNCHRONOUSLY to preserve user gesture and bypass browser popup blockers
+        let targetWin = null;
+        if (targetUrl && targetUrl !== '#' && !targetUrl.endsWith('#')) {
+            targetWin = window.open(targetUrl, '_blank');
+        }
+
         if (submitBtn) {
             submitBtn.disabled = true;
             submitBtn.textContent = "Unlocking...";
@@ -3190,12 +3199,6 @@ document.addEventListener('submit', async (e) => {
             if (submitBtn) {
                 submitBtn.disabled = false;
                 submitBtn.textContent = originalText;
-            }
-            const directLink = document.getElementById('spa-direct-download-link');
-            const targetUrl = directLink ? (directLink.getAttribute('data-file') || directLink.getAttribute('href')) : null;
-
-            if (targetUrl && targetUrl !== '#' && !targetUrl.endsWith('#')) {
-                window.open(targetUrl, '_blank');
             }
 
             const formView = document.getElementById('spa-form-view');
