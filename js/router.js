@@ -2989,9 +2989,9 @@ const freeGiftsTemplate = () => {
 
         <div class="container text-center" style="position: relative; z-index: 2;">
             <span class="section-tag text-teal">Tools & Resources</span>
-            <h1 style="color: white;">Free Digital Library</h1>
+            <h1 style="color: white;">Free Gifts</h1>
             <p class="section-desc" style="color: var(--color-gray-light);">
-                Worksheets, prompt templates, PDF guides, and audio lessons to help you reframe obstacles and build your projects.
+                Worksheets, prompt templates, and PDF guides to help you reframe obstacles and build your projects.
             </p>
         </div>
     </div>
