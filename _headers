@@ -2,6 +2,12 @@
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
 
+# Direct attachment download headers for PDF assets
+/assets/free-gifts/*
+  Content-Disposition: attachment
+  Content-Type: application/pdf
+  Access-Control-Allow-Origin: *
+
 /css/*
   Cache-Control: public, max-age=31536000, immutable
 

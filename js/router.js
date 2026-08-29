@@ -3109,15 +3109,46 @@ const freeGiftsTemplate = () => {
 Router.register('/free-gifts', freeGiftsTemplate);
 Router.register('/free-library', freeGiftsTemplate);
 
+// Universal Cross-Browser Direct Download Helper
+async function forceUniversalDownload(fileUrl, title) {
+    if (!fileUrl || fileUrl === '#' || fileUrl.endsWith('#')) return;
+    let cleanUrl = fileUrl;
+    if (!cleanUrl.startsWith('/') && !cleanUrl.startsWith('http')) {
+        cleanUrl = '/' + cleanUrl;
+    }
+    const fileName = cleanUrl.split('/').pop() || 'resource.pdf';
+
+    try {
+        const response = await fetch(cleanUrl);
+        if (!response.ok) throw new Error("HTTP error " + response.status);
+        const blob = await response.blob();
+        const blobUrl = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setTimeout(() => window.URL.revokeObjectURL(blobUrl), 10000);
+    } catch (err) {
+        console.warn("[Download fallback]", err);
+        const link = document.createElement('a');
+        link.href = cleanUrl;
+        link.download = fileName;
+        link.target = '_blank';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+}
+
 // Global click event listener for SPA download triggers
 document.addEventListener('click', (e) => {
     const btn = e.target.closest('.js-spa-download-btn');
     if (btn) {
+        e.preventDefault();
         let fileUrl = btn.getAttribute('data-file') || btn.getAttribute('href');
-        if (fileUrl && !fileUrl.startsWith('/') && !fileUrl.startsWith('http')) {
-            fileUrl = '/' + fileUrl;
-        }
-        const title = btn.getAttribute('data-title');
+        const title = btn.getAttribute('data-title') || 'Free Resource';
         const modal = document.getElementById('spa-download-modal');
         const copyText = document.getElementById('spa-copy-text');
         const formView = document.getElementById('spa-form-view');
@@ -3126,16 +3157,27 @@ document.addEventListener('click', (e) => {
 
         const isUnlocked = localStorage.getItem('free-gifts-unlocked') === 'true';
 
-        if (!isUnlocked) {
-            e.preventDefault();
+        if (isUnlocked) {
+            forceUniversalDownload(fileUrl, title);
+        } else {
             if (modal) {
                 if (copyText) copyText.textContent = `Before proceeding with "${title}", please enter your email so we can contact you further and send you updates.`;
                 if (formView) formView.style.display = 'block';
                 if (successView) successView.style.display = 'none';
-                if (directLink) directLink.href = fileUrl;
+                if (directLink) {
+                    directLink.href = fileUrl;
+                    directLink.setAttribute('data-file', fileUrl);
+                }
                 modal.classList.add('active');
             }
         }
+    }
+
+    const directBtn = e.target.closest('#spa-direct-download-link');
+    if (directBtn) {
+        e.preventDefault();
+        const fileUrl = directBtn.getAttribute('data-file') || directBtn.getAttribute('href');
+        forceUniversalDownload(fileUrl, 'Free Resource');
     }
 
     if (e.target && e.target.id === 'spa-modal-close') {
@@ -3191,8 +3233,11 @@ document.addEventListener('submit', async (e) => {
                 successView.style.display = 'block';
             }
 
-            if (directLink && directLink.href && directLink.href !== '#') {
-                window.open(directLink.href, '_blank');
+            if (directLink) {
+                const targetUrl = directLink.getAttribute('data-file') || directLink.getAttribute('href');
+                if (targetUrl && targetUrl !== '#' && !targetUrl.endsWith('#')) {
+                    forceUniversalDownload(targetUrl, 'Free Resource');
+                }
             }
         }
     }
