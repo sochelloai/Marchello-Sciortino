@@ -496,7 +496,7 @@
                 triggers.forEach(btn => {
                     btn.onclick = (e) => {
                         let fileUrl = btn.getAttribute('data-file') || btn.getAttribute('href');
-                        if (fileUrl && !fileUrl.startsWith('/')) {
+                        if (fileUrl && !fileUrl.startsWith('/') && !fileUrl.startsWith('http')) {
                             fileUrl = '/' + fileUrl;
                         }
                         selectedFileUrl = fileUrl;

@@ -3010,7 +3010,7 @@ const freeGiftsTemplate = () => {
                             <li>Turning constraints into strategic leverage.</li>
                             <li>Practical prompt configurations for creators.</li>
                         </ul>
-                        <a href="https://www.marchellosciortino.com/assets/free-gifts/Creative_amplification_through_AI.pdf" target="_blank" download class="btn-download-trigger js-spa-download-btn" data-title="Creative Amplification Through AI" data-file="https://www.marchellosciortino.com/assets/free-gifts/Creative_amplification_through_AI.pdf">
+                        <a href="/assets/free-gifts/Creative_amplification_through_AI.pdf" target="_blank" download class="btn-download-trigger js-spa-download-btn" data-title="Creative Amplification Through AI" data-file="/assets/free-gifts/Creative_amplification_through_AI.pdf">
                             Download PDF &darr;
                         </a>
                     </div>
@@ -3029,7 +3029,7 @@ const freeGiftsTemplate = () => {
                             <li>Breaking mental friction loops.</li>
                             <li>Custom tactical action plan builder.</li>
                         </ul>
-                        <a href="https://www.marchellosciortino.com/assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf" target="_blank" download class="btn-download-trigger js-spa-download-btn" data-title="W.I.N. Reframe Matrix" data-file="https://www.marchellosciortino.com/assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf">
+                        <a href="/assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf" target="_blank" download class="btn-download-trigger js-spa-download-btn" data-title="W.I.N. Reframe Matrix" data-file="/assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf">
                             Download Ebook &darr;
                         </a>
                     </div>
@@ -3048,7 +3048,7 @@ const freeGiftsTemplate = () => {
                             <li>Voice transcription guide templates.</li>
                             <li>Configuring AI as a cognitive prosthetic.</li>
                         </ul>
-                        <a href="https://www.marchellosciortino.com/assets/free-gifts/Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf" target="_blank" download class="btn-download-trigger js-spa-download-btn" data-title="AI Accessibility Commands" data-file="https://www.marchellosciortino.com/assets/free-gifts/Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf">
+                        <a href="/assets/free-gifts/Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf" target="_blank" download class="btn-download-trigger js-spa-download-btn" data-title="AI Accessibility Commands" data-file="/assets/free-gifts/Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf">
                             Download Guide &darr;
                         </a>
                     </div>
@@ -3067,7 +3067,7 @@ const freeGiftsTemplate = () => {
                             <li>Speed & user experience friction check.</li>
                             <li>Landing page conversion optimization.</li>
                         </ul>
-                        <a href="https://www.marchellosciortino.com/assets/free-gifts/Digital_Flow_Audit_Checklist_Enhanced.pdf" target="_blank" download class="btn-download-trigger js-spa-download-btn" data-title="Digital Flow Audit Checklist" data-file="https://www.marchellosciortino.com/assets/free-gifts/Digital_Flow_Audit_Checklist_Enhanced.pdf">
+                        <a href="/assets/free-gifts/Digital_Flow_Audit_Checklist_Enhanced.pdf" target="_blank" download class="btn-download-trigger js-spa-download-btn" data-title="Digital Flow Audit Checklist" data-file="/assets/free-gifts/Digital_Flow_Audit_Checklist_Enhanced.pdf">
                             Download Checklist &darr;
                         </a>
                     </div>
@@ -3114,7 +3114,7 @@ document.addEventListener('click', (e) => {
     const btn = e.target.closest('.js-spa-download-btn');
     if (btn) {
         let fileUrl = btn.getAttribute('data-file') || btn.getAttribute('href');
-        if (fileUrl && !fileUrl.startsWith('/')) {
+        if (fileUrl && !fileUrl.startsWith('/') && !fileUrl.startsWith('http')) {
             fileUrl = '/' + fileUrl;
         }
         const title = btn.getAttribute('data-title');
