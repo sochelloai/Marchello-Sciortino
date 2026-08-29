@@ -3096,7 +3096,7 @@ const freeGiftsTemplate = () => {
                     <button type="submit" class="btn-unlock-orange" style="background: #ff5722; color: #ffffff; width: 100%; padding: 14px 20px; font-size: 1rem; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; transition: background 0.2s, transform 0.15s;">
                         Unlock Free Access &rarr;
                     </button>
-                    <a href="/" class="btn-decline-home" style="display: block; text-align: center; margin-top: 14px; color: #64748b; font-size: 0.88rem; text-decoration: none; transition: color 0.2s;">
+                    <a href="/" class="btn-decline-home" style="display: block; text-align: center; margin-top: 14px; color: #64748b; font-size: 0.78rem; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; transition: color 0.2s;">
                         I do not want to unlock. Take me back to the home page.
                     </a>
                 </form>
