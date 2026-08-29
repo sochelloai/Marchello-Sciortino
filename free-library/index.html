@@ -491,36 +491,13 @@
             let selectedFileUrl = '';
             let selectedTitle = '';
 
-            async function forceUniversalDownload(fileUrl, title) {
+            function redirectToUrl(fileUrl) {
                 if (!fileUrl || fileUrl === '#' || fileUrl.endsWith('#')) return;
-                let cleanUrl = fileUrl;
-                if (!cleanUrl.startsWith('/') && !cleanUrl.startsWith('http')) {
-                    cleanUrl = '/' + cleanUrl;
+                let target = fileUrl;
+                if (!target.startsWith('/') && !target.startsWith('http')) {
+                    target = '/' + target;
                 }
-                const fileName = cleanUrl.split('/').pop() || 'resource.pdf';
-
-                try {
-                    const response = await fetch(cleanUrl);
-                    if (!response.ok) throw new Error("HTTP error " + response.status);
-                    const blob = await response.blob();
-                    const blobUrl = window.URL.createObjectURL(blob);
-                    const link = document.createElement('a');
-                    link.href = blobUrl;
-                    link.download = fileName;
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                    setTimeout(() => window.URL.revokeObjectURL(blobUrl), 10000);
-                } catch (err) {
-                    console.warn("[Download fallback]", err);
-                    const link = document.createElement('a');
-                    link.href = cleanUrl;
-                    link.download = fileName;
-                    link.target = '_blank';
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                }
+                window.location.href = target;
             }
 
             function attachTriggerEvents() {
@@ -534,7 +511,7 @@
 
                         const isUnlocked = localStorage.getItem('free-gifts-unlocked') === 'true';
                         if (isUnlocked) {
-                            forceUniversalDownload(selectedFileUrl, selectedTitle);
+                            redirectToUrl(selectedFileUrl);
                         } else {
                             if (copyText) copyText.textContent = `Before proceeding with "${selectedTitle}", please enter your email so we can contact you further and send you updates.`;
                             if (formView) formView.style.display = 'block';
@@ -553,7 +530,7 @@
                 directDownloadBtn.onclick = (e) => {
                     e.preventDefault();
                     const targetUrl = directDownloadBtn.getAttribute('data-file') || directDownloadBtn.getAttribute('href') || selectedFileUrl;
-                    forceUniversalDownload(targetUrl, 'Free Resource');
+                    redirectToUrl(targetUrl);
                 };
             }
 
@@ -662,7 +639,7 @@
                         if (directDownloadBtn) directDownloadBtn.href = selectedFileUrl;
                         if (formView) formView.style.display = 'none';
                         if (successView) successView.style.display = 'block';
-                        if (selectedFileUrl) forceUniversalDownload(selectedFileUrl, selectedTitle);
+                        if (selectedFileUrl) redirectToUrl(selectedFileUrl);
                     }
                 });
             }

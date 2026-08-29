@@ -3114,37 +3114,14 @@ const freeGiftsTemplate = () => {
 Router.register('/free-gifts', freeGiftsTemplate);
 Router.register('/free-library', freeGiftsTemplate);
 
-// Universal Cross-Browser Direct Download Helper
-async function forceUniversalDownload(fileUrl, title) {
+// Direct URL Redirect Helper
+function redirectToUrl(fileUrl) {
     if (!fileUrl || fileUrl === '#' || fileUrl.endsWith('#')) return;
-    let cleanUrl = fileUrl;
-    if (!cleanUrl.startsWith('/') && !cleanUrl.startsWith('http')) {
-        cleanUrl = '/' + cleanUrl;
+    let target = fileUrl;
+    if (!target.startsWith('/') && !target.startsWith('http')) {
+        target = '/' + target;
     }
-    const fileName = cleanUrl.split('/').pop() || 'resource.pdf';
-
-    try {
-        const response = await fetch(cleanUrl);
-        if (!response.ok) throw new Error("HTTP error " + response.status);
-        const blob = await response.blob();
-        const blobUrl = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = blobUrl;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        setTimeout(() => window.URL.revokeObjectURL(blobUrl), 10000);
-    } catch (err) {
-        console.warn("[Download fallback]", err);
-        const link = document.createElement('a');
-        link.href = cleanUrl;
-        link.download = fileName;
-        link.target = '_blank';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
+    window.location.href = target;
 }
 
 // Global click event listener for SPA download triggers
@@ -3163,7 +3140,7 @@ document.addEventListener('click', (e) => {
         const isUnlocked = localStorage.getItem('free-gifts-unlocked') === 'true';
 
         if (isUnlocked) {
-            forceUniversalDownload(fileUrl, title);
+            redirectToUrl(fileUrl);
         } else {
             if (modal) {
                 if (copyText) copyText.textContent = `Before proceeding with "${title}", please enter your email so we can contact you further and send you updates.`;
@@ -3182,7 +3159,7 @@ document.addEventListener('click', (e) => {
     if (directBtn) {
         e.preventDefault();
         const fileUrl = directBtn.getAttribute('data-file') || directBtn.getAttribute('href');
-        forceUniversalDownload(fileUrl, 'Free Resource');
+        redirectToUrl(fileUrl);
     }
 
     if (e.target && e.target.id === 'spa-modal-close') {
@@ -3229,20 +3206,11 @@ document.addEventListener('submit', async (e) => {
                 submitBtn.disabled = false;
                 submitBtn.textContent = originalText;
             }
-            const formView = document.getElementById('spa-form-view');
-            const successView = document.getElementById('spa-success-view');
             const directLink = document.getElementById('spa-direct-download-link');
+            const targetUrl = directLink ? (directLink.getAttribute('data-file') || directLink.getAttribute('href')) : null;
 
-            if (formView && successView) {
-                formView.style.display = 'none';
-                successView.style.display = 'block';
-            }
-
-            if (directLink) {
-                const targetUrl = directLink.getAttribute('data-file') || directLink.getAttribute('href');
-                if (targetUrl && targetUrl !== '#' && !targetUrl.endsWith('#')) {
-                    forceUniversalDownload(targetUrl, 'Free Resource');
-                }
+            if (targetUrl && targetUrl !== '#' && !targetUrl.endsWith('#')) {
+                redirectToUrl(targetUrl);
             }
         }
     }
