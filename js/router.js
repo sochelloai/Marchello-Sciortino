@@ -3015,7 +3015,7 @@ const freeGiftsTemplate = () => {
                             <li>Turning constraints into strategic leverage.</li>
                             <li>Practical prompt configurations for creators.</li>
                         </ul>
-                        <a href="https://www.marchellosciortino.com/assets/free-gifts/Creative_amplification_through_AI.pdf" target="_blank" download class="btn-download-trigger js-spa-download-btn" data-title="Creative Amplification Through AI" data-file="https://www.marchellosciortino.com/assets/free-gifts/Creative_amplification_through_AI.pdf">
+                        <a href="https://www.marchellosciortino.com/assets/free-gifts/Creative_amplification_through_AI.pdf" target="_blank" rel="noopener noreferrer" class="btn-download-trigger js-spa-download-btn" data-title="Creative Amplification Through AI" data-file="https://www.marchellosciortino.com/assets/free-gifts/Creative_amplification_through_AI.pdf">
                             Download PDF &darr;
                         </a>
                     </div>
@@ -3034,7 +3034,7 @@ const freeGiftsTemplate = () => {
                             <li>Breaking mental friction loops.</li>
                             <li>Custom tactical action plan builder.</li>
                         </ul>
-                        <a href="https://www.marchellosciortino.com/assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf" target="_blank" download class="btn-download-trigger js-spa-download-btn" data-title="W.I.N. Reframe Matrix" data-file="https://www.marchellosciortino.com/assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf">
+                        <a href="https://www.marchellosciortino.com/assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf" target="_blank" rel="noopener noreferrer" class="btn-download-trigger js-spa-download-btn" data-title="W.I.N. Reframe Matrix" data-file="https://www.marchellosciortino.com/assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf">
                             Download Ebook &darr;
                         </a>
                     </div>
@@ -3053,7 +3053,7 @@ const freeGiftsTemplate = () => {
                             <li>Voice transcription guide templates.</li>
                             <li>Configuring AI as a cognitive prosthetic.</li>
                         </ul>
-                        <a href="https://www.marchellosciortino.com/assets/free-gifts/Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf" target="_blank" download class="btn-download-trigger js-spa-download-btn" data-title="AI Accessibility Commands" data-file="https://www.marchellosciortino.com/assets/free-gifts/Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf">
+                        <a href="https://www.marchellosciortino.com/assets/free-gifts/Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf" target="_blank" rel="noopener noreferrer" class="btn-download-trigger js-spa-download-btn" data-title="AI Accessibility Commands" data-file="https://www.marchellosciortino.com/assets/free-gifts/Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf">
                             Download Guide &darr;
                         </a>
                     </div>
@@ -3072,7 +3072,7 @@ const freeGiftsTemplate = () => {
                             <li>Speed & user experience friction check.</li>
                             <li>Landing page conversion optimization.</li>
                         </ul>
-                        <a href="https://www.marchellosciortino.com/assets/free-gifts/Digital_Flow_Audit_Checklist_Enhanced.pdf" target="_blank" download class="btn-download-trigger js-spa-download-btn" data-title="Digital Flow Audit Checklist" data-file="https://www.marchellosciortino.com/assets/free-gifts/Digital_Flow_Audit_Checklist_Enhanced.pdf">
+                        <a href="https://www.marchellosciortino.com/assets/free-gifts/Digital_Flow_Audit_Checklist_Enhanced.pdf" target="_blank" rel="noopener noreferrer" class="btn-download-trigger js-spa-download-btn" data-title="Digital Flow Audit Checklist" data-file="https://www.marchellosciortino.com/assets/free-gifts/Digital_Flow_Audit_Checklist_Enhanced.pdf">
                             Download Checklist &darr;
                         </a>
                     </div>
@@ -3102,8 +3102,8 @@ const freeGiftsTemplate = () => {
             <div id="spa-success-view" style="display: none;">
                 <h3 style="color: #0ad8ad;">&#10004; Access Granted!</h3>
                 <p>Click the link below to download your file.</p>
-                <a href="#" id="spa-direct-download-link" target="_blank" download class="btn-download-trigger" style="background: #0ad8ad; color: #081b29;">
-                    &#128190; Download File Now
+                <a href="#" id="spa-direct-download-link" target="_blank" rel="noopener noreferrer" class="btn-download-trigger" style="background: #0ad8ad; color: #081b29;">
+                    &#128196; View PDF in New Tab
                 </a>
             </div>
         </div>
