@@ -19,8 +19,8 @@ const Router = {
 
             // Intercept internal routes (starting with / but not //)
             if (href.startsWith('/') && !href.startsWith('//')) {
-                // Let links with target="_blank" behave normally
-                if (link.target === '_blank') return;
+                // Let links with target="_blank", static assets (/assets/), PDFs, or download attributes behave normally
+                if (link.target === '_blank' || href.startsWith('/assets/') || href.endsWith('.pdf') || link.hasAttribute('download')) return;
 
                 e.preventDefault();
                 this.navigate(href);
@@ -50,6 +50,11 @@ const Router = {
 
         // Split route path from query parameters
         let pathOnly = currentPath.split('?')[0];
+
+        // Bypass static assets and PDF files in SPA router
+        if (pathOnly.startsWith('/assets/') || pathOnly.endsWith('.pdf')) {
+            return;
+        }
 
         // Subdomain check for library.marchellosciortino.com
         const isLibrarySubdomain = window.location.hostname.includes('library.marchellosciortino.com') || window.location.hostname.startsWith('library.');
