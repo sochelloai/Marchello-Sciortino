@@ -58,11 +58,16 @@ export async function onRequest(context) {
     // Set page-specific default metadata for non-article routes
     if (!foundArticle) {
         const path = url.pathname.toLowerCase();
-        if (isLibrarySubdomain || path.startsWith('/free-library') || path.startsWith('/free-gifts')) {
+        if (isLibrarySubdomain || path.startsWith('/free-library')) {
             title = "Free Digital Library | Marchello Sciortino";
             description = "Worksheets, AI prompt cheat sheets, audio lessons, and strategic frameworks by Marchello Sciortino to reframe constraints and build digital freedom.";
             image = new URL('/assets/free-gifts/WIN_Reframe_Matrix_cover_image.png', url.origin).toString();
-            canonicalUrl = "https://library.marchellosciortino.com";
+            canonicalUrl = "https://marchellosciortino.com/free-library";
+        } else if (path.startsWith('/free-gifts')) {
+            title = "Free Gifts | Marchello Sciortino";
+            description = "Worksheets, prompt templates, and PDF guides by Marchello Sciortino to help you reframe obstacles and build your projects.";
+            image = new URL('/assets/free-gifts/WIN_Reframe_Matrix_cover_image.png', url.origin).toString();
+            canonicalUrl = "https://marchellosciortino.com/free-gifts";
         } else if (path.startsWith('/speaking')) {
             title = "Speaking & Keynotes | Marchello Sciortino";
             description = "Inquire about booking Marchello Sciortino for keynotes, workshops, and coaching. Helping audiences turn limitations into creative agency.";
