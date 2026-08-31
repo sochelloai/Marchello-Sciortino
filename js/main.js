@@ -569,7 +569,6 @@ function initFreeGiftsUnlock() {
                 modal.classList.remove('active');
                 setTimeout(() => modal.remove(), 400);
             }
-            showSuccessModal("Gifts Unlocked", "Thank you! All prompt templates, checklists, and worksheets are now unlocked for download.");
         } catch (error) {
             console.error("[ClickFunnels Free Gifts Integration Error]", error);
             // Graceful fallback for local development or missing secrets so UX does not block
@@ -579,7 +578,6 @@ function initFreeGiftsUnlock() {
                 modal.classList.remove('active');
                 setTimeout(() => modal.remove(), 400);
             }
-            showSuccessModal("Gifts Unlocked", "Thank you! All prompt templates, checklists, and worksheets are now unlocked for download.");
         } finally {
             if (submitBtn) {
                 submitBtn.disabled = false;

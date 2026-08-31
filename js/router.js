@@ -3139,13 +3139,6 @@ const freeGiftsTemplate = () => {
                     </a>
                 </form>
             </div>
-            <div id="spa-success-view" style="display: none;">
-                <h3 style="color: #0ad8ad;">&#10004; Access Granted!</h3>
-                <p style="color: #475569; font-size: 0.95rem; margin-bottom: 18px;">Click below to view your PDF document in a new tab.</p>
-                <a href="#" id="spa-direct-download-link" target="_blank" rel="noopener noreferrer" class="btn-download-trigger" style="background: #ff5722; color: #ffffff; width: 100%; padding: 14px 20px; font-size: 1rem; font-weight: 700; border-radius: 10px; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
-                    &#128196; View PDF in New Tab
-                </a>
-            </div>
         </div>
     </div>
     `;
@@ -3162,13 +3155,11 @@ document.addEventListener('click', (e) => {
         const modal = document.getElementById('spa-download-modal');
         const copyText = document.getElementById('spa-copy-text');
         const formView = document.getElementById('spa-form-view');
-        const successView = document.getElementById('spa-success-view');
-        const directLink = document.getElementById('spa-direct-download-link');
 
         const isUnlocked = localStorage.getItem('free-gifts-unlocked') === 'true';
 
         if (isUnlocked) {
-            // Already unlocked: let native <a href="..." target="_blank" download> open in new tab natively
+            // Already unlocked: let native <a href="..." target="_blank"> open in new tab natively
             return;
         } else {
             // Locked: show email modal
@@ -3176,11 +3167,7 @@ document.addEventListener('click', (e) => {
             if (modal) {
                 if (copyText) copyText.textContent = 'Unlock all downloads by entering your email.';
                 if (formView) formView.style.display = 'block';
-                if (successView) successView.style.display = 'none';
-                if (directLink) {
-                    directLink.href = fileUrl;
-                    directLink.setAttribute('data-file', fileUrl);
-                }
+                modal.setAttribute('data-target-file', fileUrl);
                 modal.classList.add('active');
             }
         }
@@ -3201,23 +3188,27 @@ document.addEventListener('submit', async (e) => {
         const emailInput = document.getElementById('spa-modal-email');
         if (!emailInput) return;
         const email = emailInput.value;
-        const originalText = submitBtn ? submitBtn.textContent : "Continue & Download →";
+        const originalText = submitBtn ? submitBtn.textContent : "Unlock Free Access →";
 
-        const directLink = document.getElementById('spa-direct-download-link');
-        const targetUrl = directLink ? (directLink.getAttribute('data-file') || directLink.getAttribute('href')) : null;
+        const modal = document.getElementById('spa-download-modal');
+        const targetUrl = modal ? modal.getAttribute('data-target-file') : null;
 
         // Open target window SYNCHRONOUSLY to preserve user gesture and bypass browser popup blockers
-        let targetWin = null;
         if (targetUrl && targetUrl !== '#' && !targetUrl.endsWith('#')) {
-            targetWin = window.open(targetUrl, '_blank');
+            window.open(targetUrl, '_blank');
         }
+
+        // Close modal immediately so returning users see the page without any pop-up
+        if (modal) {
+            modal.classList.remove('active');
+        }
+
+        localStorage.setItem('free-gifts-unlocked', 'true');
 
         if (submitBtn) {
             submitBtn.disabled = true;
             submitBtn.textContent = "Unlocking...";
         }
-
-        localStorage.setItem('free-gifts-unlocked', 'true');
 
         try {
             const formData = new FormData();
@@ -3238,13 +3229,6 @@ document.addEventListener('submit', async (e) => {
             if (submitBtn) {
                 submitBtn.disabled = false;
                 submitBtn.textContent = originalText;
-            }
-
-            const formView = document.getElementById('spa-form-view');
-            const successView = document.getElementById('spa-success-view');
-            if (formView && successView) {
-                formView.style.display = 'none';
-                successView.style.display = 'block';
             }
         }
     }
