@@ -3097,6 +3097,25 @@ const freeGiftsTemplate = () => {
                     </div>
                 </div>
 
+                <!-- Item 6: 10 Ways to Win Despite the Odds -->
+                <div class="teaser-card">
+                    <div class="card-cover-wrapper">
+                        <img src="/assets/free-gifts/10_Ways_to_Win_Despite_the_Odds_cover.png" alt="10 Ways to Win Despite the Odds Cover" class="card-cover-img">
+                        <span class="card-status-badge active">&#10004; Available Now</span>
+                    </div>
+                    <div class="teaser-card-body">
+                        <h3 class="teaser-card-title">10 Ways to Win Despite the Odds</h3>
+                        <ul class="teaser-bullets">
+                            <li>Rise with purpose through faith & resilience.</li>
+                            <li>10 actionable principles to overcome obstacles.</li>
+                            <li>Leveraging creativity, support, and AI tools.</li>
+                        </ul>
+                        <a href="https://www.marchellosciortino.com/assets/free-gifts/10_Ways_to_Win_Despite_the_Odds_Marchello_Sciortino.pdf" target="_blank" rel="noopener noreferrer" class="btn-download-trigger js-spa-download-btn" data-title="10 Ways to Win Despite the Odds" data-file="https://www.marchellosciortino.com/assets/free-gifts/10_Ways_to_Win_Despite_the_Odds_Marchello_Sciortino.pdf">
+                            Download PDF &darr;
+                        </a>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
