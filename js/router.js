@@ -3254,21 +3254,15 @@ const freeGiftsTemplate = () => {
 
 // Dedicated Single Free Gift Landing Page Template
 const singleGiftTemplate = (gift) => {
-    const otherGifts = FREE_GIFTS_DATA.filter(g => g.id !== gift.id);
     const shareUrl = `https://marchellosciortino.com/${gift.slug}`;
 
     return `
     <style>
         .single-gift-page {
-            background-color: #f8fafc;
-            color: #475569;
-            padding-bottom: 90px;
-        }
-
-        .single-gift-hero {
             background: radial-gradient(circle at 50% 20%, #0d273d 0%, #081b29 100%);
-            padding: 50px 0 60px;
             color: #ffffff;
+            min-height: 80vh;
+            padding: 50px 0 90px;
             position: relative;
             overflow: hidden;
         }
@@ -3368,7 +3362,7 @@ const singleGiftTemplate = (gift) => {
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 16px;
             padding: 24px;
-            margin-bottom: 32px;
+            margin-bottom: 0;
             backdrop-filter: blur(6px);
         }
 
@@ -3410,27 +3404,23 @@ const singleGiftTemplate = (gift) => {
             font-size: 1.1rem;
         }
 
-        .single-gift-cta-box {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-            align-items: center;
-        }
-
         .btn-single-download {
             background: #ff5722;
             color: #ffffff;
             font-family: var(--font-heading);
             font-weight: 700;
-            font-size: 1.1rem;
-            padding: 16px 32px;
+            font-size: 1.15rem;
+            padding: 18px 48px;
             border-radius: 12px;
             border: none;
             cursor: pointer;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
+            min-width: 280px;
+            max-width: 440px;
             box-shadow: 0 10px 25px rgba(255, 87, 34, 0.35);
             transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
         }
@@ -3442,160 +3432,79 @@ const singleGiftTemplate = (gift) => {
             color: #ffffff;
         }
 
-        .btn-single-share {
-            background: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            font-family: var(--font-heading);
+        .btn-explore-all-link {
+            color: #0ad8ad;
+            font-size: 1.05rem;
+            text-decoration: none;
             font-weight: 600;
-            font-size: 0.95rem;
-            padding: 16px 24px;
-            border-radius: 12px;
-            cursor: pointer;
+            font-family: var(--font-heading);
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
-            transition: all 0.2s;
+            transition: color 0.2s;
         }
 
-        .btn-single-share:hover {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: #0ad8ad;
-            color: #0ad8ad;
-        }
-
-        .btn-single-share.copied {
-            background: #10b981;
-            border-color: #10b981;
+        .btn-explore-all-link:hover {
             color: #ffffff;
-        }
-
-        .single-gift-explore {
-            padding: 70px 0 20px;
-        }
-
-        .single-gift-explore-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .single-gift-explore-header h2 {
-            font-family: var(--font-heading);
-            color: #0f172a;
-            font-size: 2rem;
-            font-weight: 800;
-            margin: 0 0 10px;
-        }
-
-        .single-gift-explore-header p {
-            color: #64748b;
-            font-size: 1rem;
+            text-decoration: underline;
         }
     </style>
 
     <div class="single-gift-page">
-        <section class="single-gift-hero">
-            <div class="container">
-                <nav class="single-gift-breadcrumb" aria-label="Breadcrumb">
-                    <a href="/">Home</a>
-                    <span>/</span>
-                    <a href="/free-gifts">Free Gifts</a>
-                    <span>/</span>
-                    <span>${gift.title}</span>
-                </nav>
+        <div class="container">
+            <nav class="single-gift-breadcrumb" aria-label="Breadcrumb">
+                <a href="/">Home</a>
+                <span>/</span>
+                <a href="/free-gifts">Free Gifts</a>
+                <span>/</span>
+                <span>${gift.title}</span>
+            </nav>
 
-                <div class="single-gift-layout">
-                    <!-- Left: High-Res Artwork Showcase -->
-                    <div class="single-gift-cover-container">
-                        <div class="single-gift-cover-card">
-                            <img src="${gift.cover_image}" alt="${gift.title} Cover" class="single-gift-cover-img">
-                        </div>
-                        <div style="text-align: center; margin-top: 14px;">
-                            <button type="button" class="btn-card-share js-copy-share-btn" data-share-url="${shareUrl}" style="background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); color: #cbd5e1; width: 100%; justify-content: center; padding: 10px 16px;">
-                                🔗 Copy Share Link (${shareUrl})
-                            </button>
-                        </div>
+            <div class="single-gift-layout">
+                <!-- Left: High-Res Artwork Showcase -->
+                <div class="single-gift-cover-container">
+                    <div class="single-gift-cover-card">
+                        <img src="${gift.cover_image}" alt="${gift.title} Cover" class="single-gift-cover-img">
                     </div>
-
-                    <!-- Right: Details, Bullets & Download CTA -->
-                    <div class="single-gift-content">
-                        <div class="single-gift-badge">&#10004; ${gift.type} &bull; ${gift.badge}</div>
-                        <h1 class="single-gift-title">${gift.title}</h1>
-                        <p class="single-gift-desc">${gift.meta_desc}</p>
-
-                        <div class="single-gift-highlights">
-                            <h4>What You'll Learn & Receive:</h4>
-                            <ul>
-                                ${gift.bullets.map(b => `<li>${b}</li>`).join('')}
-                            </ul>
-                        </div>
-
+                    <div style="text-align: center; margin-top: 14px;">
+                        <button type="button" class="btn-card-share js-copy-share-btn" data-share-url="${shareUrl}" style="background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); color: #cbd5e1; width: 100%; justify-content: center; padding: 10px 16px;">
+                            🔗 Copy Share Link (${shareUrl})
+                        </button>
+                    </div>
                 </div>
 
-                <!-- Centered Actions in separate rows -->
-                <div style="margin-top: 48px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; text-align: center; width: 100%;">
-                    <div style="width: 100%; display: flex; justify-content: center;">
-                        <a href="${gift.file_url}" target="_blank" rel="noopener noreferrer" class="btn-single-download js-spa-download-btn" data-title="${gift.title}" data-file="${gift.file_url}" style="min-width: 280px; max-width: 440px; justify-content: center; font-size: 1.15rem; padding: 18px 48px;">
-                            ${gift.button_label} &darr;
-                        </a>
-                    </div>
-                    <div style="width: 100%; display: flex; justify-content: center;">
-                        <a href="/free-gifts" style="color: #0ad8ad; font-size: 1.05rem; text-decoration: none; font-weight: 600; font-family: var(--font-heading); display: inline-flex; align-items: center; gap: 8px;">
-                            &larr; Explore all free resources on the Free Gifts page
-                        </a>
+                <!-- Right: Details, Bullets & Info -->
+                <div class="single-gift-content">
+                    <div class="single-gift-badge">&#10004; ${gift.type} &bull; ${gift.badge}</div>
+                    <h1 class="single-gift-title">${gift.title}</h1>
+                    <p class="single-gift-desc">${gift.meta_desc}</p>
+
+                    <div class="single-gift-highlights">
+                        <h4>What You'll Learn & Receive:</h4>
+                        <ul>
+                            ${gift.bullets.map(b => `<li>${b}</li>`).join('')}
+                        </ul>
                     </div>
                 </div>
             </div>
-        </section>
 
-        <!-- More Free Resources Exploration Grid -->
-        <section class="single-gift-explore">
-            <div class="container">
-                <div class="single-gift-explore-header">
-                    <span class="teaser-hero-tag">Explore More</span>
-                    <h2>Other Free Resources</h2>
-                    <p>Free worksheets, ebooks, prompt templates, and PDF guides by Marchello Sciortino.</p>
+            <!-- Centered Actions in separate rows -->
+            <div style="margin-top: 56px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; text-align: center; width: 100%;">
+                <!-- Row 1: Download button centered in its own row -->
+                <div style="width: 100%; display: flex; justify-content: center;">
+                    <a href="${gift.file_url}" target="_blank" rel="noopener noreferrer" class="btn-single-download js-spa-download-btn" data-title="${gift.title}" data-file="${gift.file_url}">
+                        ${gift.button_label} &darr;
+                    </a>
                 </div>
-
-                <div class="teaser-grid">
-                    ${otherGifts.slice(0, 3).map((otherGift, idx) => `
-                        <div class="teaser-card">
-                            <div class="card-cover-wrapper">
-                                <a href="/${otherGift.slug}">
-                                    <img src="${otherGift.cover_image}" alt="${otherGift.title} Cover" class="card-cover-img">
-                                </a>
-                                <span class="card-status-badge active">&#10004; ${otherGift.badge}</span>
-                            </div>
-                            <div class="teaser-card-body">
-                                <h3 class="teaser-card-title">
-                                    <a href="/${otherGift.slug}" style="color: inherit; text-decoration: none;">${otherGift.title}</a>
-                                </h3>
-                                <ul class="teaser-bullets">
-                                    ${otherGift.bullets.map(b => `<li>${b}</li>`).join('')}
-                                </ul>
-                                <a href="${otherGift.file_url}" target="_blank" rel="noopener noreferrer" class="btn-download-trigger js-spa-download-btn" data-title="${otherGift.title}" data-file="${otherGift.file_url}">
-                                    ${otherGift.button_label}
-                                </a>
-                                <div class="teaser-card-footer-actions">
-                                    <button type="button" class="btn-card-share js-copy-share-btn" data-share-url="https://marchellosciortino.com/${otherGift.slug}">
-                                        🔗 Share Link
-                                    </button>
-                                    <a href="/${otherGift.slug}" class="btn-card-details">
-                                        Direct Page &rarr;
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-
-                <div style="text-align: center; margin-top: 40px;">
-                    <a href="/free-gifts" class="btn-download-trigger" style="max-width: 320px; margin: 0 auto; background: #081b29;">
-                        View All 7 Free Downloads &rarr;
+                <!-- Row 2: Explore all link centered in its own row -->
+                <div style="width: 100%; display: flex; justify-content: center;">
+                    <a href="/free-gifts" class="btn-explore-all-link">
+                        &larr; Explore all free resources on the Free Gifts page
                     </a>
                 </div>
             </div>
-        </section>
+        </div>
     </div>
 
     <!-- Login / Unlock Modal -->
