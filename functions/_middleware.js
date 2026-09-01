@@ -62,7 +62,7 @@ export async function onRequest(context) {
             const giftsResponse = await context.env.ASSETS.fetch(giftsUrl);
             if (giftsResponse.ok) {
                 const gifts = await giftsResponse.json();
-                const pathSlug = url.pathname.replace(/^\/free-gifts\//, '').replace(/^\/free-library\//, '').replace(/^\//, '').toLowerCase();
+                const pathSlug = url.pathname.replace(/^\/free-gifts\//, '').replace(/^\/free-library\//, '').replace(/^\//, '').replace(/\/$/, '').toLowerCase();
                 const gift = gifts.find(g => g.slug.toLowerCase() === pathSlug || (g.aliases && g.aliases.some(a => a.toLowerCase().endsWith(pathSlug))));
                 if (gift) {
                     title = `${gift.meta_title || gift.title} | Marchello Sciortino`;

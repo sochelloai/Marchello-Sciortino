@@ -50,6 +50,7 @@ const Router = {
 
         // Split route path from query parameters
         let pathOnly = currentPath.split('?')[0];
+        let cleanPath = (pathOnly.length > 1 && pathOnly.endsWith('/')) ? pathOnly.slice(0, -1) : pathOnly;
 
         // Bypass static assets and PDF files in SPA router
         if (pathOnly.startsWith('/assets/') || pathOnly.endsWith('.pdf')) {
@@ -58,27 +59,29 @@ const Router = {
 
         // Subdomain check for library.marchellosciortino.com
         const isLibrarySubdomain = window.location.hostname.includes('library.marchellosciortino.com') || window.location.hostname.startsWith('library.');
-        if (isLibrarySubdomain && (pathOnly === '/' || pathOnly === '/index.html' || pathOnly === '/free-gifts')) {
+        if (isLibrarySubdomain && (cleanPath === '/' || cleanPath === '/index.html' || cleanPath === '/free-gifts')) {
             pathOnly = '/free-library';
+            cleanPath = '/free-library';
         }
 
         // Redirect /home or /index.html to /
-        if (pathOnly === '/home' || pathOnly === '/index.html' || pathOnly === '') {
+        if (cleanPath === '/home' || cleanPath === '/index.html' || cleanPath === '') {
             pathOnly = '/';
+            cleanPath = '/';
             // Preserve query string if any
             const search = currentPath.includes('?') ? '?' + currentPath.split('?')[1] : '';
             history.replaceState(null, '', '/' + search);
         }
 
-        if (pathOnly === '/book') {
+        if (cleanPath === '/book') {
             const search = currentPath.includes('?') ? '?' + currentPath.split('?')[1] : '';
             history.replaceState(null, '', '/' + search);
             window.open('https://www.limitationstoliberation.com/', '_blank');
             return;
         }
 
-        // Match route or redirect to home (/)
-        const templateFn = this.routes[pathOnly] || (isLibrarySubdomain ? this.routes['/free-library'] : this.routes['/']);
+        // Match route or clean route or redirect to home (/)
+        const templateFn = this.routes[pathOnly] || this.routes[cleanPath] || (isLibrarySubdomain ? this.routes['/free-library'] : this.routes['/']);
 
         if (templateFn) {
             // Update current page
@@ -3625,9 +3628,11 @@ Router.register('/free-library', freeGiftsTemplate);
 // Register individual free gift endpaths & aliases
 FREE_GIFTS_DATA.forEach(gift => {
     Router.register('/' + gift.slug, () => singleGiftTemplate(gift));
+    Router.register('/' + gift.slug + '/', () => singleGiftTemplate(gift));
     if (gift.aliases) {
         gift.aliases.forEach(alias => {
             Router.register('/' + alias, () => singleGiftTemplate(gift));
+            Router.register('/' + alias + '/', () => singleGiftTemplate(gift));
         });
     }
 });
