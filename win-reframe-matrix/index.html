@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -164,7 +164,7 @@
             border: 1px solid #e2e8f0;
             border-radius: 16px;
             padding: 24px;
-            margin-bottom: 28px;
+            margin-bottom: 0;
             box-shadow: 0 6px 18px rgba(0, 0, 0, 0.03);
         }
 
@@ -199,7 +199,7 @@
         }
 
         .single-gift-takeaways li::before {
-            content: 'âœ“';
+            content: '\2714';
             position: absolute;
             left: 0;
             top: 0;
@@ -208,21 +208,32 @@
             font-size: 1.15rem;
         }
 
-        .single-gift-actions {
+        /* Centered CTA Section (Download Button & Explore Link in separate rows) */
+        .single-gift-center-actions {
+            max-width: 1160px;
+            margin: 48px auto 0;
             display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
+            flex-direction: column;
             align-items: center;
-            margin-bottom: 24px;
+            justify-content: center;
+            gap: 18px;
+            text-align: center;
+        }
+
+        .single-gift-center-actions .action-row {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .btn-download-primary {
             background: #ff5722;
-            color: #ffffff;
+            color: #ffffff !important;
             font-family: var(--font-heading);
             font-weight: 700;
-            font-size: 1.1rem;
-            padding: 16px 36px;
+            font-size: 1.15rem;
+            padding: 18px 48px;
             border: none;
             border-radius: 12px;
             cursor: pointer;
@@ -232,6 +243,8 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
+            min-width: 280px;
+            max-width: 440px;
             box-shadow: 0 10px 25px rgba(255, 87, 34, 0.35);
             transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
         }
@@ -240,7 +253,7 @@
             background: #e64a19;
             transform: translateY(-2px);
             box-shadow: 0 14px 30px rgba(255, 87, 34, 0.45);
-            color: #ffffff;
+            color: #ffffff !important;
         }
 
         .btn-share-secondary {
@@ -273,18 +286,21 @@
 
         .single-gift-back-link {
             color: #0ad8ad;
+            font-family: var(--font-heading);
             font-weight: 600;
             text-decoration: none;
-            font-size: 0.95rem;
+            font-size: 1.05rem;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            transition: color 0.2s;
+            gap: 8px;
+            transition: color 0.2s, transform 0.2s;
+            padding: 8px 16px;
         }
 
         .single-gift-back-link:hover {
             color: #081b29;
             text-decoration: underline;
+            transform: translateX(-4px);
         }
 
         /* Modal Overlay */
@@ -459,7 +475,7 @@
             </svg>
 
             <div class="container text-center" style="position: relative; z-index: 2;">
-                <span class="section-tag text-teal">Tools & Resources</span>
+                <span class="section-tag text-teal">Tools &amp; Resources</span>
                 <h1 style="color: white;">W.I.N. Reframe Matrix</h1>
                 <p class="section-desc" style="color: var(--color-gray-light);">
                     Free Ebook & Worksheet by Marchello Sciortino
@@ -481,12 +497,12 @@
                         </div>
                         <div style="margin-top: 16px; text-align: center;">
                             <button type="button" class="btn-share-secondary js-copy-share-btn" data-share-url="https://marchellosciortino.com/win-reframe-matrix" style="width: 100%; justify-content: center;">
-                                ðŸ”— Copy Direct Share Link
+                                &#128279; Copy Direct Share Link
                             </button>
                         </div>
                     </div>
 
-                    <!-- Right: Content & Download Trigger -->
+                    <!-- Right: Content -->
                     <div class="single-gift-content">
                         <span class="single-gift-tag">Ebook & Worksheet &bull; Free Download</span>
                         <h2 class="single-gift-heading">W.I.N. Reframe Matrix</h2>
@@ -502,18 +518,20 @@
                                 <li>Custom tactical action plan builder.</li>
                             </ul>
                         </div>
+                    </div>
+                </div>
 
-                        <div class="single-gift-actions">
-                            <a href="https://www.marchellosciortino.com/assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf" target="_blank" rel="noopener noreferrer" class="btn-download-primary js-spa-download-btn" data-title="W.I.N. Reframe Matrix" data-file="https://www.marchellosciortino.com/assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf">
-                                Download Ebook â†“
-                            </a>
-                        </div>
-
-                        <div>
-                            <a href="/free-library" class="single-gift-back-link">
-                                &larr; Explore all free resources in the digital library
-                            </a>
-                        </div>
+                <!-- Centered Actions in their own separate rows -->
+                <div class="single-gift-center-actions">
+                    <div class="action-row">
+                        <a href="https://www.marchellosciortino.com/assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf" target="_blank" rel="noopener noreferrer" class="btn-download-primary js-spa-download-btn" data-title="W.I.N. Reframe Matrix" data-file="https://www.marchellosciortino.com/assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf">
+                            Download Ebook &darr;
+                        </a>
+                    </div>
+                    <div class="action-row">
+                        <a href="/free-library" class="single-gift-back-link">
+                            &larr; Explore all free resources in the digital library
+                        </a>
                     </div>
                 </div>
             </div>
@@ -656,7 +674,7 @@
                     const emailInput = document.getElementById('spa-modal-email');
                     if (!emailInput) return;
                     const email = emailInput.value;
-                    const originalText = submitBtn ? submitBtn.textContent : "Unlock Free Access â†’";
+                    const originalText = submitBtn ? submitBtn.textContent : "Unlock Free Access \u2192";
 
                     if (selectedFileUrl) {
                         window.open(selectedFileUrl, '_blank');

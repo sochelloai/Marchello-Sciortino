@@ -15,7 +15,7 @@
     ],
     "cover_image": "/assets/free-gifts/From_Idea_to_Free_Product_cover.png",
     "file_url": "https://www.marchellosciortino.com/assets/free-gifts/From_Idea_to_Free_Product_Marchello_Sciortino.pdf",
-    "button_label": "Download PDF ↓"
+    "button_label": "Download PDF"
   },
   {
     "id": "creative-amplification",
@@ -33,7 +33,7 @@
     ],
     "cover_image": "/assets/free-gifts/creative_amplification_cover.png",
     "file_url": "https://www.marchellosciortino.com/assets/free-gifts/Creative_amplification_through_AI.pdf",
-    "button_label": "Download PDF ↓"
+    "button_label": "Download PDF"
   },
   {
     "id": "win-reframe-matrix",
@@ -51,7 +51,7 @@
     ],
     "cover_image": "/assets/free-gifts/WIN_Reframe_Matrix_cover_image.png",
     "file_url": "https://www.marchellosciortino.com/assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf",
-    "button_label": "Download Ebook ↓"
+    "button_label": "Download Ebook"
   },
   {
     "id": "ai-accessibility-commands",
@@ -69,7 +69,7 @@
     ],
     "cover_image": "/assets/free-gifts/Prompt_Cheat_Sheat_cover_image.png",
     "file_url": "https://www.marchellosciortino.com/assets/free-gifts/Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf",
-    "button_label": "Download Guide ↓"
+    "button_label": "Download Guide"
   },
   {
     "id": "digital-flow-audit",
@@ -87,7 +87,7 @@
     ],
     "cover_image": "/assets/free-gifts/Digital_Flow_Audit_cover_image.png",
     "file_url": "https://www.marchellosciortino.com/assets/free-gifts/Digital_Flow_Audit_Checklist_Enhanced.pdf",
-    "button_label": "Download Checklist ↓"
+    "button_label": "Download Checklist"
   },
   {
     "id": "turn-a-still-ad-into-motion",
@@ -105,7 +105,7 @@
     ],
     "cover_image": "/assets/free-gifts/creative_amplification_higgsfield_guide_cover.png",
     "file_url": "https://www.marchellosciortino.com/assets/free-gifts/creative_amplification_higgsfield_guide.pdf",
-    "button_label": "Download Guide ↓"
+    "button_label": "Download Guide"
   },
   {
     "id": "10-ways-to-win",
@@ -123,6 +123,6 @@
     ],
     "cover_image": "/assets/free-gifts/10_Ways_to_Win_Despite_the_Odds_cover.png",
     "file_url": "https://www.marchellosciortino.com/assets/free-gifts/10_Ways_to_Win_Despite_the_Odds_Marchello_Sciortino.pdf",
-    "button_label": "Download PDF ↓"
+    "button_label": "Download PDF"
   }
 ]

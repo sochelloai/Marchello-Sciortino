@@ -4443,6 +4443,14 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     backface-visibility: hidden;
 }
 
+.instagram-post a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 2;
+}
+
 .instagram-post img {
     width: 100%;
     height: 100%;

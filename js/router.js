@@ -3528,20 +3528,19 @@ const singleGiftTemplate = (gift) => {
                             </ul>
                         </div>
 
-                        <div class="single-gift-cta-box">
-                            <a href="${gift.file_url}" target="_blank" rel="noopener noreferrer" class="btn-single-download js-spa-download-btn" data-title="${gift.title}" data-file="${gift.file_url}">
-                                ${gift.button_label}
-                            </a>
-                            <button type="button" class="btn-single-share js-copy-share-btn" data-share-url="${shareUrl}">
-                                <span>🔗 Share</span>
-                            </button>
-                        </div>
+                </div>
 
-                        <div style="margin-top: 24px;">
-                            <a href="/free-library" style="color: #0ad8ad; font-size: 0.95rem; text-decoration: none; font-weight: 600;">
-                                &larr; Browse All 7 Free Downloads in the Digital Library
-                            </a>
-                        </div>
+                <!-- Centered Actions in separate rows -->
+                <div style="margin-top: 48px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; text-align: center; width: 100%;">
+                    <div style="width: 100%; display: flex; justify-content: center;">
+                        <a href="${gift.file_url}" target="_blank" rel="noopener noreferrer" class="btn-single-download js-spa-download-btn" data-title="${gift.title}" data-file="${gift.file_url}" style="min-width: 280px; max-width: 440px; justify-content: center; font-size: 1.15rem; padding: 18px 48px;">
+                            ${gift.button_label} &darr;
+                        </a>
+                    </div>
+                    <div style="width: 100%; display: flex; justify-content: center;">
+                        <a href="/free-library" style="color: #0ad8ad; font-size: 1.05rem; text-decoration: none; font-weight: 600; font-family: var(--font-heading); display: inline-flex; align-items: center; gap: 8px;">
+                            &larr; Explore all free resources in the digital library
+                        </a>
                     </div>
                 </div>
             </div>
