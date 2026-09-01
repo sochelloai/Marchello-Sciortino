@@ -3573,13 +3573,6 @@ const singleGiftTemplate = (gift) => {
             </svg>
 
             <div class="container text-center" style="position: relative; z-index: 2;">
-                <nav style="display: flex; justify-content: center; align-items: center; gap: 8px; font-size: 0.85rem; color: #94a3b8; margin-bottom: 16px;" aria-label="Breadcrumb">
-                    <a href="/" style="color: var(--color-teal); text-decoration: none;">Home</a>
-                    <span>/</span>
-                    <a href="/free-gifts" style="color: var(--color-teal); text-decoration: none;">Free Gifts</a>
-                    <span>/</span>
-                    <span style="color: #cbd5e1;">${gift.title}</span>
-                </nav>
                 <span class="section-tag text-teal">Tools &amp; Resources</span>
                 <h1 style="color: white; font-family: var(--font-heading); text-transform: uppercase;">${gift.title}</h1>
                 <p class="section-desc" style="color: var(--color-gray-light); max-width: 680px; margin: 0 auto;">
