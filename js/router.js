@@ -3501,6 +3501,65 @@ const singleGiftTemplate = (gift) => {
             text-decoration: underline;
             transform: translateX(-4px);
         }
+
+        .spa-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(8, 27, 41, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .spa-modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .spa-modal-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 36px;
+            max-width: 460px;
+            width: 100%;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .spa-modal-overlay.active .spa-modal-card {
+            transform: translateY(0);
+        }
+
+        .spa-modal-close {
+            position: absolute;
+            top: 14px;
+            right: 18px;
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            font-size: 1.6rem;
+            cursor: pointer;
+            line-height: 1;
+            padding: 4px 8px;
+        }
+
+        .spa-modal-close:hover {
+            color: #0f172a;
+        }
     </style>
 
     <div class="single-gift-page-wrapper">
