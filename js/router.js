@@ -105,8 +105,10 @@ const Router = {
                 document.head.appendChild(canonicalLink);
             }
 
-            // Check if current route matches a free gift
-            const currentGift = typeof FREE_GIFTS_DATA !== 'undefined' ? FREE_GIFTS_DATA.find(g => '/' + g.slug === pathOnly || (g.aliases && g.aliases.some(a => '/' + a === pathOnly))) : null;
+            // Check if current route matches an individual free gift page
+            const currentGift = typeof FREE_GIFTS_DATA !== 'undefined' && pathOnly !== '/free-gifts' && pathOnly !== '/free-library'
+                ? FREE_GIFTS_DATA.find(g => '/' + g.slug === pathOnly || (g.aliases && g.aliases.some(a => '/' + a === pathOnly))) 
+                : null;
 
             // Update document title dynamically for SEO
             const titles = {

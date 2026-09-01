@@ -54,21 +54,29 @@ export async function onRequest(context) {
 
     let canonicalUrl = `https://marchellosciortino.com${url.pathname === '/' ? '' : url.pathname}`;
 
-    // If not article, check if a free gift / download is requested
-    if (!foundArticle) {
+    // If not article, check if an individual free gift / download page is requested
+    const rawPath = url.pathname.toLowerCase().replace(/\/$/, '');
+    const isFreeGiftsMain = rawPath === '/free-gifts' || rawPath === '/free-library';
+
+    if (!foundArticle && !isFreeGiftsMain && rawPath !== '') {
         try {
             const giftsUrl = new URL('/data/free-gifts.json', url.origin);
             const giftsResponse = await context.env.ASSETS.fetch(giftsUrl);
             if (giftsResponse.ok) {
                 const gifts = await giftsResponse.json();
-                const pathSlug = url.pathname.replace(/^\/free-gifts\//, '').replace(/^\//, '').replace(/\/$/, '').toLowerCase();
-                const gift = gifts.find(g => g.slug.toLowerCase() === pathSlug || (g.aliases && g.aliases.some(a => a.toLowerCase().endsWith(pathSlug))));
-                if (gift) {
-                    title = `${gift.meta_title || gift.title} | Marchello Sciortino`;
-                    description = gift.meta_desc || (gift.bullets ? gift.bullets.join(' ') : description);
-                    image = new URL(gift.cover_image, url.origin).toString();
-                    canonicalUrl = `https://marchellosciortino.com/${gift.slug}`;
-                    foundArticle = true;
+                const pathSlug = rawPath.replace(/^\/free-gifts\//, '').replace(/^\//, '');
+                if (pathSlug && pathSlug !== 'free-gifts') {
+                    const gift = gifts.find(g => 
+                        g.slug.toLowerCase() === pathSlug || 
+                        (g.aliases && g.aliases.some(a => a.toLowerCase() === pathSlug || a.toLowerCase() === `free-gifts/${pathSlug}`))
+                    );
+                    if (gift) {
+                        title = `${gift.meta_title || gift.title} | Marchello Sciortino`;
+                        description = gift.meta_desc || (gift.bullets ? gift.bullets.join(' ') : description);
+                        image = new URL(gift.cover_image, url.origin).toString();
+                        canonicalUrl = `https://marchellosciortino.com/${gift.slug}`;
+                        foundArticle = true;
+                    }
                 }
             }
         } catch (e) {
