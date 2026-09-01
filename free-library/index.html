@@ -169,6 +169,55 @@
             color: #081b29;
         }
 
+        .teaser-card-footer-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid #f1f5f9;
+            font-size: 0.82rem;
+        }
+
+        .btn-card-share {
+            background: transparent;
+            border: 1px solid #e2e8f0;
+            color: #475569;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .btn-card-share:hover {
+            background: #0ad8ad;
+            border-color: #0ad8ad;
+            color: #081b29;
+        }
+
+        .btn-card-share.copied {
+            background: #10b981;
+            border-color: #10b981;
+            color: #ffffff;
+        }
+
+        .btn-card-details {
+            color: #0ad8ad;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .btn-card-details:hover {
+            color: #081b29;
+            text-decoration: underline;
+        }
+
         /* Modal Overlay */
         .spa-modal-overlay {
             position: fixed;
@@ -299,14 +348,18 @@
         <section class="section bg-white" style="padding: 60px 0 90px; background-color: #f8fafc;">
             <div class="container">
                 <div class="teaser-grid" id="free-library-grid">
-                    <!-- Item 1: Featured Live Release -->
-                    <div class="teaser-card">
+                    <!-- Item 1: Creative Amplification -->
+                    <div class="teaser-card" id="creative-amplification">
                         <div class="card-cover-wrapper">
-                            <img src="/assets/free-gifts/creative_amplification_cover.png" alt="Creative Amplification Cover" class="card-cover-img">
+                            <a href="/creative-amplification" style="display: block; width: 100%; height: 100%;">
+                                <img src="/assets/free-gifts/creative_amplification_cover.png" alt="Creative Amplification Cover" class="card-cover-img">
+                            </a>
                             <span class="card-status-badge active">&#10004; Available Now</span>
                         </div>
                         <div class="teaser-card-body">
-                            <h3 class="teaser-card-title">Creative Amplification Through AI</h3>
+                            <h3 class="teaser-card-title">
+                                <a href="/creative-amplification" style="color: inherit; text-decoration: none;">Creative Amplification Through AI</a>
+                            </h3>
                             <ul class="teaser-bullets">
                                 <li>Principles of Articulated Inspiration.</li>
                                 <li>Turning constraints into strategic leverage.</li>
@@ -315,17 +368,29 @@
                             <a href="https://www.marchellosciortino.com/assets/free-gifts/Creative_amplification_through_AI.pdf" target="_blank" rel="noopener noreferrer" class="btn-download-trigger js-spa-download-btn" data-title="Creative Amplification Through AI" data-file="https://www.marchellosciortino.com/assets/free-gifts/Creative_amplification_through_AI.pdf">
                                 Download PDF &darr;
                             </a>
+                            <div class="teaser-card-footer-actions">
+                                <button type="button" class="btn-card-share js-copy-share-btn" data-share-url="https://marchellosciortino.com/creative-amplification" title="Copy direct link to share this resource">
+                                    🔗 Share Link
+                                </button>
+                                <a href="/creative-amplification" class="btn-card-details">
+                                    Direct Page &rarr;
+                                </a>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Item 2: W.I.N. Reframe Matrix -->
-                    <div class="teaser-card">
+                    <div class="teaser-card" id="win-reframe-matrix">
                         <div class="card-cover-wrapper">
-                            <img src="/assets/free-gifts/WIN_Reframe_Matrix_cover_image.png" alt="WIN Reframe Matrix Cover" class="card-cover-img">
+                            <a href="/win-reframe-matrix" style="display: block; width: 100%; height: 100%;">
+                                <img src="/assets/free-gifts/WIN_Reframe_Matrix_cover_image.png" alt="WIN Reframe Matrix Cover" class="card-cover-img">
+                            </a>
                             <span class="card-status-badge active">&#10004; Available Now</span>
                         </div>
                         <div class="teaser-card-body">
-                            <h3 class="teaser-card-title">W.I.N. Reframe Matrix</h3>
+                            <h3 class="teaser-card-title">
+                                <a href="/win-reframe-matrix" style="color: inherit; text-decoration: none;">W.I.N. Reframe Matrix</a>
+                            </h3>
                             <ul class="teaser-bullets">
                                 <li>Reflection grid for active constraints.</li>
                                 <li>Breaking mental friction loops.</li>
@@ -334,17 +399,29 @@
                             <a href="https://www.marchellosciortino.com/assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf" target="_blank" rel="noopener noreferrer" class="btn-download-trigger js-spa-download-btn" data-title="W.I.N. Reframe Matrix" data-file="https://www.marchellosciortino.com/assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf">
                                 Download Ebook &darr;
                             </a>
+                            <div class="teaser-card-footer-actions">
+                                <button type="button" class="btn-card-share js-copy-share-btn" data-share-url="https://marchellosciortino.com/win-reframe-matrix" title="Copy direct link to share this resource">
+                                    🔗 Share Link
+                                </button>
+                                <a href="/win-reframe-matrix" class="btn-card-details">
+                                    Direct Page &rarr;
+                                </a>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Item 3: AI Accessibility Commands -->
-                    <div class="teaser-card">
+                    <div class="teaser-card" id="ai-accessibility-commands">
                         <div class="card-cover-wrapper">
-                            <img src="/assets/free-gifts/Prompt_Cheat_Sheat_cover_image.png" alt="AI Accessibility Commands Cover" class="card-cover-img">
+                            <a href="/ai-accessibility-commands" style="display: block; width: 100%; height: 100%;">
+                                <img src="/assets/free-gifts/Prompt_Cheat_Sheat_cover_image.png" alt="AI Accessibility Commands Cover" class="card-cover-img">
+                            </a>
                             <span class="card-status-badge active">&#10004; Available Now</span>
                         </div>
                         <div class="teaser-card-body">
-                            <h3 class="teaser-card-title">AI Accessibility Commands</h3>
+                            <h3 class="teaser-card-title">
+                                <a href="/ai-accessibility-commands" style="color: inherit; text-decoration: none;">AI Accessibility Commands</a>
+                            </h3>
                             <ul class="teaser-bullets">
                                 <li>Sketch notebook prompt cheat sheet.</li>
                                 <li>Voice transcription guide templates.</li>
@@ -353,17 +430,29 @@
                             <a href="https://www.marchellosciortino.com/assets/free-gifts/Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf" target="_blank" rel="noopener noreferrer" class="btn-download-trigger js-spa-download-btn" data-title="AI Accessibility Commands" data-file="https://www.marchellosciortino.com/assets/free-gifts/Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf">
                                 Download Guide &darr;
                             </a>
+                            <div class="teaser-card-footer-actions">
+                                <button type="button" class="btn-card-share js-copy-share-btn" data-share-url="https://marchellosciortino.com/ai-accessibility-commands" title="Copy direct link to share this resource">
+                                    🔗 Share Link
+                                </button>
+                                <a href="/ai-accessibility-commands" class="btn-card-details">
+                                    Direct Page &rarr;
+                                </a>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Item 4: Digital Flow Audit -->
-                    <div class="teaser-card">
+                    <div class="teaser-card" id="digital-flow-audit">
                         <div class="card-cover-wrapper">
-                            <img src="/assets/free-gifts/Digital_Flow_Audit_cover_image.png" alt="Digital Flow Audit Cover" class="card-cover-img">
+                            <a href="/digital-flow-audit" style="display: block; width: 100%; height: 100%;">
+                                <img src="/assets/free-gifts/Digital_Flow_Audit_cover_image.png" alt="Digital Flow Audit Cover" class="card-cover-img">
+                            </a>
                             <span class="card-status-badge active">&#10004; Available Now</span>
                         </div>
                         <div class="teaser-card-body">
-                            <h3 class="teaser-card-title">Digital Flow Audit Checklist</h3>
+                            <h3 class="teaser-card-title">
+                                <a href="/digital-flow-audit" style="color: inherit; text-decoration: none;">Digital Flow Audit Checklist</a>
+                            </h3>
                             <ul class="teaser-bullets">
                                 <li>ADA accessibility compliance audit.</li>
                                 <li>Speed & user experience friction check.</li>
@@ -372,17 +461,29 @@
                             <a href="https://www.marchellosciortino.com/assets/free-gifts/Digital_Flow_Audit_Checklist_Enhanced.pdf" target="_blank" rel="noopener noreferrer" class="btn-download-trigger js-spa-download-btn" data-title="Digital Flow Audit Checklist" data-file="https://www.marchellosciortino.com/assets/free-gifts/Digital_Flow_Audit_Checklist_Enhanced.pdf">
                                 Download Checklist &darr;
                             </a>
+                            <div class="teaser-card-footer-actions">
+                                <button type="button" class="btn-card-share js-copy-share-btn" data-share-url="https://marchellosciortino.com/digital-flow-audit" title="Copy direct link to share this resource">
+                                    🔗 Share Link
+                                </button>
+                                <a href="/digital-flow-audit" class="btn-card-details">
+                                    Direct Page &rarr;
+                                </a>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Item 5: Turn a Still Ad Into Motion (Higgsfield AI Guide) -->
-                    <div class="teaser-card">
+                    <!-- Item 5: Turn a Still Ad Into Motion -->
+                    <div class="teaser-card" id="turn-a-still-ad-into-motion">
                         <div class="card-cover-wrapper">
-                            <img src="/assets/free-gifts/creative_amplification_higgsfield_guide_cover.png" alt="Turn a Still Ad Into Motion Cover" class="card-cover-img">
+                            <a href="/turn-a-still-ad-into-motion" style="display: block; width: 100%; height: 100%;">
+                                <img src="/assets/free-gifts/creative_amplification_higgsfield_guide_cover.png" alt="Turn a Still Ad Into Motion Cover" class="card-cover-img">
+                            </a>
                             <span class="card-status-badge active">&#10004; Available Now</span>
                         </div>
                         <div class="teaser-card-body">
-                            <h3 class="teaser-card-title">Turn a Still Ad Into Motion</h3>
+                            <h3 class="teaser-card-title">
+                                <a href="/turn-a-still-ad-into-motion" style="color: inherit; text-decoration: none;">Turn a Still Ad Into Motion</a>
+                            </h3>
                             <ul class="teaser-bullets">
                                 <li>Simple ad-to-video workflow with Higgsfield AI.</li>
                                 <li>Step-by-step Marketing Studio animation process.</li>
@@ -391,17 +492,29 @@
                             <a href="https://www.marchellosciortino.com/assets/free-gifts/creative_amplification_higgsfield_guide.pdf" target="_blank" rel="noopener noreferrer" class="btn-download-trigger js-spa-download-btn" data-title="Turn a Still Ad Into Motion" data-file="https://www.marchellosciortino.com/assets/free-gifts/creative_amplification_higgsfield_guide.pdf">
                                 Download Guide &darr;
                             </a>
+                            <div class="teaser-card-footer-actions">
+                                <button type="button" class="btn-card-share js-copy-share-btn" data-share-url="https://marchellosciortino.com/turn-a-still-ad-into-motion" title="Copy direct link to share this resource">
+                                    🔗 Share Link
+                                </button>
+                                <a href="/turn-a-still-ad-into-motion" class="btn-card-details">
+                                    Direct Page &rarr;
+                                </a>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Item 6: 10 Ways to Win Despite the Odds -->
-                    <div class="teaser-card">
+                    <div class="teaser-card" id="10-ways-to-win">
                         <div class="card-cover-wrapper">
-                            <img src="/assets/free-gifts/10_Ways_to_Win_Despite_the_Odds_cover.png" alt="10 Ways to Win Despite the Odds Cover" class="card-cover-img">
+                            <a href="/10-ways-to-win" style="display: block; width: 100%; height: 100%;">
+                                <img src="/assets/free-gifts/10_Ways_to_Win_Despite_the_Odds_cover.png" alt="10 Ways to Win Despite the Odds Cover" class="card-cover-img">
+                            </a>
                             <span class="card-status-badge active">&#10004; Available Now</span>
                         </div>
                         <div class="teaser-card-body">
-                            <h3 class="teaser-card-title">10 Ways to Win Despite the Odds</h3>
+                            <h3 class="teaser-card-title">
+                                <a href="/10-ways-to-win" style="color: inherit; text-decoration: none;">10 Ways to Win Despite the Odds</a>
+                            </h3>
                             <ul class="teaser-bullets">
                                 <li>Rise with purpose through faith & resilience.</li>
                                 <li>10 actionable principles to overcome obstacles.</li>
@@ -410,6 +523,45 @@
                             <a href="https://www.marchellosciortino.com/assets/free-gifts/10_Ways_to_Win_Despite_the_Odds_Marchello_Sciortino.pdf" target="_blank" rel="noopener noreferrer" class="btn-download-trigger js-spa-download-btn" data-title="10 Ways to Win Despite the Odds" data-file="https://www.marchellosciortino.com/assets/free-gifts/10_Ways_to_Win_Despite_the_Odds_Marchello_Sciortino.pdf">
                                 Download PDF &darr;
                             </a>
+                            <div class="teaser-card-footer-actions">
+                                <button type="button" class="btn-card-share js-copy-share-btn" data-share-url="https://marchellosciortino.com/10-ways-to-win" title="Copy direct link to share this resource">
+                                    🔗 Share Link
+                                </button>
+                                <a href="/10-ways-to-win" class="btn-card-details">
+                                    Direct Page &rarr;
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 7: From Idea to Free Product -->
+                    <div class="teaser-card" id="from-idea-to-free-product">
+                        <div class="card-cover-wrapper">
+                            <a href="/from-idea-to-free-product" style="display: block; width: 100%; height: 100%;">
+                                <img src="/assets/free-gifts/From_Idea_to_Free_Product_cover.png" alt="From Idea to Free Product Cover" class="card-cover-img">
+                            </a>
+                            <span class="card-status-badge active">&#10004; Available Now</span>
+                        </div>
+                        <div class="teaser-card-body">
+                            <h3 class="teaser-card-title">
+                                <a href="/from-idea-to-free-product" style="color: inherit; text-decoration: none;">From Idea to Free Product</a>
+                            </h3>
+                            <ul class="teaser-bullets">
+                                <li>Turning ideas into high-value digital assets.</li>
+                                <li>PDFs, checklists, worksheets & e-books.</li>
+                                <li>Creative amplification download framework.</li>
+                            </ul>
+                            <a href="https://www.marchellosciortino.com/assets/free-gifts/From_Idea_to_Free_Product_Marchello_Sciortino.pdf" target="_blank" rel="noopener noreferrer" class="btn-download-trigger js-spa-download-btn" data-title="From Idea to Free Product" data-file="https://www.marchellosciortino.com/assets/free-gifts/From_Idea_to_Free_Product_Marchello_Sciortino.pdf">
+                                Download PDF &darr;
+                            </a>
+                            <div class="teaser-card-footer-actions">
+                                <button type="button" class="btn-card-share js-copy-share-btn" data-share-url="https://marchellosciortino.com/from-idea-to-free-product" title="Copy direct link to share this resource">
+                                    🔗 Share Link
+                                </button>
+                                <a href="/from-idea-to-free-product" class="btn-card-details">
+                                    Direct Page &rarr;
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -660,6 +812,28 @@
                         if (submitBtn) {
                             submitBtn.disabled = false;
                             submitBtn.textContent = originalText;
+                        }
+                    }
+                });
+                // Global click event listener for 1-click clipboard sharing
+                document.addEventListener('click', async (e) => {
+                    const copyBtn = e.target.closest('.js-copy-share-btn');
+                    if (copyBtn) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const shareUrl = copyBtn.getAttribute('data-share-url') || window.location.href;
+                        try {
+                            await navigator.clipboard.writeText(shareUrl);
+                            const originalText = copyBtn.innerHTML;
+                            copyBtn.innerHTML = '<span>&#10004; Copied Link!</span>';
+                            copyBtn.classList.add('copied');
+                            setTimeout(() => {
+                                copyBtn.innerHTML = originalText;
+                                copyBtn.classList.remove('copied');
+                            }, 2500);
+                        } catch (err) {
+                            console.error('[Share Link Clipboard Copy Error]', err);
+                            prompt('Copy this link:', shareUrl);
                         }
                     }
                 });

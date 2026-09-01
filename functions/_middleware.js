@@ -55,7 +55,29 @@ export async function onRequest(context) {
     const isLibrarySubdomain = url.hostname.includes('library.marchellosciortino.com') || url.hostname.startsWith('library.');
     let canonicalUrl = `https://marchellosciortino.com${url.pathname === '/' ? '' : url.pathname}`;
 
-    // Set page-specific default metadata for non-article routes
+    // If not article, check if a free gift / download is requested
+    if (!foundArticle) {
+        try {
+            const giftsUrl = new URL('/data/free-gifts.json', url.origin);
+            const giftsResponse = await context.env.ASSETS.fetch(giftsUrl);
+            if (giftsResponse.ok) {
+                const gifts = await giftsResponse.json();
+                const pathSlug = url.pathname.replace(/^\/free-gifts\//, '').replace(/^\/free-library\//, '').replace(/^\//, '').toLowerCase();
+                const gift = gifts.find(g => g.slug.toLowerCase() === pathSlug || (g.aliases && g.aliases.some(a => a.toLowerCase().endsWith(pathSlug))));
+                if (gift) {
+                    title = `${gift.meta_title || gift.title} | Marchello Sciortino`;
+                    description = gift.meta_desc || (gift.bullets ? gift.bullets.join(' ') : description);
+                    image = new URL(gift.cover_image, url.origin).toString();
+                    canonicalUrl = `https://marchellosciortino.com/${gift.slug}`;
+                    foundArticle = true;
+                }
+            }
+        } catch (e) {
+            console.error("Error loading free-gifts database in middleware:", e);
+        }
+    }
+
+    // Set page-specific default metadata for non-article / non-gift routes
     if (!foundArticle) {
         const path = url.pathname.toLowerCase();
         if (isLibrarySubdomain || path.startsWith('/free-library')) {

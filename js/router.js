@@ -93,6 +93,17 @@ const Router = {
                 app.innerHTML = html;
             }
 
+            // Dynamic Canonical URL Tag management
+            let canonicalLink = document.querySelector('link[rel="canonical"]');
+            if (!canonicalLink) {
+                canonicalLink = document.createElement('link');
+                canonicalLink.setAttribute('rel', 'canonical');
+                document.head.appendChild(canonicalLink);
+            }
+
+            // Check if current route matches a free gift
+            const currentGift = typeof FREE_GIFTS_DATA !== 'undefined' ? FREE_GIFTS_DATA.find(g => '/' + g.slug === pathOnly || (g.aliases && g.aliases.some(a => '/' + a === pathOnly))) : null;
+
             // Update document title dynamically for SEO
             const titles = {
                 '/': "Marchello Sciortino | Official Digital Hub",
@@ -115,19 +126,17 @@ const Router = {
                 '/accessibility-statement': "Accessibility Statement | Marchello Sciortino",
                 '/accessible-aim': "Accessible AIM | Marchello Sciortino"
             };
-            document.title = titles[pathOnly] || (isLibrarySubdomain ? "Free Digital Library | Marchello Sciortino" : "Marchello Sciortino");
 
-            // Dynamic Canonical URL Tag management
-            let canonicalLink = document.querySelector('link[rel="canonical"]');
-            if (!canonicalLink) {
-                canonicalLink = document.createElement('link');
-                canonicalLink.setAttribute('rel', 'canonical');
-                document.head.appendChild(canonicalLink);
-            }
-            if (isLibrarySubdomain || pathOnly === '/free-library' || pathOnly === '/free-gifts') {
-                canonicalLink.setAttribute('href', 'https://library.marchellosciortino.com');
+            if (currentGift) {
+                document.title = currentGift.meta_title || `${currentGift.title} | Marchello Sciortino`;
+                canonicalLink.setAttribute('href', `https://marchellosciortino.com/${currentGift.slug}`);
             } else {
-                canonicalLink.setAttribute('href', `https://marchellosciortino.com${pathOnly === '/' ? '' : pathOnly}`);
+                document.title = titles[pathOnly] || (isLibrarySubdomain ? "Free Digital Library | Marchello Sciortino" : "Marchello Sciortino");
+                if (isLibrarySubdomain || pathOnly === '/free-library' || pathOnly === '/free-gifts') {
+                    canonicalLink.setAttribute('href', 'https://library.marchellosciortino.com');
+                } else {
+                    canonicalLink.setAttribute('href', `https://marchellosciortino.com${pathOnly === '/' ? '' : pathOnly}`);
+                }
             }
 
             // Post-rendering actions
@@ -2729,8 +2738,169 @@ Router.register('/contact', () => {
 `;
 });
 
-// 14. Free Gifts & Free Library Page Template (Scalable Teaser Library Grid)
+// 14. Free Gifts & Digital Library Data Registry & Template System
+const FREE_GIFTS_DATA = [
+    {
+        id: "from-idea-to-free-product",
+        slug: "from-idea-to-free-product",
+        aliases: ["free-gifts/from-idea-to-free-product", "free-library/from-idea-to-free-product"],
+        title: "From Idea to Free Product",
+        type: "PDF Guide",
+        badge: "Available Now",
+        meta_title: "From Idea to Free Product | Free PDF Guide by Marchello Sciortino",
+        meta_desc: "How I create PDFs, images, checklists, worksheets, e-books, and downloads through creative amplification.",
+        bullets: [
+            "Turning ideas into high-value digital assets.",
+            "PDFs, checklists, worksheets & e-book creation.",
+            "Creative amplification download framework."
+        ],
+        cover_image: "/assets/free-gifts/From_Idea_to_Free_Product_cover.png",
+        file_url: "https://www.marchellosciortino.com/assets/free-gifts/From_Idea_to_Free_Product_Marchello_Sciortino.pdf",
+        button_label: "Download PDF ↓"
+    },
+    {
+        id: "creative-amplification",
+        slug: "creative-amplification",
+        aliases: ["creative-amplification-ai", "free-gifts/creative-amplification", "free-library/creative-amplification"],
+        title: "Creative Amplification Through AI",
+        type: "PDF Guide",
+        badge: "Available Now",
+        meta_title: "Creative Amplification Through AI | Free Download by Marchello Sciortino",
+        meta_desc: "Principles of Articulated Inspiration, turning constraints into strategic leverage, and practical prompt configurations for creators.",
+        bullets: [
+            "Principles of Articulated Inspiration.",
+            "Turning constraints into strategic leverage.",
+            "Practical prompt configurations for creators."
+        ],
+        cover_image: "/assets/free-gifts/creative_amplification_cover.png",
+        file_url: "https://www.marchellosciortino.com/assets/free-gifts/Creative_amplification_through_AI.pdf",
+        button_label: "Download PDF ↓"
+    },
+    {
+        id: "win-reframe-matrix",
+        slug: "win-reframe-matrix",
+        aliases: ["win-matrix", "free-gifts/win-reframe-matrix", "free-library/win-reframe-matrix"],
+        title: "W.I.N. Reframe Matrix",
+        type: "Ebook & Worksheet",
+        badge: "Available Now",
+        meta_title: "W.I.N. Reframe Matrix | Free Ebook by Marchello Sciortino",
+        meta_desc: "Reflection grid for active constraints, breaking mental friction loops, and custom tactical action plan builder.",
+        bullets: [
+            "Reflection grid for active constraints.",
+            "Breaking mental friction loops.",
+            "Custom tactical action plan builder."
+        ],
+        cover_image: "/assets/free-gifts/WIN_Reframe_Matrix_cover_image.png",
+        file_url: "https://www.marchellosciortino.com/assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf",
+        button_label: "Download Ebook ↓"
+    },
+    {
+        id: "ai-accessibility-commands",
+        slug: "ai-accessibility-commands",
+        aliases: ["prompt-cheat-sheet", "free-gifts/ai-accessibility-commands", "free-library/ai-accessibility-commands"],
+        title: "AI Accessibility Commands",
+        type: "Prompt Cheat Sheet",
+        badge: "Available Now",
+        meta_title: "AI Accessibility Commands | Free Guide by Marchello Sciortino",
+        meta_desc: "Sketch notebook prompt cheat sheet, voice transcription guide templates, and configuring AI as a cognitive prosthetic.",
+        bullets: [
+            "Sketch notebook prompt cheat sheet.",
+            "Voice transcription guide templates.",
+            "Configuring AI as a cognitive prosthetic."
+        ],
+        cover_image: "/assets/free-gifts/Prompt_Cheat_Sheat_cover_image.png",
+        file_url: "https://www.marchellosciortino.com/assets/free-gifts/Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf",
+        button_label: "Download Guide ↓"
+    },
+    {
+        id: "digital-flow-audit",
+        slug: "digital-flow-audit",
+        aliases: ["flow-audit", "free-gifts/digital-flow-audit", "free-library/digital-flow-audit"],
+        title: "Digital Flow Audit Checklist",
+        type: "Interactive Checklist",
+        badge: "Available Now",
+        meta_title: "Digital Flow Audit Checklist | Free Download by Marchello Sciortino",
+        meta_desc: "ADA accessibility compliance audit, speed & user experience friction check, and landing page conversion optimization.",
+        bullets: [
+            "ADA accessibility compliance audit.",
+            "Speed & user experience friction check.",
+            "Landing page conversion optimization."
+        ],
+        cover_image: "/assets/free-gifts/Digital_Flow_Audit_cover_image.png",
+        file_url: "https://www.marchellosciortino.com/assets/free-gifts/Digital_Flow_Audit_Checklist_Enhanced.pdf",
+        button_label: "Download Checklist ↓"
+    },
+    {
+        id: "turn-a-still-ad-into-motion",
+        slug: "turn-a-still-ad-into-motion",
+        aliases: ["still-ad-to-motion", "higgsfield-guide", "free-gifts/turn-a-still-ad-into-motion", "free-library/turn-a-still-ad-into-motion"],
+        title: "Turn a Still Ad Into Motion",
+        type: "AI Video Guide",
+        badge: "Available Now",
+        meta_title: "Turn a Still Ad Into Motion | Free AI Guide by Marchello Sciortino",
+        meta_desc: "Simple ad-to-video workflow with Higgsfield AI, step-by-step Marketing Studio animation process, and transforming static image ads into dynamic motion.",
+        bullets: [
+            "Simple ad-to-video workflow with Higgsfield AI.",
+            "Step-by-step Marketing Studio animation process.",
+            "Transforming static image ads into dynamic motion."
+        ],
+        cover_image: "/assets/free-gifts/creative_amplification_higgsfield_guide_cover.png",
+        file_url: "https://www.marchellosciortino.com/assets/free-gifts/creative_amplification_higgsfield_guide.pdf",
+        button_label: "Download Guide ↓"
+    },
+    {
+        id: "10-ways-to-win",
+        slug: "10-ways-to-win",
+        aliases: ["10-ways-to-win-despite-the-odds", "free-gifts/10-ways-to-win", "free-library/10-ways-to-win"],
+        title: "10 Ways to Win Despite the Odds",
+        type: "PDF Guide",
+        badge: "Available Now",
+        meta_title: "10 Ways to Win Despite the Odds | Free PDF Guide by Marchello Sciortino",
+        meta_desc: "Rise with purpose through faith & resilience, 10 actionable principles to overcome obstacles, and leveraging creativity, support, and AI tools.",
+        bullets: [
+            "Rise with purpose through faith & resilience.",
+            "10 actionable principles to overcome obstacles.",
+            "Leveraging creativity, support, and AI tools."
+        ],
+        cover_image: "/assets/free-gifts/10_Ways_to_Win_Despite_the_Odds_cover.png",
+        file_url: "https://www.marchellosciortino.com/assets/free-gifts/10_Ways_to_Win_Despite_the_Odds_Marchello_Sciortino.pdf",
+        button_label: "Download PDF ↓"
+    }
+];
+
+// Free Gifts & Free Library Main Grid Template
 const freeGiftsTemplate = () => {
+    const cardsHtml = FREE_GIFTS_DATA.map((gift, index) => `
+        <!-- Item ${index + 1}: ${gift.title} -->
+        <div class="teaser-card" id="${gift.slug}">
+            <div class="card-cover-wrapper">
+                <a href="/${gift.slug}" style="display: block; width: 100%; height: 100%;">
+                    <img src="${gift.cover_image}" alt="${gift.title} Cover" class="card-cover-img">
+                </a>
+                <span class="card-status-badge active">&#10004; ${gift.badge}</span>
+            </div>
+            <div class="teaser-card-body">
+                <h3 class="teaser-card-title">
+                    <a href="/${gift.slug}" style="color: inherit; text-decoration: none;">${gift.title}</a>
+                </h3>
+                <ul class="teaser-bullets">
+                    ${gift.bullets.map(b => `<li>${b}</li>`).join('')}
+                </ul>
+                <a href="${gift.file_url}" target="_blank" rel="noopener noreferrer" class="btn-download-trigger js-spa-download-btn" data-title="${gift.title}" data-file="${gift.file_url}">
+                    ${gift.button_label}
+                </a>
+                <div class="teaser-card-footer-actions">
+                    <button type="button" class="btn-card-share js-copy-share-btn" data-share-url="https://marchellosciortino.com/${gift.slug}" title="Copy direct link to share this resource">
+                        🔗 Share Link
+                    </button>
+                    <a href="/${gift.slug}" class="btn-card-details">
+                        Direct Page &rarr;
+                    </a>
+                </div>
+            </div>
+        </div>
+    `).join('');
+
     return `
     <style>
         .teaser-lib-wrapper {
@@ -2889,6 +3059,55 @@ const freeGiftsTemplate = () => {
             color: #081b29;
         }
 
+        .teaser-card-footer-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid #f1f5f9;
+            font-size: 0.82rem;
+        }
+
+        .btn-card-share {
+            background: transparent;
+            border: 1px solid #e2e8f0;
+            color: #475569;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .btn-card-share:hover {
+            background: #0ad8ad;
+            border-color: #0ad8ad;
+            color: #081b29;
+        }
+
+        .btn-card-share.copied {
+            background: #10b981;
+            border-color: #10b981;
+            color: #ffffff;
+        }
+
+        .btn-card-details {
+            color: #0ad8ad;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .btn-card-details:hover {
+            color: #081b29;
+            text-decoration: underline;
+        }
+
         /* Modal Overlay */
         .spa-modal-overlay {
             position: fixed;
@@ -2989,7 +3208,7 @@ const freeGiftsTemplate = () => {
 
         <div class="container text-center" style="position: relative; z-index: 2;">
             <span class="section-tag text-teal">Tools & Resources</span>
-            <h1 style="color: white;">Free Gifts</h1>
+            <h1 style="color: white;">Free Gifts & Digital Library</h1>
             <p class="section-desc" style="color: var(--color-gray-light);">
                 Worksheets, prompt templates, and PDF guides to help you reframe obstacles and build your projects.
             </p>
@@ -2998,124 +3217,8 @@ const freeGiftsTemplate = () => {
 
     <section class="section bg-white" style="padding: 60px 0 90px; background-color: #f8fafc;">
         <div class="container">
-
-
             <div class="teaser-grid">
-
-                <!-- Item 1: Featured Live Release -->
-                <div class="teaser-card">
-                    <div class="card-cover-wrapper">
-                        <img src="/assets/free-gifts/creative_amplification_cover.png" alt="Creative Amplification Cover" class="card-cover-img">
-                        <span class="card-status-badge active">&#10004; Available Now</span>
-                    </div>
-                    <div class="teaser-card-body">
-                        <h3 class="teaser-card-title">Creative Amplification Through AI</h3>
-                        <ul class="teaser-bullets">
-                            <li>Principles of Articulated Inspiration.</li>
-                            <li>Turning constraints into strategic leverage.</li>
-                            <li>Practical prompt configurations for creators.</li>
-                        </ul>
-                        <a href="https://www.marchellosciortino.com/assets/free-gifts/Creative_amplification_through_AI.pdf" target="_blank" rel="noopener noreferrer" class="btn-download-trigger js-spa-download-btn" data-title="Creative Amplification Through AI" data-file="https://www.marchellosciortino.com/assets/free-gifts/Creative_amplification_through_AI.pdf">
-                            Download PDF &darr;
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Item 2: W.I.N. Reframe Matrix -->
-                <div class="teaser-card">
-                    <div class="card-cover-wrapper">
-                        <img src="/assets/free-gifts/WIN_Reframe_Matrix_cover_image.png" alt="WIN Reframe Matrix Cover" class="card-cover-img">
-                        <span class="card-status-badge active">&#10004; Available Now</span>
-                    </div>
-                    <div class="teaser-card-body">
-                        <h3 class="teaser-card-title">W.I.N. Reframe Matrix</h3>
-                        <ul class="teaser-bullets">
-                            <li>Reflection grid for active constraints.</li>
-                            <li>Breaking mental friction loops.</li>
-                            <li>Custom tactical action plan builder.</li>
-                        </ul>
-                        <a href="https://www.marchellosciortino.com/assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf" target="_blank" rel="noopener noreferrer" class="btn-download-trigger js-spa-download-btn" data-title="W.I.N. Reframe Matrix" data-file="https://www.marchellosciortino.com/assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf">
-                            Download Ebook &darr;
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Item 3: AI Accessibility Commands -->
-                <div class="teaser-card">
-                    <div class="card-cover-wrapper">
-                        <img src="/assets/free-gifts/Prompt_Cheat_Sheat_cover_image.png" alt="AI Accessibility Commands Cover" class="card-cover-img">
-                        <span class="card-status-badge active">&#10004; Available Now</span>
-                    </div>
-                    <div class="teaser-card-body">
-                        <h3 class="teaser-card-title">AI Accessibility Commands</h3>
-                        <ul class="teaser-bullets">
-                            <li>Sketch notebook prompt cheat sheet.</li>
-                            <li>Voice transcription guide templates.</li>
-                            <li>Configuring AI as a cognitive prosthetic.</li>
-                        </ul>
-                        <a href="https://www.marchellosciortino.com/assets/free-gifts/Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf" target="_blank" rel="noopener noreferrer" class="btn-download-trigger js-spa-download-btn" data-title="AI Accessibility Commands" data-file="https://www.marchellosciortino.com/assets/free-gifts/Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf">
-                            Download Guide &darr;
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Item 4: Digital Flow Audit -->
-                <div class="teaser-card">
-                    <div class="card-cover-wrapper">
-                        <img src="/assets/free-gifts/Digital_Flow_Audit_cover_image.png" alt="Digital Flow Audit Cover" class="card-cover-img">
-                        <span class="card-status-badge active">&#10004; Available Now</span>
-                    </div>
-                    <div class="teaser-card-body">
-                        <h3 class="teaser-card-title">Digital Flow Audit Checklist</h3>
-                        <ul class="teaser-bullets">
-                            <li>ADA accessibility compliance audit.</li>
-                            <li>Speed & user experience friction check.</li>
-                            <li>Landing page conversion optimization.</li>
-                        </ul>
-                        <a href="https://www.marchellosciortino.com/assets/free-gifts/Digital_Flow_Audit_Checklist_Enhanced.pdf" target="_blank" rel="noopener noreferrer" class="btn-download-trigger js-spa-download-btn" data-title="Digital Flow Audit Checklist" data-file="https://www.marchellosciortino.com/assets/free-gifts/Digital_Flow_Audit_Checklist_Enhanced.pdf">
-                            Download Checklist &darr;
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Item 5: Turn a Still Ad Into Motion (Higgsfield AI Guide) -->
-                <div class="teaser-card">
-                    <div class="card-cover-wrapper">
-                        <img src="/assets/free-gifts/creative_amplification_higgsfield_guide_cover.png" alt="Turn a Still Ad Into Motion Cover" class="card-cover-img">
-                        <span class="card-status-badge active">&#10004; Available Now</span>
-                    </div>
-                    <div class="teaser-card-body">
-                        <h3 class="teaser-card-title">Turn a Still Ad Into Motion</h3>
-                        <ul class="teaser-bullets">
-                            <li>Simple ad-to-video workflow with Higgsfield AI.</li>
-                            <li>Step-by-step Marketing Studio animation process.</li>
-                            <li>Transforming static image ads into dynamic motion.</li>
-                        </ul>
-                        <a href="https://www.marchellosciortino.com/assets/free-gifts/creative_amplification_higgsfield_guide.pdf" target="_blank" rel="noopener noreferrer" class="btn-download-trigger js-spa-download-btn" data-title="Turn a Still Ad Into Motion" data-file="https://www.marchellosciortino.com/assets/free-gifts/creative_amplification_higgsfield_guide.pdf">
-                            Download Guide &darr;
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Item 6: 10 Ways to Win Despite the Odds -->
-                <div class="teaser-card">
-                    <div class="card-cover-wrapper">
-                        <img src="/assets/free-gifts/10_Ways_to_Win_Despite_the_Odds_cover.png" alt="10 Ways to Win Despite the Odds Cover" class="card-cover-img">
-                        <span class="card-status-badge active">&#10004; Available Now</span>
-                    </div>
-                    <div class="teaser-card-body">
-                        <h3 class="teaser-card-title">10 Ways to Win Despite the Odds</h3>
-                        <ul class="teaser-bullets">
-                            <li>Rise with purpose through faith & resilience.</li>
-                            <li>10 actionable principles to overcome obstacles.</li>
-                            <li>Leveraging creativity, support, and AI tools.</li>
-                        </ul>
-                        <a href="https://www.marchellosciortino.com/assets/free-gifts/10_Ways_to_Win_Despite_the_Odds_Marchello_Sciortino.pdf" target="_blank" rel="noopener noreferrer" class="btn-download-trigger js-spa-download-btn" data-title="10 Ways to Win Despite the Odds" data-file="https://www.marchellosciortino.com/assets/free-gifts/10_Ways_to_Win_Despite_the_Odds_Marchello_Sciortino.pdf">
-                            Download PDF &darr;
-                        </a>
-                    </div>
-                </div>
-
+                ${cardsHtml}
             </div>
         </div>
     </section>
@@ -3144,8 +3247,413 @@ const freeGiftsTemplate = () => {
     `;
 };
 
+// Dedicated Single Free Gift Landing Page Template
+const singleGiftTemplate = (gift) => {
+    const otherGifts = FREE_GIFTS_DATA.filter(g => g.id !== gift.id);
+    const shareUrl = `https://marchellosciortino.com/${gift.slug}`;
+
+    return `
+    <style>
+        .single-gift-page {
+            background-color: #f8fafc;
+            color: #475569;
+            padding-bottom: 90px;
+        }
+
+        .single-gift-hero {
+            background: radial-gradient(circle at 50% 20%, #0d273d 0%, #081b29 100%);
+            padding: 50px 0 60px;
+            color: #ffffff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .single-gift-breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: #94a3b8;
+            margin-bottom: 24px;
+        }
+
+        .single-gift-breadcrumb a {
+            color: #0ad8ad;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .single-gift-breadcrumb a:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+
+        .single-gift-layout {
+            display: grid;
+            grid-template-columns: 460px 1fr;
+            gap: 48px;
+            align-items: start;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 900px) {
+            .single-gift-layout {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+        }
+
+        .single-gift-cover-card {
+            background: #ffffff;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(10, 216, 173, 0.3);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25), 0 0 35px rgba(10, 216, 173, 0.15);
+            position: relative;
+        }
+
+        .single-gift-cover-img {
+            width: 100%;
+            height: auto;
+            display: block;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+        }
+
+        .single-gift-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(10, 216, 173, 0.15);
+            border: 1px solid #0ad8ad;
+            color: #0ad8ad;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .single-gift-title {
+            color: #ffffff;
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin: 0 0 16px;
+        }
+
+        @media (max-width: 600px) {
+            .single-gift-title {
+                font-size: 1.85rem;
+            }
+        }
+
+        .single-gift-desc {
+            color: #cbd5e1;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 28px;
+        }
+
+        .single-gift-highlights {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 32px;
+            backdrop-filter: blur(6px);
+        }
+
+        .single-gift-highlights h4 {
+            color: #0ad8ad;
+            font-family: var(--font-heading);
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0 0 14px;
+        }
+
+        .single-gift-highlights ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .single-gift-highlights li {
+            position: relative;
+            padding-left: 28px;
+            margin-bottom: 12px;
+            color: #e2e8f0;
+            font-size: 0.98rem;
+            line-height: 1.5;
+        }
+
+        .single-gift-highlights li:last-child {
+            margin-bottom: 0;
+        }
+
+        .single-gift-highlights li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #0ad8ad;
+            font-weight: 800;
+            font-size: 1.1rem;
+        }
+
+        .single-gift-cta-box {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .btn-single-download {
+            background: #ff5722;
+            color: #ffffff;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.1rem;
+            padding: 16px 32px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 25px rgba(255, 87, 34, 0.35);
+            transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+        }
+
+        .btn-single-download:hover {
+            background: #e64a19;
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px rgba(255, 87, 34, 0.45);
+            color: #ffffff;
+        }
+
+        .btn-single-share {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 16px 24px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-single-share:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #0ad8ad;
+            color: #0ad8ad;
+        }
+
+        .btn-single-share.copied {
+            background: #10b981;
+            border-color: #10b981;
+            color: #ffffff;
+        }
+
+        .single-gift-explore {
+            padding: 70px 0 20px;
+        }
+
+        .single-gift-explore-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .single-gift-explore-header h2 {
+            font-family: var(--font-heading);
+            color: #0f172a;
+            font-size: 2rem;
+            font-weight: 800;
+            margin: 0 0 10px;
+        }
+
+        .single-gift-explore-header p {
+            color: #64748b;
+            font-size: 1rem;
+        }
+    </style>
+
+    <div class="single-gift-page">
+        <section class="single-gift-hero">
+            <div class="container">
+                <nav class="single-gift-breadcrumb" aria-label="Breadcrumb">
+                    <a href="/">Home</a>
+                    <span>/</span>
+                    <a href="/free-library">Free Library</a>
+                    <span>/</span>
+                    <span>${gift.title}</span>
+                </nav>
+
+                <div class="single-gift-layout">
+                    <!-- Left: High-Res Artwork Showcase -->
+                    <div class="single-gift-cover-container">
+                        <div class="single-gift-cover-card">
+                            <img src="${gift.cover_image}" alt="${gift.title} Cover" class="single-gift-cover-img">
+                        </div>
+                        <div style="text-align: center; margin-top: 14px;">
+                            <button type="button" class="btn-card-share js-copy-share-btn" data-share-url="${shareUrl}" style="background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); color: #cbd5e1; width: 100%; justify-content: center; padding: 10px 16px;">
+                                🔗 Copy Share Link (${shareUrl})
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Right: Details, Bullets & Download CTA -->
+                    <div class="single-gift-content">
+                        <div class="single-gift-badge">&#10004; ${gift.type} &bull; ${gift.badge}</div>
+                        <h1 class="single-gift-title">${gift.title}</h1>
+                        <p class="single-gift-desc">${gift.meta_desc}</p>
+
+                        <div class="single-gift-highlights">
+                            <h4>What You'll Learn & Receive:</h4>
+                            <ul>
+                                ${gift.bullets.map(b => `<li>${b}</li>`).join('')}
+                            </ul>
+                        </div>
+
+                        <div class="single-gift-cta-box">
+                            <a href="${gift.file_url}" target="_blank" rel="noopener noreferrer" class="btn-single-download js-spa-download-btn" data-title="${gift.title}" data-file="${gift.file_url}">
+                                ${gift.button_label}
+                            </a>
+                            <button type="button" class="btn-single-share js-copy-share-btn" data-share-url="${shareUrl}">
+                                <span>🔗 Share</span>
+                            </button>
+                        </div>
+
+                        <div style="margin-top: 24px;">
+                            <a href="/free-library" style="color: #0ad8ad; font-size: 0.95rem; text-decoration: none; font-weight: 600;">
+                                &larr; Browse All 7 Free Downloads in the Digital Library
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- More Free Resources Exploration Grid -->
+        <section class="single-gift-explore">
+            <div class="container">
+                <div class="single-gift-explore-header">
+                    <span class="teaser-hero-tag">Explore More</span>
+                    <h2>Other Free Resources in the Library</h2>
+                    <p>Free worksheets, ebooks, prompt templates, and PDF guides by Marchello Sciortino.</p>
+                </div>
+
+                <div class="teaser-grid">
+                    ${otherGifts.slice(0, 3).map((otherGift, idx) => `
+                        <div class="teaser-card">
+                            <div class="card-cover-wrapper">
+                                <a href="/${otherGift.slug}">
+                                    <img src="${otherGift.cover_image}" alt="${otherGift.title} Cover" class="card-cover-img">
+                                </a>
+                                <span class="card-status-badge active">&#10004; ${otherGift.badge}</span>
+                            </div>
+                            <div class="teaser-card-body">
+                                <h3 class="teaser-card-title">
+                                    <a href="/${otherGift.slug}" style="color: inherit; text-decoration: none;">${otherGift.title}</a>
+                                </h3>
+                                <ul class="teaser-bullets">
+                                    ${otherGift.bullets.map(b => `<li>${b}</li>`).join('')}
+                                </ul>
+                                <a href="${otherGift.file_url}" target="_blank" rel="noopener noreferrer" class="btn-download-trigger js-spa-download-btn" data-title="${otherGift.title}" data-file="${otherGift.file_url}">
+                                    ${otherGift.button_label}
+                                </a>
+                                <div class="teaser-card-footer-actions">
+                                    <button type="button" class="btn-card-share js-copy-share-btn" data-share-url="https://marchellosciortino.com/${otherGift.slug}">
+                                        🔗 Share Link
+                                    </button>
+                                    <a href="/${otherGift.slug}" class="btn-card-details">
+                                        Direct Page &rarr;
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div style="text-align: center; margin-top: 40px;">
+                    <a href="/free-library" class="btn-download-trigger" style="max-width: 320px; margin: 0 auto; background: #081b29;">
+                        View All 7 Free Downloads &rarr;
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Login / Unlock Modal -->
+    <div class="spa-modal-overlay" id="spa-download-modal">
+        <div class="spa-modal-card">
+            <button class="spa-modal-close" id="spa-modal-close">&times;</button>
+            <div id="spa-form-view">
+                <h3 style="color: #0f172a; margin-bottom: 8px;">Unlock All Downloads</h3>
+                <p id="spa-copy-text" style="color: #475569; font-size: 0.95rem; margin-bottom: 20px;">
+                    Unlock all downloads by entering your email.
+                </p>
+                <form id="spa-modal-login-form">
+                    <input type="email" class="spa-modal-input" id="spa-modal-email" placeholder="Enter your email address..." required style="width: 100%; padding: 14px; border: 1px solid #e2e8f0; border-radius: 10px; margin-bottom: 12px; font-size: 1rem; box-sizing: border-box;">
+                    <button type="submit" class="btn-unlock-orange" style="background: #ff5722; color: #ffffff; width: 100%; padding: 14px 20px; font-size: 1rem; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; transition: background 0.2s, transform 0.15s;">
+                        Unlock Free Access &rarr;
+                    </button>
+                    <a href="/" class="btn-decline-home" style="display: block; text-align: center; margin-top: 14px; color: #64748b; font-size: 0.78rem; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; transition: color 0.2s;">
+                        I do not want to unlock. Take me back to the home page.
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+    `;
+};
+
+// Register main free gift / library routes
 Router.register('/free-gifts', freeGiftsTemplate);
 Router.register('/free-library', freeGiftsTemplate);
+
+// Register individual free gift endpaths & aliases
+FREE_GIFTS_DATA.forEach(gift => {
+    Router.register('/' + gift.slug, () => singleGiftTemplate(gift));
+    if (gift.aliases) {
+        gift.aliases.forEach(alias => {
+            Router.register('/' + alias, () => singleGiftTemplate(gift));
+        });
+    }
+});
+
+// Global click event listener for 1-click clipboard sharing
+document.addEventListener('click', async (e) => {
+    const copyBtn = e.target.closest('.js-copy-share-btn');
+    if (copyBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const shareUrl = copyBtn.getAttribute('data-share-url') || window.location.href;
+        try {
+            await navigator.clipboard.writeText(shareUrl);
+            const originalText = copyBtn.innerHTML;
+            copyBtn.innerHTML = '<span>&#10004; Copied Link!</span>';
+            copyBtn.classList.add('copied');
+            setTimeout(() => {
+                copyBtn.innerHTML = originalText;
+                copyBtn.classList.remove('copied');
+            }, 2500);
+        } catch (err) {
+            console.error('[Share Link Clipboard Copy Error]', err);
+            prompt('Copy this link:', shareUrl);
+        }
+    }
+});
 
 // Global click event listener for SPA download triggers
 document.addEventListener('click', (e) => {
