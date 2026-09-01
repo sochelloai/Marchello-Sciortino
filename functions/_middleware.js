@@ -85,11 +85,6 @@ export async function onRequest(context) {
             image = new URL('/assets/free-gifts/WIN_Reframe_Matrix_cover_image.png', url.origin).toString();
             canonicalUrl = "https://marchellosciortino.com/free-gifts";
         } else if (path.startsWith('/speaking')) {
-            title = "Free Gifts | Marchello Sciortino";
-            description = "Worksheets, prompt templates, and PDF guides by Marchello Sciortino to help you reframe obstacles and build your projects.";
-            image = new URL('/assets/free-gifts/WIN_Reframe_Matrix_cover_image.png', url.origin).toString();
-            canonicalUrl = "https://marchellosciortino.com/free-gifts";
-        } else if (path.startsWith('/speaking')) {
             title = "Speaking & Keynotes | Marchello Sciortino";
             description = "Inquire about booking Marchello Sciortino for keynotes, workshops, and coaching. Helping audiences turn limitations into creative agency.";
             image = new URL('/assets/hero-speaking-stage.jpg', url.origin).toString();
