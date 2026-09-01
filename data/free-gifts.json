@@ -2,7 +2,7 @@
   {
     "id": "from-idea-to-free-product",
     "slug": "from-idea-to-free-product",
-    "aliases": ["free-gifts/from-idea-to-free-product", "free-library/from-idea-to-free-product"],
+    "aliases": ["free-gifts/from-idea-to-free-product"],
     "title": "From Idea to Free Product",
     "type": "PDF Guide",
     "badge": "Available Now",
@@ -20,7 +20,7 @@
   {
     "id": "creative-amplification",
     "slug": "creative-amplification",
-    "aliases": ["creative-amplification-ai", "free-gifts/creative-amplification", "free-library/creative-amplification"],
+    "aliases": ["creative-amplification-ai", "free-gifts/creative-amplification"],
     "title": "Creative Amplification Through AI",
     "type": "PDF Guide",
     "badge": "Available Now",
@@ -38,7 +38,7 @@
   {
     "id": "win-reframe-matrix",
     "slug": "win-reframe-matrix",
-    "aliases": ["win-matrix", "free-gifts/win-reframe-matrix", "free-library/win-reframe-matrix"],
+    "aliases": ["win-matrix", "free-gifts/win-reframe-matrix"],
     "title": "W.I.N. Reframe Matrix",
     "type": "Ebook & Worksheet",
     "badge": "Available Now",
@@ -56,7 +56,7 @@
   {
     "id": "ai-accessibility-commands",
     "slug": "ai-accessibility-commands",
-    "aliases": ["prompt-cheat-sheet", "free-gifts/ai-accessibility-commands", "free-library/ai-accessibility-commands"],
+    "aliases": ["prompt-cheat-sheet", "free-gifts/ai-accessibility-commands"],
     "title": "AI Accessibility Commands",
     "type": "Prompt Cheat Sheet",
     "badge": "Available Now",
@@ -74,7 +74,7 @@
   {
     "id": "digital-flow-audit",
     "slug": "digital-flow-audit",
-    "aliases": ["flow-audit", "free-gifts/digital-flow-audit", "free-library/digital-flow-audit"],
+    "aliases": ["flow-audit", "free-gifts/digital-flow-audit"],
     "title": "Digital Flow Audit Checklist",
     "type": "Interactive Checklist",
     "badge": "Available Now",
@@ -92,7 +92,7 @@
   {
     "id": "turn-a-still-ad-into-motion",
     "slug": "turn-a-still-ad-into-motion",
-    "aliases": ["still-ad-to-motion", "higgsfield-guide", "free-gifts/turn-a-still-ad-into-motion", "free-library/turn-a-still-ad-into-motion"],
+    "aliases": ["still-ad-to-motion", "higgsfield-guide", "free-gifts/turn-a-still-ad-into-motion"],
     "title": "Turn a Still Ad Into Motion",
     "type": "AI Video Guide",
     "badge": "Available Now",
@@ -110,7 +110,7 @@
   {
     "id": "10-ways-to-win",
     "slug": "10-ways-to-win",
-    "aliases": ["10-ways-to-win-despite-the-odds", "free-gifts/10-ways-to-win", "free-library/10-ways-to-win"],
+    "aliases": ["10-ways-to-win-despite-the-odds", "free-gifts/10-ways-to-win"],
     "title": "10 Ways to Win Despite the Odds",
     "type": "PDF Guide",
     "badge": "Available Now",

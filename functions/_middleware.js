@@ -7,10 +7,11 @@ export async function onRequest(context) {
     const { request } = context;
     const url = new URL(request.url);
 
-    // Redirect library.marchellosciortino.com subdomain to https://marchellosciortino.com/free-library
+    // Redirect library.marchellosciortino.com subdomain or /free-library path to https://marchellosciortino.com/free-gifts
     const hostname = url.hostname.toLowerCase();
-    if (hostname.includes('library.marchellosciortino.com') || hostname.startsWith('library.')) {
-        return Response.redirect('https://marchellosciortino.com/free-library', 301);
+    const pathname = url.pathname.toLowerCase();
+    if (hostname.includes('library.marchellosciortino.com') || hostname.startsWith('library.') || pathname === '/free-library' || pathname === '/free-library/' || pathname.startsWith('/free-library/')) {
+        return Response.redirect('https://marchellosciortino.com/free-gifts', 301);
     }
 
     const response = await context.next();
@@ -51,8 +52,6 @@ export async function onRequest(context) {
         }
     }
 
-    // Check if request is coming from library.marchellosciortino.com subdomain
-    const isLibrarySubdomain = url.hostname.includes('library.marchellosciortino.com') || url.hostname.startsWith('library.');
     let canonicalUrl = `https://marchellosciortino.com${url.pathname === '/' ? '' : url.pathname}`;
 
     // If not article, check if a free gift / download is requested
@@ -62,7 +61,7 @@ export async function onRequest(context) {
             const giftsResponse = await context.env.ASSETS.fetch(giftsUrl);
             if (giftsResponse.ok) {
                 const gifts = await giftsResponse.json();
-                const pathSlug = url.pathname.replace(/^\/free-gifts\//, '').replace(/^\/free-library\//, '').replace(/^\//, '').replace(/\/$/, '').toLowerCase();
+                const pathSlug = url.pathname.replace(/^\/free-gifts\//, '').replace(/^\//, '').replace(/\/$/, '').toLowerCase();
                 const gift = gifts.find(g => g.slug.toLowerCase() === pathSlug || (g.aliases && g.aliases.some(a => a.toLowerCase().endsWith(pathSlug))));
                 if (gift) {
                     title = `${gift.meta_title || gift.title} | Marchello Sciortino`;
@@ -80,12 +79,12 @@ export async function onRequest(context) {
     // Set page-specific default metadata for non-article / non-gift routes
     if (!foundArticle) {
         const path = url.pathname.toLowerCase();
-        if (isLibrarySubdomain || path.startsWith('/free-library')) {
-            title = "Free Digital Library | Marchello Sciortino";
-            description = "Worksheets, AI prompt cheat sheets, audio lessons, and strategic frameworks by Marchello Sciortino to reframe constraints and build digital freedom.";
+        if (path.startsWith('/free-gifts')) {
+            title = "Free Gifts | Marchello Sciortino";
+            description = "Worksheets, prompt templates, and PDF guides by Marchello Sciortino to help you reframe obstacles and build your projects.";
             image = new URL('/assets/free-gifts/WIN_Reframe_Matrix_cover_image.png', url.origin).toString();
-            canonicalUrl = "https://marchellosciortino.com/free-library";
-        } else if (path.startsWith('/free-gifts')) {
+            canonicalUrl = "https://marchellosciortino.com/free-gifts";
+        } else if (path.startsWith('/speaking')) {
             title = "Free Gifts | Marchello Sciortino";
             description = "Worksheets, prompt templates, and PDF guides by Marchello Sciortino to help you reframe obstacles and build your projects.";
             image = new URL('/assets/free-gifts/WIN_Reframe_Matrix_cover_image.png', url.origin).toString();

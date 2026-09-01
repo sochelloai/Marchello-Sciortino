@@ -59,9 +59,10 @@ const Router = {
 
         // Subdomain check for library.marchellosciortino.com
         const isLibrarySubdomain = window.location.hostname.includes('library.marchellosciortino.com') || window.location.hostname.startsWith('library.');
-        if (isLibrarySubdomain && (cleanPath === '/' || cleanPath === '/index.html' || cleanPath === '/free-gifts')) {
-            pathOnly = '/free-library';
-            cleanPath = '/free-library';
+        if (isLibrarySubdomain || cleanPath === '/free-library' || cleanPath.startsWith('/free-library/')) {
+            pathOnly = '/free-gifts';
+            cleanPath = '/free-gifts';
+            history.replaceState(null, '', '/free-gifts');
         }
 
         // Redirect /home or /index.html to /
@@ -81,7 +82,7 @@ const Router = {
         }
 
         // Match route or clean route or redirect to home (/)
-        const templateFn = this.routes[pathOnly] || this.routes[cleanPath] || (isLibrarySubdomain ? this.routes['/free-library'] : this.routes['/']);
+        const templateFn = this.routes[pathOnly] || this.routes[cleanPath] || (isLibrarySubdomain ? this.routes['/free-gifts'] : this.routes['/']);
 
         if (templateFn) {
             // Update current page
@@ -121,8 +122,7 @@ const Router = {
                 '/marchellos-blog': "Marchello's Blog | Marchello Sciortino",
                 '/hub': "Marchello's Blog | Marchello Sciortino",
                 '/contact': "Contact | Marchello Sciortino",
-                '/free-gifts': "Free Digital Library | Marchello Sciortino",
-                '/free-library': "Free Digital Library | Marchello Sciortino",
+                '/free-gifts': "Free Gifts | Marchello Sciortino",
                 '/resources': "Resources | Marchello Sciortino",
                 '/privacy': "Privacy Policy | Marchello Sciortino",
                 '/terms': "Terms of Service | Marchello Sciortino",
@@ -134,9 +134,9 @@ const Router = {
                 document.title = currentGift.meta_title || `${currentGift.title} | Marchello Sciortino`;
                 canonicalLink.setAttribute('href', `https://marchellosciortino.com/${currentGift.slug}`);
             } else {
-                document.title = titles[pathOnly] || (isLibrarySubdomain ? "Free Digital Library | Marchello Sciortino" : "Marchello Sciortino");
-                if (isLibrarySubdomain || pathOnly === '/free-library' || pathOnly === '/free-gifts') {
-                    canonicalLink.setAttribute('href', 'https://library.marchellosciortino.com');
+                document.title = titles[pathOnly] || (isLibrarySubdomain ? "Free Gifts | Marchello Sciortino" : "Marchello Sciortino");
+                if (isLibrarySubdomain || pathOnly === '/free-gifts') {
+                    canonicalLink.setAttribute('href', 'https://marchellosciortino.com/free-gifts');
                 } else {
                     canonicalLink.setAttribute('href', `https://marchellosciortino.com${pathOnly === '/' ? '' : pathOnly}`);
                 }
@@ -2741,12 +2741,12 @@ Router.register('/contact', () => {
 `;
 });
 
-// 14. Free Gifts & Digital Library Data Registry & Template System
+// 14. Free Gifts Data Registry & Template System
 const FREE_GIFTS_DATA = [
     {
         id: "from-idea-to-free-product",
         slug: "from-idea-to-free-product",
-        aliases: ["free-gifts/from-idea-to-free-product", "free-library/from-idea-to-free-product"],
+        aliases: ["free-gifts/from-idea-to-free-product"],
         title: "From Idea to Free Product",
         type: "PDF Guide",
         badge: "Available Now",
@@ -2759,12 +2759,12 @@ const FREE_GIFTS_DATA = [
         ],
         cover_image: "/assets/free-gifts/From_Idea_to_Free_Product_cover.png",
         file_url: "https://www.marchellosciortino.com/assets/free-gifts/From_Idea_to_Free_Product_Marchello_Sciortino.pdf",
-        button_label: "Download PDF ↓"
+        button_label: "Download PDF"
     },
     {
         id: "creative-amplification",
         slug: "creative-amplification",
-        aliases: ["creative-amplification-ai", "free-gifts/creative-amplification", "free-library/creative-amplification"],
+        aliases: ["creative-amplification-ai", "free-gifts/creative-amplification"],
         title: "Creative Amplification Through AI",
         type: "PDF Guide",
         badge: "Available Now",
@@ -2777,12 +2777,12 @@ const FREE_GIFTS_DATA = [
         ],
         cover_image: "/assets/free-gifts/creative_amplification_cover.png",
         file_url: "https://www.marchellosciortino.com/assets/free-gifts/Creative_amplification_through_AI.pdf",
-        button_label: "Download PDF ↓"
+        button_label: "Download PDF"
     },
     {
         id: "win-reframe-matrix",
         slug: "win-reframe-matrix",
-        aliases: ["win-matrix", "free-gifts/win-reframe-matrix", "free-library/win-reframe-matrix"],
+        aliases: ["win-matrix", "free-gifts/win-reframe-matrix"],
         title: "W.I.N. Reframe Matrix",
         type: "Ebook & Worksheet",
         badge: "Available Now",
@@ -2795,12 +2795,12 @@ const FREE_GIFTS_DATA = [
         ],
         cover_image: "/assets/free-gifts/WIN_Reframe_Matrix_cover_image.png",
         file_url: "https://www.marchellosciortino.com/assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf",
-        button_label: "Download Ebook ↓"
+        button_label: "Download Ebook"
     },
     {
         id: "ai-accessibility-commands",
         slug: "ai-accessibility-commands",
-        aliases: ["prompt-cheat-sheet", "free-gifts/ai-accessibility-commands", "free-library/ai-accessibility-commands"],
+        aliases: ["prompt-cheat-sheet", "free-gifts/ai-accessibility-commands"],
         title: "AI Accessibility Commands",
         type: "Prompt Cheat Sheet",
         badge: "Available Now",
@@ -2813,12 +2813,12 @@ const FREE_GIFTS_DATA = [
         ],
         cover_image: "/assets/free-gifts/Prompt_Cheat_Sheat_cover_image.png",
         file_url: "https://www.marchellosciortino.com/assets/free-gifts/Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf",
-        button_label: "Download Guide ↓"
+        button_label: "Download Guide"
     },
     {
         id: "digital-flow-audit",
         slug: "digital-flow-audit",
-        aliases: ["flow-audit", "free-gifts/digital-flow-audit", "free-library/digital-flow-audit"],
+        aliases: ["flow-audit", "free-gifts/digital-flow-audit"],
         title: "Digital Flow Audit Checklist",
         type: "Interactive Checklist",
         badge: "Available Now",
@@ -2831,12 +2831,12 @@ const FREE_GIFTS_DATA = [
         ],
         cover_image: "/assets/free-gifts/Digital_Flow_Audit_cover_image.png",
         file_url: "https://www.marchellosciortino.com/assets/free-gifts/Digital_Flow_Audit_Checklist_Enhanced.pdf",
-        button_label: "Download Checklist ↓"
+        button_label: "Download Checklist"
     },
     {
         id: "turn-a-still-ad-into-motion",
         slug: "turn-a-still-ad-into-motion",
-        aliases: ["still-ad-to-motion", "higgsfield-guide", "free-gifts/turn-a-still-ad-into-motion", "free-library/turn-a-still-ad-into-motion"],
+        aliases: ["still-ad-to-motion", "higgsfield-guide", "free-gifts/turn-a-still-ad-into-motion"],
         title: "Turn a Still Ad Into Motion",
         type: "AI Video Guide",
         badge: "Available Now",
@@ -2849,12 +2849,12 @@ const FREE_GIFTS_DATA = [
         ],
         cover_image: "/assets/free-gifts/creative_amplification_higgsfield_guide_cover.png",
         file_url: "https://www.marchellosciortino.com/assets/free-gifts/creative_amplification_higgsfield_guide.pdf",
-        button_label: "Download Guide ↓"
+        button_label: "Download Guide"
     },
     {
         id: "10-ways-to-win",
         slug: "10-ways-to-win",
-        aliases: ["10-ways-to-win-despite-the-odds", "free-gifts/10-ways-to-win", "free-library/10-ways-to-win"],
+        aliases: ["10-ways-to-win-despite-the-odds", "free-gifts/10-ways-to-win"],
         title: "10 Ways to Win Despite the Odds",
         type: "PDF Guide",
         badge: "Available Now",
@@ -2867,7 +2867,7 @@ const FREE_GIFTS_DATA = [
         ],
         cover_image: "/assets/free-gifts/10_Ways_to_Win_Despite_the_Odds_cover.png",
         file_url: "https://www.marchellosciortino.com/assets/free-gifts/10_Ways_to_Win_Despite_the_Odds_Marchello_Sciortino.pdf",
-        button_label: "Download PDF ↓"
+        button_label: "Download PDF"
     }
 ];
 
@@ -3497,7 +3497,7 @@ const singleGiftTemplate = (gift) => {
                 <nav class="single-gift-breadcrumb" aria-label="Breadcrumb">
                     <a href="/">Home</a>
                     <span>/</span>
-                    <a href="/free-library">Free Library</a>
+                    <a href="/free-gifts">Free Gifts</a>
                     <span>/</span>
                     <span>${gift.title}</span>
                 </nav>
@@ -3538,8 +3538,8 @@ const singleGiftTemplate = (gift) => {
                         </a>
                     </div>
                     <div style="width: 100%; display: flex; justify-content: center;">
-                        <a href="/free-library" style="color: #0ad8ad; font-size: 1.05rem; text-decoration: none; font-weight: 600; font-family: var(--font-heading); display: inline-flex; align-items: center; gap: 8px;">
-                            &larr; Explore all free resources in the digital library
+                        <a href="/free-gifts" style="color: #0ad8ad; font-size: 1.05rem; text-decoration: none; font-weight: 600; font-family: var(--font-heading); display: inline-flex; align-items: center; gap: 8px;">
+                            &larr; Explore all free resources on the Free Gifts page
                         </a>
                     </div>
                 </div>
@@ -3551,7 +3551,7 @@ const singleGiftTemplate = (gift) => {
             <div class="container">
                 <div class="single-gift-explore-header">
                     <span class="teaser-hero-tag">Explore More</span>
-                    <h2>Other Free Resources in the Library</h2>
+                    <h2>Other Free Resources</h2>
                     <p>Free worksheets, ebooks, prompt templates, and PDF guides by Marchello Sciortino.</p>
                 </div>
 
@@ -3588,7 +3588,7 @@ const singleGiftTemplate = (gift) => {
                 </div>
 
                 <div style="text-align: center; margin-top: 40px;">
-                    <a href="/free-library" class="btn-download-trigger" style="max-width: 320px; margin: 0 auto; background: #081b29;">
+                    <a href="/free-gifts" class="btn-download-trigger" style="max-width: 320px; margin: 0 auto; background: #081b29;">
                         View All 7 Free Downloads &rarr;
                     </a>
                 </div>
@@ -3620,9 +3620,9 @@ const singleGiftTemplate = (gift) => {
     `;
 };
 
-// Register main free gift / library routes
+// Register main free gift routes
 Router.register('/free-gifts', freeGiftsTemplate);
-Router.register('/free-library', freeGiftsTemplate);
+Router.register('/free-gifts/', freeGiftsTemplate);
 
 // Register individual free gift endpaths & aliases
 FREE_GIFTS_DATA.forEach(gift => {

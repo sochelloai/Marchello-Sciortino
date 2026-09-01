@@ -1,8 +1,9 @@
-https://library.marchellosciortino.com/* https://marchellosciortino.com/free-library 301
+https://library.marchellosciortino.com/* https://marchellosciortino.com/free-gifts 301
+/free-library https://marchellosciortino.com/free-gifts 301
+/free-library/ https://marchellosciortino.com/free-gifts 301
+/free-library/* https://marchellosciortino.com/free-gifts 301
 /free-gifts /free-gifts/index.html 200
 /free-gifts/ /free-gifts/index.html 200
-/free-library /free-library/index.html 200
-/free-library/ /free-library/index.html 200
 /from-idea-to-free-product /from-idea-to-free-product/index.html 200
 /from-idea-to-free-product/ /from-idea-to-free-product/index.html 200
 /creative-amplification /creative-amplification/index.html 200
