@@ -3641,7 +3641,7 @@ document.addEventListener('click', async (e) => {
 
 // Global click event listener for SPA download triggers
 document.addEventListener('click', (e) => {
-    const btn = e.target.closest('.js-spa-download-btn');
+    const btn = e.target.closest('.js-spa-download-btn, .btn-download-trigger, .btn-download-primary');
     if (btn) {
         let fileUrl = btn.getAttribute('data-file') || btn.getAttribute('href');
         const modal = document.getElementById('spa-download-modal');
@@ -3654,7 +3654,7 @@ document.addEventListener('click', (e) => {
             // Already unlocked: let native <a href="..." target="_blank"> open in new tab natively
             return;
         } else {
-            // Locked: show email modal
+            // Locked: show email modal once
             e.preventDefault();
             if (modal) {
                 if (copyText) copyText.textContent = 'Unlock all downloads by entering your email.';
@@ -3665,7 +3665,7 @@ document.addEventListener('click', (e) => {
         }
     }
 
-    if (e.target && e.target.id === 'spa-modal-close') {
+    if (e.target && (e.target.id === 'spa-modal-close' || e.target.closest('#spa-modal-close'))) {
         const modal = document.getElementById('spa-download-modal');
         if (modal) modal.classList.remove('active');
     }
