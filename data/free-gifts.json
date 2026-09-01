@@ -18,76 +18,22 @@
     "button_label": "Download PDF"
   },
   {
-    "id": "creative-amplification",
-    "slug": "creative-amplification",
-    "aliases": ["creative-amplification-ai", "free-gifts/creative-amplification"],
-    "title": "Creative Amplification Through AI",
+    "id": "10-ways-to-win",
+    "slug": "10-ways-to-win",
+    "aliases": ["10-ways-to-win-despite-the-odds", "free-gifts/10-ways-to-win"],
+    "title": "10 Ways to Win Despite the Odds",
     "type": "PDF Guide",
     "badge": "Available Now",
-    "meta_title": "Creative Amplification Through AI | Free Download by Marchello Sciortino",
-    "meta_desc": "Principles of Articulated Inspiration, turning constraints into strategic leverage, and practical prompt configurations for creators.",
+    "meta_title": "10 Ways to Win Despite the Odds | Free PDF Guide by Marchello Sciortino",
+    "meta_desc": "Rise with purpose through faith & resilience, 10 actionable principles to overcome obstacles, and leveraging creativity, support, and AI tools.",
     "bullets": [
-      "Principles of Articulated Inspiration.",
-      "Turning constraints into strategic leverage.",
-      "Practical prompt configurations for creators."
+      "Rise with purpose through faith & resilience.",
+      "10 actionable principles to overcome obstacles.",
+      "Leveraging creativity, support, and AI tools."
     ],
-    "cover_image": "/assets/free-gifts/creative_amplification_cover.png",
-    "file_url": "https://www.marchellosciortino.com/assets/free-gifts/Creative_amplification_through_AI.pdf",
+    "cover_image": "/assets/free-gifts/10_Ways_to_Win_Despite_the_Odds_cover.png",
+    "file_url": "https://www.marchellosciortino.com/assets/free-gifts/10_Ways_to_Win_Despite_the_Odds_Marchello_Sciortino.pdf",
     "button_label": "Download PDF"
-  },
-  {
-    "id": "win-reframe-matrix",
-    "slug": "win-reframe-matrix",
-    "aliases": ["win-matrix", "free-gifts/win-reframe-matrix"],
-    "title": "W.I.N. Reframe Matrix",
-    "type": "Ebook & Worksheet",
-    "badge": "Available Now",
-    "meta_title": "W.I.N. Reframe Matrix | Free Ebook by Marchello Sciortino",
-    "meta_desc": "Reflection grid for active constraints, breaking mental friction loops, and custom tactical action plan builder.",
-    "bullets": [
-      "Reflection grid for active constraints.",
-      "Breaking mental friction loops.",
-      "Custom tactical action plan builder."
-    ],
-    "cover_image": "/assets/free-gifts/WIN_Reframe_Matrix_cover_image.png",
-    "file_url": "https://www.marchellosciortino.com/assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf",
-    "button_label": "Download Ebook"
-  },
-  {
-    "id": "ai-accessibility-commands",
-    "slug": "ai-accessibility-commands",
-    "aliases": ["prompt-cheat-sheet", "free-gifts/ai-accessibility-commands"],
-    "title": "AI Accessibility Commands",
-    "type": "Prompt Cheat Sheet",
-    "badge": "Available Now",
-    "meta_title": "AI Accessibility Commands | Free Guide by Marchello Sciortino",
-    "meta_desc": "Sketch notebook prompt cheat sheet, voice transcription guide templates, and configuring AI as a cognitive prosthetic.",
-    "bullets": [
-      "Sketch notebook prompt cheat sheet.",
-      "Voice transcription guide templates.",
-      "Configuring AI as a cognitive prosthetic."
-    ],
-    "cover_image": "/assets/free-gifts/Prompt_Cheat_Sheat_cover_image.png",
-    "file_url": "https://www.marchellosciortino.com/assets/free-gifts/Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf",
-    "button_label": "Download Guide"
-  },
-  {
-    "id": "digital-flow-audit",
-    "slug": "digital-flow-audit",
-    "aliases": ["flow-audit", "free-gifts/digital-flow-audit"],
-    "title": "Digital Flow Audit Checklist",
-    "type": "Interactive Checklist",
-    "badge": "Available Now",
-    "meta_title": "Digital Flow Audit Checklist | Free Download by Marchello Sciortino",
-    "meta_desc": "ADA accessibility compliance audit, speed & user experience friction check, and landing page conversion optimization.",
-    "bullets": [
-      "ADA accessibility compliance audit.",
-      "Speed & user experience friction check.",
-      "Landing page conversion optimization."
-    ],
-    "cover_image": "/assets/free-gifts/Digital_Flow_Audit_cover_image.png",
-    "file_url": "https://www.marchellosciortino.com/assets/free-gifts/Digital_Flow_Audit_Checklist_Enhanced.pdf",
-    "button_label": "Download Checklist"
   },
   {
     "id": "turn-a-still-ad-into-motion",
@@ -108,21 +54,75 @@
     "button_label": "Download Guide"
   },
   {
-    "id": "10-ways-to-win",
-    "slug": "10-ways-to-win",
-    "aliases": ["10-ways-to-win-despite-the-odds", "free-gifts/10-ways-to-win"],
-    "title": "10 Ways to Win Despite the Odds",
+    "id": "creative-amplification",
+    "slug": "creative-amplification",
+    "aliases": ["creative-amplification-ai", "free-gifts/creative-amplification"],
+    "title": "Creative Amplification Through AI",
     "type": "PDF Guide",
     "badge": "Available Now",
-    "meta_title": "10 Ways to Win Despite the Odds | Free PDF Guide by Marchello Sciortino",
-    "meta_desc": "Rise with purpose through faith & resilience, 10 actionable principles to overcome obstacles, and leveraging creativity, support, and AI tools.",
+    "meta_title": "Creative Amplification Through AI | Free Download by Marchello Sciortino",
+    "meta_desc": "Principles of Articulated Inspiration, turning constraints into strategic leverage, and practical prompt configurations for creators.",
     "bullets": [
-      "Rise with purpose through faith & resilience.",
-      "10 actionable principles to overcome obstacles.",
-      "Leveraging creativity, support, and AI tools."
+      "Principles of Articulated Inspiration.",
+      "Turning constraints into strategic leverage.",
+      "Practical prompt configurations for creators."
     ],
-    "cover_image": "/assets/free-gifts/10_Ways_to_Win_Despite_the_Odds_cover.png",
-    "file_url": "https://www.marchellosciortino.com/assets/free-gifts/10_Ways_to_Win_Despite_the_Odds_Marchello_Sciortino.pdf",
+    "cover_image": "/assets/free-gifts/creative_amplification_cover.png",
+    "file_url": "https://www.marchellosciortino.com/assets/free-gifts/Creative_amplification_through_AI.pdf",
     "button_label": "Download PDF"
+  },
+  {
+    "id": "digital-flow-audit",
+    "slug": "digital-flow-audit",
+    "aliases": ["flow-audit", "free-gifts/digital-flow-audit"],
+    "title": "Digital Flow Audit Checklist",
+    "type": "Interactive Checklist",
+    "badge": "Available Now",
+    "meta_title": "Digital Flow Audit Checklist | Free Download by Marchello Sciortino",
+    "meta_desc": "ADA accessibility compliance audit, speed & user experience friction check, and landing page conversion optimization.",
+    "bullets": [
+      "ADA accessibility compliance audit.",
+      "Speed & user experience friction check.",
+      "Landing page conversion optimization."
+    ],
+    "cover_image": "/assets/free-gifts/Digital_Flow_Audit_cover_image.png",
+    "file_url": "https://www.marchellosciortino.com/assets/free-gifts/Digital_Flow_Audit_Checklist_Enhanced.pdf",
+    "button_label": "Download Checklist"
+  },
+  {
+    "id": "ai-accessibility-commands",
+    "slug": "ai-accessibility-commands",
+    "aliases": ["prompt-cheat-sheet", "free-gifts/ai-accessibility-commands"],
+    "title": "AI Accessibility Commands",
+    "type": "Prompt Cheat Sheet",
+    "badge": "Available Now",
+    "meta_title": "AI Accessibility Commands | Free Guide by Marchello Sciortino",
+    "meta_desc": "Sketch notebook prompt cheat sheet, voice transcription guide templates, and configuring AI as a cognitive prosthetic.",
+    "bullets": [
+      "Sketch notebook prompt cheat sheet.",
+      "Voice transcription guide templates.",
+      "Configuring AI as a cognitive prosthetic."
+    ],
+    "cover_image": "/assets/free-gifts/Prompt_Cheat_Sheat_cover_image.png",
+    "file_url": "https://www.marchellosciortino.com/assets/free-gifts/Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf",
+    "button_label": "Download Guide"
+  },
+  {
+    "id": "win-reframe-matrix",
+    "slug": "win-reframe-matrix",
+    "aliases": ["win-matrix", "free-gifts/win-reframe-matrix"],
+    "title": "W.I.N. Reframe Matrix",
+    "type": "Ebook & Worksheet",
+    "badge": "Available Now",
+    "meta_title": "W.I.N. Reframe Matrix | Free Ebook by Marchello Sciortino",
+    "meta_desc": "Reflection grid for active constraints, breaking mental friction loops, and custom tactical action plan builder.",
+    "bullets": [
+      "Reflection grid for active constraints.",
+      "Breaking mental friction loops.",
+      "Custom tactical action plan builder."
+    ],
+    "cover_image": "/assets/free-gifts/WIN_Reframe_Matrix_cover_image.png",
+    "file_url": "https://www.marchellosciortino.com/assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf",
+    "button_label": "Download Ebook"
   }
 ]
