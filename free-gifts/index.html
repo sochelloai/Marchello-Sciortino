@@ -324,7 +324,49 @@
 </head>
 
 <body>
-    <main id="main-focus">
+    <!-- Skip to Content link for keyboard accessibility -->
+    <a href="#main-focus" class="skip-link">Skip to Main Content</a>
+
+    <!-- Top Navigation Header -->
+    <header class="main-header">
+        <div class="header-container">
+            <!-- Glowing Neon Lens Flares -->
+            <div class="nav-flare nav-flare-top-left"></div>
+            <div class="nav-flare nav-flare-bottom-right"></div>
+            <div class="nav-flare nav-flare-top-right"></div>
+
+            <a href="/" class="brand-logo" aria-label="Marchello Sciortino Home">
+                <img src="/assets/logo-light.png?v=20260805-2" alt="Marchello Sciortino" class="header-logo-img"
+                    fetchpriority="high" decoding="async">
+            </a>
+
+            <button class="menu-toggle" aria-expanded="false" aria-controls="main-nav"
+                aria-label="Toggle Navigation Menu">
+                <span class="hamburger"></span>
+            </button>
+
+            <nav id="main-nav" class="nav-menu">
+                <ul class="nav-list">
+                    <li><a href="/" class="nav-link">Home</a></li>
+                    <li><a href="/marchellos-blog" class="nav-link">Blog</a></li>
+                    <li><a href="/services" class="nav-link">Services</a></li>
+                    <li><a href="/free-gifts" class="nav-link active">Free Gifts</a></li>
+                    <li><a href="/contact" class="nav-link">Contact</a></li>
+                    <!-- Mobile-only CTA in the list -->
+                    <li class="mobile-cta-only"><a href="/speaking" class="btn-cta-orange">Book Me To Speak &rarr;</a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Desktop-only CTA Button -->
+            <a href="/speaking" class="btn-cta-orange desktop-cta-only">Book Me To Speak &rarr;</a>
+        </div>
+    </header>
+
+    <!-- Main Content Focus Target -->
+    <span id="main-focus" tabindex="-1"></span>
+
+    <main>
         <!-- Hero Component (.page-intro) -->
         <div class="page-intro" style="position: relative; overflow: hidden;">
             <!-- Curved background SVG line flourishes -->
@@ -370,7 +412,7 @@
                             </a>
                             <div class="teaser-card-footer-actions">
                                 <button type="button" class="btn-card-share js-copy-share-btn" data-share-url="https://marchellosciortino.com/from-idea-to-free-product" title="Copy direct link to share this resource">
-                                    &#128279; Share Link
+                                    🔗 Share Link
                                 </button>
                                 <a href="/from-idea-to-free-product" class="btn-card-details">
                                     Direct Page &rarr;
@@ -564,37 +606,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Item 7: From Idea to Free Product -->
-                    <div class="teaser-card" id="from-idea-to-free-product">
-                        <div class="card-cover-wrapper">
-                            <a href="/from-idea-to-free-product" style="display: block; width: 100%; height: 100%;">
-                                <img src="/assets/free-gifts/From_Idea_to_Free_Product_cover.png" alt="From Idea to Free Product Cover" class="card-cover-img">
-                            </a>
-                            <span class="card-status-badge active">&#10004; Available Now</span>
-                        </div>
-                        <div class="teaser-card-body">
-                            <h3 class="teaser-card-title">
-                                <a href="/from-idea-to-free-product" style="color: inherit; text-decoration: none;">From Idea to Free Product</a>
-                            </h3>
-                            <ul class="teaser-bullets">
-                                <li>Turning ideas into high-value digital assets.</li>
-                                <li>PDFs, checklists, worksheets & e-books.</li>
-                                <li>Creative amplification download framework.</li>
-                            </ul>
-                            <a href="https://www.marchellosciortino.com/assets/free-gifts/From_Idea_to_Free_Product_Marchello_Sciortino.pdf" target="_blank" rel="noopener noreferrer" class="btn-download-trigger js-spa-download-btn" data-title="From Idea to Free Product" data-file="https://www.marchellosciortino.com/assets/free-gifts/From_Idea_to_Free_Product_Marchello_Sciortino.pdf">
-                                Download PDF &darr;
-                            </a>
-                            <div class="teaser-card-footer-actions">
-                                <button type="button" class="btn-card-share js-copy-share-btn" data-share-url="https://marchellosciortino.com/from-idea-to-free-product" title="Copy direct link to share this resource">
-                                    🔗 Share Link
-                                </button>
-                                <a href="/from-idea-to-free-product" class="btn-card-details">
-                                    Direct Page &rarr;
-                                </a>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </section>
@@ -691,10 +702,48 @@
         </div>
     </div>
 
-    <!-- Simple Footer (No Navigation Links) -->
-    <footer class="teaser-footer">
-        <div class="container">
-            <p>&copy; 2026 Marchello Sciortino. All Rights Reserved.</p>
+    <!-- Unified Footer -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <a href="/" class="footer-logo" aria-label="Marchello Sciortino Home">
+                    <img src="/assets/logo-light.png?v=20260805-2" alt="Marchello Sciortino" class="footer-logo-img"
+                        loading="lazy" decoding="async">
+                </a>
+                <p class="footer-mission">I show how to adapt to daily constraints, build professional momentum, and use
+                    AI as a tool for creation.</p>
+            </div>
+
+            <div class="footer-nav-grid">
+                <div class="footer-nav-col">
+                    <h3 class="footer-heading">Explore</h3>
+                    <ul>
+                        <li><a href="/mission">Mission</a></li>
+                        <li><a href="/chelloai">Chello AI</a></li>
+                        <li><a href="/story">Story</a></li>
+                    </ul>
+                </div>
+                <div class="footer-nav-col">
+                    <h3 class="footer-heading">Initiatives</h3>
+                    <ul>
+                        <li><a href="/accessible-aim">Accessible AIM</a></li>
+                        <li><a href="https://www.limitationstoliberation.com/" target="_blank"
+                                rel="noopener noreferrer">"Limitations to Liberation" book</a></li>
+                        <li><a href="/resources">Resources</a></li>
+                    </ul>
+                </div>
+                <div class="footer-nav-col">
+                    <h3 class="footer-heading">Legal</h3>
+                    <ul>
+                        <li><a href="/accessibility-statement">Accessibility Info</a></li>
+                        <li><a href="/privacy">Privacy Policy</a></li>
+                        <li><a href="/terms">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Marchello Sciortino. All Rights Reserved. Crafted with AI Amplification.</p>
         </div>
     </footer>
 
@@ -786,6 +835,17 @@
             attachTriggerEvents();
             initInstagramMarqueeStandalone();
 
+            // Mobile Nav Toggle
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navMenu = document.getElementById('main-nav');
+            if (menuToggle && navMenu) {
+                menuToggle.onclick = () => {
+                    const expanded = menuToggle.getAttribute('aria-expanded') === 'true';
+                    menuToggle.setAttribute('aria-expanded', !expanded);
+                    navMenu.classList.toggle('active');
+                };
+            }
+
             if (closeBtn) {
                 closeBtn.addEventListener('click', () => {
                     if (modal) modal.classList.remove('active');
@@ -846,29 +906,30 @@
                         }
                     }
                 });
-                // Global click event listener for 1-click clipboard sharing
-                document.addEventListener('click', async (e) => {
-                    const copyBtn = e.target.closest('.js-copy-share-btn');
-                    if (copyBtn) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        const shareUrl = copyBtn.getAttribute('data-share-url') || window.location.href;
-                        try {
-                            await navigator.clipboard.writeText(shareUrl);
-                            const originalText = copyBtn.innerHTML;
-                            copyBtn.innerHTML = '<span>&#10004; Copied Link!</span>';
-                            copyBtn.classList.add('copied');
-                            setTimeout(() => {
-                                copyBtn.innerHTML = originalText;
-                                copyBtn.classList.remove('copied');
-                            }, 2500);
-                        } catch (err) {
-                            console.error('[Share Link Clipboard Copy Error]', err);
-                            prompt('Copy this link:', shareUrl);
-                        }
-                    }
-                });
             }
+
+            // Global click event listener for 1-click clipboard sharing
+            document.addEventListener('click', async (e) => {
+                const copyBtn = e.target.closest('.js-copy-share-btn');
+                if (copyBtn) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const shareUrl = copyBtn.getAttribute('data-share-url') || window.location.href;
+                    try {
+                        await navigator.clipboard.writeText(shareUrl);
+                        const originalText = copyBtn.innerHTML;
+                        copyBtn.innerHTML = '<span>&#10004; Copied Link!</span>';
+                        copyBtn.classList.add('copied');
+                        setTimeout(() => {
+                            copyBtn.innerHTML = originalText;
+                            copyBtn.classList.remove('copied');
+                        }, 2500);
+                    } catch (err) {
+                        console.error('[Share Link Clipboard Copy Error]', err);
+                        prompt('Copy this link:', shareUrl);
+                    }
+                }
+            });
         });
     </script>
 </body>

@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. Setup global DOM listeners
     setupMobileNav();
     setupGlobalModals();
+    setupShareButtons();
     GlobalMediaLightbox.init();
     setupReviewsCarousel();
 
@@ -137,6 +138,33 @@ function setupMobileNav() {
             });
         });
     }
+}
+
+/**
+ * Share Buttons - 1-Click Clipboard Copy Handler with Visual Feedback
+ */
+function setupShareButtons() {
+    document.addEventListener('click', async (e) => {
+        const copyBtn = e.target.closest('.js-copy-share-btn');
+        if (copyBtn) {
+            e.preventDefault();
+            e.stopPropagation();
+            const shareUrl = copyBtn.getAttribute('data-share-url') || window.location.href;
+            try {
+                await navigator.clipboard.writeText(shareUrl);
+                const originalText = copyBtn.innerHTML;
+                copyBtn.innerHTML = '<span>&#10004; Copied Link!</span>';
+                copyBtn.classList.add('copied');
+                setTimeout(() => {
+                    copyBtn.innerHTML = originalText;
+                    copyBtn.classList.remove('copied');
+                }, 2500);
+            } catch (err) {
+                console.error('[Share Link Clipboard Copy Error]', err);
+                prompt('Copy this link:', shareUrl);
+            }
+        }
+    });
 }
 
 /**
