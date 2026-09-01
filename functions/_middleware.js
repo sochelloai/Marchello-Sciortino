@@ -66,11 +66,12 @@ export async function onRequest(context) {
                 const gifts = await giftsResponse.json();
                 const pathSlug = rawPath.replace(/^\/free-gifts\//, '').replace(/^\//, '');
                 if (pathSlug && pathSlug !== 'free-gifts') {
-                    const gift = gifts.find(g => 
-                        g.slug.toLowerCase() === pathSlug || 
-                        (g.aliases && g.aliases.some(a => a.toLowerCase() === pathSlug || a.toLowerCase() === `free-gifts/${pathSlug}`))
-                    );
+                    const gift = gifts.find(g => g.slug.toLowerCase() === pathSlug);
                     if (gift) {
+                        // Enforce single route: if requested with /free-gifts/ prefix, redirect 301 to root slug
+                        if (rawPath.startsWith('/free-gifts/')) {
+                            return Response.redirect(`https://marchellosciortino.com/${gift.slug}`, 301);
+                        }
                         title = `${gift.meta_title || gift.title} | Marchello Sciortino`;
                         description = gift.meta_desc || (gift.bullets ? gift.bullets.join(' ') : description);
                         image = new URL(gift.cover_image, url.origin).toString();

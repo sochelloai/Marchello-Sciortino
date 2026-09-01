@@ -1,5 +1,7 @@
 /free-gifts /free-gifts/index.html 200
 /free-gifts/ /free-gifts/index.html 200
+
+# Canonical 200 routes for individual Free Gift pages
 /from-idea-to-free-product /from-idea-to-free-product/index.html 200
 /from-idea-to-free-product/ /from-idea-to-free-product/index.html 200
 /10-ways-to-win /10-ways-to-win/index.html 200
@@ -14,8 +16,28 @@
 /ai-accessibility-commands/ /ai-accessibility-commands/index.html 200
 /win-reframe-matrix /win-reframe-matrix/index.html 200
 /win-reframe-matrix/ /win-reframe-matrix/index.html 200
+
+# 301 Redirects from duplicate /free-gifts/:slug paths to single canonical root paths
+/free-gifts/from-idea-to-free-product https://marchellosciortino.com/from-idea-to-free-product 301
+/free-gifts/from-idea-to-free-product/ https://marchellosciortino.com/from-idea-to-free-product 301
+/free-gifts/10-ways-to-win https://marchellosciortino.com/10-ways-to-win 301
+/free-gifts/10-ways-to-win/ https://marchellosciortino.com/10-ways-to-win 301
+/free-gifts/turn-a-still-ad-into-motion https://marchellosciortino.com/turn-a-still-ad-into-motion 301
+/free-gifts/turn-a-still-ad-into-motion/ https://marchellosciortino.com/turn-a-still-ad-into-motion 301
+/free-gifts/creative-amplification https://marchellosciortino.com/creative-amplification 301
+/free-gifts/creative-amplification/ https://marchellosciortino.com/creative-amplification 301
+/free-gifts/digital-flow-audit https://marchellosciortino.com/digital-flow-audit 301
+/free-gifts/digital-flow-audit/ https://marchellosciortino.com/digital-flow-audit 301
+/free-gifts/ai-accessibility-commands https://marchellosciortino.com/ai-accessibility-commands 301
+/free-gifts/ai-accessibility-commands/ https://marchellosciortino.com/ai-accessibility-commands 301
+/free-gifts/win-reframe-matrix https://marchellosciortino.com/win-reframe-matrix 301
+/free-gifts/win-reframe-matrix/ https://marchellosciortino.com/win-reframe-matrix 301
+
+# Legacy Library Redirects
 https://library.marchellosciortino.com/* https://marchellosciortino.com/free-gifts 301
 /free-library https://marchellosciortino.com/free-gifts 301
 /free-library/ https://marchellosciortino.com/free-gifts 301
 /free-library/* https://marchellosciortino.com/free-gifts 301
+
+# Single-Page Application Fallback
 /* /index.html 200

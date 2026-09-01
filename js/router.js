@@ -2748,7 +2748,6 @@ const FREE_GIFTS_DATA = [
     {
         id: "from-idea-to-free-product",
         slug: "from-idea-to-free-product",
-        aliases: ["free-gifts/from-idea-to-free-product"],
         title: "From Idea to Free Product",
         type: "PDF Guide",
         badge: "Available Now",
@@ -2766,7 +2765,6 @@ const FREE_GIFTS_DATA = [
     {
         id: "10-ways-to-win",
         slug: "10-ways-to-win",
-        aliases: ["10-ways-to-win-despite-the-odds", "free-gifts/10-ways-to-win"],
         title: "10 Ways to Win Despite the Odds",
         type: "PDF Guide",
         badge: "Available Now",
@@ -2784,7 +2782,6 @@ const FREE_GIFTS_DATA = [
     {
         id: "turn-a-still-ad-into-motion",
         slug: "turn-a-still-ad-into-motion",
-        aliases: ["still-ad-to-motion", "higgsfield-guide", "free-gifts/turn-a-still-ad-into-motion"],
         title: "Turn a Still Ad Into Motion",
         type: "AI Video Guide",
         badge: "Available Now",
@@ -2802,7 +2799,6 @@ const FREE_GIFTS_DATA = [
     {
         id: "creative-amplification",
         slug: "creative-amplification",
-        aliases: ["creative-amplification-ai", "free-gifts/creative-amplification"],
         title: "Creative Amplification Through AI",
         type: "PDF Guide",
         badge: "Available Now",
@@ -2820,7 +2816,6 @@ const FREE_GIFTS_DATA = [
     {
         id: "digital-flow-audit",
         slug: "digital-flow-audit",
-        aliases: ["flow-audit", "free-gifts/digital-flow-audit"],
         title: "Digital Flow Audit Checklist",
         type: "Interactive Checklist",
         badge: "Available Now",
@@ -2838,7 +2833,6 @@ const FREE_GIFTS_DATA = [
     {
         id: "ai-accessibility-commands",
         slug: "ai-accessibility-commands",
-        aliases: ["prompt-cheat-sheet", "free-gifts/ai-accessibility-commands"],
         title: "AI Accessibility Commands",
         type: "Prompt Cheat Sheet",
         badge: "Available Now",
@@ -2856,7 +2850,6 @@ const FREE_GIFTS_DATA = [
     {
         id: "win-reframe-matrix",
         slug: "win-reframe-matrix",
-        aliases: ["win-matrix", "free-gifts/win-reframe-matrix"],
         title: "W.I.N. Reframe Matrix",
         type: "Ebook & Worksheet",
         badge: "Available Now",
@@ -3610,16 +3603,10 @@ const singleGiftTemplate = (gift) => {
 Router.register('/free-gifts', freeGiftsTemplate);
 Router.register('/free-gifts/', freeGiftsTemplate);
 
-// Register individual free gift endpaths & aliases
+// Register individual free gift canonical routes
 FREE_GIFTS_DATA.forEach(gift => {
     Router.register('/' + gift.slug, () => singleGiftTemplate(gift));
     Router.register('/' + gift.slug + '/', () => singleGiftTemplate(gift));
-    if (gift.aliases) {
-        gift.aliases.forEach(alias => {
-            Router.register('/' + alias, () => singleGiftTemplate(gift));
-            Router.register('/' + alias + '/', () => singleGiftTemplate(gift));
-        });
-    }
 });
 
 // Global click event listener for 1-click clipboard sharing
