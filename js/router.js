@@ -3258,162 +3258,192 @@ const singleGiftTemplate = (gift) => {
 
     return `
     <style>
-        .single-gift-page {
-            background: radial-gradient(circle at 50% 20%, #0d273d 0%, #081b29 100%);
-            color: #ffffff;
-            min-height: 80vh;
-            padding: 50px 0 90px;
-            position: relative;
-            overflow: hidden;
+        .single-gift-page-wrapper {
+            background-color: #f8fafc;
+            color: #475569;
+            min-height: 100vh;
         }
 
-        .single-gift-breadcrumb {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.85rem;
-            color: #94a3b8;
-            margin-bottom: 24px;
+        .single-gift-section {
+            padding: 60px 0 90px;
         }
 
-        .single-gift-breadcrumb a {
-            color: #0ad8ad;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        .single-gift-breadcrumb a:hover {
-            color: #ffffff;
-            text-decoration: underline;
-        }
-
-        .single-gift-layout {
+        .single-gift-container {
+            max-width: 1160px;
+            margin: 0 auto;
             display: grid;
             grid-template-columns: 460px 1fr;
-            gap: 48px;
+            gap: 50px;
             align-items: start;
-            margin-top: 10px;
         }
 
-        @media (max-width: 900px) {
-            .single-gift-layout {
+        @media (max-width: 960px) {
+            .single-gift-container {
                 grid-template-columns: 1fr;
-                gap: 32px;
+                gap: 36px;
             }
         }
 
-        .single-gift-cover-card {
+        .single-gift-card {
             background: #ffffff;
+            border: 1px solid #e2e8f0;
             border-radius: 20px;
             overflow: hidden;
-            border: 1px solid rgba(10, 216, 173, 0.3);
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25), 0 0 35px rgba(10, 216, 173, 0.15);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08), 0 0 25px rgba(10, 216, 173, 0.12);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .single-gift-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 22px 50px rgba(0, 0, 0, 0.12), 0 0 35px rgba(10, 216, 173, 0.2);
+            border-color: #0ad8ad;
+        }
+
+        .single-gift-cover-wrap {
             position: relative;
+            width: 100%;
+            background: #f1f5f9;
+            overflow: hidden;
+            border-bottom: 1px solid #e2e8f0;
         }
 
         .single-gift-cover-img {
             width: 100%;
             height: auto;
-            display: block;
             aspect-ratio: 16 / 9;
             object-fit: cover;
+            display: block;
         }
 
         .single-gift-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(10, 216, 173, 0.15);
-            border: 1px solid #0ad8ad;
-            color: #0ad8ad;
-            font-size: 0.8rem;
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+            font-size: 0.75rem;
             font-weight: 700;
-            padding: 6px 14px;
-            border-radius: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 16px;
+            padding: 5px 12px;
+            border-radius: 14px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
         }
 
-        .single-gift-title {
-            color: #ffffff;
+        .single-gift-content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .single-gift-tag {
+            color: #0ad8ad;
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+
+        .single-gift-heading {
             font-family: var(--font-heading);
             font-size: 2.5rem;
             font-weight: 800;
-            line-height: 1.2;
+            color: #0f172a;
             margin: 0 0 16px;
+            line-height: 1.2;
         }
 
         @media (max-width: 600px) {
-            .single-gift-title {
-                font-size: 1.85rem;
+            .single-gift-heading {
+                font-size: 1.95rem;
             }
         }
 
-        .single-gift-desc {
-            color: #cbd5e1;
+        .single-gift-description {
+            color: #475569;
             font-size: 1.1rem;
             line-height: 1.7;
-            margin-bottom: 28px;
+            margin-bottom: 24px;
         }
 
-        .single-gift-highlights {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .single-gift-takeaways {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
             border-radius: 16px;
             padding: 24px;
             margin-bottom: 0;
-            backdrop-filter: blur(6px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.03);
         }
 
-        .single-gift-highlights h4 {
-            color: #0ad8ad;
+        .single-gift-takeaways h4 {
             font-family: var(--font-heading);
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            color: #0f172a;
+            font-size: 1.05rem;
+            font-weight: 700;
             margin: 0 0 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .single-gift-highlights ul {
+        .single-gift-takeaways ul {
             list-style: none;
             padding: 0;
             margin: 0;
         }
 
-        .single-gift-highlights li {
+        .single-gift-takeaways li {
             position: relative;
             padding-left: 28px;
             margin-bottom: 12px;
-            color: #e2e8f0;
+            color: #334155;
             font-size: 0.98rem;
             line-height: 1.5;
         }
 
-        .single-gift-highlights li:last-child {
+        .single-gift-takeaways li:last-child {
             margin-bottom: 0;
         }
 
-        .single-gift-highlights li::before {
-            content: '✓';
+        .single-gift-takeaways li::before {
+            content: '\\2714';
             position: absolute;
             left: 0;
             top: 0;
             color: #0ad8ad;
             font-weight: 800;
-            font-size: 1.1rem;
+            font-size: 1.15rem;
         }
 
-        .btn-single-download {
+        .single-gift-center-actions {
+            max-width: 1160px;
+            margin: 48px auto 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            text-align: center;
+        }
+
+        .single-gift-center-actions .action-row {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn-download-primary {
             background: #ff5722;
-            color: #ffffff;
+            color: #ffffff !important;
             font-family: var(--font-heading);
             font-weight: 700;
             font-size: 1.15rem;
             padding: 18px 48px;
-            border-radius: 12px;
             border: none;
+            border-radius: 12px;
             cursor: pointer;
+            text-align: center;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
@@ -3425,86 +3455,131 @@ const singleGiftTemplate = (gift) => {
             transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
         }
 
-        .btn-single-download:hover {
+        .btn-download-primary:hover {
             background: #e64a19;
             transform: translateY(-2px);
             box-shadow: 0 14px 30px rgba(255, 87, 34, 0.45);
-            color: #ffffff;
+            color: #ffffff !important;
         }
 
-        .btn-explore-all-link {
-            color: #0ad8ad;
-            font-size: 1.05rem;
-            text-decoration: none;
-            font-weight: 600;
+        .btn-share-secondary {
+            background: #ffffff;
+            color: #0f172a;
             font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 15px 22px;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            cursor: pointer;
             display: inline-flex;
             align-items: center;
-            justify-content: center;
             gap: 8px;
-            transition: color 0.2s;
+            transition: all 0.2s;
         }
 
-        .btn-explore-all-link:hover {
+        .btn-share-secondary:hover {
+            border-color: #0ad8ad;
+            background: #f0fdf4;
+            color: #081b29;
+        }
+
+        .btn-share-secondary.copied {
+            background: #10b981;
+            border-color: #10b981;
             color: #ffffff;
+        }
+
+        .single-gift-back-link {
+            color: #0ad8ad;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 1.05rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.2s, transform 0.2s;
+            padding: 8px 16px;
+        }
+
+        .single-gift-back-link:hover {
+            color: #081b29;
             text-decoration: underline;
+            transform: translateX(-4px);
         }
     </style>
 
-    <div class="single-gift-page">
-        <div class="container">
-            <nav class="single-gift-breadcrumb" aria-label="Breadcrumb">
-                <a href="/">Home</a>
-                <span>/</span>
-                <a href="/free-gifts">Free Gifts</a>
-                <span>/</span>
-                <span>${gift.title}</span>
-            </nav>
+    <div class="single-gift-page-wrapper">
+        <!-- Hero Component (.page-intro) -->
+        <div class="page-intro" style="position: relative; overflow: hidden;">
+            <svg style="position: absolute; left: 0; top: 0; height: 100%; width: 220px; pointer-events: none; opacity: 0.25;" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path d="M -10,0 Q 20,40 100,50 M -10,15 Q 20,55 100,65 M -10,30 Q 20,70 100,80 M -10,45 Q 20,85 100,95 M -10,60 Q 20,100 100,110" fill="none" stroke="var(--color-teal)" stroke-width="0.3" />
+            </svg>
+            <svg style="position: absolute; right: 0; top: 0; height: 100%; width: 220px; pointer-events: none; opacity: 0.25;" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path d="M 110,0 Q 80,40 0,50 M 110,15 Q 80,55 0,65 M 110,30 Q 80,70 0,80 M 110,45 Q 80,85 0,95 M 110,60 Q 80,100 0,110" fill="none" stroke="var(--color-teal)" stroke-width="0.3" />
+            </svg>
 
-            <div class="single-gift-layout">
-                <!-- Left: High-Res Artwork Showcase -->
-                <div class="single-gift-cover-container">
-                    <div class="single-gift-cover-card">
-                        <img src="${gift.cover_image}" alt="${gift.title} Cover" class="single-gift-cover-img">
-                    </div>
-                    <div style="text-align: center; margin-top: 14px;">
-                        <button type="button" class="btn-card-share js-copy-share-btn" data-share-url="${shareUrl}" style="background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); color: #cbd5e1; width: 100%; justify-content: center; padding: 10px 16px;">
-                            🔗 Copy Share Link (${shareUrl})
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Right: Details, Bullets & Info -->
-                <div class="single-gift-content">
-                    <div class="single-gift-badge">&#10004; ${gift.type} &bull; ${gift.badge}</div>
-                    <h1 class="single-gift-title">${gift.title}</h1>
-                    <p class="single-gift-desc">${gift.meta_desc}</p>
-
-                    <div class="single-gift-highlights">
-                        <h4>What You'll Learn & Receive:</h4>
-                        <ul>
-                            ${gift.bullets.map(b => `<li>${b}</li>`).join('')}
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Centered Actions in separate rows -->
-            <div style="margin-top: 56px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; text-align: center; width: 100%;">
-                <!-- Row 1: Download button centered in its own row -->
-                <div style="width: 100%; display: flex; justify-content: center;">
-                    <a href="${gift.file_url}" target="_blank" rel="noopener noreferrer" class="btn-single-download js-spa-download-btn" data-title="${gift.title}" data-file="${gift.file_url}">
-                        ${gift.button_label} &darr;
-                    </a>
-                </div>
-                <!-- Row 2: Explore all link centered in its own row -->
-                <div style="width: 100%; display: flex; justify-content: center;">
-                    <a href="/free-gifts" class="btn-explore-all-link">
-                        &larr; Explore all free resources on the Free Gifts page
-                    </a>
-                </div>
+            <div class="container text-center" style="position: relative; z-index: 2;">
+                <span class="section-tag text-teal">Tools &amp; Resources</span>
+                <h1 style="color: white;">${gift.title}</h1>
+                <p class="section-desc" style="color: var(--color-gray-light);">
+                    Free ${gift.type} by Marchello Sciortino
+                </p>
             </div>
         </div>
+
+        <!-- Single Gift Showcase Section -->
+        <section class="single-gift-section">
+            <div class="container">
+                <div class="single-gift-container">
+                    <!-- Left: Artwork Card -->
+                    <div>
+                        <div class="single-gift-card">
+                            <div class="single-gift-cover-wrap">
+                                <img src="${gift.cover_image}" alt="${gift.title} Cover" class="single-gift-cover-img">
+                                <span class="single-gift-badge">&#10004; ${gift.badge}</span>
+                            </div>
+                        </div>
+                        <div style="margin-top: 16px; text-align: center;">
+                            <button type="button" class="btn-share-secondary js-copy-share-btn" data-share-url="${shareUrl}" style="width: 100%; justify-content: center;">
+                                &#128279; Copy Direct Share Link
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Right: Content -->
+                    <div class="single-gift-content">
+                        <span class="single-gift-tag">${gift.type} &bull; Free Download</span>
+                        <h2 class="single-gift-heading">${gift.title}</h2>
+                        <p class="single-gift-description">
+                            ${gift.meta_desc}
+                        </p>
+
+                        <div class="single-gift-takeaways">
+                            <h4>What's Included:</h4>
+                            <ul>
+                                ${gift.bullets.map(b => `<li>${b}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Centered Actions in their own separate rows -->
+                <div class="single-gift-center-actions">
+                    <div class="action-row">
+                        <a href="${gift.file_url}" target="_blank" rel="noopener noreferrer" class="btn-download-primary js-spa-download-btn" data-title="${gift.title}" data-file="${gift.file_url}">
+                            ${gift.button_label} &darr;
+                        </a>
+                    </div>
+                    <div class="action-row">
+                        <a href="/free-gifts" class="single-gift-back-link">
+                            &larr; Explore all free resources on the Free Gifts page
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
 
     <!-- Login / Unlock Modal -->
