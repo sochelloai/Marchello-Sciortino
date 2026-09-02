@@ -125,6 +125,7 @@ const Router = {
                 '/hub': "Marchello's Blog | Marchello Sciortino",
                 '/contact': "Contact | Marchello Sciortino",
                 '/free-gifts': "Free Gifts | Marchello Sciortino",
+                '/win-anyway': "Win Anyway | Free Music Album by Marchello Sciortino",
                 '/resources': "Resources | Marchello Sciortino",
                 '/privacy': "Privacy Policy | Marchello Sciortino",
                 '/terms': "Terms of Service | Marchello Sciortino",
@@ -2746,6 +2747,56 @@ Router.register('/contact', () => {
 // 14. Free Gifts Data Registry & Template System
 const FREE_GIFTS_DATA = [
     {
+        id: "win-anyway",
+        slug: "win-anyway",
+        title: "Win Anyway",
+        type: "Music Album",
+        badge: "Available Now",
+        meta_title: "Win Anyway | Free Music Album by Marchello Sciortino",
+        meta_desc: "Winning Despite the Odds — Official music album by Marchello Sciortino featuring inspiring original songs of faith, resilience, and triumph.",
+        bullets: [
+            "Inspiring original music born from faith & resilience.",
+            "Anthems of overcoming odds and turning limitations into agency.",
+            "Interactive track streaming & full audio access."
+        ],
+        cover_image: "/assets/free-gifts/win_anyway_cover.jpg",
+        file_url: "/win-anyway",
+        button_label: "Win Anyway Album",
+        direct_page_only: true,
+        tracks: [
+            {
+                title: "Winning Despite The Odds",
+                src: "/speaking-portfolio/Songs/Winning Despite The Odds.mp3",
+                duration: "3:44"
+            },
+            {
+                title: "Chosen Anyway",
+                src: "/speaking-portfolio/Songs/Chosen Anyway.mp3",
+                duration: "3:32"
+            },
+            {
+                title: "Endgame Shadows",
+                src: "/assets/endgame-shadows.mp3",
+                duration: "2:39"
+            },
+            {
+                title: "The Battle of the Illusions",
+                src: "/assets/the-battle-of-the-illusions.mp3",
+                duration: "4:44"
+            },
+            {
+                title: "What Does It Mean",
+                src: "/assets/what-does-it-mean.mp3",
+                duration: "1:31"
+            },
+            {
+                title: "Chello AI Music",
+                src: "/assets/chello-ai-music.mp3",
+                duration: "0:31"
+            }
+        ]
+    },
+    {
         id: "from-idea-to-free-product",
         slug: "from-idea-to-free-product",
         title: "From Idea to Free Product",
@@ -2868,7 +2919,9 @@ const FREE_GIFTS_DATA = [
 
 // Free Gifts & Free Library Main Grid Template
 const freeGiftsTemplate = () => {
-    const cardsHtml = FREE_GIFTS_DATA.map((gift, index) => `
+    const cardsHtml = FREE_GIFTS_DATA.map((gift, index) => {
+        const isDirectPage = gift.direct_page_only || (gift.file_url && gift.file_url.startsWith('/') && !gift.file_url.endsWith('.pdf'));
+        return `
         <!-- Item ${index + 1}: ${gift.title} -->
         <div class="teaser-card" id="${gift.slug}">
             <div class="card-cover-wrapper">
@@ -2884,9 +2937,15 @@ const freeGiftsTemplate = () => {
                 <ul class="teaser-bullets">
                     ${gift.bullets.map(b => `<li>${b}</li>`).join('')}
                 </ul>
-                <a href="${gift.file_url}" target="_blank" rel="noopener noreferrer" class="btn-download-trigger js-spa-download-btn" data-title="${gift.title}" data-file="${gift.file_url}">
-                    ${gift.button_label}
-                </a>
+                ${isDirectPage ? `
+                    <a href="/${gift.slug}" class="btn-download-trigger" data-title="${gift.title}">
+                        ${gift.button_label} &rarr;
+                    </a>
+                ` : `
+                    <a href="${gift.file_url}" target="_blank" rel="noopener noreferrer" class="btn-download-trigger js-spa-download-btn" data-title="${gift.title}" data-file="${gift.file_url}">
+                        ${gift.button_label}
+                    </a>
+                `}
                 <div class="teaser-card-footer-actions">
                     <button type="button" class="btn-card-share js-copy-share-btn" data-share-url="https://marchellosciortino.com/${gift.slug}" title="Copy direct link to share this resource">
                         🔗 Share Link
@@ -2897,7 +2956,8 @@ const freeGiftsTemplate = () => {
                 </div>
             </div>
         </div>
-    `).join('');
+    `;
+    }).join('');
 
     return `
     <style>
@@ -3602,7 +3662,7 @@ const singleGiftTemplate = (gift) => {
 
                     <!-- Right: Content -->
                     <div class="single-gift-content">
-                        <span class="single-gift-tag">${gift.type} &bull; Free Download</span>
+                        <span class="single-gift-tag">${gift.type} &bull; Free ${gift.tracks ? 'Access' : 'Download'}</span>
                         <h2 class="single-gift-heading">${gift.title}</h2>
                         <p class="single-gift-description">
                             ${gift.meta_desc}
@@ -3614,15 +3674,72 @@ const singleGiftTemplate = (gift) => {
                                 ${gift.bullets.map(b => `<li>${b}</li>`).join('')}
                             </ul>
                         </div>
+
+                        ${gift.tracks && gift.tracks.length > 0 ? `
+                        <!-- Interactive Album Player & Tracklist -->
+                        <div class="gift-album-player-wrap" style="margin-top: 24px; background: #081b29; border-radius: 16px; padding: 24px; color: #fff; border: 1px solid rgba(10, 216, 173, 0.25); box-shadow: 0 10px 30px rgba(0,0,0,0.25);">
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 14px;">
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <div style="width: 38px; height: 38px; background: rgba(10, 216, 173, 0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #0ad8ad;">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+                                    </div>
+                                    <div>
+                                        <h4 style="margin: 0; color: #ffffff; font-size: 1.1rem; font-family: var(--font-heading);">Official Album Tracks</h4>
+                                        <span id="album-now-playing-title" style="font-size: 0.85rem; color: #0ad8ad; font-weight: 600;">Click any track below to play</span>
+                                    </div>
+                                </div>
+                                <div id="album-header-wave" class="portfolio-wave" style="display: none;">
+                                    <div class="portfolio-wave-bar"></div>
+                                    <div class="portfolio-wave-bar"></div>
+                                    <div class="portfolio-wave-bar"></div>
+                                    <div class="portfolio-wave-bar"></div>
+                                    <div class="portfolio-wave-bar"></div>
+                                </div>
+                            </div>
+
+                            <!-- Audio Element -->
+                            <audio id="gift-album-audio" preload="metadata"></audio>
+
+                            <!-- Interactive Tracklist -->
+                            <div class="gift-tracklist" style="display: flex; flex-direction: column; gap: 8px;">
+                                ${gift.tracks.map((track, tIdx) => `
+                                    <div class="gift-track-item" data-src="${track.src}" data-index="${tIdx}" data-title="${track.title}" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; cursor: pointer; transition: all 0.2s;">
+                                        <div style="display: flex; align-items: center; gap: 14px; min-width: 0;">
+                                            <span class="track-number" style="font-size: 0.85rem; font-weight: 700; color: #64748b; width: 18px; text-align: center;">${tIdx + 1}</span>
+                                            <button type="button" class="btn-track-play" style="background: transparent; border: 1px solid rgba(10, 216, 173, 0.4); color: #0ad8ad; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; flex-shrink: 0;" aria-label="Play ${track.title}">
+                                                <svg class="track-play-svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                                                <svg class="track-pause-svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                                            </button>
+                                            <span class="track-title" style="font-weight: 600; font-size: 0.95rem; color: #f1f5f9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${track.title}</span>
+                                        </div>
+                                        <div style="display: flex; align-items: center; gap: 12px;">
+                                            <div class="track-item-wave portfolio-wave" style="display: none; height: 16px;">
+                                                <div class="portfolio-wave-bar"></div>
+                                                <div class="portfolio-wave-bar"></div>
+                                                <div class="portfolio-wave-bar"></div>
+                                            </div>
+                                            <span class="track-duration" style="font-size: 0.82rem; color: #94a3b8; font-variant-numeric: tabular-nums;">${track.duration}</span>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        ` : ''}
                     </div>
                 </div>
 
                 <!-- Centered Actions in their own separate rows -->
                 <div class="single-gift-center-actions">
                     <div class="action-row">
-                        <a href="${gift.file_url}" target="_blank" rel="noopener noreferrer" class="btn-download-primary js-spa-download-btn" data-title="${gift.title}" data-file="${gift.file_url}">
-                            ${gift.button_label} &darr;
-                        </a>
+                        ${gift.tracks && gift.tracks.length > 0 ? `
+                            <button type="button" id="btn-album-listen-hero" class="btn-download-primary" style="background: #0ad8ad; color: #081b29 !important; font-weight: 800; box-shadow: 0 10px 25px rgba(10, 216, 173, 0.35); cursor: pointer;">
+                                &#9658; Play Full Album
+                            </button>
+                        ` : `
+                            <a href="${gift.file_url}" target="_blank" rel="noopener noreferrer" class="btn-download-primary js-spa-download-btn" data-title="${gift.title}" data-file="${gift.file_url}">
+                                ${gift.button_label} &darr;
+                            </a>
+                        `}
                     </div>
                     <div class="action-row">
                         <a href="/free-gifts" class="single-gift-back-link">
@@ -3775,6 +3892,112 @@ document.addEventListener('submit', async (e) => {
                 submitBtn.textContent = originalText;
             }
         }
+    }
+});
+
+// Interactive Album Track Player Event Listeners
+function resetAlbumTrackStates() {
+    document.querySelectorAll('.gift-track-item').forEach(el => {
+        el.style.borderColor = 'rgba(255,255,255,0.06)';
+        el.style.background = 'rgba(255,255,255,0.04)';
+        const playSvg = el.querySelector('.track-play-svg');
+        const pauseSvg = el.querySelector('.track-pause-svg');
+        const wave = el.querySelector('.track-item-wave');
+        if (playSvg) playSvg.style.display = 'block';
+        if (pauseSvg) pauseSvg.style.display = 'none';
+        if (wave) wave.style.display = 'none';
+    });
+    const headerWave = document.getElementById('album-header-wave');
+    if (headerWave) headerWave.style.display = 'none';
+}
+
+document.addEventListener('click', (e) => {
+    // Play Full Album Hero Button Click
+    const heroPlayBtn = e.target.closest('#btn-album-listen-hero');
+    if (heroPlayBtn) {
+        const firstTrack = document.querySelector('.gift-track-item');
+        if (firstTrack) {
+            firstTrack.click();
+            firstTrack.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
+    }
+
+    // Individual Track Item or Track Play Button Click
+    const trackItem = e.target.closest('.gift-track-item');
+    if (trackItem) {
+        const audio = document.getElementById('gift-album-audio');
+        if (!audio) return;
+
+        const src = trackItem.getAttribute('data-src');
+        const title = trackItem.getAttribute('data-title');
+        const nowPlayingTitle = document.getElementById('album-now-playing-title');
+        const headerWave = document.getElementById('album-header-wave');
+
+        const isCurrentTrack = audio.getAttribute('data-active-src') === src;
+
+        if (isCurrentTrack && !audio.paused) {
+            // Pause current track
+            audio.pause();
+            const playSvg = trackItem.querySelector('.track-play-svg');
+            const pauseSvg = trackItem.querySelector('.track-pause-svg');
+            const wave = trackItem.querySelector('.track-item-wave');
+            if (playSvg) playSvg.style.display = 'block';
+            if (pauseSvg) pauseSvg.style.display = 'none';
+            if (wave) wave.style.display = 'none';
+            if (headerWave) headerWave.style.display = 'none';
+            if (nowPlayingTitle) nowPlayingTitle.textContent = `Paused: ${title}`;
+        } else {
+            // Reset previous track styling
+            resetAlbumTrackStates();
+
+            // Set new track or resume
+            if (!isCurrentTrack) {
+                audio.src = src;
+                audio.setAttribute('data-active-src', src);
+                audio.setAttribute('data-current-index', trackItem.getAttribute('data-index'));
+            }
+
+            audio.play().then(() => {
+                trackItem.style.borderColor = '#0ad8ad';
+                trackItem.style.background = 'rgba(10, 216, 173, 0.08)';
+                const playSvg = trackItem.querySelector('.track-play-svg');
+                const pauseSvg = trackItem.querySelector('.track-pause-svg');
+                const wave = trackItem.querySelector('.track-item-wave');
+                if (playSvg) playSvg.style.display = 'none';
+                if (pauseSvg) pauseSvg.style.display = 'block';
+                if (wave) wave.style.display = 'inline-flex';
+                if (headerWave) headerWave.style.display = 'flex';
+                if (nowPlayingTitle) nowPlayingTitle.textContent = `Now Playing: ${title}`;
+            }).catch(err => {
+                console.warn('[Album Audio Play Error]', err);
+            });
+        }
+    }
+});
+
+// Auto-advance track on ended
+document.addEventListener('page-loaded', () => {
+    const audio = document.getElementById('gift-album-audio');
+    if (audio) {
+        audio.addEventListener('ended', () => {
+            const currentIndex = parseInt(audio.getAttribute('data-current-index') || '0', 10);
+            const tracks = document.querySelectorAll('.gift-track-item');
+            const nextTrack = tracks[currentIndex + 1] || tracks[0];
+            if (nextTrack) {
+                nextTrack.click();
+            } else {
+                resetAlbumTrackStates();
+            }
+        });
+    }
+});
+
+// Pause album audio when navigating away
+window.addEventListener('popstate', () => {
+    const audio = document.getElementById('gift-album-audio');
+    if (audio) {
+        audio.pause();
     }
 });
 

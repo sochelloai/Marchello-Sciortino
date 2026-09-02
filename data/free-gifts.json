@@ -1,5 +1,55 @@
 [
   {
+    "id": "win-anyway",
+    "slug": "win-anyway",
+    "title": "Win Anyway",
+    "type": "Music Album",
+    "badge": "Available Now",
+    "meta_title": "Win Anyway | Free Music Album by Marchello Sciortino",
+    "meta_desc": "Winning Despite the Odds — Official music album by Marchello Sciortino featuring inspiring original songs of faith, resilience, and triumph.",
+    "bullets": [
+      "Inspiring original music born from faith & resilience.",
+      "Anthems of overcoming odds and turning limitations into agency.",
+      "Interactive track streaming & full audio access."
+    ],
+    "cover_image": "/assets/free-gifts/win_anyway_cover.jpg",
+    "file_url": "/win-anyway",
+    "button_label": "Win Anyway Album",
+    "direct_page_only": true,
+    "tracks": [
+      {
+        "title": "Winning Despite The Odds",
+        "src": "/speaking-portfolio/Songs/Winning Despite The Odds.mp3",
+        "duration": "3:44"
+      },
+      {
+        "title": "Chosen Anyway",
+        "src": "/speaking-portfolio/Songs/Chosen Anyway.mp3",
+        "duration": "3:32"
+      },
+      {
+        "title": "Endgame Shadows",
+        "src": "/assets/endgame-shadows.mp3",
+        "duration": "2:39"
+      },
+      {
+        "title": "The Battle of the Illusions",
+        "src": "/assets/the-battle-of-the-illusions.mp3",
+        "duration": "4:44"
+      },
+      {
+        "title": "What Does It Mean",
+        "src": "/assets/what-does-it-mean.mp3",
+        "duration": "1:31"
+      },
+      {
+        "title": "Chello AI Music",
+        "src": "/assets/chello-ai-music.mp3",
+        "duration": "0:31"
+      }
+    ]
+  },
+  {
     "id": "from-idea-to-free-product",
     "slug": "from-idea-to-free-product",
     "title": "From Idea to Free Product",
