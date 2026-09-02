@@ -3939,10 +3939,10 @@ const singleGiftTemplate = (gift) => {
                                             <div class="portfolio-wave-bar"></div>
                                             <div class="portfolio-wave-bar"></div>
                                         </div>
-                                        <a href="${track.src}" download="${track.title}.mp3" class="btn-track-download js-spa-download-btn" data-title="${track.title}" data-file="${track.src}">
+                                        <button type="button" class="btn-track-download js-download-track-btn" data-src="${track.src}" data-title="${track.title}" data-filename="${String(track.number || (tIdx + 1)).padStart(2, '0')} - ${track.title}.mp3" title="Direct Download ${track.title} MP3">
                                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                                             Download MP3
-                                        </a>
+                                        </button>
                                     </div>
                                 </div>
                             `).join('')}
@@ -4004,7 +4004,59 @@ const singleGiftTemplate = (gift) => {
     `;
 };
 
-// Client-side ZIP packager for the 10-track album (bypasses static file size hosting limits)
+// Force direct download of any file to local disk (no audio player tab opening)
+async function directDownloadFile(fileUrl, suggestedFilename, btn) {
+    let originalHtml = '';
+    if (btn) {
+        originalHtml = btn.innerHTML;
+        btn.innerHTML = `<span style="display:inline-block; animation: spin 1s linear infinite;">⟳</span> Downloading...`;
+        btn.disabled = true;
+        btn.style.pointerEvents = 'none';
+    }
+
+    try {
+        const response = await fetch(fileUrl);
+        if (!response.ok) throw new Error('Network response was not ok');
+        const blob = await response.blob();
+        const blobUrl = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = blobUrl;
+        a.download = suggestedFilename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 15000);
+
+        if (btn) {
+            btn.innerHTML = `✓ Downloaded`;
+            setTimeout(() => {
+                btn.innerHTML = originalHtml;
+                btn.disabled = false;
+                btn.style.pointerEvents = 'auto';
+            }, 2500);
+        }
+    } catch (err) {
+        console.warn('[Direct Download Blob Fallback]', err);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = fileUrl;
+        a.download = suggestedFilename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        if (btn) {
+            btn.innerHTML = originalHtml;
+            btn.disabled = false;
+            btn.style.pointerEvents = 'auto';
+        }
+    }
+}
+
+// Client-side ZIP packager for the 10-track album (downloads all 10 tracks into one zipped folder)
 async function downloadFullAlbumZip(btn) {
     if (!btn) btn = document.querySelector('.btn-download-full-album, .js-full-album-btn');
     const originalText = btn ? btn.innerHTML : 'DOWNLOAD FULL ALBUM (ALL 10 TRACKS - ZIP)';
@@ -4028,19 +4080,19 @@ async function downloadFullAlbumZip(btn) {
 
     try {
         const zip = new window.JSZip();
-        const folder = zip.folder("WIN ANYWAY");
+        const albumFolder = zip.folder("WIN ANYWAY");
         const total = tracks.length;
 
         for (let i = 0; i < total; i++) {
             const track = tracks[i];
             if (btn) {
-                btn.innerHTML = `<span style="display:inline-block; animation: spin 1s linear infinite;">⟳</span> Packaging Track ${i + 1}/${total}: ${track.title}...`;
+                btn.innerHTML = `<span style="display:inline-block; animation: spin 1s linear infinite;">⟳</span> Downloading Track ${i + 1}/${total}: ${track.title}...`;
             }
             const res = await fetch(track.src);
             if (!res.ok) throw new Error(`Could not load track: ${track.title}`);
             const blob = await res.blob();
             const trackNum = String(track.number || (i + 1)).padStart(2, '0');
-            folder.file(`${trackNum} - ${track.title}.mp3`, blob);
+            albumFolder.file(`${trackNum} - ${track.title}.mp3`, blob);
         }
 
         // Add album artwork
@@ -4050,24 +4102,25 @@ async function downloadFullAlbumZip(btn) {
                 const coverRes = await fetch(gift.cover_image);
                 if (coverRes.ok) {
                     const coverBlob = await coverRes.blob();
-                    folder.file("WIN ANYWAY - Cover Artwork.jpg", coverBlob);
+                    albumFolder.file("WIN ANYWAY - Cover Artwork.jpg", coverBlob);
                 }
             } catch (e) {
                 console.warn("[Album Zip] Cover fetch warning", e);
             }
         }
 
-        if (btn) btn.innerHTML = `<span style="display:inline-block; animation: spin 1s linear infinite;">⟳</span> Compiling ZIP Archive...`;
+        if (btn) btn.innerHTML = `<span style="display:inline-block; animation: spin 1s linear infinite;">⟳</span> Creating Zipped Folder...`;
 
         const zipBlob = await zip.generateAsync({
             type: "blob",
             compression: "STORE"
         }, (meta) => {
-            if (btn) btn.innerHTML = `Packaging Album: ${Math.round(meta.percent)}%...`;
+            if (btn) btn.innerHTML = `Zipping Album: ${Math.round(meta.percent)}%...`;
         });
 
         const downloadUrl = URL.createObjectURL(zipBlob);
         const downloadLink = document.createElement('a');
+        downloadLink.style.display = 'none';
         downloadLink.href = downloadUrl;
         downloadLink.download = "Win_Anyway_Full_Album.zip";
         document.body.appendChild(downloadLink);
@@ -4076,7 +4129,7 @@ async function downloadFullAlbumZip(btn) {
         setTimeout(() => URL.revokeObjectURL(downloadUrl), 15000);
 
         if (btn) {
-            btn.innerHTML = `✓ Download Started!`;
+            btn.innerHTML = `✓ Zipped Album Downloaded!`;
             setTimeout(() => {
                 btn.innerHTML = originalText;
                 btn.disabled = false;
@@ -4135,6 +4188,7 @@ document.addEventListener('click', (e) => {
     const fullAlbumBtn = e.target.closest('.btn-download-full-album, .js-full-album-btn');
     if (fullAlbumBtn) {
         e.preventDefault();
+        e.stopPropagation();
         const isUnlocked = localStorage.getItem('free-gifts-unlocked') === 'true';
         if (!isUnlocked) {
             const modal = document.getElementById('spa-download-modal');
@@ -4152,10 +4206,37 @@ document.addEventListener('click', (e) => {
         return;
     }
 
-    // 2. Individual Track & Document Downloads
-    const btn = e.target.closest('.js-spa-download-btn, .btn-track-download');
-    if (btn) {
-        let fileUrl = btn.getAttribute('data-file') || btn.getAttribute('href');
+    // 2. Individual Track Direct MP3 Download Button
+    const trackDownloadBtn = e.target.closest('.js-download-track-btn, .btn-track-download');
+    if (trackDownloadBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const fileUrl = trackDownloadBtn.getAttribute('data-src') || trackDownloadBtn.getAttribute('data-file');
+        const filename = trackDownloadBtn.getAttribute('data-filename') || `${trackDownloadBtn.getAttribute('data-title') || 'Track'}.mp3`;
+
+        const isUnlocked = localStorage.getItem('free-gifts-unlocked') === 'true';
+        if (!isUnlocked) {
+            const modal = document.getElementById('spa-download-modal');
+            const copyText = document.getElementById('spa-copy-text');
+            const formView = document.getElementById('spa-form-view');
+            if (modal) {
+                if (copyText) copyText.textContent = `Unlock direct download for "${filename}" by entering your email.`;
+                if (formView) formView.style.display = 'block';
+                modal.setAttribute('data-target-file', fileUrl);
+                modal.setAttribute('data-target-filename', filename);
+                modal.classList.add('active');
+            }
+            return;
+        }
+
+        directDownloadFile(fileUrl, filename, trackDownloadBtn);
+        return;
+    }
+
+    // 3. Other Document & PDF Downloads
+    const docDownloadBtn = e.target.closest('.js-spa-download-btn');
+    if (docDownloadBtn) {
+        let fileUrl = docDownloadBtn.getAttribute('data-file') || docDownloadBtn.getAttribute('href');
         if (!fileUrl) return;
 
         const modal = document.getElementById('spa-download-modal');
@@ -4165,13 +4246,13 @@ document.addEventListener('click', (e) => {
         const isUnlocked = localStorage.getItem('free-gifts-unlocked') === 'true';
 
         if (isUnlocked) {
-            // Already unlocked: let native <a href="..." download> trigger download
+            const filename = fileUrl.split('/').pop() || 'download';
+            directDownloadFile(fileUrl, filename, docDownloadBtn);
             return;
         } else {
-            // Locked: show email modal once
             e.preventDefault();
             if (modal) {
-                if (copyText) copyText.textContent = 'Unlock all album downloads by entering your email.';
+                if (copyText) copyText.textContent = 'Unlock all downloads by entering your email.';
                 if (formView) formView.style.display = 'block';
                 modal.setAttribute('data-target-file', fileUrl);
                 modal.classList.add('active');
@@ -4199,17 +4280,15 @@ document.addEventListener('submit', async (e) => {
         const modal = document.getElementById('spa-download-modal');
         const targetUrl = modal ? modal.getAttribute('data-target-file') : null;
 
-        // Trigger target action or download
+        // Trigger target action or direct download
         if (targetUrl === 'action:download-full-album') {
             downloadFullAlbumZip(document.querySelector('.btn-download-full-album, .js-full-album-btn'));
+        } else if (targetUrl && (targetUrl.endsWith('.mp3') || modal.hasAttribute('data-target-filename'))) {
+            const targetFilename = modal ? modal.getAttribute('data-target-filename') || 'Track.mp3' : 'Track.mp3';
+            directDownloadFile(targetUrl, targetFilename, null);
         } else if (targetUrl && targetUrl !== '#' && !targetUrl.endsWith('#')) {
-            const tempLink = document.createElement('a');
-            tempLink.href = targetUrl;
-            tempLink.setAttribute('download', '');
-            tempLink.target = '_blank';
-            document.body.appendChild(tempLink);
-            tempLink.click();
-            document.body.removeChild(tempLink);
+            const suggestedName = targetUrl.split('/').pop() || 'download';
+            directDownloadFile(targetUrl, suggestedName, null);
         }
 
         // Close modal immediately so returning users see the page without any pop-up
