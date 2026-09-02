@@ -39,6 +39,7 @@ secrets/
 *.mp4
 *.mov
 *.wav
+*.zip
 
 # Scratch & Temporary Files
 scratch/

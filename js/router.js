@@ -2761,7 +2761,7 @@ const FREE_GIFTS_DATA = [
         ],
         cover_image: "/assets/free-gifts/win_anyway_cover.jpg",
         file_url: "/win-anyway",
-        album_zip_url: "/assets/free-gifts/win-anyway/Win_Anyway_Full_Album.zip",
+        album_zip_url: "#download-full-album",
         button_label: "Win Anyway Album",
         direct_page_only: true,
         tracks: [
@@ -3949,12 +3949,12 @@ const singleGiftTemplate = (gift) => {
                         </div>
 
                         <!-- Download Full Album Button at the bottom of the card -->
-                        ${gift.album_zip_url ? `
+                        ${gift.tracks && gift.tracks.length > 0 ? `
                         <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 22px;">
-                            <a href="${gift.album_zip_url}" download="Win_Anyway_Full_Album.zip" class="btn-download-full-album js-spa-download-btn" data-title="${gift.title} - Complete Album" data-file="${gift.album_zip_url}">
+                            <button type="button" class="btn-download-full-album js-full-album-btn" data-title="${gift.title} - Complete Album">
                                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                                 DOWNLOAD FULL ALBUM (ALL 10 TRACKS - ZIP)
-                            </a>
+                            </button>
                         </div>
                         ` : ''}
                     </div>
@@ -4004,6 +4004,98 @@ const singleGiftTemplate = (gift) => {
     `;
 };
 
+// Client-side ZIP packager for the 10-track album (bypasses static file size hosting limits)
+async function downloadFullAlbumZip(btn) {
+    if (!btn) btn = document.querySelector('.btn-download-full-album, .js-full-album-btn');
+    const originalText = btn ? btn.innerHTML : 'DOWNLOAD FULL ALBUM (ALL 10 TRACKS - ZIP)';
+
+    const currentSlug = window.location.pathname.replace(/^\/|\/$/g, '');
+    const gift = FREE_GIFTS_DATA.find(g => g.slug === currentSlug) || FREE_GIFTS_DATA[0];
+    const tracks = (gift && gift.tracks) ? gift.tracks : [];
+
+    if (!tracks || tracks.length === 0) return;
+
+    if (!window.JSZip) {
+        alert("Album packager is loading. Please try again in a few seconds.");
+        return;
+    }
+
+    if (btn) {
+        btn.disabled = true;
+        btn.style.pointerEvents = 'none';
+        btn.style.opacity = '0.92';
+    }
+
+    try {
+        const zip = new window.JSZip();
+        const folder = zip.folder("WIN ANYWAY");
+        const total = tracks.length;
+
+        for (let i = 0; i < total; i++) {
+            const track = tracks[i];
+            if (btn) {
+                btn.innerHTML = `<span style="display:inline-block; animation: spin 1s linear infinite;">⟳</span> Packaging Track ${i + 1}/${total}: ${track.title}...`;
+            }
+            const res = await fetch(track.src);
+            if (!res.ok) throw new Error(`Could not load track: ${track.title}`);
+            const blob = await res.blob();
+            const trackNum = String(track.number || (i + 1)).padStart(2, '0');
+            folder.file(`${trackNum} - ${track.title}.mp3`, blob);
+        }
+
+        // Add album artwork
+        if (gift.cover_image) {
+            if (btn) btn.innerHTML = `<span style="display:inline-block; animation: spin 1s linear infinite;">⟳</span> Adding Album Artwork...`;
+            try {
+                const coverRes = await fetch(gift.cover_image);
+                if (coverRes.ok) {
+                    const coverBlob = await coverRes.blob();
+                    folder.file("WIN ANYWAY - Cover Artwork.jpg", coverBlob);
+                }
+            } catch (e) {
+                console.warn("[Album Zip] Cover fetch warning", e);
+            }
+        }
+
+        if (btn) btn.innerHTML = `<span style="display:inline-block; animation: spin 1s linear infinite;">⟳</span> Compiling ZIP Archive...`;
+
+        const zipBlob = await zip.generateAsync({
+            type: "blob",
+            compression: "STORE"
+        }, (meta) => {
+            if (btn) btn.innerHTML = `Packaging Album: ${Math.round(meta.percent)}%...`;
+        });
+
+        const downloadUrl = URL.createObjectURL(zipBlob);
+        const downloadLink = document.createElement('a');
+        downloadLink.href = downloadUrl;
+        downloadLink.download = "Win_Anyway_Full_Album.zip";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+        setTimeout(() => URL.revokeObjectURL(downloadUrl), 15000);
+
+        if (btn) {
+            btn.innerHTML = `✓ Download Started!`;
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                btn.style.pointerEvents = 'auto';
+                btn.style.opacity = '1';
+            }, 3000);
+        }
+    } catch (err) {
+        console.error("[Album Zip Error]", err);
+        alert("Failed to package album: " + err.message);
+        if (btn) {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+            btn.style.pointerEvents = 'auto';
+            btn.style.opacity = '1';
+        }
+    }
+}
+
 // Register main free gift routes
 Router.register('/free-gifts', freeGiftsTemplate);
 Router.register('/free-gifts/', freeGiftsTemplate);
@@ -4039,7 +4131,29 @@ document.addEventListener('click', async (e) => {
 
 // Global click event listener for SPA download triggers
 document.addEventListener('click', (e) => {
-    const btn = e.target.closest('.js-spa-download-btn, .btn-track-download, .btn-download-full-album');
+    // 1. Full Album Download Button
+    const fullAlbumBtn = e.target.closest('.btn-download-full-album, .js-full-album-btn');
+    if (fullAlbumBtn) {
+        e.preventDefault();
+        const isUnlocked = localStorage.getItem('free-gifts-unlocked') === 'true';
+        if (!isUnlocked) {
+            const modal = document.getElementById('spa-download-modal');
+            const copyText = document.getElementById('spa-copy-text');
+            const formView = document.getElementById('spa-form-view');
+            if (modal) {
+                if (copyText) copyText.textContent = 'Unlock the full 10-track album by entering your email.';
+                if (formView) formView.style.display = 'block';
+                modal.setAttribute('data-target-file', 'action:download-full-album');
+                modal.classList.add('active');
+            }
+            return;
+        }
+        downloadFullAlbumZip(fullAlbumBtn);
+        return;
+    }
+
+    // 2. Individual Track & Document Downloads
+    const btn = e.target.closest('.js-spa-download-btn, .btn-track-download');
     if (btn) {
         let fileUrl = btn.getAttribute('data-file') || btn.getAttribute('href');
         if (!fileUrl) return;
@@ -4085,8 +4199,10 @@ document.addEventListener('submit', async (e) => {
         const modal = document.getElementById('spa-download-modal');
         const targetUrl = modal ? modal.getAttribute('data-target-file') : null;
 
-        // Open target window / trigger download SYNCHRONOUSLY to preserve user gesture
-        if (targetUrl && targetUrl !== '#' && !targetUrl.endsWith('#')) {
+        // Trigger target action or download
+        if (targetUrl === 'action:download-full-album') {
+            downloadFullAlbumZip(document.querySelector('.btn-download-full-album, .js-full-album-btn'));
+        } else if (targetUrl && targetUrl !== '#' && !targetUrl.endsWith('#')) {
             const tempLink = document.createElement('a');
             tempLink.href = targetUrl;
             tempLink.setAttribute('download', '');
