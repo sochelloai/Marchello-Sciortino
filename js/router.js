@@ -3691,13 +3691,8 @@ const singleGiftTemplate = (gift) => {
             box-sizing: border-box;
             box-shadow: 0 10px 25px rgba(255, 87, 34, 0.4);
             transition: all 0.25s ease;
-        }
-
-        .btn-download-full-album:hover {
-            background: linear-gradient(135deg, #f4511e 0%, #d84315 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 14px 30px rgba(255, 87, 34, 0.55);
-            color: #ffffff !important;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .single-gift-one-column-row {
@@ -3720,12 +3715,8 @@ const singleGiftTemplate = (gift) => {
             cursor: pointer;
             transition: all 0.25s ease;
             gap: 16px;
-        }
-
-        .gift-track-card:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(10, 216, 173, 0.4);
-            transform: translateX(3px);
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .gift-track-card.active-playing {
@@ -3766,12 +3757,8 @@ const singleGiftTemplate = (gift) => {
             padding: 0;
             flex-shrink: 0;
             transition: all 0.2s;
-        }
-
-        .btn-track-play:hover {
-            background: #0ad8ad;
-            color: #081b29;
-            transform: scale(1.08);
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .track-card-meta {
@@ -3828,14 +3815,53 @@ const singleGiftTemplate = (gift) => {
             cursor: pointer;
             transition: all 0.2s;
             white-space: nowrap;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .btn-track-download:hover {
+        /* Hover states ONLY on devices with real hover/mouse to prevent mobile double-tap requirement */
+        @media (hover: hover) and (pointer: fine) {
+            .btn-download-full-album:hover {
+                background: linear-gradient(135deg, #f4511e 0%, #d84315 100%);
+                transform: translateY(-2px);
+                box-shadow: 0 14px 30px rgba(255, 87, 34, 0.55);
+                color: #ffffff !important;
+            }
+
+            .gift-track-card:hover {
+                background: rgba(255, 255, 255, 0.08);
+                border-color: rgba(10, 216, 173, 0.4);
+                transform: translateX(3px);
+            }
+
+            .btn-track-play:hover {
+                background: #0ad8ad;
+                color: #081b29;
+                transform: scale(1.08);
+            }
+
+            .btn-track-download:hover {
+                background: #0ad8ad;
+                color: #081b29 !important;
+                border-color: #0ad8ad;
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba(10, 216, 173, 0.3);
+            }
+        }
+
+        .btn-download-full-album:active {
+            transform: scale(0.98);
+            opacity: 0.92;
+        }
+
+        .btn-track-download:active {
+            transform: scale(0.96);
             background: #0ad8ad;
             color: #081b29 !important;
-            border-color: #0ad8ad;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(10, 216, 173, 0.3);
+        }
+
+        .btn-track-play:active {
+            transform: scale(0.94);
         }
 
         .full-album-btn-text-mobile {
@@ -4066,7 +4092,21 @@ function directDownloadFile(fileUrl, suggestedFilename, btn) {
         return;
     }
 
-    // Direct synchronous download trigger with off-screen element (WebKit compatible)
+    // On mobile devices, setting location directly triggers the native download window immediately on the 1st tap!
+    if (isMobile) {
+        window.location.href = downloadUrl;
+        if (btn) {
+            btn.innerHTML = `✓ Download Started!`;
+            setTimeout(() => {
+                btn.innerHTML = originalHtml;
+                btn.disabled = false;
+                btn.style.pointerEvents = 'auto';
+            }, 2500);
+        }
+        return;
+    }
+
+    // Direct synchronous download trigger with off-screen element (desktop compatible)
     const a = document.createElement('a');
     a.className = 'js-bypass-download';
     a.style.position = 'fixed';
@@ -4106,6 +4146,20 @@ async function downloadFullAlbumZip(btn) {
 
     // On mobile devices (or in production), trigger server stream directly for zero RAM footprint
     const triggerServerStream = () => {
+        // On mobile devices, direct navigation immediately triggers the native iOS/Android download prompt on the 1st tap!
+        if (isMobile) {
+            window.location.href = '/api/download-full-album';
+            if (btn) {
+                btn.innerHTML = `✓ <span class="full-album-btn-text-desktop">Zipped Album Download Started!</span><span class="full-album-btn-text-mobile">Download started!</span>`;
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                    btn.style.pointerEvents = 'auto';
+                }, 3500);
+            }
+            return;
+        }
+
         const downloadLink = document.createElement('a');
         downloadLink.className = 'js-bypass-download';
         downloadLink.style.position = 'fixed';
@@ -4238,7 +4292,7 @@ document.addEventListener('click', async (e) => {
 // Global click event listener for SPA download triggers
 document.addEventListener('click', (e) => {
     // Only handle genuine human user clicks; ignore programmatic synthetic clicks
-    if (!e.isTrusted) {
+    if (e.isTrusted === false) {
         return;
     }
 
