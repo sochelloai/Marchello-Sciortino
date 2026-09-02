@@ -1390,7 +1390,7 @@ const GlobalMediaLightbox = {
             const link = e.target.closest('a');
             if (link && link.hasAttribute('download')) {
                 const href = link.getAttribute('href') || '';
-                if (href.startsWith('blob:') || link.classList.contains('js-bypass-download') || link.classList.contains('js-full-album-btn') || link.classList.contains('btn-download-full-album') || link.classList.contains('js-download-track-btn')) {
+                if (href.startsWith('blob:') || href.startsWith('/api/') || link.classList.contains('js-bypass-download') || link.classList.contains('js-full-album-btn') || link.classList.contains('btn-download-full-album') || link.classList.contains('js-download-track-btn') || link.classList.contains('btn-track-download')) {
                     return;
                 }
                 if (href) {
@@ -1539,6 +1539,12 @@ const GlobalMediaLightbox = {
     },
 
     async downloadFile(url, filename) {
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && window.innerWidth < 1024);
+        if (isMobile) {
+            window.open(url, '_blank');
+            return;
+        }
+
         try {
             const response = await fetch(url);
             if (!response.ok) throw new Error('Network response was not ok');
@@ -1552,7 +1558,7 @@ const GlobalMediaLightbox = {
             document.body.appendChild(tempLink);
             tempLink.click();
             document.body.removeChild(tempLink);
-            URL.revokeObjectURL(blobUrl);
+            setTimeout(() => URL.revokeObjectURL(blobUrl), 15000);
         } catch (e) {
             console.error("Programmatic download failed, falling back to window.open", e);
             window.open(url, '_blank');

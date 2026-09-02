@@ -4018,58 +4018,67 @@ const singleGiftTemplate = (gift) => {
     `;
 };
 
-// Force direct download of any file to local disk (no audio player tab opening)
-async function directDownloadFile(fileUrl, suggestedFilename, btn) {
+// Force direct download of any file to local disk (mobile-compatible & desktop-compatible)
+function directDownloadFile(fileUrl, suggestedFilename, btn) {
+    if (!fileUrl) return;
+
     let originalHtml = '';
     if (btn) {
         originalHtml = btn.innerHTML;
-        btn.innerHTML = `<span style="display:inline-block; animation: spin 1s linear infinite;">⟳</span> Downloading...`;
-        btn.disabled = true;
-        btn.style.pointerEvents = 'none';
+        btn.innerHTML = `<span style="display:inline-block; animation: spin 1s linear infinite;">⟳</span> Starting Download...`;
     }
 
-    try {
-        const response = await fetch(fileUrl);
-        if (!response.ok) throw new Error('Network response was not ok');
-        const blob = await response.blob();
-        const blobUrl = URL.createObjectURL(blob);
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && window.innerWidth < 1024);
+    const isLocalhost = window.location.hostname.includes('127.0.0.1') || window.location.hostname.includes('localhost');
 
-        const a = document.createElement('a');
-        a.className = 'js-bypass-download js-download-track-btn';
-        a.style.display = 'none';
-        a.href = blobUrl;
-        a.download = suggestedFilename;
-        a.setAttribute('download', suggestedFilename);
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+    let downloadUrl = fileUrl;
+    if (typeof fileUrl === 'string' && fileUrl.startsWith('/assets/free-gifts/win-anyway/') && fileUrl.endsWith('.mp3')) {
+        // Use dedicated download-track endpoint with Content-Disposition: attachment
+        if (!isLocalhost || isMobile) {
+            downloadUrl = `/api/download-track?file=${encodeURIComponent(fileUrl)}&name=${encodeURIComponent(suggestedFilename)}`;
+        } else {
+            downloadUrl = fileUrl;
+        }
+    }
 
-        setTimeout(() => URL.revokeObjectURL(blobUrl), 15000);
-
+    // On mobile, for PDFs, opening directly gives iOS Safari and Chrome native reader and share/save options
+    if (isMobile && typeof fileUrl === 'string' && fileUrl.endsWith('.pdf')) {
+        window.open(fileUrl, '_blank');
         if (btn) {
-            btn.innerHTML = `✓ Downloaded`;
+            btn.innerHTML = `✓ Opened Guide`;
+            setTimeout(() => {
+                btn.innerHTML = originalHtml;
+                btn.disabled = false;
+                btn.style.pointerEvents = 'auto';
+            }, 2000);
+        }
+        return;
+    }
+
+    // Direct synchronous download trigger with off-screen element (WebKit compatible)
+    const a = document.createElement('a');
+    a.className = 'js-bypass-download';
+    a.style.position = 'fixed';
+    a.style.left = '-9999px';
+    a.style.top = '0';
+    a.style.opacity = '0';
+    a.href = downloadUrl;
+    a.download = suggestedFilename;
+    a.setAttribute('download', suggestedFilename);
+    document.body.appendChild(a);
+    a.click();
+
+    setTimeout(() => {
+        if (a.parentNode) document.body.removeChild(a);
+        if (btn) {
+            btn.innerHTML = `✓ Download Started!`;
             setTimeout(() => {
                 btn.innerHTML = originalHtml;
                 btn.disabled = false;
                 btn.style.pointerEvents = 'auto';
             }, 2500);
         }
-    } catch (err) {
-        console.warn('[Direct Download Blob Fallback]', err);
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = fileUrl;
-        a.download = suggestedFilename;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-
-        if (btn) {
-            btn.innerHTML = originalHtml;
-            btn.disabled = false;
-            btn.style.pointerEvents = 'auto';
-        }
-    }
+    }, 150);
 }
 
 // Downloads the real 10-track zipped folder directly without leaving the page
@@ -4078,12 +4087,56 @@ async function downloadFullAlbumZip(btn) {
     const originalText = btn ? btn.innerHTML : 'DOWNLOAD FULL ALBUM (ALL 10 TRACKS - ZIP)';
 
     if (btn) {
-        btn.disabled = true;
-        btn.style.pointerEvents = 'none';
-        btn.style.opacity = '0.92';
         btn.innerHTML = `<span style="display:inline-block; animation: spin 1s linear infinite;">⟳</span> Starting Album Download...`;
     }
 
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && window.innerWidth < 1024);
+
+    // On mobile devices (or in production), trigger server stream directly for zero RAM footprint
+    const triggerServerStream = () => {
+        const downloadLink = document.createElement('a');
+        downloadLink.className = 'js-bypass-download';
+        downloadLink.style.position = 'fixed';
+        downloadLink.style.left = '-9999px';
+        downloadLink.style.top = '0';
+        downloadLink.style.opacity = '0';
+        downloadLink.href = '/api/download-full-album';
+        downloadLink.download = 'Win_Anyway_Full_Album.zip';
+        downloadLink.setAttribute('download', 'Win_Anyway_Full_Album.zip');
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+
+        setTimeout(() => {
+            if (downloadLink.parentNode) document.body.removeChild(downloadLink);
+            if (btn) {
+                btn.innerHTML = `✓ Zipped Album Download Started!`;
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                    btn.style.pointerEvents = 'auto';
+                }, 3500);
+            }
+        }, 150);
+    };
+
+    // If mobile or live production domain, always use server stream
+    if (isMobile || (!window.location.hostname.includes('127.0.0.1') && !window.location.hostname.includes('localhost'))) {
+        triggerServerStream();
+        return;
+    }
+
+    // On localhost desktop only: verify if /api/download-full-album exists, else assemble chunks locally
+    try {
+        const check = await fetch('/api/download-full-album', { method: 'HEAD' });
+        if (check.ok) {
+            triggerServerStream();
+            return;
+        }
+    } catch (e) {
+        // Fall through to local chunk assembly on bare static dev server
+    }
+
+    // Local static server chunk assembly fallback
     try {
         const parts = [
             '/assets/free-gifts/win-anyway/album_part_1.bin',
@@ -4128,18 +4181,11 @@ async function downloadFullAlbumZip(btn) {
                 btn.innerHTML = originalText;
                 btn.disabled = false;
                 btn.style.pointerEvents = 'auto';
-                btn.style.opacity = '1';
             }, 3500);
         }
     } catch (err) {
-        console.error('[Album Zip Download Error]', err);
-        alert('Failed to download album: ' + err.message);
-        if (btn) {
-            btn.innerHTML = originalText;
-            btn.disabled = false;
-            btn.style.pointerEvents = 'auto';
-            btn.style.opacity = '1';
-        }
+        console.error('[Local Album Download Error]', err);
+        triggerServerStream();
     }
 }
 
@@ -4178,6 +4224,11 @@ document.addEventListener('click', async (e) => {
 
 // Global click event listener for SPA download triggers
 document.addEventListener('click', (e) => {
+    // Ignore synthetic programmatic click events from download triggers
+    if (e.target.closest('.js-bypass-download')) {
+        return;
+    }
+
     // 1. Full Album Download Button
     const fullAlbumBtn = e.target.closest('.btn-download-full-album, .js-full-album-btn');
     if (fullAlbumBtn) {
