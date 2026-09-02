@@ -3691,6 +3691,39 @@ const singleGiftTemplate = (gift) => {
             color: #ffffff !important;
         }
 
+        .single-gift-one-column-row {
+            max-width: 900px;
+            margin: 48px auto 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .single-gift-back-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: #0ad8ad;
+            font-size: 1.05rem;
+            font-weight: 600;
+            text-decoration: none;
+            padding: 14px 28px;
+            border-radius: 9999px;
+            background: rgba(10, 216, 173, 0.08);
+            border: 1px solid rgba(10, 216, 173, 0.3);
+            transition: all 0.25s ease;
+        }
+
+        .single-gift-back-link:hover {
+            color: #ffffff !important;
+            background: rgba(10, 216, 173, 0.2);
+            border-color: #0ad8ad;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(10, 216, 173, 0.25);
+        }
+
         .gift-track-card {
             display: flex;
             align-items: center;
@@ -3888,13 +3921,14 @@ const singleGiftTemplate = (gift) => {
                             <ul>
                                 ${gift.bullets.map(b => `<li>${b}</li>`).join('')}
                             </ul>
+                        </div>
                     </div>
                 </div>
 
-                ${gift.tracks && gift.tracks.length > 0 ? `
-                <!-- Centered Ten Tracks Card in its own row under the two-column row -->
-                <div class="single-gift-tracks-row" style="max-width: 900px; margin: 48px auto 0; width: 100%;">
-                    <div class="gift-album-player-wrap" style="background: #081b29; border-radius: 20px; padding: 28px; color: #fff; border: 1px solid rgba(10, 216, 173, 0.3); box-shadow: 0 16px 40px rgba(0,0,0,0.35);">
+                <!-- One-Column Row: Official 10-Track Album Card, followed by the Explore All link -->
+                <div class="single-gift-one-column-row">
+                    ${gift.tracks && gift.tracks.length > 0 ? `
+                    <div class="gift-album-player-wrap" style="background: #081b29; border-radius: 20px; padding: 28px; color: #fff; border: 1px solid rgba(10, 216, 173, 0.3); box-shadow: 0 16px 40px rgba(0,0,0,0.35); width: 100%;">
                         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 16px;">
                             <div style="display: flex; align-items: center; gap: 14px;">
                                 <div style="width: 42px; height: 42px; background: rgba(10, 216, 173, 0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #0ad8ad;">
@@ -3949,28 +3983,23 @@ const singleGiftTemplate = (gift) => {
                         </div>
 
                         <!-- Download Full Album Button at the bottom of the card -->
-                        ${gift.tracks && gift.tracks.length > 0 ? `
                         <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 22px;">
                             <button type="button" class="btn-download-full-album js-full-album-btn" data-title="${gift.title} - Complete Album">
                                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                                 DOWNLOAD FULL ALBUM (ALL 10 TRACKS - ZIP)
                             </button>
                         </div>
-                        ` : ''}
                     </div>
-                </div>
-                ` : ''}
-
-                <!-- Centered Actions in their own separate rows -->
-                <div class="single-gift-center-actions" style="margin-top: 36px;">
-                    ${!gift.tracks || gift.tracks.length === 0 ? `
-                    <div class="action-row">
+                    ` : `
+                    <div class="action-row" style="margin-bottom: 24px;">
                         <a href="${gift.file_url}" target="_blank" rel="noopener noreferrer" class="btn-download-primary js-spa-download-btn" data-title="${gift.title}" data-file="${gift.file_url}">
                             ${gift.button_label} &darr;
                         </a>
                     </div>
-                    ` : ''}
-                    <div class="action-row">
+                    `}
+
+                    <!-- Explore All Link coming directly after the card in the same centered one-column row -->
+                    <div style="margin-top: 36px; text-align: center; width: 100%;">
                         <a href="/free-gifts" class="single-gift-back-link">
                             &larr; Explore all free resources on the Free Gifts page
                         </a>
