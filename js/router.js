@@ -3888,92 +3888,88 @@ const singleGiftTemplate = (gift) => {
                             <ul>
                                 ${gift.bullets.map(b => `<li>${b}</li>`).join('')}
                             </ul>
+                    </div>
+                </div>
+
+                ${gift.tracks && gift.tracks.length > 0 ? `
+                <!-- Centered Ten Tracks Card in its own row under the two-column row -->
+                <div class="single-gift-tracks-row" style="max-width: 900px; margin: 48px auto 0; width: 100%;">
+                    <div class="gift-album-player-wrap" style="background: #081b29; border-radius: 20px; padding: 28px; color: #fff; border: 1px solid rgba(10, 216, 173, 0.3); box-shadow: 0 16px 40px rgba(0,0,0,0.35);">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 16px;">
+                            <div style="display: flex; align-items: center; gap: 14px;">
+                                <div style="width: 42px; height: 42px; background: rgba(10, 216, 173, 0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #0ad8ad;">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+                                </div>
+                                <div>
+                                    <h3 style="margin: 0; color: #ffffff; font-size: 1.25rem; font-family: var(--font-heading); font-weight: 800;">Official 10-Track Album</h3>
+                                    <span id="album-now-playing-title" style="font-size: 0.88rem; color: #0ad8ad; font-weight: 600;">Preview tracks or download individually below</span>
+                                </div>
+                            </div>
+                            <div id="album-header-wave" class="portfolio-wave" style="display: none;">
+                                <div class="portfolio-wave-bar"></div>
+                                <div class="portfolio-wave-bar"></div>
+                                <div class="portfolio-wave-bar"></div>
+                                <div class="portfolio-wave-bar"></div>
+                                <div class="portfolio-wave-bar"></div>
+                            </div>
                         </div>
 
-                        ${gift.tracks && gift.tracks.length > 0 ? `
-                        <!-- Interactive Album Player & Tracklist -->
-                        <div class="gift-album-player-wrap" style="margin-top: 26px; background: #081b29; border-radius: 18px; padding: 24px; color: #fff; border: 1px solid rgba(10, 216, 173, 0.3); box-shadow: 0 16px 40px rgba(0,0,0,0.35);">
-                            
-                            <!-- Top Album Header & Download Full Album Button -->
-                            ${gift.album_zip_url ? `
-                            <div style="margin-bottom: 22px;">
-                                <a href="${gift.album_zip_url}" download="Win_Anyway_Full_Album.zip" class="btn-download-full-album js-spa-download-btn" data-title="${gift.title} - Complete Album" data-file="${gift.album_zip_url}">
-                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                                    DOWNLOAD FULL ALBUM (ALL 10 TRACKS - ZIP)
-                                </a>
-                            </div>
-                            ` : ''}
+                        <!-- Audio Element -->
+                        <audio id="gift-album-audio" preload="metadata"></audio>
 
-                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 14px;">
-                                <div style="display: flex; align-items: center; gap: 12px;">
-                                    <div style="width: 38px; height: 38px; background: rgba(10, 216, 173, 0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #0ad8ad;">
-                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
-                                    </div>
-                                    <div>
-                                        <h4 style="margin: 0; color: #ffffff; font-size: 1.1rem; font-family: var(--font-heading);">Official 10-Track Album</h4>
-                                        <span id="album-now-playing-title" style="font-size: 0.85rem; color: #0ad8ad; font-weight: 600;">Preview tracks or download individually below</span>
-                                    </div>
-                                </div>
-                                <div id="album-header-wave" class="portfolio-wave" style="display: none;">
-                                    <div class="portfolio-wave-bar"></div>
-                                    <div class="portfolio-wave-bar"></div>
-                                    <div class="portfolio-wave-bar"></div>
-                                    <div class="portfolio-wave-bar"></div>
-                                    <div class="portfolio-wave-bar"></div>
-                                </div>
-                            </div>
-
-                            <!-- Audio Element -->
-                            <audio id="gift-album-audio" preload="metadata"></audio>
-
-                            <!-- Interactive Tracklist with Track Cards & Download Buttons -->
-                            <div class="gift-tracklist" style="display: flex; flex-direction: column; gap: 10px;">
-                                ${gift.tracks.map((track, tIdx) => `
-                                    <div class="gift-track-card" data-src="${track.src}" data-index="${tIdx}" data-title="${track.title}">
-                                        <div class="track-card-left">
-                                            <img src="${track.cover}" alt="${track.title} Cover" class="track-card-thumb">
-                                            <button type="button" class="btn-track-play" aria-label="Play ${track.title}">
-                                                <svg class="track-play-svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
-                                                <svg class="track-pause-svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
-                                            </button>
-                                            <div class="track-card-meta">
-                                                <span class="track-card-num">Track ${track.number || (tIdx + 1)}</span>
-                                                <h4 class="track-card-title">${track.title}</h4>
-                                                <span class="track-card-dur">${track.duration}</span>
-                                            </div>
-                                        </div>
-                                        <div class="track-card-right">
-                                            <div class="track-item-wave portfolio-wave" style="display: none; height: 16px;">
-                                                <div class="portfolio-wave-bar"></div>
-                                                <div class="portfolio-wave-bar"></div>
-                                                <div class="portfolio-wave-bar"></div>
-                                            </div>
-                                            <a href="${track.src}" download="${track.title}.mp3" class="btn-track-download js-spa-download-btn" data-title="${track.title}" data-file="${track.src}">
-                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                                                Download MP3
-                                            </a>
+                        <!-- Interactive Tracklist with Track Cards & Download Buttons -->
+                        <div class="gift-tracklist" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px;">
+                            ${gift.tracks.map((track, tIdx) => `
+                                <div class="gift-track-card" data-src="${track.src}" data-index="${tIdx}" data-title="${track.title}">
+                                    <div class="track-card-left">
+                                        <img src="${track.cover}" alt="${track.title} Cover" class="track-card-thumb">
+                                        <button type="button" class="btn-track-play" aria-label="Play ${track.title}">
+                                            <svg class="track-play-svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                                            <svg class="track-pause-svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                                        </button>
+                                        <div class="track-card-meta">
+                                            <span class="track-card-num">Track ${track.number || (tIdx + 1)}</span>
+                                            <h4 class="track-card-title">${track.title}</h4>
+                                            <span class="track-card-dur">${track.duration}</span>
                                         </div>
                                     </div>
-                                `).join('')}
-                            </div>
+                                    <div class="track-card-right">
+                                        <div class="track-item-wave portfolio-wave" style="display: none; height: 16px;">
+                                            <div class="portfolio-wave-bar"></div>
+                                            <div class="portfolio-wave-bar"></div>
+                                            <div class="portfolio-wave-bar"></div>
+                                        </div>
+                                        <a href="${track.src}" download="${track.title}.mp3" class="btn-track-download js-spa-download-btn" data-title="${track.title}" data-file="${track.src}">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                            Download MP3
+                                        </a>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+
+                        <!-- Download Full Album Button at the bottom of the card -->
+                        ${gift.album_zip_url ? `
+                        <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 22px;">
+                            <a href="${gift.album_zip_url}" download="Win_Anyway_Full_Album.zip" class="btn-download-full-album js-spa-download-btn" data-title="${gift.title} - Complete Album" data-file="${gift.album_zip_url}">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                DOWNLOAD FULL ALBUM (ALL 10 TRACKS - ZIP)
+                            </a>
                         </div>
                         ` : ''}
                     </div>
                 </div>
+                ` : ''}
 
                 <!-- Centered Actions in their own separate rows -->
-                <div class="single-gift-center-actions">
+                <div class="single-gift-center-actions" style="margin-top: 36px;">
+                    ${!gift.tracks || gift.tracks.length === 0 ? `
                     <div class="action-row">
-                        ${gift.album_zip_url ? `
-                            <a href="${gift.album_zip_url}" download="Win_Anyway_Full_Album.zip" class="btn-download-primary js-spa-download-btn" data-title="${gift.title} - Complete Album" data-file="${gift.album_zip_url}" style="text-decoration: none;">
-                                &#10515; DOWNLOAD FULL ALBUM (ALL 10 TRACKS)
-                            </a>
-                        ` : `
-                            <a href="${gift.file_url}" target="_blank" rel="noopener noreferrer" class="btn-download-primary js-spa-download-btn" data-title="${gift.title}" data-file="${gift.file_url}">
-                                ${gift.button_label} &darr;
-                            </a>
-                        `}
+                        <a href="${gift.file_url}" target="_blank" rel="noopener noreferrer" class="btn-download-primary js-spa-download-btn" data-title="${gift.title}" data-file="${gift.file_url}">
+                            ${gift.button_label} &darr;
+                        </a>
                     </div>
+                    ` : ''}
                     <div class="action-row">
                         <a href="/free-gifts" class="single-gift-back-link">
                             &larr; Explore all free resources on the Free Gifts page
