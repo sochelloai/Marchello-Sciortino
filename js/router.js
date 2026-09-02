@@ -3838,7 +3838,11 @@ const singleGiftTemplate = (gift) => {
             box-shadow: 0 4px 12px rgba(10, 216, 173, 0.3);
         }
 
-        @media (max-width: 600px) {
+        .full-album-btn-text-mobile {
+            display: none;
+        }
+
+        @media (max-width: 640px) {
             .gift-track-card {
                 flex-direction: column;
                 align-items: flex-start;
@@ -3851,6 +3855,12 @@ const singleGiftTemplate = (gift) => {
             .btn-track-download {
                 flex: 1;
                 justify-content: center;
+            }
+            .full-album-btn-text-desktop {
+                display: none !important;
+            }
+            .full-album-btn-text-mobile {
+                display: inline !important;
             }
         }
     </style>
@@ -3971,7 +3981,8 @@ const singleGiftTemplate = (gift) => {
                         <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 22px;">
                             <button type="button" class="btn-download-full-album js-full-album-btn" data-title="${gift.title} - Complete Album">
                                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                                DOWNLOAD FULL ALBUM (ALL 10 TRACKS - ZIP)
+                                <span class="full-album-btn-text-desktop">DOWNLOAD FULL ALBUM (ALL 10 TRACKS - ZIP)</span>
+                                <span class="full-album-btn-text-mobile">Download all</span>
                             </button>
                         </div>
                     </div>
@@ -4065,6 +4076,7 @@ function directDownloadFile(fileUrl, suggestedFilename, btn) {
     a.href = downloadUrl;
     a.download = suggestedFilename;
     a.setAttribute('download', suggestedFilename);
+    a.addEventListener('click', (e) => e.stopPropagation());
     document.body.appendChild(a);
     a.click();
 
@@ -4084,10 +4096,10 @@ function directDownloadFile(fileUrl, suggestedFilename, btn) {
 // Downloads the real 10-track zipped folder directly without leaving the page
 async function downloadFullAlbumZip(btn) {
     if (!btn) btn = document.querySelector('.btn-download-full-album, .js-full-album-btn');
-    const originalText = btn ? btn.innerHTML : 'DOWNLOAD FULL ALBUM (ALL 10 TRACKS - ZIP)';
+    const originalText = btn ? btn.innerHTML : `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> <span class="full-album-btn-text-desktop">DOWNLOAD FULL ALBUM (ALL 10 TRACKS - ZIP)</span><span class="full-album-btn-text-mobile">Download all</span>`;
 
     if (btn) {
-        btn.innerHTML = `<span style="display:inline-block; animation: spin 1s linear infinite;">⟳</span> Starting Album Download...`;
+        btn.innerHTML = `<span style="display:inline-block; animation: spin 1s linear infinite;">⟳</span> <span class="full-album-btn-text-desktop">Starting Album Download...</span><span class="full-album-btn-text-mobile">Starting download...</span>`;
     }
 
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && window.innerWidth < 1024);
@@ -4103,13 +4115,14 @@ async function downloadFullAlbumZip(btn) {
         downloadLink.href = '/api/download-full-album';
         downloadLink.download = 'Win_Anyway_Full_Album.zip';
         downloadLink.setAttribute('download', 'Win_Anyway_Full_Album.zip');
+        downloadLink.addEventListener('click', (e) => e.stopPropagation());
         document.body.appendChild(downloadLink);
         downloadLink.click();
 
         setTimeout(() => {
             if (downloadLink.parentNode) document.body.removeChild(downloadLink);
             if (btn) {
-                btn.innerHTML = `✓ Zipped Album Download Started!`;
+                btn.innerHTML = `✓ <span class="full-album-btn-text-desktop">Zipped Album Download Started!</span><span class="full-album-btn-text-mobile">Download started!</span>`;
                 setTimeout(() => {
                     btn.innerHTML = originalText;
                     btn.disabled = false;
@@ -4224,6 +4237,11 @@ document.addEventListener('click', async (e) => {
 
 // Global click event listener for SPA download triggers
 document.addEventListener('click', (e) => {
+    // Only handle genuine human user clicks; ignore programmatic synthetic clicks
+    if (!e.isTrusted) {
+        return;
+    }
+
     // Ignore synthetic programmatic click events from download triggers
     if (e.target.closest('.js-bypass-download')) {
         return;
