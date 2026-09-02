@@ -3585,21 +3585,30 @@ const singleGiftTemplate = (gift) => {
         }
 
         .single-gift-back-link {
-            color: #0ad8ad;
+            color: #000000 !important;
             font-family: var(--font-heading);
             font-weight: 600;
-            text-decoration: none;
+            text-decoration: underline !important;
+            text-underline-offset: 4px;
             font-size: 1.05rem;
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            transition: color 0.2s, transform 0.2s;
-            padding: 8px 16px;
+            background: transparent !important;
+            border: none !important;
+            padding: 8px 0 !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            cursor: pointer;
         }
 
         .single-gift-back-link:hover {
-            color: #081b29;
-            text-decoration: underline;
+            color: #000000 !important;
+            text-decoration: underline !important;
+            opacity: 0.65;
+            background: transparent !important;
+            box-shadow: none !important;
             transform: translateX(-4px);
         }
 
@@ -3698,30 +3707,6 @@ const singleGiftTemplate = (gift) => {
             display: flex;
             flex-direction: column;
             align-items: center;
-        }
-
-        .single-gift-back-link {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            color: #0ad8ad;
-            font-size: 1.05rem;
-            font-weight: 600;
-            text-decoration: none;
-            padding: 14px 28px;
-            border-radius: 9999px;
-            background: rgba(10, 216, 173, 0.08);
-            border: 1px solid rgba(10, 216, 173, 0.3);
-            transition: all 0.25s ease;
-        }
-
-        .single-gift-back-link:hover {
-            color: #ffffff !important;
-            background: rgba(10, 216, 173, 0.2);
-            border-color: #0ad8ad;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(10, 216, 173, 0.25);
         }
 
         .gift-track-card {
