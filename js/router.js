@@ -4050,9 +4050,11 @@ async function directDownloadFile(fileUrl, suggestedFilename, btn) {
         const blobUrl = URL.createObjectURL(blob);
 
         const a = document.createElement('a');
+        a.className = 'js-bypass-download js-download-track-btn';
         a.style.display = 'none';
         a.href = blobUrl;
         a.download = suggestedFilename;
+        a.setAttribute('download', suggestedFilename);
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -4125,8 +4127,10 @@ async function downloadFullAlbumZip(btn) {
         const downloadUrl = URL.createObjectURL(fullZipBlob);
 
         const downloadLink = document.createElement('a');
+        downloadLink.className = 'js-bypass-download js-full-album-btn';
         downloadLink.style.display = 'none';
         downloadLink.href = downloadUrl;
+        downloadLink.download = 'Win_Anyway_Full_Album.zip';
         downloadLink.setAttribute('download', 'Win_Anyway_Full_Album.zip');
         document.body.appendChild(downloadLink);
         downloadLink.click();

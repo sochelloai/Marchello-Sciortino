@@ -1389,10 +1389,10 @@ const GlobalMediaLightbox = {
             // Check if click target is a link with a download attribute
             const link = e.target.closest('a');
             if (link && link.hasAttribute('download')) {
-                if (link.classList.contains('js-full-album-btn') || link.classList.contains('btn-download-full-album') || link.classList.contains('js-download-track-btn')) {
+                const href = link.getAttribute('href') || '';
+                if (href.startsWith('blob:') || link.classList.contains('js-bypass-download') || link.classList.contains('js-full-album-btn') || link.classList.contains('btn-download-full-album') || link.classList.contains('js-download-track-btn')) {
                     return;
                 }
-                const href = link.getAttribute('href');
                 if (href) {
                     e.preventDefault();
                     e.stopPropagation();
@@ -1545,8 +1545,10 @@ const GlobalMediaLightbox = {
             const blob = await response.blob();
             const blobUrl = URL.createObjectURL(blob);
             const tempLink = document.createElement('a');
+            tempLink.className = 'js-bypass-download';
             tempLink.href = blobUrl;
             tempLink.download = filename || url.substring(url.lastIndexOf('/') + 1);
+            tempLink.setAttribute('download', filename || url.substring(url.lastIndexOf('/') + 1));
             document.body.appendChild(tempLink);
             tempLink.click();
             document.body.removeChild(tempLink);
