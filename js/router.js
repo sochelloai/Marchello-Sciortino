@@ -4085,77 +4085,68 @@ async function directDownloadFile(fileUrl, suggestedFilename, btn) {
     }
 }
 
-// Client-side ZIP packager for the 10-track album (downloads all 10 tracks into one zipped folder)
+// Downloads the real 10-track zipped folder (server stream or client binary reassembly)
 async function downloadFullAlbumZip(btn) {
     if (!btn) btn = document.querySelector('.btn-download-full-album, .js-full-album-btn');
     const originalText = btn ? btn.innerHTML : 'DOWNLOAD FULL ALBUM (ALL 10 TRACKS - ZIP)';
-
-    const currentSlug = window.location.pathname.replace(/^\/|\/$/g, '');
-    const gift = FREE_GIFTS_DATA.find(g => g.slug === currentSlug) || FREE_GIFTS_DATA[0];
-    const tracks = (gift && gift.tracks) ? gift.tracks : [];
-
-    if (!tracks || tracks.length === 0) return;
-
-    if (!window.JSZip) {
-        alert("Album packager is loading. Please try again in a few seconds.");
-        return;
-    }
 
     if (btn) {
         btn.disabled = true;
         btn.style.pointerEvents = 'none';
         btn.style.opacity = '0.92';
+        btn.innerHTML = `<span style="display:inline-block; animation: spin 1s linear infinite;">⟳</span> Connecting to album download...`;
     }
 
     try {
-        const zip = new window.JSZip();
-        const albumFolder = zip.folder("WIN ANYWAY");
-        const total = tracks.length;
-
-        for (let i = 0; i < total; i++) {
-            const track = tracks[i];
-            if (btn) {
-                btn.innerHTML = `<span style="display:inline-block; animation: spin 1s linear infinite;">⟳</span> Downloading Track ${i + 1}/${total}: ${track.title}...`;
+        let serverWorked = false;
+        try {
+            const check = await fetch('/api/download-full-album', { method: 'HEAD' });
+            if (check.ok) {
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = '/api/download-full-album';
+                a.download = 'Win_Anyway_Full_Album.zip';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                serverWorked = true;
             }
-            const res = await fetch(track.src);
-            if (!res.ok) throw new Error(`Could not load track: ${track.title}`);
-            const blob = await res.blob();
-            const trackNum = String(track.number || (i + 1)).padStart(2, '0');
-            albumFolder.file(`${trackNum} - ${track.title}.mp3`, blob);
+        } catch (e) {
+            console.warn('[Direct server download check bypassed, using chunk reassembly]', e);
         }
 
-        // Add album artwork
-        if (gift.cover_image) {
-            if (btn) btn.innerHTML = `<span style="display:inline-block; animation: spin 1s linear infinite;">⟳</span> Adding Album Artwork...`;
-            try {
-                const coverRes = await fetch(gift.cover_image);
-                if (coverRes.ok) {
-                    const coverBlob = await coverRes.blob();
-                    albumFolder.file("WIN ANYWAY - Cover Artwork.jpg", coverBlob);
+        if (!serverWorked) {
+            const parts = [
+                '/assets/free-gifts/win-anyway/album_part_1.bin',
+                '/assets/free-gifts/win-anyway/album_part_2.bin',
+                '/assets/free-gifts/win-anyway/album_part_3.bin',
+                '/assets/free-gifts/win-anyway/album_part_4.bin'
+            ];
+
+            const chunks = [];
+            for (let i = 0; i < parts.length; i++) {
+                if (btn) {
+                    btn.innerHTML = `<span style="display:inline-block; animation: spin 1s linear infinite;">⟳</span> Loading Album Part ${i + 1}/4...`;
                 }
-            } catch (e) {
-                console.warn("[Album Zip] Cover fetch warning", e);
+                const res = await fetch(parts[i]);
+                if (!res.ok) throw new Error(`Could not load album part ${i + 1}`);
+                const blob = await res.blob();
+                chunks.push(blob);
             }
+
+            if (btn) btn.innerHTML = `<span style="display:inline-block; animation: spin 1s linear infinite;">⟳</span> Pushing Zipped Folder...`;
+            const zipBlob = new Blob(chunks, { type: 'application/zip' });
+            const downloadUrl = URL.createObjectURL(zipBlob);
+
+            const downloadLink = document.createElement('a');
+            downloadLink.style.display = 'none';
+            downloadLink.href = downloadUrl;
+            downloadLink.download = 'Win_Anyway_Full_Album.zip';
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+            setTimeout(() => URL.revokeObjectURL(downloadUrl), 30000);
         }
-
-        if (btn) btn.innerHTML = `<span style="display:inline-block; animation: spin 1s linear infinite;">⟳</span> Creating Zipped Folder...`;
-
-        const zipBlob = await zip.generateAsync({
-            type: "blob",
-            compression: "STORE"
-        }, (meta) => {
-            if (btn) btn.innerHTML = `Zipping Album: ${Math.round(meta.percent)}%...`;
-        });
-
-        const downloadUrl = URL.createObjectURL(zipBlob);
-        const downloadLink = document.createElement('a');
-        downloadLink.style.display = 'none';
-        downloadLink.href = downloadUrl;
-        downloadLink.download = "Win_Anyway_Full_Album.zip";
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-        document.body.removeChild(downloadLink);
-        setTimeout(() => URL.revokeObjectURL(downloadUrl), 15000);
 
         if (btn) {
             btn.innerHTML = `✓ Zipped Album Downloaded!`;
@@ -4167,8 +4158,8 @@ async function downloadFullAlbumZip(btn) {
             }, 3000);
         }
     } catch (err) {
-        console.error("[Album Zip Error]", err);
-        alert("Failed to package album: " + err.message);
+        console.error('[Album Zip Download Error]', err);
+        alert('Failed to download album: ' + err.message);
         if (btn) {
             btn.innerHTML = originalText;
             btn.disabled = false;

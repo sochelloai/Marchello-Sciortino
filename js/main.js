@@ -1389,6 +1389,9 @@ const GlobalMediaLightbox = {
             // Check if click target is a link with a download attribute
             const link = e.target.closest('a');
             if (link && link.hasAttribute('download')) {
+                if (link.classList.contains('js-full-album-btn') || link.classList.contains('btn-download-full-album') || link.classList.contains('js-download-track-btn')) {
+                    return;
+                }
                 const href = link.getAttribute('href');
                 if (href) {
                     e.preventDefault();
