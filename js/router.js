@@ -19,8 +19,8 @@ const Router = {
 
             // Intercept internal routes (starting with / but not //)
             if (href.startsWith('/') && !href.startsWith('//')) {
-                // Let links with target="_blank", static assets (/assets/), PDFs, or download attributes behave normally
-                if (link.target === '_blank' || href.startsWith('/assets/') || href.endsWith('.pdf') || link.hasAttribute('download')) return;
+                // Let links with target="_blank", static assets (/assets/), API endpoints (/api/), PDFs, ZIPs, MP3s, or download attributes behave normally
+                if (link.target === '_blank' || href.startsWith('/assets/') || href.startsWith('/api/') || href.endsWith('.pdf') || href.endsWith('.zip') || href.endsWith('.mp3') || link.hasAttribute('download')) return;
 
                 e.preventDefault();
                 this.navigate(href);
@@ -52,8 +52,8 @@ const Router = {
         let pathOnly = currentPath.split('?')[0];
         let cleanPath = (pathOnly.length > 1 && pathOnly.endsWith('/')) ? pathOnly.slice(0, -1) : pathOnly;
 
-        // Bypass static assets and PDF files in SPA router
-        if (pathOnly.startsWith('/assets/') || pathOnly.endsWith('.pdf')) {
+        // Bypass static assets, API endpoints, and media files in SPA router
+        if (pathOnly.startsWith('/assets/') || pathOnly.startsWith('/api/') || pathOnly.endsWith('.pdf') || pathOnly.endsWith('.zip') || pathOnly.endsWith('.mp3')) {
             return;
         }
 
@@ -4085,7 +4085,7 @@ async function directDownloadFile(fileUrl, suggestedFilename, btn) {
     }
 }
 
-// Downloads the real 10-track zipped folder (server stream or client binary reassembly)
+// Downloads the real 10-track zipped folder directly without leaving the page
 async function downloadFullAlbumZip(btn) {
     if (!btn) btn = document.querySelector('.btn-download-full-album, .js-full-album-btn');
     const originalText = btn ? btn.innerHTML : 'DOWNLOAD FULL ALBUM (ALL 10 TRACKS - ZIP)';
@@ -4094,59 +4094,44 @@ async function downloadFullAlbumZip(btn) {
         btn.disabled = true;
         btn.style.pointerEvents = 'none';
         btn.style.opacity = '0.92';
-        btn.innerHTML = `<span style="display:inline-block; animation: spin 1s linear infinite;">⟳</span> Connecting to album download...`;
+        btn.innerHTML = `<span style="display:inline-block; animation: spin 1s linear infinite;">⟳</span> Starting Album Download...`;
     }
 
     try {
-        let serverWorked = false;
-        try {
-            const check = await fetch('/api/download-full-album', { method: 'HEAD' });
-            if (check.ok) {
-                const a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = '/api/download-full-album';
-                a.download = 'Win_Anyway_Full_Album.zip';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                serverWorked = true;
+        const parts = [
+            '/assets/free-gifts/win-anyway/album_part_1.bin',
+            '/assets/free-gifts/win-anyway/album_part_2.bin',
+            '/assets/free-gifts/win-anyway/album_part_3.bin',
+            '/assets/free-gifts/win-anyway/album_part_4.bin'
+        ];
+
+        const blobs = [];
+        for (let i = 0; i < parts.length; i++) {
+            if (btn) {
+                const percent = Math.round((i / parts.length) * 100);
+                btn.innerHTML = `<span style="display:inline-block; animation: spin 1s linear infinite;">⟳</span> Downloading Album (${percent}%)...`;
             }
-        } catch (e) {
-            console.warn('[Direct server download check bypassed, using chunk reassembly]', e);
+            const res = await fetch(parts[i]);
+            if (!res.ok) throw new Error(`Could not load album part ${i + 1}`);
+            const blob = await res.blob();
+            blobs.push(blob);
         }
 
-        if (!serverWorked) {
-            const parts = [
-                '/assets/free-gifts/win-anyway/album_part_1.bin',
-                '/assets/free-gifts/win-anyway/album_part_2.bin',
-                '/assets/free-gifts/win-anyway/album_part_3.bin',
-                '/assets/free-gifts/win-anyway/album_part_4.bin'
-            ];
-
-            const chunks = [];
-            for (let i = 0; i < parts.length; i++) {
-                if (btn) {
-                    btn.innerHTML = `<span style="display:inline-block; animation: spin 1s linear infinite;">⟳</span> Loading Album Part ${i + 1}/4...`;
-                }
-                const res = await fetch(parts[i]);
-                if (!res.ok) throw new Error(`Could not load album part ${i + 1}`);
-                const blob = await res.blob();
-                chunks.push(blob);
-            }
-
-            if (btn) btn.innerHTML = `<span style="display:inline-block; animation: spin 1s linear infinite;">⟳</span> Pushing Zipped Folder...`;
-            const zipBlob = new Blob(chunks, { type: 'application/zip' });
-            const downloadUrl = URL.createObjectURL(zipBlob);
-
-            const downloadLink = document.createElement('a');
-            downloadLink.style.display = 'none';
-            downloadLink.href = downloadUrl;
-            downloadLink.download = 'Win_Anyway_Full_Album.zip';
-            document.body.appendChild(downloadLink);
-            downloadLink.click();
-            document.body.removeChild(downloadLink);
-            setTimeout(() => URL.revokeObjectURL(downloadUrl), 30000);
+        if (btn) {
+            btn.innerHTML = `<span style="display:inline-block; animation: spin 1s linear infinite;">⟳</span> Pushing Zipped Folder to Downloads...`;
         }
+
+        const fullZipBlob = new Blob(blobs, { type: 'application/zip' });
+        const downloadUrl = URL.createObjectURL(fullZipBlob);
+
+        const downloadLink = document.createElement('a');
+        downloadLink.style.display = 'none';
+        downloadLink.href = downloadUrl;
+        downloadLink.setAttribute('download', 'Win_Anyway_Full_Album.zip');
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+        setTimeout(() => URL.revokeObjectURL(downloadUrl), 60000);
 
         if (btn) {
             btn.innerHTML = `✓ Zipped Album Downloaded!`;
@@ -4155,7 +4140,7 @@ async function downloadFullAlbumZip(btn) {
                 btn.disabled = false;
                 btn.style.pointerEvents = 'auto';
                 btn.style.opacity = '1';
-            }, 3000);
+            }, 3500);
         }
     } catch (err) {
         console.error('[Album Zip Download Error]', err);
