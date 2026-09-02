@@ -2753,46 +2753,87 @@ const FREE_GIFTS_DATA = [
         type: "Music Album",
         badge: "Available Now",
         meta_title: "Win Anyway | Free Music Album by Marchello Sciortino",
-        meta_desc: "Winning Despite the Odds — Official music album by Marchello Sciortino featuring inspiring original songs of faith, resilience, and triumph.",
+        meta_desc: "Winning Despite the Odds — The official 10-track album by Marchello Sciortino. Stream and download all 10 original anthems of faith, resilience, and triumph.",
         bullets: [
-            "Inspiring original music born from faith & resilience.",
+            "10 original inspirational tracks born from faith & resilience.",
             "Anthems of overcoming odds and turning limitations into agency.",
-            "Interactive track streaming & full audio access."
+            "Stream every track online or download the full 10-track album."
         ],
         cover_image: "/assets/free-gifts/win_anyway_cover.jpg",
         file_url: "/win-anyway",
+        album_zip_url: "/assets/free-gifts/win-anyway/Win_Anyway_Full_Album.zip",
         button_label: "Win Anyway Album",
         direct_page_only: true,
         tracks: [
             {
-                title: "Winning Despite The Odds",
-                src: "/speaking-portfolio/Songs/Winning Despite The Odds.mp3",
-                duration: "3:44"
+                number: 1,
+                title: "Win Anyway",
+                src: "/assets/free-gifts/win-anyway/01-win-anyway.mp3",
+                cover: "/assets/free-gifts/win-anyway/01-win-anyway-cover.png",
+                duration: "4:37"
             },
             {
-                title: "Chosen Anyway",
-                src: "/speaking-portfolio/Songs/Chosen Anyway.mp3",
-                duration: "3:32"
+                number: 2,
+                title: "Let Them Doubt",
+                src: "/assets/free-gifts/win-anyway/02-let-them-doubt.mp3",
+                cover: "/assets/free-gifts/win-anyway/02-let-them-doubt-cover.png",
+                duration: "3:25"
             },
             {
-                title: "Endgame Shadows",
-                src: "/assets/endgame-shadows.mp3",
-                duration: "2:39"
+                number: 3,
+                title: "Little Wins",
+                src: "/assets/free-gifts/win-anyway/03-little-wins.mp3",
+                cover: "/assets/free-gifts/win-anyway/03-little-wins-cover.png",
+                duration: "1:59"
             },
             {
-                title: "The Battle of the Illusions",
-                src: "/assets/the-battle-of-the-illusions.mp3",
-                duration: "4:44"
+                number: 4,
+                title: "Make Room",
+                src: "/assets/free-gifts/win-anyway/04-make-room.mp3",
+                cover: "/assets/free-gifts/win-anyway/04-make-room-cover.png",
+                duration: "2:51"
             },
             {
-                title: "What Does It Mean",
-                src: "/assets/what-does-it-mean.mp3",
-                duration: "1:31"
+                number: 5,
+                title: "No Permission",
+                src: "/assets/free-gifts/win-anyway/05-no-permission.mp3",
+                cover: "/assets/free-gifts/win-anyway/05-no-permission-cover.png",
+                duration: "2:31"
             },
             {
-                title: "Chello AI Music",
-                src: "/assets/chello-ai-music.mp3",
-                duration: "0:31"
+                number: 6,
+                title: "Not Today",
+                src: "/assets/free-gifts/win-anyway/06-not-today.mp3",
+                cover: "/assets/free-gifts/win-anyway/06-not-today-cover.png",
+                duration: "2:44"
+            },
+            {
+                number: 7,
+                title: "Play the Hand",
+                src: "/assets/free-gifts/win-anyway/07-play-the-hand.mp3",
+                cover: "/assets/free-gifts/win-anyway/07-play-the-hand-cover.png",
+                duration: "2:05"
+            },
+            {
+                number: 8,
+                title: "Pressure Makes Diamonds",
+                src: "/assets/free-gifts/win-anyway/08-pressure-makes-diamonds.mp3",
+                cover: "/assets/free-gifts/win-anyway/08-pressure-makes-diamonds-cover.png",
+                duration: "2:16"
+            },
+            {
+                number: 9,
+                title: "Still Rising",
+                src: "/assets/free-gifts/win-anyway/09-still-rising.mp3",
+                cover: "/assets/free-gifts/win-anyway/09-still-rising-cover.png",
+                duration: "3:02"
+            },
+            {
+                number: 10,
+                title: "The Next Step",
+                src: "/assets/free-gifts/win-anyway/10-the-next-step.mp3",
+                cover: "/assets/free-gifts/win-anyway/10-the-next-step-cover.png",
+                duration: "3:02"
             }
         ]
     },
@@ -3620,6 +3661,180 @@ const singleGiftTemplate = (gift) => {
         .spa-modal-close:hover {
             color: #0f172a;
         }
+        .btn-download-full-album {
+            background: linear-gradient(135deg, #ff5722 0%, #e64a19 100%);
+            color: #ffffff !important;
+            font-family: var(--font-heading);
+            font-weight: 800;
+            font-size: 1.05rem;
+            letter-spacing: 0.5px;
+            padding: 16px 28px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            box-sizing: border-box;
+            box-shadow: 0 10px 25px rgba(255, 87, 34, 0.4);
+            transition: all 0.25s ease;
+        }
+
+        .btn-download-full-album:hover {
+            background: linear-gradient(135deg, #f4511e 0%, #d84315 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px rgba(255, 87, 34, 0.55);
+            color: #ffffff !important;
+        }
+
+        .gift-track-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            gap: 16px;
+        }
+
+        .gift-track-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(10, 216, 173, 0.4);
+            transform: translateX(3px);
+        }
+
+        .gift-track-card.active-playing {
+            background: rgba(10, 216, 173, 0.1) !important;
+            border-color: #0ad8ad !important;
+            box-shadow: 0 0 20px rgba(10, 216, 173, 0.2);
+        }
+
+        .track-card-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .track-card-thumb {
+            width: 52px;
+            height: 52px;
+            border-radius: 10px;
+            object-fit: cover;
+            flex-shrink: 0;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-track-play {
+            background: rgba(10, 216, 173, 0.15);
+            border: 1px solid rgba(10, 216, 173, 0.5);
+            color: #0ad8ad;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            padding: 0;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+
+        .btn-track-play:hover {
+            background: #0ad8ad;
+            color: #081b29;
+            transform: scale(1.08);
+        }
+
+        .track-card-meta {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .track-card-num {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #0ad8ad;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .track-card-title {
+            margin: 0;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #f8fafc;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.3;
+        }
+
+        .track-card-dur {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .track-card-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .btn-track-download {
+            background: rgba(10, 216, 173, 0.12);
+            color: #0ad8ad !important;
+            border: 1px solid rgba(10, 216, 173, 0.4);
+            border-radius: 8px;
+            padding: 8px 14px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-track-download:hover {
+            background: #0ad8ad;
+            color: #081b29 !important;
+            border-color: #0ad8ad;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(10, 216, 173, 0.3);
+        }
+
+        @media (max-width: 600px) {
+            .gift-track-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+            .track-card-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+            .btn-track-download {
+                flex: 1;
+                justify-content: center;
+            }
+        }
     </style>
 
     <div class="single-gift-page-wrapper">
@@ -3662,7 +3877,7 @@ const singleGiftTemplate = (gift) => {
 
                     <!-- Right: Content -->
                     <div class="single-gift-content">
-                        <span class="single-gift-tag">${gift.type} &bull; Free ${gift.tracks ? 'Access' : 'Download'}</span>
+                        <span class="single-gift-tag">${gift.type} &bull; Free ${gift.tracks ? 'Access &amp; Download' : 'Download'}</span>
                         <h2 class="single-gift-heading">${gift.title}</h2>
                         <p class="single-gift-description">
                             ${gift.meta_desc}
@@ -3677,15 +3892,26 @@ const singleGiftTemplate = (gift) => {
 
                         ${gift.tracks && gift.tracks.length > 0 ? `
                         <!-- Interactive Album Player & Tracklist -->
-                        <div class="gift-album-player-wrap" style="margin-top: 24px; background: #081b29; border-radius: 16px; padding: 24px; color: #fff; border: 1px solid rgba(10, 216, 173, 0.25); box-shadow: 0 10px 30px rgba(0,0,0,0.25);">
+                        <div class="gift-album-player-wrap" style="margin-top: 26px; background: #081b29; border-radius: 18px; padding: 24px; color: #fff; border: 1px solid rgba(10, 216, 173, 0.3); box-shadow: 0 16px 40px rgba(0,0,0,0.35);">
+                            
+                            <!-- Top Album Header & Download Full Album Button -->
+                            ${gift.album_zip_url ? `
+                            <div style="margin-bottom: 22px;">
+                                <a href="${gift.album_zip_url}" download="Win_Anyway_Full_Album.zip" class="btn-download-full-album js-spa-download-btn" data-title="${gift.title} - Complete Album" data-file="${gift.album_zip_url}">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                    DOWNLOAD FULL ALBUM (ALL 10 TRACKS - ZIP)
+                                </a>
+                            </div>
+                            ` : ''}
+
                             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 14px;">
                                 <div style="display: flex; align-items: center; gap: 12px;">
                                     <div style="width: 38px; height: 38px; background: rgba(10, 216, 173, 0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #0ad8ad;">
                                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
                                     </div>
                                     <div>
-                                        <h4 style="margin: 0; color: #ffffff; font-size: 1.1rem; font-family: var(--font-heading);">Official Album Tracks</h4>
-                                        <span id="album-now-playing-title" style="font-size: 0.85rem; color: #0ad8ad; font-weight: 600;">Click any track below to play</span>
+                                        <h4 style="margin: 0; color: #ffffff; font-size: 1.1rem; font-family: var(--font-heading);">Official 10-Track Album</h4>
+                                        <span id="album-now-playing-title" style="font-size: 0.85rem; color: #0ad8ad; font-weight: 600;">Preview tracks or download individually below</span>
                                     </div>
                                 </div>
                                 <div id="album-header-wave" class="portfolio-wave" style="display: none;">
@@ -3700,25 +3926,32 @@ const singleGiftTemplate = (gift) => {
                             <!-- Audio Element -->
                             <audio id="gift-album-audio" preload="metadata"></audio>
 
-                            <!-- Interactive Tracklist -->
-                            <div class="gift-tracklist" style="display: flex; flex-direction: column; gap: 8px;">
+                            <!-- Interactive Tracklist with Track Cards & Download Buttons -->
+                            <div class="gift-tracklist" style="display: flex; flex-direction: column; gap: 10px;">
                                 ${gift.tracks.map((track, tIdx) => `
-                                    <div class="gift-track-item" data-src="${track.src}" data-index="${tIdx}" data-title="${track.title}" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; cursor: pointer; transition: all 0.2s;">
-                                        <div style="display: flex; align-items: center; gap: 14px; min-width: 0;">
-                                            <span class="track-number" style="font-size: 0.85rem; font-weight: 700; color: #64748b; width: 18px; text-align: center;">${tIdx + 1}</span>
-                                            <button type="button" class="btn-track-play" style="background: transparent; border: 1px solid rgba(10, 216, 173, 0.4); color: #0ad8ad; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; flex-shrink: 0;" aria-label="Play ${track.title}">
-                                                <svg class="track-play-svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
-                                                <svg class="track-pause-svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                                    <div class="gift-track-card" data-src="${track.src}" data-index="${tIdx}" data-title="${track.title}">
+                                        <div class="track-card-left">
+                                            <img src="${track.cover}" alt="${track.title} Cover" class="track-card-thumb">
+                                            <button type="button" class="btn-track-play" aria-label="Play ${track.title}">
+                                                <svg class="track-play-svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                                                <svg class="track-pause-svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
                                             </button>
-                                            <span class="track-title" style="font-weight: 600; font-size: 0.95rem; color: #f1f5f9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${track.title}</span>
+                                            <div class="track-card-meta">
+                                                <span class="track-card-num">Track ${track.number || (tIdx + 1)}</span>
+                                                <h4 class="track-card-title">${track.title}</h4>
+                                                <span class="track-card-dur">${track.duration}</span>
+                                            </div>
                                         </div>
-                                        <div style="display: flex; align-items: center; gap: 12px;">
+                                        <div class="track-card-right">
                                             <div class="track-item-wave portfolio-wave" style="display: none; height: 16px;">
                                                 <div class="portfolio-wave-bar"></div>
                                                 <div class="portfolio-wave-bar"></div>
                                                 <div class="portfolio-wave-bar"></div>
                                             </div>
-                                            <span class="track-duration" style="font-size: 0.82rem; color: #94a3b8; font-variant-numeric: tabular-nums;">${track.duration}</span>
+                                            <a href="${track.src}" download="${track.title}.mp3" class="btn-track-download js-spa-download-btn" data-title="${track.title}" data-file="${track.src}">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                                Download MP3
+                                            </a>
                                         </div>
                                     </div>
                                 `).join('')}
@@ -3731,10 +3964,10 @@ const singleGiftTemplate = (gift) => {
                 <!-- Centered Actions in their own separate rows -->
                 <div class="single-gift-center-actions">
                     <div class="action-row">
-                        ${gift.tracks && gift.tracks.length > 0 ? `
-                            <button type="button" id="btn-album-listen-hero" class="btn-download-primary" style="background: #0ad8ad; color: #081b29 !important; font-weight: 800; box-shadow: 0 10px 25px rgba(10, 216, 173, 0.35); cursor: pointer;">
-                                &#9658; Play Full Album
-                            </button>
+                        ${gift.album_zip_url ? `
+                            <a href="${gift.album_zip_url}" download="Win_Anyway_Full_Album.zip" class="btn-download-primary js-spa-download-btn" data-title="${gift.title} - Complete Album" data-file="${gift.album_zip_url}" style="text-decoration: none;">
+                                &#10515; DOWNLOAD FULL ALBUM (ALL 10 TRACKS)
+                            </a>
                         ` : `
                             <a href="${gift.file_url}" target="_blank" rel="noopener noreferrer" class="btn-download-primary js-spa-download-btn" data-title="${gift.title}" data-file="${gift.file_url}">
                                 ${gift.button_label} &darr;
@@ -3810,9 +4043,11 @@ document.addEventListener('click', async (e) => {
 
 // Global click event listener for SPA download triggers
 document.addEventListener('click', (e) => {
-    const btn = e.target.closest('.js-spa-download-btn, .btn-download-trigger, .btn-download-primary');
+    const btn = e.target.closest('.js-spa-download-btn, .btn-track-download, .btn-download-full-album');
     if (btn) {
         let fileUrl = btn.getAttribute('data-file') || btn.getAttribute('href');
+        if (!fileUrl) return;
+
         const modal = document.getElementById('spa-download-modal');
         const copyText = document.getElementById('spa-copy-text');
         const formView = document.getElementById('spa-form-view');
@@ -3820,13 +4055,13 @@ document.addEventListener('click', (e) => {
         const isUnlocked = localStorage.getItem('free-gifts-unlocked') === 'true';
 
         if (isUnlocked) {
-            // Already unlocked: let native <a href="..." target="_blank"> open in new tab natively
+            // Already unlocked: let native <a href="..." download> trigger download
             return;
         } else {
             // Locked: show email modal once
             e.preventDefault();
             if (modal) {
-                if (copyText) copyText.textContent = 'Unlock all downloads by entering your email.';
+                if (copyText) copyText.textContent = 'Unlock all album downloads by entering your email.';
                 if (formView) formView.style.display = 'block';
                 modal.setAttribute('data-target-file', fileUrl);
                 modal.classList.add('active');
@@ -3854,9 +4089,15 @@ document.addEventListener('submit', async (e) => {
         const modal = document.getElementById('spa-download-modal');
         const targetUrl = modal ? modal.getAttribute('data-target-file') : null;
 
-        // Open target window SYNCHRONOUSLY to preserve user gesture and bypass browser popup blockers
+        // Open target window / trigger download SYNCHRONOUSLY to preserve user gesture
         if (targetUrl && targetUrl !== '#' && !targetUrl.endsWith('#')) {
-            window.open(targetUrl, '_blank');
+            const tempLink = document.createElement('a');
+            tempLink.href = targetUrl;
+            tempLink.setAttribute('download', '');
+            tempLink.target = '_blank';
+            document.body.appendChild(tempLink);
+            tempLink.click();
+            document.body.removeChild(tempLink);
         }
 
         // Close modal immediately so returning users see the page without any pop-up
@@ -3897,9 +4138,8 @@ document.addEventListener('submit', async (e) => {
 
 // Interactive Album Track Player Event Listeners
 function resetAlbumTrackStates() {
-    document.querySelectorAll('.gift-track-item').forEach(el => {
-        el.style.borderColor = 'rgba(255,255,255,0.06)';
-        el.style.background = 'rgba(255,255,255,0.04)';
+    document.querySelectorAll('.gift-track-card, .gift-track-item').forEach(el => {
+        el.classList.remove('active-playing');
         const playSvg = el.querySelector('.track-play-svg');
         const pauseSvg = el.querySelector('.track-pause-svg');
         const wave = el.querySelector('.track-item-wave');
@@ -3912,25 +4152,19 @@ function resetAlbumTrackStates() {
 }
 
 document.addEventListener('click', (e) => {
-    // Play Full Album Hero Button Click
-    const heroPlayBtn = e.target.closest('#btn-album-listen-hero');
-    if (heroPlayBtn) {
-        const firstTrack = document.querySelector('.gift-track-item');
-        if (firstTrack) {
-            firstTrack.click();
-            firstTrack.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    // Individual Track Card or Track Play Button Click
+    const trackCard = e.target.closest('.gift-track-card, .gift-track-item');
+    if (trackCard) {
+        // If clicking download button, do not toggle playback
+        if (e.target.closest('.btn-track-download, .js-spa-download-btn')) {
+            return;
         }
-        return;
-    }
 
-    // Individual Track Item or Track Play Button Click
-    const trackItem = e.target.closest('.gift-track-item');
-    if (trackItem) {
         const audio = document.getElementById('gift-album-audio');
         if (!audio) return;
 
-        const src = trackItem.getAttribute('data-src');
-        const title = trackItem.getAttribute('data-title');
+        const src = trackCard.getAttribute('data-src');
+        const title = trackCard.getAttribute('data-title');
         const nowPlayingTitle = document.getElementById('album-now-playing-title');
         const headerWave = document.getElementById('album-header-wave');
 
@@ -3939,9 +4173,10 @@ document.addEventListener('click', (e) => {
         if (isCurrentTrack && !audio.paused) {
             // Pause current track
             audio.pause();
-            const playSvg = trackItem.querySelector('.track-play-svg');
-            const pauseSvg = trackItem.querySelector('.track-pause-svg');
-            const wave = trackItem.querySelector('.track-item-wave');
+            trackCard.classList.remove('active-playing');
+            const playSvg = trackCard.querySelector('.track-play-svg');
+            const pauseSvg = trackCard.querySelector('.track-pause-svg');
+            const wave = trackCard.querySelector('.track-item-wave');
             if (playSvg) playSvg.style.display = 'block';
             if (pauseSvg) pauseSvg.style.display = 'none';
             if (wave) wave.style.display = 'none';
@@ -3955,15 +4190,14 @@ document.addEventListener('click', (e) => {
             if (!isCurrentTrack) {
                 audio.src = src;
                 audio.setAttribute('data-active-src', src);
-                audio.setAttribute('data-current-index', trackItem.getAttribute('data-index'));
+                audio.setAttribute('data-current-index', trackCard.getAttribute('data-index'));
             }
 
             audio.play().then(() => {
-                trackItem.style.borderColor = '#0ad8ad';
-                trackItem.style.background = 'rgba(10, 216, 173, 0.08)';
-                const playSvg = trackItem.querySelector('.track-play-svg');
-                const pauseSvg = trackItem.querySelector('.track-pause-svg');
-                const wave = trackItem.querySelector('.track-item-wave');
+                trackCard.classList.add('active-playing');
+                const playSvg = trackCard.querySelector('.track-play-svg');
+                const pauseSvg = trackCard.querySelector('.track-pause-svg');
+                const wave = trackCard.querySelector('.track-item-wave');
                 if (playSvg) playSvg.style.display = 'none';
                 if (pauseSvg) pauseSvg.style.display = 'block';
                 if (wave) wave.style.display = 'inline-flex';
@@ -3982,7 +4216,7 @@ document.addEventListener('page-loaded', () => {
     if (audio) {
         audio.addEventListener('ended', () => {
             const currentIndex = parseInt(audio.getAttribute('data-current-index') || '0', 10);
-            const tracks = document.querySelectorAll('.gift-track-item');
+            const tracks = document.querySelectorAll('.gift-track-card, .gift-track-item');
             const nextTrack = tracks[currentIndex + 1] || tracks[0];
             if (nextTrack) {
                 nextTrack.click();

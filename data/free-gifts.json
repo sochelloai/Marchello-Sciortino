@@ -6,46 +6,87 @@
     "type": "Music Album",
     "badge": "Available Now",
     "meta_title": "Win Anyway | Free Music Album by Marchello Sciortino",
-    "meta_desc": "Winning Despite the Odds — Official music album by Marchello Sciortino featuring inspiring original songs of faith, resilience, and triumph.",
+    "meta_desc": "Winning Despite the Odds — The official 10-track album by Marchello Sciortino. Stream and download all 10 original anthems of faith, resilience, and triumph.",
     "bullets": [
-      "Inspiring original music born from faith & resilience.",
+      "10 original inspirational tracks born from faith & resilience.",
       "Anthems of overcoming odds and turning limitations into agency.",
-      "Interactive track streaming & full audio access."
+      "Stream every track online or download the full 10-track album."
     ],
     "cover_image": "/assets/free-gifts/win_anyway_cover.jpg",
     "file_url": "/win-anyway",
+    "album_zip_url": "/assets/free-gifts/win-anyway/Win_Anyway_Full_Album.zip",
     "button_label": "Win Anyway Album",
     "direct_page_only": true,
     "tracks": [
       {
-        "title": "Winning Despite The Odds",
-        "src": "/speaking-portfolio/Songs/Winning Despite The Odds.mp3",
-        "duration": "3:44"
+        "number": 1,
+        "title": "Win Anyway",
+        "src": "/assets/free-gifts/win-anyway/01-win-anyway.mp3",
+        "cover": "/assets/free-gifts/win-anyway/01-win-anyway-cover.png",
+        "duration": "4:37"
       },
       {
-        "title": "Chosen Anyway",
-        "src": "/speaking-portfolio/Songs/Chosen Anyway.mp3",
-        "duration": "3:32"
+        "number": 2,
+        "title": "Let Them Doubt",
+        "src": "/assets/free-gifts/win-anyway/02-let-them-doubt.mp3",
+        "cover": "/assets/free-gifts/win-anyway/02-let-them-doubt-cover.png",
+        "duration": "3:25"
       },
       {
-        "title": "Endgame Shadows",
-        "src": "/assets/endgame-shadows.mp3",
-        "duration": "2:39"
+        "number": 3,
+        "title": "Little Wins",
+        "src": "/assets/free-gifts/win-anyway/03-little-wins.mp3",
+        "cover": "/assets/free-gifts/win-anyway/03-little-wins-cover.png",
+        "duration": "1:59"
       },
       {
-        "title": "The Battle of the Illusions",
-        "src": "/assets/the-battle-of-the-illusions.mp3",
-        "duration": "4:44"
+        "number": 4,
+        "title": "Make Room",
+        "src": "/assets/free-gifts/win-anyway/04-make-room.mp3",
+        "cover": "/assets/free-gifts/win-anyway/04-make-room-cover.png",
+        "duration": "2:51"
       },
       {
-        "title": "What Does It Mean",
-        "src": "/assets/what-does-it-mean.mp3",
-        "duration": "1:31"
+        "number": 5,
+        "title": "No Permission",
+        "src": "/assets/free-gifts/win-anyway/05-no-permission.mp3",
+        "cover": "/assets/free-gifts/win-anyway/05-no-permission-cover.png",
+        "duration": "2:31"
       },
       {
-        "title": "Chello AI Music",
-        "src": "/assets/chello-ai-music.mp3",
-        "duration": "0:31"
+        "number": 6,
+        "title": "Not Today",
+        "src": "/assets/free-gifts/win-anyway/06-not-today.mp3",
+        "cover": "/assets/free-gifts/win-anyway/06-not-today-cover.png",
+        "duration": "2:44"
+      },
+      {
+        "number": 7,
+        "title": "Play the Hand",
+        "src": "/assets/free-gifts/win-anyway/07-play-the-hand.mp3",
+        "cover": "/assets/free-gifts/win-anyway/07-play-the-hand-cover.png",
+        "duration": "2:05"
+      },
+      {
+        "number": 8,
+        "title": "Pressure Makes Diamonds",
+        "src": "/assets/free-gifts/win-anyway/08-pressure-makes-diamonds.mp3",
+        "cover": "/assets/free-gifts/win-anyway/08-pressure-makes-diamonds-cover.png",
+        "duration": "2:16"
+      },
+      {
+        "number": 9,
+        "title": "Still Rising",
+        "src": "/assets/free-gifts/win-anyway/09-still-rising.mp3",
+        "cover": "/assets/free-gifts/win-anyway/09-still-rising-cover.png",
+        "duration": "3:02"
+      },
+      {
+        "number": 10,
+        "title": "The Next Step",
+        "src": "/assets/free-gifts/win-anyway/10-the-next-step.mp3",
+        "cover": "/assets/free-gifts/win-anyway/10-the-next-step-cover.png",
+        "duration": "3:02"
       }
     ]
   },
