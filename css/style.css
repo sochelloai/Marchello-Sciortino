@@ -6122,42 +6122,71 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
 
 /* Mobile responsive layout (max-width: 768px) */
 @media (max-width: 768px) {
-    .signature-cta-container {
-        display: inline-block;
-        position: relative;
-        margin-top: 50px;
-        width: 100%;
+    .hero-ctas {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
     }
-    
+
+    .signature-cta-container {
+        display: inline-flex;
+        align-items: center;
+        position: relative;
+        margin-top: 0;
+        width: auto;
+        max-width: 100%;
+        gap: 12px;
+    }
+
+    .signature-cta-container .btn-outline-white {
+        font-size: 0.82rem;
+        padding: 0.68rem 1.05rem;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
     .signature-program-badge {
-        position: absolute;
-        left: 50%;
-        top: -65px; /* Offset higher to prevent overlap with standard height */
-        transform: translateX(-50%);
+        position: relative;
+        left: auto;
+        top: auto;
+        transform: none;
+        width: 76px;
+        height: 76px;
+        flex-shrink: 0;
         animation: badge-float-glowing-mobile 2.5s ease-in-out infinite alternate;
     }
 
+    .badge-text-overlay {
+        font-size: 0.52rem;
+        line-height: 1.12;
+    }
+
     .signature-program-badge:hover {
-        transform: translateX(-50%) scale(1.05);
+        transform: scale(1.05);
     }
 
     @keyframes badge-float-glowing-mobile {
         0% {
-            transform: translateX(-50%) translateY(0) scale(1);
+            transform: translateY(0) scale(1);
             filter: drop-shadow(0 0 5px rgba(10, 216, 173, 0.45));
         }
         100% {
-            transform: translateX(-50%) translateY(-6px) scale(1.03);
-            filter: drop-shadow(0 0 15px rgba(10, 216, 173, 0.85)) drop-shadow(0 0 5px rgba(10, 216, 173, 0.4));
+            transform: translateY(-4px) scale(1.03);
+            filter: drop-shadow(0 0 12px rgba(10, 216, 173, 0.85)) drop-shadow(0 0 4px rgba(10, 216, 173, 0.4));
         }
     }
 
     .signature-arrow-svg {
-        left: 50%;
-        top: -24px;
-        width: 50px;
-        height: 35px;
-        transform: translateX(-50%) rotate(-90deg); /* Points down towards the stacked button below */
+        position: absolute;
+        left: auto;
+        right: 64px;
+        top: 50%;
+        width: 36px;
+        height: 22px;
+        transform: translateY(-50%);
+        pointer-events: none;
+        z-index: 5;
     }
 }
 
