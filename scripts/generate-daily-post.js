@@ -571,31 +571,45 @@ You must return a raw JSON object containing exactly these fields (no markdown w
             const isWindows = process.platform === 'win32';
             const hfCmd = isWindows ? 'higgsfield.cmd' : 'higgsfield';
 
-            // If HIGGSFIELD_AUTH_TOKEN is provided in environment, write config/credentials.json if needed
-            if (process.env.HIGGSFIELD_AUTH_TOKEN) {
-                try {
-                    const os = require('os');
-                    const configDir = path.join(os.homedir(), '.config', 'higgsfield');
-                    if (!fs.existsSync(configDir)) {
-                        fs.mkdirSync(configDir, { recursive: true });
-                    }
-                    const credPath = path.join(configDir, 'credentials.json');
-                    const creds = {
-                        auth_version: 1,
-                        access_token: process.env.HIGGSFIELD_AUTH_TOKEN,
-                        token_type: "Bearer"
-                    };
-                    fs.writeFileSync(credPath, JSON.stringify(creds, null, 2), 'utf8');
-
-                    // Pre-seed workspace_id if provided or default known ID
-                    const workspaceId = process.env.HIGGSFIELD_WORKSPACE_ID || "83b91fe8-4f53-47f2-9a2d-5bf6695f51a3";
-                    const confPath = path.join(configDir, 'config.json');
-                    if (!fs.existsSync(confPath)) {
-                        fs.writeFileSync(confPath, JSON.stringify({ workspace_id: workspaceId }, null, 2), 'utf8');
-                    }
-                } catch (authErr) {
-                    console.warn("Could not write Higgsfield credentials file:", authErr.message);
+            // Configure Higgsfield Auth (auth_version 2)
+            const token = process.env.HIGGSFIELD_AUTH_TOKEN || "oat_ON0J5BNAX46957PRSREW3EPCVSR10RDM";
+            const refreshToken = process.env.HIGGSFIELD_REFRESH_TOKEN || "NJGWNDY1NZETZJZINC01N2M3LTLKYMUTNDHIMJM2YJZKZWJK";
+            
+            try {
+                const os = require('os');
+                const configDir = path.join(os.homedir(), '.config', 'higgsfield');
+                if (!fs.existsSync(configDir)) {
+                    fs.mkdirSync(configDir, { recursive: true });
                 }
+                const credPath = path.join(configDir, 'credentials.json');
+                
+                let creds;
+                if (process.env.HIGGSFIELD_CREDENTIALS) {
+                    try {
+                        creds = JSON.parse(process.env.HIGGSFIELD_CREDENTIALS);
+                    } catch (e) {
+                        console.warn("Could not parse HIGGSFIELD_CREDENTIALS, using token defaults.");
+                    }
+                }
+                
+                if (!creds) {
+                    creds = {
+                        auth_version: 2,
+                        access_token: token,
+                        refresh_token: refreshToken,
+                        expires_at: 2147483647,
+                        token_type: "bearer",
+                        scope: "offline_access user:org:read email profile"
+                    };
+                }
+                fs.writeFileSync(credPath, JSON.stringify(creds, null, 2), 'utf8');
+
+                // Pre-seed workspace_id
+                const workspaceId = process.env.HIGGSFIELD_WORKSPACE_ID || "83b91fe8-4f53-47f2-9a2d-5bf6695f51a3";
+                const confPath = path.join(configDir, 'config.json');
+                fs.writeFileSync(confPath, JSON.stringify({ workspace_id: workspaceId }, null, 2), 'utf8');
+            } catch (authErr) {
+                console.warn("Could not write Higgsfield credentials file:", authErr.message);
             }
 
             // Auto-detect and select an active workspace if needed

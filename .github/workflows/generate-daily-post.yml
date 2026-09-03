@@ -37,6 +37,7 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           HIGGSFIELD_AUTH_TOKEN: ${{ secrets.HIGGSFIELD_AUTH_TOKEN }}
+          HIGGSFIELD_REFRESH_TOKEN: ${{ secrets.HIGGSFIELD_REFRESH_TOKEN }}
           HIGGSFIELD_WORKSPACE_ID: "83b91fe8-4f53-47f2-9a2d-5bf6695f51a3"
         run: |
           node scripts/generate-daily-post.js
