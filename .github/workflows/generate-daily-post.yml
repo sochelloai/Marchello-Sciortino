@@ -29,10 +29,14 @@ jobs:
         with:
           node-version: 18
 
+      - name: Install Higgsfield CLI
+        run: |
+          npm install -g @higgsfield/cli || curl -fsSL https://raw.githubusercontent.com/higgsfield-ai/cli/main/install.sh | sh || true
+
       - name: Generate Daily Blog Post
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          HIGGSFIELD_AUTH_TOKEN: ${{ secrets.HIGGSFIELD_AUTH_TOKEN }}
         run: |
           node scripts/generate-daily-post.js
 

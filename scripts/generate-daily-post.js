@@ -2,10 +2,10 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const http = require('http');
+const { execSync } = require('child_process');
 
 // Read API keys from environment
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
 if (!GEMINI_API_KEY) {
     console.error("Error: GEMINI_API_KEY is not defined in the environment.");
@@ -549,7 +549,7 @@ You must return a raw JSON object containing exactly these fields (no markdown w
         console.log(`Tag: ${generatedArticle.tag}`);
         console.log(`Image Prompt: "${generatedArticle.image_prompt}"`);
 
-        // Step 2: Generate the image (Try OpenAI DALL-E 3 first, then Google Imagen 3)
+        // Step 2: Generate the image (Try Higgsfield first, then Google Imagen 3 / Gemini)
         let imageBuffer = null;
         let relativeImageSrc = "";
         // Define unified Marchello Brand Image Style Guide parameters (customized dynamically for this month)
@@ -565,61 +565,65 @@ You must return a raw JSON object containing exactly these fields (no markdown w
 
         const imagePromptText = `${generatedArticle.image_prompt}. ${brandStyleInstructions}`;
 
-        if (OPENAI_API_KEY) {
-            const openaiCandidates = [
-                { model: "gpt-image-2" },
-                { model: "gpt-image-1.5" },
-                { model: "gpt-image-1" },
-                { model: "dall-e-3" },
-                { model: "dall-e-2" },
-                {} // No model specified (defaults to endpoint standard)
-            ];
-
-            for (const candidate of openaiCandidates) {
-                console.log(`Calling OpenAI DALL-E API with model options: ${JSON.stringify(candidate)}...`);
+        // Attempt 1: Higgsfield Generation (GPT Image 2)
+        console.log("Attempting image generation via Higgsfield (gpt_image_2)...");
+        try {
+            // If HIGGSFIELD_AUTH_TOKEN is provided in environment, write config/credentials.json if needed
+            if (process.env.HIGGSFIELD_AUTH_TOKEN) {
                 try {
-                    const openaiUrl = "https://api.openai.com/v1/images/generations";
-                    const headers = {
-                        "Authorization": `Bearer ${OPENAI_API_KEY}`
-                    };
-                    const body = {
-                        prompt: imagePromptText,
-                        n: 1,
-                        size: "1024x1024",
-                        ...candidate
-                    };
-                    const res = await postJson(openaiUrl, headers, body);
-                    const b64Data = res?.data?.[0]?.b64_json;
-                    const imageUrl = res?.data?.[0]?.url;
-
-                    if (b64Data) {
-                        imageBuffer = Buffer.from(b64Data, 'base64');
-                        console.log("Image generated successfully via OpenAI DALL-E (base64).");
-                        break;
-                    } else if (imageUrl) {
-                        console.log(`Downloading generated image from: ${imageUrl}`);
-                        const blogAssetsDir = path.join(__dirname, '..', 'assets', 'blog');
-                        if (!fs.existsSync(blogAssetsDir)) {
-                            fs.mkdirSync(blogAssetsDir, { recursive: true });
-                        }
-                        const imageSlug = sanitizeId(generatedArticle.url_slug || articleId);
-                        const localImageName = `${imageSlug}.png`;
-                        const localImagePath = path.join(blogAssetsDir, localImageName);
-
-                        await downloadFile(imageUrl, localImagePath);
-                        imageBuffer = fs.readFileSync(localImagePath);
-                        relativeImageSrc = `assets/blog/${localImageName}`;
-                        console.log("Image downloaded and written successfully via OpenAI DALL-E.");
-                        break;
-                    } else {
-                        console.warn("OpenAI response did not contain image data.");
+                    const os = require('os');
+                    const configDir = path.join(os.homedir(), '.config', 'higgsfield');
+                    if (!fs.existsSync(configDir)) {
+                        fs.mkdirSync(configDir, { recursive: true });
                     }
-                } catch (openaiErr) {
-                    console.warn(`OpenAI candidate attempt failed: ${openaiErr.message}`);
+                    const credPath = path.join(configDir, 'credentials.json');
+                    const creds = {
+                        auth_version: 1,
+                        access_token: process.env.HIGGSFIELD_AUTH_TOKEN,
+                        token_type: "Bearer"
+                    };
+                    fs.writeFileSync(credPath, JSON.stringify(creds, null, 2), 'utf8');
+                } catch (authErr) {
+                    console.warn("Could not write Higgsfield credentials file:", authErr.message);
                 }
             }
-        } else {
-            console.log("Skipping OpenAI DALL-E: OPENAI_API_KEY not found in environment.");
+
+            const blogAssetsDir = path.join(__dirname, '..', 'assets', 'blog');
+            if (!fs.existsSync(blogAssetsDir)) {
+                fs.mkdirSync(blogAssetsDir, { recursive: true });
+            }
+            const imageSlug = sanitizeId(generatedArticle.url_slug || articleId);
+            const localImageName = `${imageSlug}.png`;
+            const localImagePath = path.join(blogAssetsDir, localImageName);
+
+            const isWindows = process.platform === 'win32';
+            const hfCmd = isWindows ? 'higgsfield.cmd' : 'higgsfield';
+            
+            // Clean and escape prompt for CLI arguments
+            const escapedPrompt = imagePromptText.replace(/[\r\n]+/g, ' ').replace(/"/g, '\\"');
+            const hfExecCommand = `${hfCmd} generate create gpt_image_2 --prompt "${escapedPrompt}" --aspect_ratio 1:1 --wait`;
+
+            console.log(`Executing Higgsfield generation command...`);
+            const hfOutput = execSync(hfExecCommand, {
+                encoding: 'utf8',
+                stdio: ['pipe', 'pipe', 'pipe'],
+                timeout: 300000 // 5-minute timeout for high-res generation
+            });
+
+            // Extract image URL from Higgsfield stdout
+            const urlMatch = hfOutput.match(/https:\/\/[^\s"'<>]+\.(png|jpg|jpeg|webp)/i);
+            if (urlMatch) {
+                const imageUrl = urlMatch[0];
+                console.log(`Downloading generated Higgsfield image from: ${imageUrl}`);
+                await downloadFile(imageUrl, localImagePath);
+                imageBuffer = fs.readFileSync(localImagePath);
+                relativeImageSrc = `assets/blog/${localImageName}`;
+                console.log("Image downloaded and saved successfully via Higgsfield.");
+            } else {
+                console.warn("Higgsfield CLI command completed but no image URL was found in output:", hfOutput);
+            }
+        } catch (hfErr) {
+            console.warn(`Higgsfield generation attempt failed: ${hfErr.message}`);
         }
 
         if (!imageBuffer && GEMINI_API_KEY) {
@@ -646,13 +650,13 @@ You must return a raw JSON object containing exactly these fields (no markdown w
 
             if (imageModels.length > 0) {
                 console.log(`Detected ${imageModels.length} image generation models on this key:`);
-                imageModels.forEach(m => console.log(`- ${m.name} (methods: ${m.supportedMethods.join(', ')})`));
+                imageModels.forEach(m => console.log(`- ${m.name} (methods: ${m.supportedMethods && Array.isArray(m.supportedMethods) ? m.supportedMethods.join(', ') : 'none'})`));
 
                 for (const model of imageModels) {
                     console.log(`Attempting image generation using auto-detected model: "${model.name}"...`);
 
                     // Attempt based on supported methods
-                    const methods = model.supportedMethods.map(m => m.split('/').pop() || m);
+                    const methods = (model.supportedMethods || []).map(m => m.split('/').pop() || m);
 
                     if (methods.includes("generateContent")) {
                         try {
@@ -787,7 +791,7 @@ You must return a raw JSON object containing exactly these fields (no markdown w
                 }
             }
         } else {
-            throw new Error("CRITICAL: Failed to generate a custom featured image using DALL-E 3, Gemini 2.5 Flash Image, or Google Imagen. Aborting post generation to avoid placeholder fallback images.");
+            throw new Error("CRITICAL: Failed to generate a custom featured image using Higgsfield, Gemini 2.5 Flash Image, or Google Imagen. Aborting post generation to avoid placeholder fallback images.");
         }
 
         // Step 4: Append new post and write back
