@@ -3717,6 +3717,9 @@ const singleGiftTemplate = (gift) => {
             gap: 16px;
             touch-action: manipulation;
             -webkit-tap-highlight-color: transparent;
+            box-sizing: border-box;
+            max-width: 100%;
+            overflow: hidden;
         }
 
         .gift-track-card.active-playing {
@@ -3766,6 +3769,8 @@ const singleGiftTemplate = (gift) => {
             display: flex;
             flex-direction: column;
             gap: 3px;
+            flex: 1;
+            overflow: hidden;
         }
 
         .track-card-num {
@@ -3785,6 +3790,7 @@ const singleGiftTemplate = (gift) => {
             overflow: hidden;
             text-overflow: ellipsis;
             line-height: 1.3;
+            overflow-wrap: break-word;
         }
 
         .track-card-dur {
@@ -3873,14 +3879,37 @@ const singleGiftTemplate = (gift) => {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 12px;
+                padding: 14px;
+                box-sizing: border-box;
+                max-width: 100%;
+                overflow: hidden;
+            }
+            .track-card-left {
+                width: 100%;
+                min-width: 0;
+                box-sizing: border-box;
+            }
+            .track-card-meta {
+                flex: 1;
+                min-width: 0;
+                overflow: hidden;
+            }
+            .track-card-title {
+                white-space: normal;
+                word-break: normal;
+                overflow-wrap: break-word;
+                font-size: 0.96rem;
+                line-height: 1.25;
             }
             .track-card-right {
                 width: 100%;
                 justify-content: space-between;
+                box-sizing: border-box;
             }
             .btn-track-download {
                 flex: 1;
                 justify-content: center;
+                box-sizing: border-box;
             }
             .full-album-btn-text-desktop {
                 display: none !important;
