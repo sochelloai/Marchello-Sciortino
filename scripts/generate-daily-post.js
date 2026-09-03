@@ -568,6 +568,9 @@ You must return a raw JSON object containing exactly these fields (no markdown w
         // Attempt 1: Higgsfield Generation (GPT Image 2)
         console.log("Attempting image generation via Higgsfield (gpt_image_2)...");
         try {
+            const isWindows = process.platform === 'win32';
+            const hfCmd = isWindows ? 'higgsfield.cmd' : 'higgsfield';
+
             // If HIGGSFIELD_AUTH_TOKEN is provided in environment, write config/credentials.json if needed
             if (process.env.HIGGSFIELD_AUTH_TOKEN) {
                 try {
@@ -583,9 +586,39 @@ You must return a raw JSON object containing exactly these fields (no markdown w
                         token_type: "Bearer"
                     };
                     fs.writeFileSync(credPath, JSON.stringify(creds, null, 2), 'utf8');
+
+                    // Pre-seed workspace_id if provided or default known ID
+                    const workspaceId = process.env.HIGGSFIELD_WORKSPACE_ID || "83b91fe8-4f53-47f2-9a2d-5bf6695f51a3";
+                    const confPath = path.join(configDir, 'config.json');
+                    if (!fs.existsSync(confPath)) {
+                        fs.writeFileSync(confPath, JSON.stringify({ workspace_id: workspaceId }, null, 2), 'utf8');
+                    }
                 } catch (authErr) {
                     console.warn("Could not write Higgsfield credentials file:", authErr.message);
                 }
+            }
+
+            // Auto-detect and select an active workspace if needed
+            try {
+                const wsOutput = execSync(`${hfCmd} workspace list --json`, {
+                    encoding: 'utf8',
+                    stdio: ['pipe', 'pipe', 'pipe'],
+                    timeout: 15000
+                });
+                const wsList = JSON.parse(wsOutput);
+                if (Array.isArray(wsList) && wsList.length > 0) {
+                    const selected = wsList.find(w => w.is_selected) || wsList[0];
+                    if (selected && selected.id) {
+                        execSync(`${hfCmd} workspace set ${selected.id}`, {
+                            encoding: 'utf8',
+                            stdio: ['pipe', 'pipe', 'pipe'],
+                            timeout: 10000
+                        });
+                        console.log(`Using Higgsfield workspace: "${selected.name || 'default'}" (${selected.id})`);
+                    }
+                }
+            } catch (wsErr) {
+                console.warn("Workspace selection notice:", wsErr.message);
             }
 
             const blogAssetsDir = path.join(__dirname, '..', 'assets', 'blog');
@@ -595,9 +628,6 @@ You must return a raw JSON object containing exactly these fields (no markdown w
             const imageSlug = sanitizeId(generatedArticle.url_slug || articleId);
             const localImageName = `${imageSlug}.png`;
             const localImagePath = path.join(blogAssetsDir, localImageName);
-
-            const isWindows = process.platform === 'win32';
-            const hfCmd = isWindows ? 'higgsfield.cmd' : 'higgsfield';
             
             // Clean and escape prompt for CLI arguments
             const escapedPrompt = imagePromptText.replace(/[\r\n]+/g, ' ').replace(/"/g, '\\"');
@@ -641,22 +671,28 @@ You must return a raw JSON object containing exactly these fields (no markdown w
                 console.warn("Could not retrieve models list for auto-detection:", err.message);
             }
 
+            // Helper to get methods from Google model object
+            const getMethods = m => m.supportedGenerationMethods || m.supportedMethods || [];
+
             // 2. Identify candidate image models in the list
             const imageModels = availableModels.filter(m =>
                 m.name.includes("imagen") ||
                 m.name.includes("image") ||
-                (m.supportedMethods && m.supportedMethods.some(method => method.toLowerCase().includes("image")))
+                (getMethods(m).some(method => method.toLowerCase().includes("image")))
             );
 
             if (imageModels.length > 0) {
                 console.log(`Detected ${imageModels.length} image generation models on this key:`);
-                imageModels.forEach(m => console.log(`- ${m.name} (methods: ${m.supportedMethods && Array.isArray(m.supportedMethods) ? m.supportedMethods.join(', ') : 'none'})`));
+                imageModels.forEach(m => {
+                    const methods = getMethods(m);
+                    console.log(`- ${m.name} (methods: ${methods.length > 0 ? methods.join(', ') : 'none'})`);
+                });
 
                 for (const model of imageModels) {
                     console.log(`Attempting image generation using auto-detected model: "${model.name}"...`);
 
                     // Attempt based on supported methods
-                    const methods = (model.supportedMethods || []).map(m => m.split('/').pop() || m);
+                    const methods = getMethods(model).map(m => m.split('/').pop() || m);
 
                     if (methods.includes("generateContent")) {
                         try {
