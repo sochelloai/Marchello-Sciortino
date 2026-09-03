@@ -46,4 +46,6 @@ scratch/
 scratch_old_router*.js
 mcp_out.txt
 *.log
+_worker.bundle/
+_worker.bundle
 
