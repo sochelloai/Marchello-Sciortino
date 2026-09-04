@@ -126,6 +126,7 @@ const Router = {
                 '/contact': "Contact | Marchello Sciortino",
                 '/free-gifts': "Free Gifts | Marchello Sciortino",
                 '/win-anyway': "Win Anyway | Free Music Album by Marchello Sciortino",
+                '/you-are-my-fortress': "You Are My Fortress | Free Song Download by Marchello Sciortino",
                 '/resources': "Resources | Marchello Sciortino",
                 '/privacy': "Privacy Policy | Marchello Sciortino",
                 '/terms': "Terms of Service | Marchello Sciortino",
@@ -2838,6 +2839,34 @@ const FREE_GIFTS_DATA = [
         ]
     },
     {
+        id: "you-are-my-fortress",
+        slug: "you-are-my-fortress",
+        title: "You Are My Fortress",
+        type: "Music Single",
+        badge: "Available Now",
+        meta_title: "You Are My Fortress | Free Song Download by Marchello Sciortino",
+        meta_desc: "An uplifting and powerful anthem of faith, strength, and resilience by Marchello Sciortino. Stream online or download the official high-quality MP3 track for free.",
+        bullets: [
+            "Original inspirational single of faith, strength & resilience.",
+            "A soaring anthem of triumph, refuge, and finding steady ground.",
+            "Stream online or download the full studio-quality MP3 track."
+        ],
+        cover_image: "/assets/free-gifts/you-are-my-fortress/you_are_my_fortress_thumbnail.png",
+        display_image: "/assets/free-gifts/you-are-my-fortress/you_are_my_fortress_display.png",
+        file_url: "/you-are-my-fortress",
+        button_label: "Listen & Download",
+        direct_page_only: true,
+        tracks: [
+            {
+                number: 1,
+                title: "You Are My Fortress",
+                src: "/assets/free-gifts/you-are-my-fortress/YOU_ARE_MY_FORTRESS.mp3",
+                cover: "/assets/free-gifts/you-are-my-fortress/you_are_my_fortress_display.png",
+                duration: "6:32"
+            }
+        ]
+    },
+    {
         id: "from-idea-to-free-product",
         slug: "from-idea-to-free-product",
         title: "From Idea to Free Product",
@@ -3294,6 +3323,30 @@ const freeGiftsTemplate = () => {
             box-shadow: 0 0 0 3px rgba(10, 216, 173, 0.15);
             background: #ffffff;
         }
+
+        .unlock-security-disclaimer {
+            white-space: nowrap !important;
+            font-size: clamp(0.62rem, 2.4vw, 0.82rem) !important;
+            letter-spacing: -0.015em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            margin: 12px 0 0 0;
+            color: #64748b;
+            line-height: 1.2;
+            text-align: center;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        @media (max-width: 640px) {
+            .unlock-security-disclaimer {
+                font-size: clamp(0.60rem, 2.3vw, 0.74rem) !important;
+                letter-spacing: -0.02em;
+            }
+        }
     </style>
 
     <div class="page-intro" style="position: relative; overflow: hidden;">
@@ -3336,7 +3389,7 @@ const freeGiftsTemplate = () => {
                     <button type="submit" class="btn-unlock-orange" style="background: #ff5722; color: #ffffff; width: 100%; padding: 14px 20px; font-size: 1rem; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; transition: background 0.2s, transform 0.15s;">
                         Unlock Free Access &rarr;
                     </button>
-                    <p class="unlock-security-disclaimer" style="margin: 12px 0 0 0; font-size: 0.82rem; color: #64748b; display: flex; align-items: center; justify-content: center; gap: 6px; line-height: 1.4;">
+                    <p class="unlock-security-disclaimer" style="margin: 12px 0 0 0; font-size: clamp(0.62rem, 2.4vw, 0.82rem); color: #64748b; display: flex; align-items: center; justify-content: center; gap: 5px; line-height: 1.2; white-space: nowrap; letter-spacing: -0.015em;">
                         <span>🔒</span> <span>“No spam. Your email address stays strictly confidential.”</span>
                     </p>
                     <a href="/" class="btn-decline-home" style="display: block; text-align: center; margin-top: 14px; color: #64748b; font-size: 0.78rem; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; transition: color 0.2s;">
@@ -3943,9 +3996,30 @@ const singleGiftTemplate = (gift) => {
             border-color: #0ad8ad;
         }
 
+        .unlock-security-disclaimer {
+            white-space: nowrap !important;
+            font-size: clamp(0.62rem, 2.4vw, 0.82rem) !important;
+            letter-spacing: -0.015em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            margin: 12px 0 0 0;
+            color: #64748b;
+            line-height: 1.2;
+            text-align: center;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
         @media (max-width: 640px) {
             .album-inline-unlock-card {
                 padding: 28px 18px;
+            }
+            .unlock-security-disclaimer {
+                font-size: clamp(0.60rem, 2.3vw, 0.74rem) !important;
+                letter-spacing: -0.02em;
             }
         }
     </style>
@@ -3977,7 +4051,7 @@ const singleGiftTemplate = (gift) => {
                     <div>
                         <div class="single-gift-card">
                             <div class="single-gift-cover-wrap">
-                                <img src="${gift.cover_image}" alt="${gift.title} Cover" class="single-gift-cover-img">
+                                <img src="${gift.display_image || gift.cover_image}" alt="${gift.title} Cover" class="single-gift-cover-img" style="${gift.display_image ? 'aspect-ratio: 1 / 1; object-fit: cover;' : ''}">
                                 <span class="single-gift-badge">&#10004; ${gift.badge}</span>
                             </div>
                         </div>
@@ -4022,7 +4096,7 @@ const singleGiftTemplate = (gift) => {
                             <button type="submit" class="btn-unlock-orange" style="background: #ff5722; color: #ffffff; width: 100%; padding: 14px 20px; font-size: 1.05rem; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; transition: background 0.2s, transform 0.15s; box-shadow: 0 8px 20px rgba(255, 87, 34, 0.35);">
                                 Unlock Free Access &rarr;
                             </button>
-                            <p class="unlock-security-disclaimer" style="margin: 14px 0 0 0; font-size: 0.84rem; color: #64748b; display: flex; align-items: center; justify-content: center; gap: 6px; line-height: 1.4;">
+                            <p class="unlock-security-disclaimer" style="margin: 14px 0 0 0; font-size: clamp(0.62rem, 2.4vw, 0.82rem); color: #64748b; display: flex; align-items: center; justify-content: center; gap: 5px; line-height: 1.2; white-space: nowrap; letter-spacing: -0.015em;">
                                 <span>🔒</span> <span>“No spam. Your email address stays strictly confidential.”</span>
                             </p>
                             <a href="/" class="btn-decline-home" style="display: block; text-align: center; margin-top: 16px; color: #64748b; font-size: 0.8rem; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; transition: color 0.2s;">
@@ -4039,9 +4113,9 @@ const singleGiftTemplate = (gift) => {
                                     <svg class="album-music-icon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
                                 </div>
                                 <div>
-                                    <h3 style="margin: 0; color: #ffffff; font-size: 1.25rem; font-family: var(--font-heading); font-weight: 800;">Official 10-Track Album</h3>
+                                    <h3 style="margin: 0; color: #ffffff; font-size: 1.25rem; font-family: var(--font-heading); font-weight: 800;">${gift.tracks.length > 1 ? (gift.player_heading || `Official ${gift.tracks.length}-Track Album`) : (gift.player_heading || 'Official Single Track')}</h3>
                                     <span id="album-now-playing-title" style="font-size: 0.88rem; color: #0ad8ad; font-weight: 600;">
-                                        Preview tracks or download individually below
+                                        ${gift.tracks.length > 1 ? 'Preview tracks or download individually below' : 'Stream the song or download the MP3 below'}
                                     </span>
                                 </div>
                             </div>
@@ -4060,7 +4134,7 @@ const singleGiftTemplate = (gift) => {
                         <!-- Tracklist container -->
                         <div class="album-tracks-container" style="position: relative;">
                             <!-- Interactive Tracklist with Track Cards & Download Buttons -->
-                            <div class="gift-tracklist" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px;">
+                            <div class="gift-tracklist" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: ${gift.tracks.length > 1 ? '24px' : '0'};">
                                 ${gift.tracks.map((track, tIdx) => `
                                     <div class="gift-track-card" data-src="${track.src}" data-index="${tIdx}" data-title="${track.title}">
                                         <div class="track-card-left">
@@ -4070,7 +4144,7 @@ const singleGiftTemplate = (gift) => {
                                                 <svg class="track-pause-svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
                                             </button>
                                             <div class="track-card-meta">
-                                                <span class="track-card-num">Track ${track.number || (tIdx + 1)}</span>
+                                                <span class="track-card-num">${gift.tracks.length > 1 ? `Track ${track.number || (tIdx + 1)}` : 'Single Track'}</span>
                                                 <h4 class="track-card-title">${track.title}</h4>
                                                 <span class="track-card-dur">${track.duration}</span>
                                             </div>
@@ -4081,7 +4155,7 @@ const singleGiftTemplate = (gift) => {
                                                 <div class="portfolio-wave-bar"></div>
                                                 <div class="portfolio-wave-bar"></div>
                                             </div>
-                                            <button type="button" class="btn-track-download js-download-track-btn" data-src="${track.src}" data-title="${track.title}" data-filename="${String(track.number || (tIdx + 1)).padStart(2, '0')} - ${track.title}.mp3" title="Direct Download ${track.title} MP3">
+                                            <button type="button" class="btn-track-download js-download-track-btn" data-src="${track.src}" data-title="${track.title}" data-filename="${gift.tracks.length > 1 ? `${String(track.number || (tIdx + 1)).padStart(2, '0')} - ${track.title}.mp3` : `${track.title}.mp3`}" title="Direct Download ${track.title} MP3">
                                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                                                 Download MP3
                                             </button>
@@ -4090,14 +4164,16 @@ const singleGiftTemplate = (gift) => {
                                 `).join('')}
                             </div>
 
+                            ${gift.tracks.length > 1 ? `
                             <!-- Download Full Album Button at the bottom of the card -->
                             <div class="album-download-bottom-row" style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 22px;">
                                 <button type="button" class="btn-download-full-album js-full-album-btn" data-title="${gift.title} - Complete Album">
                                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                                    <span class="full-album-btn-text-desktop">DOWNLOAD FULL ALBUM (ALL 10 TRACKS - ZIP)</span>
+                                    <span class="full-album-btn-text-desktop">DOWNLOAD FULL ALBUM (ALL ${gift.tracks.length} TRACKS - ZIP)</span>
                                     <span class="full-album-btn-text-mobile">Download all</span>
                                 </button>
                             </div>
+                            ` : ''}
                         </div>
                     </div>
                     ` : `
@@ -4133,7 +4209,7 @@ const singleGiftTemplate = (gift) => {
                     <button type="submit" class="btn-unlock-orange" style="background: #ff5722; color: #ffffff; width: 100%; padding: 14px 20px; font-size: 1rem; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; transition: background 0.2s, transform 0.15s;">
                         Unlock Free Access &rarr;
                     </button>
-                    <p class="unlock-security-disclaimer" style="margin: 12px 0 0 0; font-size: 0.82rem; color: #64748b; display: flex; align-items: center; justify-content: center; gap: 6px; line-height: 1.4;">
+                    <p class="unlock-security-disclaimer" style="margin: 12px 0 0 0; font-size: clamp(0.62rem, 2.4vw, 0.82rem); color: #64748b; display: flex; align-items: center; justify-content: center; gap: 5px; line-height: 1.2; white-space: nowrap; letter-spacing: -0.015em;">
                         <span>🔒</span> <span>“No spam. Your email address stays strictly confidential.”</span>
                     </p>
                     <a href="/" class="btn-decline-home" style="display: block; text-align: center; margin-top: 14px; color: #64748b; font-size: 0.78rem; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; transition: color 0.2s;">
@@ -4160,7 +4236,7 @@ function directDownloadFile(fileUrl, suggestedFilename, btn) {
     const isLocalhost = window.location.hostname.includes('127.0.0.1') || window.location.hostname.includes('localhost');
 
     let downloadUrl = fileUrl;
-    if (typeof fileUrl === 'string' && fileUrl.startsWith('/assets/free-gifts/win-anyway/') && fileUrl.endsWith('.mp3')) {
+    if (typeof fileUrl === 'string' && fileUrl.startsWith('/assets/free-gifts/') && fileUrl.endsWith('.mp3')) {
         // Use dedicated download-track endpoint with Content-Disposition: attachment
         if (!isLocalhost || isMobile) {
             downloadUrl = `/api/download-track?file=${encodeURIComponent(fileUrl)}&name=${encodeURIComponent(suggestedFilename)}`;
@@ -4608,7 +4684,7 @@ document.addEventListener('click', (e) => {
             const formView = document.getElementById('spa-form-view');
             if (modal) {
                 const trackTitle = trackCard.getAttribute('data-title') || 'Track';
-                if (copyText) copyText.textContent = `Unlock the 10-track album to stream "${trackTitle}" by entering your email.`;
+                if (copyText) copyText.textContent = `Unlock to stream "${trackTitle}" by entering your email.`;
                 if (formView) formView.style.display = 'block';
                 modal.setAttribute('data-target-file', 'action:unlock-album');
                 modal.classList.add('active');
