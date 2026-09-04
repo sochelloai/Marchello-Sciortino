@@ -3920,205 +3920,29 @@ const singleGiftTemplate = (gift) => {
             }
         }
 
-        /* Locked Album Player Card Styling */
-        .gift-album-player-wrap.is-locked .album-badge-locked {
-            display: inline-flex !important;
-        }
-
-        .gift-album-player-wrap:not(.is-locked) .album-badge-locked {
-            display: none !important;
-        }
-
-        .album-badge-locked {
-            background: rgba(255, 87, 34, 0.2);
-            color: #ff7043;
-            border: 1px solid rgba(255, 87, 34, 0.4);
-            font-size: 0.72rem;
-            font-weight: 700;
-            padding: 3px 10px;
-            border-radius: 12px;
-            letter-spacing: 0.5px;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .gift-album-player-wrap.is-locked .album-music-icon {
-            display: none !important;
-        }
-
-        .gift-album-player-wrap.is-locked .album-locked-icon {
-            display: block !important;
-            color: #ff5722;
-        }
-
-        .gift-album-player-wrap:not(.is-locked) .album-locked-icon {
-            display: none !important;
-        }
-
-        .gift-album-player-wrap:not(.is-locked) .album-music-icon {
-            display: block !important;
-        }
-
-        .gift-album-player-wrap.is-locked .album-header-icon {
-            background: rgba(255, 87, 34, 0.15) !important;
-            color: #ff5722 !important;
-        }
-
-        .gift-album-player-wrap.is-locked .gift-tracklist,
-        .gift-album-player-wrap.is-locked .album-download-bottom-row {
-            filter: blur(2.5px);
-            opacity: 0.35;
-            pointer-events: none;
-            user-select: none;
-        }
-
-        .album-locked-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(8, 27, 41, 0.85);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 16px;
-            z-index: 10;
-            cursor: pointer;
-            padding: 24px;
-            box-sizing: border-box;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
-
-        .gift-album-player-wrap:not(.is-locked) .album-locked-overlay {
-            display: none !important;
-        }
-
-        .album-locked-glass-panel {
-            background: rgba(15, 23, 42, 0.9);
-            border: 1px solid rgba(10, 216, 173, 0.35);
+        /* In-Place Album Unlock Form Card & Album Card Display */
+        .album-inline-unlock-card {
+            background: #ffffff;
             border-radius: 20px;
-            padding: 36px 28px;
+            padding: 38px 30px;
             max-width: 480px;
             width: 100%;
+            margin: 0 auto;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08), 0 0 25px rgba(10, 216, 173, 0.12);
+            border: 1px solid #e2e8f0;
             text-align: center;
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 87, 34, 0.2);
             box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .album-locked-overlay:hover .album-locked-glass-panel {
-            transform: translateY(-2px);
+        .album-inline-unlock-card:hover {
+            box-shadow: 0 22px 50px rgba(0, 0, 0, 0.12), 0 0 35px rgba(10, 216, 173, 0.2);
             border-color: #0ad8ad;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), 0 0 40px rgba(10, 216, 173, 0.25);
-        }
-
-        .album-locked-shield-icon {
-            width: 60px;
-            height: 60px;
-            background: rgba(255, 87, 34, 0.15);
-            border: 2px solid #ff5722;
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            color: #ff5722;
-            margin-bottom: 16px;
-            box-shadow: 0 0 20px rgba(255, 87, 34, 0.35);
-        }
-
-        .album-locked-heading {
-            font-family: var(--font-heading);
-            font-size: 1.35rem;
-            font-weight: 800;
-            color: #ffffff;
-            margin: 0 0 10px;
-            letter-spacing: 0.3px;
-            line-height: 1.3;
-        }
-
-        .album-locked-text {
-            color: #cbd5e1;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            margin: 0 0 22px;
-            max-width: 380px;
-        }
-
-        .btn-unlock-album-modal {
-            background: linear-gradient(135deg, #ff5722 0%, #e64a19 100%);
-            color: #ffffff !important;
-            font-family: var(--font-heading);
-            font-weight: 800;
-            font-size: 1.05rem;
-            letter-spacing: 0.5px;
-            padding: 16px 32px;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            box-shadow: 0 10px 25px rgba(255, 87, 34, 0.45);
-            transition: all 0.2s ease;
-            touch-action: manipulation;
-            -webkit-tap-highlight-color: transparent;
-            text-decoration: none;
-            width: 100%;
-            max-width: 340px;
-            box-sizing: border-box;
-        }
-
-        @media (hover: hover) and (pointer: fine) {
-            .btn-unlock-album-modal:hover {
-                background: linear-gradient(135deg, #f4511e 0%, #d84315 100%);
-                transform: translateY(-2px);
-                box-shadow: 0 14px 30px rgba(255, 87, 34, 0.6);
-            }
-        }
-
-        .btn-unlock-album-modal:active {
-            transform: scale(0.98);
-            opacity: 0.92;
-        }
-
-        .album-locked-guarantee {
-            display: block;
-            margin-top: 14px;
-            color: #0ad8ad;
-            font-size: 0.8rem;
-            font-weight: 700;
-            letter-spacing: 0.5px;
         }
 
         @media (max-width: 640px) {
-            .album-locked-overlay {
-                padding: 16px 12px;
-            }
-            .album-locked-glass-panel {
-                padding: 26px 16px;
-            }
-            .album-locked-heading {
-                font-size: 1.15rem;
-            }
-            .album-locked-text {
-                font-size: 0.88rem;
-                margin-bottom: 18px;
-            }
-            .btn-unlock-album-modal {
-                font-size: 0.98rem;
-                padding: 14px 20px;
-                width: 100%;
-                max-width: 100%;
+            .album-inline-unlock-card {
+                padding: 28px 18px;
             }
         }
     </style>
@@ -4181,20 +4005,37 @@ const singleGiftTemplate = (gift) => {
                 <!-- One-Column Row: Official 10-Track Album Card, followed by the Explore All link -->
                 <div class="single-gift-one-column-row">
                     ${gift.tracks && gift.tracks.length > 0 ? `
-                    <div class="gift-album-player-wrap ${isUnlocked ? '' : 'is-locked'}" id="gift-album-player-wrap" style="background: #081b29; border-radius: 20px; padding: 28px; color: #fff; border: 1px solid rgba(10, 216, 173, 0.3); box-shadow: 0 16px 40px rgba(0,0,0,0.35); width: 100%; box-sizing: border-box; position: relative;">
+                    <!-- In-Place Unlock Form Card (Shown on first session until unlocked) -->
+                    <div class="album-inline-unlock-card" id="album-inline-unlock-card" style="${isUnlocked ? 'display: none !important;' : 'display: block;'}">
+                        <div style="width: 52px; height: 52px; background: rgba(255, 87, 34, 0.12); border: 2px solid #ff5722; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #ff5722; margin: 0 auto 16px;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                        </div>
+                        <h3 style="color: #0f172a; margin: 0 0 8px; font-family: var(--font-heading); font-size: 1.45rem; font-weight: 800;">Unlock All Downloads</h3>
+                        <p style="color: #475569; font-size: 0.95rem; margin: 0 0 22px; line-height: 1.5;">
+                            Unlock all downloads by entering your email.
+                        </p>
+                        <form id="album-inline-unlock-form">
+                            <input type="email" class="spa-modal-input" id="album-inline-email" placeholder="Enter your email address..." required style="width: 100%; padding: 14px; border: 1px solid #e2e8f0; border-radius: 10px; margin-bottom: 14px; font-size: 1rem; box-sizing: border-box;">
+                            <button type="submit" class="btn-unlock-orange" style="background: #ff5722; color: #ffffff; width: 100%; padding: 14px 20px; font-size: 1.05rem; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; transition: background 0.2s, transform 0.15s; box-shadow: 0 8px 20px rgba(255, 87, 34, 0.35);">
+                                Unlock Free Access &rarr;
+                            </button>
+                            <a href="/" class="btn-decline-home" style="display: block; text-align: center; margin-top: 16px; color: #64748b; font-size: 0.8rem; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; transition: color 0.2s;">
+                                I do not want to unlock. Take me back to the home page.
+                            </a>
+                        </form>
+                    </div>
+
+                    <!-- Official 10-Track Album Card (Hidden until unlocked) -->
+                    <div class="gift-album-player-wrap" id="gift-album-player-wrap" style="${isUnlocked ? 'display: block;' : 'display: none !important;'} background: #081b29; border-radius: 20px; padding: 28px; color: #fff; border: 1px solid rgba(10, 216, 173, 0.3); box-shadow: 0 16px 40px rgba(0,0,0,0.35); width: 100%; box-sizing: border-box; position: relative;">
                         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 16px;">
                             <div style="display: flex; align-items: center; gap: 14px;">
-                                <div class="album-header-icon" style="width: 42px; height: 42px; background: ${isUnlocked ? 'rgba(10, 216, 173, 0.15)' : 'rgba(255, 87, 34, 0.15)'}; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: ${isUnlocked ? '#0ad8ad' : '#ff5722'}; transition: all 0.3s ease;">
-                                    <svg class="album-music-icon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="${isUnlocked ? '' : 'display: none;'}"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
-                                    <svg class="album-locked-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="${isUnlocked ? 'display: none;' : 'display: block;'}"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                                <div class="album-header-icon" style="width: 42px; height: 42px; background: rgba(10, 216, 173, 0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #0ad8ad; transition: all 0.3s ease;">
+                                    <svg class="album-music-icon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
                                 </div>
                                 <div>
-                                    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                                        <h3 style="margin: 0; color: #ffffff; font-size: 1.25rem; font-family: var(--font-heading); font-weight: 800;">Official 10-Track Album</h3>
-                                        <span class="album-status-badge album-badge-locked" style="${isUnlocked ? 'display: none !important;' : 'display: inline-flex;'}">🔒 LOCKED</span>
-                                    </div>
+                                    <h3 style="margin: 0; color: #ffffff; font-size: 1.25rem; font-family: var(--font-heading); font-weight: 800;">Official 10-Track Album</h3>
                                     <span id="album-now-playing-title" style="font-size: 0.88rem; color: #0ad8ad; font-weight: 600;">
-                                        ${isUnlocked ? 'Preview tracks or download individually below' : 'Locked • Free access to stream and download all 10 tracks'}
+                                        Preview tracks or download individually below
                                     </span>
                                 </div>
                             </div>
@@ -4210,7 +4051,7 @@ const singleGiftTemplate = (gift) => {
                         <!-- Audio Element -->
                         <audio id="gift-album-audio" preload="metadata"></audio>
 
-                        <!-- Relative container for tracks and locked overlay -->
+                        <!-- Tracklist container -->
                         <div class="album-tracks-container" style="position: relative;">
                             <!-- Interactive Tracklist with Track Cards & Download Buttons -->
                             <div class="gift-tracklist" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px;">
@@ -4250,30 +4091,6 @@ const singleGiftTemplate = (gift) => {
                                     <span class="full-album-btn-text-desktop">DOWNLOAD FULL ALBUM (ALL 10 TRACKS - ZIP)</span>
                                     <span class="full-album-btn-text-mobile">Download all</span>
                                 </button>
-                            </div>
-
-                            <!-- Locked Overlay (only displayed when .gift-album-player-wrap.is-locked) -->
-                            <div class="album-locked-overlay js-trigger-album-unlock" style="${isUnlocked ? 'display: none !important;' : ''}">
-                                <div class="album-locked-glass-panel">
-                                    <div class="album-locked-shield-icon">
-                                        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                                        </svg>
-                                    </div>
-                                    <h4 class="album-locked-heading">Official 10-Track Album is Locked</h4>
-                                    <p class="album-locked-text">
-                                        Unlock instant audio streaming and direct MP3 &amp; ZIP downloads for all 10 original anthems by entering your email.
-                                    </p>
-                                    <button type="button" class="btn-unlock-album-modal js-trigger-album-unlock-btn">
-                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                                            <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
-                                        </svg>
-                                        <span>Unlock Free Album Access</span> &rarr;
-                                    </button>
-                                    <span class="album-locked-guarantee">&#10004; 100% Free &bull; Instant Access &bull; One-Time Unlock</span>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -4668,13 +4485,16 @@ document.addEventListener('click', (e) => {
     }
 });
 
-// Submit event listener for SPA modal form
+// Submit event listener for SPA modal form AND in-place album unlock form
 document.addEventListener('submit', async (e) => {
-    if (e.target && e.target.id === 'spa-modal-login-form') {
+    const isModalForm = e.target && e.target.id === 'spa-modal-login-form';
+    const isInlineForm = e.target && e.target.id === 'album-inline-unlock-form';
+
+    if (isModalForm || isInlineForm) {
         e.preventDefault();
         const form = e.target;
         const submitBtn = form.querySelector('button[type="submit"]');
-        const emailInput = document.getElementById('spa-modal-email');
+        const emailInput = form.querySelector('input[type="email"]');
         if (!emailInput) return;
         const email = emailInput.value;
         const originalText = submitBtn ? submitBtn.textContent : "Unlock Free Access →";
@@ -4682,7 +4502,7 @@ document.addEventListener('submit', async (e) => {
         const modal = document.getElementById('spa-download-modal');
         const targetUrl = modal ? modal.getAttribute('data-target-file') : null;
 
-        // Trigger target action or direct download
+        // Trigger target action or direct download if initiated from modal
         if (targetUrl === 'action:download-full-album') {
             downloadFullAlbumZip(document.querySelector('.btn-download-full-album, .js-full-album-btn'));
         } else if (targetUrl && (targetUrl.endsWith('.mp3') || modal.hasAttribute('data-target-filename'))) {
@@ -4700,23 +4520,17 @@ document.addEventListener('submit', async (e) => {
 
         localStorage.setItem('free-gifts-unlocked', 'true');
 
-        // Immediately unlock any locked album card on screen
-        const albumWrap = document.querySelector('.gift-album-player-wrap');
+        // Immediately hide in-place unlock card
+        const inlineUnlockCard = document.getElementById('album-inline-unlock-card');
+        if (inlineUnlockCard) {
+            inlineUnlockCard.style.setProperty('display', 'none', 'important');
+        }
+
+        // Immediately unhide and activate the official 10-track album card
+        const albumWrap = document.getElementById('gift-album-player-wrap');
         if (albumWrap) {
+            albumWrap.style.setProperty('display', 'block', 'important');
             albumWrap.classList.remove('is-locked');
-            const lockedBadge = albumWrap.querySelector('.album-badge-locked');
-            if (lockedBadge) lockedBadge.style.setProperty('display', 'none', 'important');
-            const lockedIcon = albumWrap.querySelector('.album-locked-icon');
-            if (lockedIcon) lockedIcon.style.display = 'none';
-            const musicIcon = albumWrap.querySelector('.album-music-icon');
-            if (musicIcon) musicIcon.style.display = 'block';
-            const headerIcon = albumWrap.querySelector('.album-header-icon');
-            if (headerIcon) {
-                headerIcon.style.background = 'rgba(10, 216, 173, 0.15)';
-                headerIcon.style.color = '#0ad8ad';
-            }
-            const overlay = albumWrap.querySelector('.album-locked-overlay');
-            if (overlay) overlay.style.setProperty('display', 'none', 'important');
             const nowPlayingTitle = document.getElementById('album-now-playing-title');
             if (nowPlayingTitle) {
                 nowPlayingTitle.textContent = 'Preview tracks or download individually below';
