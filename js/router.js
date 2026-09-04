@@ -3336,6 +3336,9 @@ const freeGiftsTemplate = () => {
                     <button type="submit" class="btn-unlock-orange" style="background: #ff5722; color: #ffffff; width: 100%; padding: 14px 20px; font-size: 1rem; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; transition: background 0.2s, transform 0.15s;">
                         Unlock Free Access &rarr;
                     </button>
+                    <p class="unlock-security-disclaimer" style="margin: 12px 0 0 0; font-size: 0.82rem; color: #64748b; display: flex; align-items: center; justify-content: center; gap: 6px; line-height: 1.4;">
+                        <span>🔒</span> <span>“No spam. Your email address stays strictly confidential.”</span>
+                    </p>
                     <a href="/" class="btn-decline-home" style="display: block; text-align: center; margin-top: 14px; color: #64748b; font-size: 0.78rem; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; transition: color 0.2s;">
                         I do not want to unlock. Take me back to the home page.
                     </a>
@@ -4019,6 +4022,9 @@ const singleGiftTemplate = (gift) => {
                             <button type="submit" class="btn-unlock-orange" style="background: #ff5722; color: #ffffff; width: 100%; padding: 14px 20px; font-size: 1.05rem; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; transition: background 0.2s, transform 0.15s; box-shadow: 0 8px 20px rgba(255, 87, 34, 0.35);">
                                 Unlock Free Access &rarr;
                             </button>
+                            <p class="unlock-security-disclaimer" style="margin: 14px 0 0 0; font-size: 0.84rem; color: #64748b; display: flex; align-items: center; justify-content: center; gap: 6px; line-height: 1.4;">
+                                <span>🔒</span> <span>“No spam. Your email address stays strictly confidential.”</span>
+                            </p>
                             <a href="/" class="btn-decline-home" style="display: block; text-align: center; margin-top: 16px; color: #64748b; font-size: 0.8rem; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; transition: color 0.2s;">
                                 I do not want to unlock. Take me back to the home page.
                             </a>
@@ -4127,6 +4133,9 @@ const singleGiftTemplate = (gift) => {
                     <button type="submit" class="btn-unlock-orange" style="background: #ff5722; color: #ffffff; width: 100%; padding: 14px 20px; font-size: 1rem; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; transition: background 0.2s, transform 0.15s;">
                         Unlock Free Access &rarr;
                     </button>
+                    <p class="unlock-security-disclaimer" style="margin: 12px 0 0 0; font-size: 0.82rem; color: #64748b; display: flex; align-items: center; justify-content: center; gap: 6px; line-height: 1.4;">
+                        <span>🔒</span> <span>“No spam. Your email address stays strictly confidential.”</span>
+                    </p>
                     <a href="/" class="btn-decline-home" style="display: block; text-align: center; margin-top: 14px; color: #64748b; font-size: 0.78rem; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; transition: color 0.2s;">
                         I do not want to unlock. Take me back to the home page.
                     </a>
