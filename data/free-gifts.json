@@ -1,5 +1,33 @@
 [
   {
+    "id": "you-are-my-fortress",
+    "slug": "you-are-my-fortress",
+    "title": "You Are My Fortress",
+    "type": "Music Single",
+    "badge": "Available Now",
+    "meta_title": "You Are My Fortress | Free Song Download by Marchello Sciortino",
+    "meta_desc": "An uplifting and powerful anthem of faith, strength, and resilience by Marchello Sciortino. Stream online or download the official high-quality MP3 track for free.",
+    "bullets": [
+      "Original inspirational single of faith, strength & resilience.",
+      "A soaring anthem of triumph, refuge, and finding steady ground.",
+      "Stream online or download the full studio-quality MP3 track."
+    ],
+    "cover_image": "/assets/free-gifts/you-are-my-fortress/you_are_my_fortress_thumbnail.png",
+    "display_image": "/assets/free-gifts/you-are-my-fortress/you_are_my_fortress_display.png",
+    "file_url": "/you-are-my-fortress",
+    "button_label": "Listen & Download",
+    "direct_page_only": true,
+    "tracks": [
+      {
+        "number": 1,
+        "title": "You Are My Fortress",
+        "src": "/assets/free-gifts/you-are-my-fortress/YOU_ARE_MY_FORTRESS.mp3",
+        "cover": "/assets/free-gifts/you-are-my-fortress/you_are_my_fortress_display.png",
+        "duration": "6:32"
+      }
+    ]
+  },
+  {
     "id": "win-anyway",
     "slug": "win-anyway",
     "title": "Win Anyway",
@@ -87,34 +115,6 @@
         "src": "/assets/free-gifts/win-anyway/10-the-next-step.mp3",
         "cover": "/assets/free-gifts/win-anyway/10-the-next-step-cover.png",
         "duration": "3:02"
-      }
-    ]
-  },
-  {
-    "id": "you-are-my-fortress",
-    "slug": "you-are-my-fortress",
-    "title": "You Are My Fortress",
-    "type": "Music Single",
-    "badge": "Available Now",
-    "meta_title": "You Are My Fortress | Free Song Download by Marchello Sciortino",
-    "meta_desc": "An uplifting and powerful anthem of faith, strength, and resilience by Marchello Sciortino. Stream online or download the official high-quality MP3 track for free.",
-    "bullets": [
-      "Original inspirational single of faith, strength & resilience.",
-      "A soaring anthem of triumph, refuge, and finding steady ground.",
-      "Stream online or download the full studio-quality MP3 track."
-    ],
-    "cover_image": "/assets/free-gifts/you-are-my-fortress/you_are_my_fortress_thumbnail.png",
-    "display_image": "/assets/free-gifts/you-are-my-fortress/you_are_my_fortress_display.png",
-    "file_url": "/you-are-my-fortress",
-    "button_label": "Listen & Download",
-    "direct_page_only": true,
-    "tracks": [
-      {
-        "number": 1,
-        "title": "You Are My Fortress",
-        "src": "/assets/free-gifts/you-are-my-fortress/YOU_ARE_MY_FORTRESS.mp3",
-        "cover": "/assets/free-gifts/you-are-my-fortress/you_are_my_fortress_display.png",
-        "duration": "6:32"
       }
     ]
   },
