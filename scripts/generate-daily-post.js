@@ -4,7 +4,7 @@ const https = require('https');
 const http = require('http');
 const { execSync } = require('child_process');
 
-// Read API keys from environment
+// Automated daily post generator - trigger regeneration
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 if (!GEMINI_API_KEY) {
