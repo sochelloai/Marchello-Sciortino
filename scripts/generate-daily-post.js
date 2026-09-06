@@ -130,7 +130,14 @@ const MONTHLY_ART_STYLES = {
 };
 
 // Calculate Date in Central Time (US)
-const centralDate = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Chicago" }));
+let centralDate;
+if (process.env.TARGET_DATE) {
+    centralDate = new Date(process.env.TARGET_DATE);
+} else if (process.argv[2]) {
+    centralDate = new Date(process.argv[2]);
+} else {
+    centralDate = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Chicago" }));
+}
 const monthIndex = centralDate.getMonth(); // 0-11
 const currentYear = centralDate.getFullYear();
 const currentMonthTheme = MONTHLY_THEMES[monthIndex];
@@ -217,10 +224,15 @@ function downloadFile(url, destPath, redirectCount = 0) {
         return Promise.reject(new Error("Too many redirects (max 5)"));
     }
     return new Promise((resolve, reject) => {
-        const client = url.startsWith('https') ? https : http;
-        client.get(url, (res) => {
+        const u = new URL(url);
+        const client = u.protocol === 'https:' ? https : http;
+        client.get(url, {
+            headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' },
+            timeout: 60000
+        }, (res) => {
             if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-                resolve(downloadFile(res.headers.location, destPath, redirectCount + 1));
+                const redirectUrl = new URL(res.headers.location, url).toString();
+                resolve(downloadFile(redirectUrl, destPath, redirectCount + 1));
                 return;
             }
             if (res.statusCode !== 200) {
@@ -235,6 +247,133 @@ function downloadFile(url, destPath, redirectCount = 0) {
             });
         }).on('error', reject);
     });
+}
+
+// Helper to fetch binary buffer over HTTP/HTTPS with redirect and timeout support
+function fetchBuffer(url, redirectCount = 0) {
+    if (redirectCount > 5) {
+        return Promise.reject(new Error("Too many redirects (max 5)"));
+    }
+    return new Promise((resolve, reject) => {
+        const u = new URL(url);
+        const client = u.protocol === 'https:' ? https : http;
+        const req = client.get(url, {
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+            },
+            timeout: 90000 // 90 seconds timeout
+        }, (res) => {
+            if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+                const redirectUrl = new URL(res.headers.location, url).toString();
+                resolve(fetchBuffer(redirectUrl, redirectCount + 1));
+                return;
+            }
+            if (res.statusCode !== 200) {
+                reject(new Error(`HTTP ${res.statusCode}: Failed to fetch image buffer`));
+                return;
+            }
+            const chunks = [];
+            res.on('data', chunk => chunks.push(chunk));
+            res.on('end', () => resolve(Buffer.concat(chunks)));
+        });
+
+        req.on('timeout', () => {
+            req.destroy();
+            reject(new Error("Image fetch timed out after 90 seconds"));
+        });
+
+        req.on('error', reject);
+    });
+}
+
+// Generate luxury bespoke brand geometric vector artwork as an offline/fail-safe fallback
+function generateBrandedThemeSvg(monthArtStyle, monthIndex, title, tag) {
+    const monthPalettes = {
+        0: { bgStart: '#0f172a', bgEnd: '#020617', p1: '#38bdf8', p2: '#94a3b8', accent: '#f8fafc', glow: '#38bdf8' },
+        1: { bgStart: '#4c0519', bgEnd: '#1e0108', p1: '#fb7185', p2: '#e11d48', accent: '#fbcfe8', glow: '#f43f5e' },
+        2: { bgStart: '#064e3b', bgEnd: '#022c22', p1: '#34d399', p2: '#059669', accent: '#fef08a', glow: '#10b981' },
+        3: { bgStart: '#3b0764', bgEnd: '#1e0538', p1: '#c084fc', p2: '#9333ea', accent: '#fbcfe8', glow: '#a855f7' },
+        4: { bgStart: '#451a03', bgEnd: '#200c02', p1: '#d97706', p2: '#b45309', accent: '#fed7aa', glow: '#f59e0b' },
+        5: { bgStart: '#1e1b4b', bgEnd: '#0f0e26', p1: '#eab308', p2: '#f59e0b', accent: '#38bdf8', glow: '#fbbf24' },
+        6: { bgStart: '#0f172a', bgEnd: '#030712', p1: '#ef4444', p2: '#3b82f6', accent: '#ffffff', glow: '#60a5fa' },
+        7: { bgStart: '#134e4a', bgEnd: '#042f2e', p1: '#f59e0b', p2: '#0d9488', accent: '#fed7aa', glow: '#2dd4bf' },
+        8: { bgStart: '#2e1202', bgEnd: '#0d0400', p1: '#f59e0b', p2: '#ea580c', accent: '#d4af37', glow: '#fbbf24' },
+        9: { bgStart: '#172554', bgEnd: '#080d21', p1: '#f97316', p2: '#7c3aed', accent: '#fde047', glow: '#fb923c' },
+        10: { bgStart: '#3f1a07', bgEnd: '#1a0b03', p1: '#d97706', p2: '#84cc16', accent: '#fed7aa', glow: '#f59e0b' },
+        11: { bgStart: '#064e3b', bgEnd: '#022118', p1: '#ef4444', p2: '#eab308', accent: '#ffffff', glow: '#22c55e' }
+    };
+
+    const pal = monthPalettes[monthIndex] || monthPalettes[8];
+    const cleanTag = (tag || "Daily Reflection").toUpperCase();
+
+    // Procedural geometric layers
+    let proceduralElements = '';
+    if (monthIndex === 8) { // September: Interlocking brass gears & chevrons
+        let teeth = '';
+        for (let i = 0; i < 16; i++) {
+            const angle = (i * 360) / 16;
+            teeth += `<rect x="575" y="270" width="50" height="70" rx="6" transform="rotate(${angle} 600 550)" fill="url(#primaryGrad)" />`;
+        }
+        let chevrons = '';
+        for (let j = 0; j < 5; j++) {
+            const y = 470 + j * 55;
+            const opacity = (1 - j * 0.16).toFixed(2);
+            chevrons += `<path d="M 460 ${y} L 600 ${y - 55} L 740 ${y}" fill="none" stroke="url(#accentGrad)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" opacity="${opacity}" />`;
+        }
+        proceduralElements = `
+            ${teeth}
+            <circle cx="600" cy="550" r="230" fill="url(#bgGrad)" stroke="url(#primaryGrad)" stroke-width="14" filter="url(#glowFilter)" />
+            <circle cx="600" cy="550" r="160" fill="none" stroke="${pal.glow}" stroke-width="4" opacity="0.6" stroke-dasharray="24 12" />
+            ${chevrons}
+            <circle cx="600" cy="550" r="32" fill="${pal.glow}" filter="url(#glowFilter)" />
+        `;
+    } else {
+        // Universal geometric radial composition for other months
+        proceduralElements = `
+            <circle cx="600" cy="550" r="260" fill="none" stroke="url(#primaryGrad)" stroke-width="12" filter="url(#glowFilter)" />
+            <circle cx="600" cy="550" r="190" fill="none" stroke="${pal.glow}" stroke-width="4" opacity="0.6" stroke-dasharray="16 8" />
+            <polygon points="600,340 760,630 440,630" fill="none" stroke="url(#accentGrad)" stroke-width="8" opacity="0.75" />
+            <circle cx="600" cy="550" r="40" fill="${pal.glow}" filter="url(#glowFilter)" />
+        `;
+    }
+
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" width="1200" height="1200">
+  <defs>
+    <radialGradient id="bgGrad" cx="50%" cy="45%" r="75%">
+      <stop offset="0%" stop-color="${pal.bgStart}" />
+      <stop offset="100%" stop-color="${pal.bgEnd}" />
+    </radialGradient>
+    <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="${pal.accent}" />
+      <stop offset="50%" stop-color="${pal.p1}" />
+      <stop offset="100%" stop-color="${pal.p2}" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="${pal.p2}" />
+      <stop offset="50%" stop-color="${pal.p1}" />
+      <stop offset="100%" stop-color="${pal.glow}" />
+    </linearGradient>
+    <filter id="glowFilter" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="30" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <rect width="1200" height="1200" fill="url(#bgGrad)" />
+  
+  <!-- Ambient background geometry -->
+  <circle cx="600" cy="550" r="420" fill="none" stroke="${pal.p1}" stroke-width="1.5" opacity="0.18" stroke-dasharray="8 16" />
+  <circle cx="600" cy="550" r="320" fill="none" stroke="${pal.accent}" stroke-width="2.5" opacity="0.3" />
+  
+  <!-- Procedural Feature Elements -->
+  ${proceduralElements}
+
+  <!-- Header Badge & Category Tag -->
+  <g transform="translate(600, 1020)" text-anchor="middle">
+    <rect x="-160" y="-35" width="320" height="42" rx="21" fill="rgba(255,255,255,0.06)" stroke="${pal.p1}" stroke-width="1.5" />
+    <text y="-8" fill="${pal.accent}" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" letter-spacing="4">${cleanTag}</text>
+  </g>
+</svg>`;
 }
 
 // Helper to make Gemini API requests with transient error retries (503, 429, 500)
@@ -819,6 +958,38 @@ You must return a raw JSON object containing exactly these fields (no markdown w
             }
         }
 
+        // Attempt 3: Pollinations AI (Flux / SDXL high-resolution image generation - zero-key, zero-auth fallback)
+        if (!imageBuffer) {
+            console.log("Attempting image generation via Pollinations AI (Flux / SDXL)...");
+            try {
+                const cleanPrompt = imagePromptText.replace(/[\r\n]+/g, ' ').trim();
+                const seed = Math.floor(Math.random() * 10000000);
+                const pollinationsUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(cleanPrompt.slice(0, 1500))}?width=1024&height=1024&nologo=true&seed=${seed}`;
+                console.log("Querying Pollinations AI generation endpoint...");
+                const fetchedBuf = await fetchBuffer(pollinationsUrl);
+                if (fetchedBuf && fetchedBuf.length > 5000) {
+                    imageBuffer = fetchedBuf;
+                    console.log(`Image generated successfully via Pollinations AI (${fetchedBuf.length} bytes).`);
+                } else {
+                    console.warn("Pollinations AI response was empty or too small.");
+                }
+            } catch (pollErr) {
+                console.warn(`Pollinations AI generation failed: ${pollErr.message}`);
+            }
+        }
+
+        // Attempt 4: Bespoke Algorithmic Geometric SVG Generation (Guaranteed offline/network-outage fallback)
+        if (!imageBuffer) {
+            console.log("Generating bespoke brand geometric vector artwork...");
+            try {
+                const svgContent = generateBrandedThemeSvg(currentMonthArtStyle, monthIndex, generatedArticle.title, generatedArticle.tag);
+                imageBuffer = Buffer.from(svgContent, 'utf8');
+                console.log("Bespoke brand geometric artwork generated successfully.");
+            } catch (svgErr) {
+                console.warn(`Bespoke SVG generation failed: ${svgErr.message}`);
+            }
+        }
+
         if (imageBuffer) {
             if (!relativeImageSrc) {
                 // Step 3: Write image locally if not already downloaded and saved
@@ -828,7 +999,16 @@ You must return a raw JSON object containing exactly these fields (no markdown w
                 }
 
                 const imageSlug = sanitizeId(generatedArticle.url_slug || articleId);
-                const localImageName = `${imageSlug}.png`;
+                
+                // Detect file format from buffer content
+                let ext = 'png';
+                if (imageBuffer.length > 2 && imageBuffer[0] === 0xFF && imageBuffer[1] === 0xD8) {
+                    ext = 'jpg';
+                } else if (imageBuffer.toString('utf8', 0, 100).includes('<svg')) {
+                    ext = 'svg';
+                }
+
+                const localImageName = `${imageSlug}.${ext}`;
                 const localImagePath = path.join(blogAssetsDir, localImageName);
                 relativeImageSrc = `assets/blog/${localImageName}`;
 
@@ -841,7 +1021,7 @@ You must return a raw JSON object containing exactly these fields (no markdown w
                 }
             }
         } else {
-            throw new Error("CRITICAL: Failed to generate a custom featured image using Higgsfield, Gemini 2.5 Flash Image, or Google Imagen. Aborting post generation to avoid placeholder fallback images.");
+            throw new Error("CRITICAL: Failed to generate featured image via Higgsfield, Google Gemini/Imagen, Pollinations AI, or SVG. Aborting post generation.");
         }
 
         // Step 4: Append new post and write back
