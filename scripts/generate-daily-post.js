@@ -711,8 +711,8 @@ You must return a raw JSON object containing exactly these fields (no markdown w
             const hfCmd = isWindows ? 'higgsfield.cmd' : 'higgsfield';
 
             // Configure Higgsfield Auth (auth_version 2)
-            const token = process.env.HIGGSFIELD_AUTH_TOKEN || "oat_ON0J5BNAX46957PRSREW3EPCVSR10RDM";
-            const refreshToken = process.env.HIGGSFIELD_REFRESH_TOKEN || "NJGWNDY1NZETZJZINC01N2M3LTLKYMUTNDHIMJM2YJZKZWJK";
+            const token = process.env.HIGGSFIELD_AUTH_TOKEN || "oat_OFBNPFXXAVQ63SYKR5C5GJCBG3EN2WNF";
+            const refreshToken = process.env.HIGGSFIELD_REFRESH_TOKEN || "NTCXZMIWZTATZTLLNY01MZRLLWI0OWYTNJDKZGMZZGY2ZJNI";
             
             try {
                 const os = require('os');
