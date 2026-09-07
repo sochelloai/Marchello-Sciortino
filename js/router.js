@@ -127,6 +127,7 @@ const Router = {
                 '/free-gifts': "Free Gifts | Marchello Sciortino",
                 '/win-anyway': "Win Anyway | Free Music Album by Marchello Sciortino",
                 '/you-are-my-fortress': "You Are My Fortress | Free Song Download by Marchello Sciortino",
+                '/harder-not-impossible': "Harder ≠ Impossible | Free Carousel & Worksheets by Marchello Sciortino",
                 '/resources': "Resources | Marchello Sciortino",
                 '/privacy': "Privacy Policy | Marchello Sciortino",
                 '/terms': "Terms of Service | Marchello Sciortino",
@@ -2867,6 +2868,24 @@ const FREE_GIFTS_DATA = [
         ]
     },
     {
+        id: "harder-not-impossible",
+        slug: "harder-not-impossible",
+        aliases: ["harder-does-not-equal-impossible"],
+        title: "Harder ≠ Impossible",
+        type: "Carousel & Worksheets",
+        badge: "Available Now",
+        meta_title: "Harder ≠ Impossible | Free Carousel & Worksheets by Marchello Sciortino",
+        meta_desc: "Sometimes the first path only looks easier. A 12-page visual carousel guide and practical reflection worksheets by Marchello Sciortino on mapping a route that builds sustainable growth.",
+        bullets: [
+            "10-part visual carousel exploring the Straight Route vs. The Mapped Route.",
+            "Worksheet 1: Spot the route that is draining your energy and peace.",
+            "Worksheet 2: Map a route with tools, support, and sustainable commitments."
+        ],
+        cover_image: "/assets/free-gifts/Harder_Does_Not_Equal_Impossible_cover.png",
+        file_url: "https://www.marchellosciortino.com/assets/free-gifts/Harder_Does_Not_Equal_Impossible_Carousel_and_Worksheets_Marchello_Sciortino.pdf",
+        button_label: "Download Worksheets"
+    },
+    {
         id: "from-idea-to-free-product",
         slug: "from-idea-to-free-product",
         title: "From Idea to Free Product",
@@ -4431,6 +4450,12 @@ Router.register('/free-gifts/', freeGiftsTemplate);
 FREE_GIFTS_DATA.forEach(gift => {
     Router.register('/' + gift.slug, () => singleGiftTemplate(gift));
     Router.register('/' + gift.slug + '/', () => singleGiftTemplate(gift));
+    if (gift.aliases && Array.isArray(gift.aliases)) {
+        gift.aliases.forEach(alias => {
+            Router.register('/' + alias, () => singleGiftTemplate(gift));
+            Router.register('/' + alias + '/', () => singleGiftTemplate(gift));
+        });
+    }
 });
 
 // Global click event listener for 1-click clipboard sharing
@@ -4636,10 +4661,13 @@ document.addEventListener('submit', async (e) => {
                 body: formData
             });
 
-            if (response.ok) {
-                const result = await response.json();
-                console.log("[ClickFunnels Free Gifts API Success]", result);
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`CF Function Error: ${response.status} - ${errorText}`);
             }
+
+            const result = await response.json();
+            console.log("[ClickFunnels Free Gifts API Success]", result);
         } catch (error) {
             console.error("[ClickFunnels Free Gifts API Error]", error);
         } finally {

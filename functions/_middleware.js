@@ -66,7 +66,7 @@ export async function onRequest(context) {
                 const gifts = await giftsResponse.json();
                 const pathSlug = rawPath.replace(/^\/free-gifts\//, '').replace(/^\//, '');
                 if (pathSlug && pathSlug !== 'free-gifts') {
-                    const gift = gifts.find(g => g.slug.toLowerCase() === pathSlug);
+                    const gift = gifts.find(g => g.slug.toLowerCase() === pathSlug || (g.aliases && g.aliases.some(a => a.toLowerCase() === pathSlug)));
                     if (gift) {
                         // Enforce single route: if requested with /free-gifts/ prefix, redirect 301 to root slug
                         if (rawPath.startsWith('/free-gifts/')) {

@@ -17,6 +17,12 @@
 /free-gifts/win-anyway/ /win-anyway 301
 /free-gifts/you-are-my-fortress /you-are-my-fortress 301
 /free-gifts/you-are-my-fortress/ /you-are-my-fortress 301
+/free-gifts/harder-not-impossible /harder-not-impossible 301
+/free-gifts/harder-not-impossible/ /harder-not-impossible 301
+/harder-does-not-equal-impossible /harder-not-impossible 301
+/harder-does-not-equal-impossible/ /harder-not-impossible 301
+/free-gifts/harder-does-not-equal-impossible /harder-not-impossible 301
+/free-gifts/harder-does-not-equal-impossible/ /harder-not-impossible 301
 
 # Legacy Library Redirects
 /free-library /free-gifts 301
