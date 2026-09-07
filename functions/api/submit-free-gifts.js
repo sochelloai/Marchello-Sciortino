@@ -64,6 +64,7 @@ export async function onRequestPost(context) {
     try {
         const formData = await request.formData();
         const email = formData.get('email');
+        const giftTitle = formData.get('gift_title') || formData.get('item') || "";
 
         if (!email) {
             return new Response(JSON.stringify({
@@ -99,12 +100,17 @@ export async function onRequestPost(context) {
         const cleanWorkspaceId = workspaceId;
         const createContactUrl = `https://${cleanSubdomain}.myclickfunnels.com/api/v2/workspaces/${cleanWorkspaceId}/contacts`;
         
+        const customAttributes = {
+            unlocked_free_gifts: "true"
+        };
+        if (giftTitle) {
+            customAttributes.last_unlocked_gift = giftTitle;
+        }
+
         const contactBody = {
             contact: {
                 email_address: email,
-                custom_attributes: {
-                    unlocked_free_gifts: "true"
-                }
+                custom_attributes: customAttributes
             }
         };
 

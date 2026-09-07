@@ -4215,7 +4215,7 @@ const singleGiftTemplate = (gift) => {
     </div>
 
     <!-- Login / Unlock Modal -->
-    <div class="spa-modal-overlay" id="spa-download-modal">
+    <div class="spa-modal-overlay" id="spa-download-modal" data-target-file="${gift.file_url}" data-target-title="${gift.title}">
         <div class="spa-modal-card">
             <button class="spa-modal-close" id="spa-modal-close">&times;</button>
             <div id="spa-form-view">
@@ -4507,6 +4507,7 @@ document.addEventListener('click', (e) => {
                 if (copyText) copyText.textContent = 'Unlock the full 10-track album by entering your email.';
                 if (formView) formView.style.display = 'block';
                 modal.setAttribute('data-target-file', 'action:unlock-album');
+                modal.setAttribute('data-target-title', 'Win Anyway Album');
                 modal.classList.add('active');
             }
             return;
@@ -4527,6 +4528,7 @@ document.addEventListener('click', (e) => {
                 if (copyText) copyText.textContent = 'Unlock the full 10-track album by entering your email.';
                 if (formView) formView.style.display = 'block';
                 modal.setAttribute('data-target-file', 'action:download-full-album');
+                modal.setAttribute('data-target-title', 'Win Anyway (Full Album)');
                 modal.classList.add('active');
             }
             return;
@@ -4553,6 +4555,7 @@ document.addEventListener('click', (e) => {
                 if (formView) formView.style.display = 'block';
                 modal.setAttribute('data-target-file', fileUrl);
                 modal.setAttribute('data-target-filename', filename);
+                modal.setAttribute('data-target-title', filename);
                 modal.classList.add('active');
             }
             return;
@@ -4584,6 +4587,7 @@ document.addEventListener('click', (e) => {
                 if (copyText) copyText.textContent = 'Unlock all downloads by entering your email.';
                 if (formView) formView.style.display = 'block';
                 modal.setAttribute('data-target-file', fileUrl);
+                modal.setAttribute('data-target-title', docDownloadBtn.getAttribute('data-title') || 'Free Gift');
                 modal.classList.add('active');
             }
         }
@@ -4611,6 +4615,7 @@ document.addEventListener('submit', async (e) => {
 
         const modal = document.getElementById('spa-download-modal');
         const targetUrl = modal ? modal.getAttribute('data-target-file') : null;
+        const targetTitle = modal ? (modal.getAttribute('data-target-title') || '') : (isInlineForm ? 'Win Anyway Album' : '');
 
         // Trigger target action or direct download if initiated from modal
         if (targetUrl === 'action:download-full-album') {
@@ -4655,6 +4660,9 @@ document.addEventListener('submit', async (e) => {
         try {
             const formData = new FormData();
             formData.append('email', email);
+            if (targetTitle) {
+                formData.append('gift_title', targetTitle);
+            }
 
             const response = await fetch('/api/submit-free-gifts', {
                 method: 'POST',
