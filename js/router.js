@@ -3045,7 +3045,7 @@ const freeGiftsTemplate = () => {
                     ${gift.bullets.map(b => `<li>${b}</li>`).join('')}
                 </ul>
                 ${isDirectPage ? `
-                    <a href="/${gift.slug}" class="btn-download-trigger" data-title="${gift.title}">
+                    <a href="/${gift.slug}" class="btn-download-trigger js-spa-download-btn" data-title="${gift.title}" data-file="${gift.file_url}">
                         ${gift.button_label} &rarr;
                     </a>
                 ` : `
@@ -4119,31 +4119,8 @@ const singleGiftTemplate = (gift) => {
                 <!-- One-Column Row: Official 10-Track Album Card, followed by the Explore All link -->
                 <div class="single-gift-one-column-row">
                     ${gift.tracks && gift.tracks.length > 0 ? `
-                    <!-- In-Place Unlock Form Card (Shown on first session until unlocked) -->
-                    <div class="album-inline-unlock-card" id="album-inline-unlock-card" data-target-title="${gift.title}" style="${isUnlocked ? 'display: none !important;' : 'display: block;'}">
-                        <div style="width: 52px; height: 52px; background: rgba(255, 87, 34, 0.12); border: 2px solid #ff5722; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #ff5722; margin: 0 auto 16px;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                        </div>
-                        <h3 style="color: #0f172a; margin: 0 0 8px; font-family: var(--font-heading); font-size: 1.45rem; font-weight: 800;">Unlock All Downloads</h3>
-                        <p style="color: #475569; font-size: 0.95rem; margin: 0 0 22px; line-height: 1.5;">
-                            Unlock all downloads by entering your email.
-                        </p>
-                        <form id="album-inline-unlock-form" data-target-title="${gift.title}">
-                            <input type="email" class="spa-modal-input" id="album-inline-email" placeholder="Enter your email address..." required style="width: 100%; padding: 14px; border: 1px solid #e2e8f0; border-radius: 10px; margin-bottom: 14px; font-size: 1rem; box-sizing: border-box;">
-                            <button type="submit" class="btn-unlock-orange" style="background: #ff5722; color: #ffffff; width: 100%; padding: 14px 20px; font-size: 1.05rem; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; transition: background 0.2s, transform 0.15s; box-shadow: 0 8px 20px rgba(255, 87, 34, 0.35);">
-                                Unlock Free Access &rarr;
-                            </button>
-                            <p class="unlock-security-disclaimer" style="margin: 14px 0 0 0; font-size: clamp(0.62rem, 2.4vw, 0.82rem); color: #64748b; display: flex; align-items: center; justify-content: center; gap: 5px; line-height: 1.2; white-space: nowrap; letter-spacing: -0.015em;">
-                                <span>🔒</span> <span>“No spam. Your email address stays strictly confidential.”</span>
-                            </p>
-                            <a href="/" class="btn-decline-home" style="display: block; text-align: center; margin-top: 16px; color: #64748b; font-size: 0.8rem; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; transition: color 0.2s;">
-                                I do not want to unlock. Take me back to the home page.
-                            </a>
-                        </form>
-                    </div>
-
-                    <!-- Official 10-Track Album Card (Hidden until unlocked) -->
-                    <div class="gift-album-player-wrap" id="gift-album-player-wrap" style="${isUnlocked ? 'display: block;' : 'display: none !important;'} background: #081b29; border-radius: 20px; padding: 28px; color: #fff; border: 1px solid rgba(10, 216, 173, 0.3); box-shadow: 0 16px 40px rgba(0,0,0,0.35); width: 100%; box-sizing: border-box; position: relative;">
+                    <!-- Official Track Album Card (Always visible with direct unlock download buttons) -->
+                    <div class="gift-album-player-wrap" id="gift-album-player-wrap" style="display: block; background: #081b29; border-radius: 20px; padding: 28px; color: #fff; border: 1px solid rgba(10, 216, 173, 0.3); box-shadow: 0 16px 40px rgba(0,0,0,0.35); width: 100%; box-sizing: border-box; position: relative;">
                         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 16px;">
                             <div style="display: flex; align-items: center; gap: 14px;">
                                 <div class="album-header-icon" style="width: 42px; height: 42px; background: rgba(10, 216, 173, 0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #0ad8ad; transition: all 0.3s ease;">
@@ -4499,6 +4476,50 @@ document.addEventListener('click', async (e) => {
     }
 });
 
+// Universal Helper to open the SPA unlock modal for ANY download button
+function openUnlockModal(targetFile, targetTitle, targetFilename = '') {
+    const modal = document.getElementById('spa-download-modal');
+    if (!modal) return;
+
+    const heading = modal.querySelector('h3');
+    const copyText = document.getElementById('spa-copy-text');
+    const formView = document.getElementById('spa-form-view');
+    const emailInput = document.getElementById('spa-modal-email');
+
+    if (heading) {
+        heading.textContent = targetTitle ? `Unlock ${targetTitle}` : 'Unlock Free Download';
+    }
+    if (copyText) {
+        copyText.textContent = targetTitle ? `Unlock "${targetTitle}" by entering your email.` : 'Unlock all downloads by entering your email.';
+    }
+    if (formView) formView.style.display = 'block';
+
+    if (targetFile) modal.setAttribute('data-target-file', targetFile);
+    if (targetTitle) modal.setAttribute('data-target-title', targetTitle);
+    if (targetFilename) {
+        modal.setAttribute('data-target-filename', targetFilename);
+    } else {
+        modal.removeAttribute('data-target-filename');
+    }
+
+    // Prefill saved email if user already entered it in this browser
+    const savedEmail = localStorage.getItem('free-gifts-saved-email') || localStorage.getItem('user-email') || '';
+    if (emailInput && savedEmail) {
+        emailInput.value = savedEmail;
+    }
+
+    modal.classList.add('active');
+
+    setTimeout(() => {
+        if (emailInput) {
+            emailInput.focus();
+            if (savedEmail) {
+                emailInput.select();
+            }
+        }
+    }, 80);
+}
+
 // Global click event listener for SPA download triggers
 document.addEventListener('click', (e) => {
     // Only handle genuine human user clicks; ignore programmatic synthetic clicks
@@ -4511,25 +4532,20 @@ document.addEventListener('click', (e) => {
         return;
     }
 
+    // Modal Close Button or Backdrop Click
+    if (e.target && (e.target.id === 'spa-modal-close' || e.target.closest('#spa-modal-close') || e.target.classList.contains('spa-modal-overlay'))) {
+        const modal = document.getElementById('spa-download-modal');
+        if (modal) modal.classList.remove('active');
+        return;
+    }
+
     // 0. Album Locked Overlay & Unlock Modal Trigger
     const albumUnlockTrigger = e.target.closest('.js-trigger-album-unlock, .btn-unlock-album-modal, .album-locked-overlay');
     if (albumUnlockTrigger) {
         e.preventDefault();
         e.stopPropagation();
-        const isUnlocked = localStorage.getItem('free-gifts-unlocked') === 'true';
-        if (!isUnlocked) {
-            const modal = document.getElementById('spa-download-modal');
-            const copyText = document.getElementById('spa-copy-text');
-            const formView = document.getElementById('spa-form-view');
-            if (modal) {
-                if (copyText) copyText.textContent = 'Unlock the full 10-track album by entering your email.';
-                if (formView) formView.style.display = 'block';
-                modal.setAttribute('data-target-file', 'action:unlock-album');
-                modal.setAttribute('data-target-title', 'Win Anyway Album');
-                modal.classList.add('active');
-            }
-            return;
-        }
+        openUnlockModal('action:download-full-album', 'Win Anyway (Full Album)', 'Win Anyway - Complete Album.zip');
+        return;
     }
 
     // 1. Full Album Download Button
@@ -4537,21 +4553,8 @@ document.addEventListener('click', (e) => {
     if (fullAlbumBtn) {
         e.preventDefault();
         e.stopPropagation();
-        const isUnlocked = localStorage.getItem('free-gifts-unlocked') === 'true';
-        if (!isUnlocked) {
-            const modal = document.getElementById('spa-download-modal');
-            const copyText = document.getElementById('spa-copy-text');
-            const formView = document.getElementById('spa-form-view');
-            if (modal) {
-                if (copyText) copyText.textContent = 'Unlock the full 10-track album by entering your email.';
-                if (formView) formView.style.display = 'block';
-                modal.setAttribute('data-target-file', 'action:download-full-album');
-                modal.setAttribute('data-target-title', 'Win Anyway (Full Album)');
-                modal.classList.add('active');
-            }
-            return;
-        }
-        downloadFullAlbumZip(fullAlbumBtn);
+        const title = fullAlbumBtn.getAttribute('data-title') || 'Win Anyway (Full Album)';
+        openUnlockModal('action:download-full-album', title, 'Win Anyway - Complete Album.zip');
         return;
     }
 
@@ -4561,59 +4564,50 @@ document.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
         const fileUrl = trackDownloadBtn.getAttribute('data-src') || trackDownloadBtn.getAttribute('data-file');
-        const filename = trackDownloadBtn.getAttribute('data-filename') || `${trackDownloadBtn.getAttribute('data-title') || 'Track'}.mp3`;
-
-        const isUnlocked = localStorage.getItem('free-gifts-unlocked') === 'true';
-        if (!isUnlocked) {
-            const modal = document.getElementById('spa-download-modal');
-            const copyText = document.getElementById('spa-copy-text');
-            const formView = document.getElementById('spa-form-view');
-            if (modal) {
-                if (copyText) copyText.textContent = `Unlock direct download for "${filename}" by entering your email.`;
-                if (formView) formView.style.display = 'block';
-                modal.setAttribute('data-target-file', fileUrl);
-                modal.setAttribute('data-target-filename', filename);
-                modal.setAttribute('data-target-title', filename);
-                modal.classList.add('active');
-            }
-            return;
-        }
-
-        directDownloadFile(fileUrl, filename, trackDownloadBtn);
+        const title = trackDownloadBtn.getAttribute('data-title') || 'Track';
+        const filename = trackDownloadBtn.getAttribute('data-filename') || `${title}.mp3`;
+        openUnlockModal(fileUrl, title, filename);
         return;
     }
 
-    // 3. Other Document & PDF Downloads
-    const docDownloadBtn = e.target.closest('.js-spa-download-btn');
+    // 3. Document, PDF, and Card Download Buttons on Free Gifts Page and Direct Pages
+    const docDownloadBtn = e.target.closest('.js-spa-download-btn, .btn-download-trigger, .btn-download-primary');
     if (docDownloadBtn) {
-        let fileUrl = docDownloadBtn.getAttribute('data-file') || docDownloadBtn.getAttribute('href');
-        if (!fileUrl) return;
-
-        const modal = document.getElementById('spa-download-modal');
-        const copyText = document.getElementById('spa-copy-text');
-        const formView = document.getElementById('spa-form-view');
-
-        const isUnlocked = localStorage.getItem('free-gifts-unlocked') === 'true';
-
-        if (isUnlocked) {
-            const filename = fileUrl.split('/').pop() || 'download';
-            directDownloadFile(fileUrl, filename, docDownloadBtn);
+        // Exclude detail links and copy share buttons
+        if (docDownloadBtn.closest('.btn-card-details, .js-copy-share-btn')) {
             return;
-        } else {
-            e.preventDefault();
-            if (modal) {
-                if (copyText) copyText.textContent = 'Unlock all downloads by entering your email.';
-                if (formView) formView.style.display = 'block';
-                modal.setAttribute('data-target-file', fileUrl);
-                modal.setAttribute('data-target-title', docDownloadBtn.getAttribute('data-title') || 'Free Gift');
-                modal.classList.add('active');
-            }
         }
-    }
 
-    if (e.target && (e.target.id === 'spa-modal-close' || e.target.closest('#spa-modal-close'))) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const fileUrl = docDownloadBtn.getAttribute('data-file') || docDownloadBtn.getAttribute('href');
+        const title = docDownloadBtn.getAttribute('data-title') || 'Free Gift';
+
+        // Check if this is Win Anyway
+        if (fileUrl === '/win-anyway' || title.toLowerCase().includes('win anyway')) {
+            openUnlockModal('action:download-full-album', 'Win Anyway (Full Album)', 'Win Anyway - Complete Album.zip');
+            return;
+        }
+        // Check if this is You Are My Fortress
+        if (fileUrl === '/you-are-my-fortress' || title.toLowerCase().includes('you are my fortress')) {
+            openUnlockModal('/assets/free-gifts/you-are-my-fortress/YOU_ARE_MY_FORTRESS.mp3', 'You Are My Fortress', 'You Are My Fortress.mp3');
+            return;
+        }
+
+        const filename = fileUrl ? fileUrl.split('/').pop() : `${title}.pdf`;
+        openUnlockModal(fileUrl, title, filename);
+        return;
+    }
+});
+
+// Escape key closes modal
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
         const modal = document.getElementById('spa-download-modal');
-        if (modal) modal.classList.remove('active');
+        if (modal && modal.classList.contains('active')) {
+            modal.classList.remove('active');
+        }
     }
 });
 
@@ -4654,6 +4648,7 @@ document.addEventListener('submit', async (e) => {
         }
 
         localStorage.setItem('free-gifts-unlocked', 'true');
+        localStorage.setItem('free-gifts-saved-email', email);
 
         // Immediately hide in-place unlock card
         const inlineUnlockCard = document.getElementById('album-inline-unlock-card');
