@@ -29,6 +29,9 @@ jobs:
         with:
           node-version: 18
 
+      - name: Install Dependencies
+        run: npm install
+
       - name: Install Higgsfield CLI
         run: |
           npm install -g @higgsfield/cli || curl -fsSL https://raw.githubusercontent.com/higgsfield-ai/cli/main/install.sh | sh || true

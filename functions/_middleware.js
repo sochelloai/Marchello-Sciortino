@@ -43,7 +43,9 @@ export async function onRequest(context) {
                 if (article) {
                     title = `${article.meta_title || article.title} | Marchello Sciortino`;
                     description = article.meta_description || article.desc;
-                    image = new URL(article.image || '/assets/logo-light.png', url.origin).toString();
+                    const rawImg = article.image || '/assets/logo-light.png';
+                    const socialImg = rawImg.replace(/\.webp$/i, '.jpg');
+                    image = new URL(socialImg, url.origin).toString();
                     foundArticle = true;
                 }
             }

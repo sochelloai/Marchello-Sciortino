@@ -286,6 +286,65 @@ function fetchBuffer(url, redirectCount = 0) {
     });
 }
 
+// Automatically compress and optimize blog images using sharp
+// Produces .webp (primary for web, <= 120 KB), .jpg (fallback/OG), and compressed .png
+async function processAndSaveBlogImages(imageBuffer, imageSlug, blogAssetsDir) {
+    if (!fs.existsSync(blogAssetsDir)) {
+        fs.mkdirSync(blogAssetsDir, { recursive: true });
+    }
+
+    // Check if buffer is SVG
+    if (imageBuffer.toString('utf8', 0, 100).includes('<svg')) {
+        const svgPath = path.join(blogAssetsDir, `${imageSlug}.svg`);
+        fs.writeFileSync(svgPath, imageBuffer);
+        return `assets/blog/${imageSlug}.svg`;
+    }
+
+    try {
+        let sharp;
+        try {
+            sharp = require('sharp');
+        } catch (e) {
+            console.warn("Notice: sharp module not found, attempting fallback or write raw:", e.message);
+        }
+
+        if (sharp) {
+            const base = sharp(imageBuffer).resize(1024, 1024, {
+                fit: 'inside',
+                withoutEnlargement: true
+            });
+
+            const webpPath = path.join(blogAssetsDir, `${imageSlug}.webp`);
+            const jpgPath = path.join(blogAssetsDir, `${imageSlug}.jpg`);
+            const pngPath = path.join(blogAssetsDir, `${imageSlug}.png`);
+
+            const [webpBuf, jpgBuf, pngBuf] = await Promise.all([
+                base.clone().webp({ quality: 82, effort: 4 }).toBuffer(),
+                base.clone().jpeg({ quality: 82, mozjpeg: true }).toBuffer(),
+                base.clone().png({ quality: 75, palette: true, compressionLevel: 9 }).toBuffer()
+            ]);
+
+            fs.writeFileSync(webpPath, webpBuf);
+            fs.writeFileSync(jpgPath, jpgBuf);
+            fs.writeFileSync(pngPath, pngBuf);
+
+            console.log(`Blog image compressed successfully for "${imageSlug}":`);
+            console.log(`- WebP: ${(webpBuf.length / 1024).toFixed(1)} KB`);
+            console.log(`- JPEG: ${(jpgBuf.length / 1024).toFixed(1)} KB`);
+            console.log(`- PNG:  ${(pngBuf.length / 1024).toFixed(1)} KB`);
+
+            return `assets/blog/${imageSlug}.webp`;
+        }
+    } catch (optErr) {
+        console.warn("Optimization with sharp failed, falling back to raw save:", optErr.message);
+    }
+
+    // Fallback if sharp unavailable
+    const fallbackPath = path.join(blogAssetsDir, `${imageSlug}.png`);
+    fs.writeFileSync(fallbackPath, imageBuffer);
+    return `assets/blog/${imageSlug}.png`;
+}
+
 // Generate luxury bespoke brand geometric vector artwork as an offline/fail-safe fallback
 function generateBrandedThemeSvg(monthArtStyle, monthIndex, title, tag) {
     const monthPalettes = {
@@ -812,10 +871,13 @@ You must return a raw JSON object containing exactly these fields (no markdown w
             if (urlMatch) {
                 const imageUrl = urlMatch[0];
                 console.log(`Downloading generated Higgsfield image from: ${imageUrl}`);
-                await downloadFile(imageUrl, localImagePath);
-                imageBuffer = fs.readFileSync(localImagePath);
-                relativeImageSrc = `assets/blog/${localImageName}`;
-                console.log("Image downloaded and saved successfully via Higgsfield.");
+                const tempDownloadPath = path.join(blogAssetsDir, `${imageSlug}_temp_raw.png`);
+                await downloadFile(imageUrl, tempDownloadPath);
+                const rawBuffer = fs.readFileSync(tempDownloadPath);
+                try { fs.unlinkSync(tempDownloadPath); } catch (_) {}
+                imageBuffer = rawBuffer;
+                relativeImageSrc = await processAndSaveBlogImages(rawBuffer, imageSlug, blogAssetsDir);
+                console.log("Image downloaded, compressed, and saved successfully via Higgsfield.");
             } else {
                 console.warn("Higgsfield CLI command completed but no image URL was found in output:", hfOutput);
             }
@@ -1006,33 +1068,10 @@ You must return a raw JSON object containing exactly these fields (no markdown w
 
         if (imageBuffer) {
             if (!relativeImageSrc) {
-                // Step 3: Write image locally if not already downloaded and saved
+                // Step 3: Write and compress image locally if not already processed
                 const blogAssetsDir = path.join(__dirname, '..', 'assets', 'blog');
-                if (!fs.existsSync(blogAssetsDir)) {
-                    fs.mkdirSync(blogAssetsDir, { recursive: true });
-                }
-
                 const imageSlug = sanitizeId(generatedArticle.url_slug || articleId);
-                
-                // Detect file format from buffer content
-                let ext = 'png';
-                if (imageBuffer.length > 2 && imageBuffer[0] === 0xFF && imageBuffer[1] === 0xD8) {
-                    ext = 'jpg';
-                } else if (imageBuffer.toString('utf8', 0, 100).includes('<svg')) {
-                    ext = 'svg';
-                }
-
-                const localImageName = `${imageSlug}.${ext}`;
-                const localImagePath = path.join(blogAssetsDir, localImageName);
-                relativeImageSrc = `assets/blog/${localImageName}`;
-
-                try {
-                    console.log(`Writing image to: ${localImagePath}`);
-                    fs.writeFileSync(localImagePath, imageBuffer);
-                    console.log("Image write complete.");
-                } catch (writeErr) {
-                    throw new Error(`CRITICAL: Failed to write generated image to disk: ${writeErr.message}. Aborting post generation.`);
-                }
+                relativeImageSrc = await processAndSaveBlogImages(imageBuffer, imageSlug, blogAssetsDir);
             }
         } else {
             throw new Error("CRITICAL: Failed to generate featured image via Higgsfield, Google Gemini/Imagen, Pollinations AI, or SVG. Aborting post generation.");

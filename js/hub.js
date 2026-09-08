@@ -143,7 +143,10 @@ const Hub = {
             card.innerHTML = `
                 ${art.image ? `
                 <div class="blog-card-image" style="width: 100%; height: 180px; overflow: hidden; border-bottom: 1px solid var(--color-gray-border);">
-                    <img src="${art.image}" alt="${art.title}" style="width: 100%; height: 100%; object-fit: cover; transition: var(--transition-fast);">
+                    <picture>
+                        <source srcset="${art.image.replace(/\.(png|jpg|jpeg)$/i, '.webp')}" type="image/webp">
+                        <img src="${art.image.replace(/\.webp$/i, '.jpg')}" alt="${art.title}" loading="lazy" decoding="async" style="width: 100%; height: 100%; object-fit: cover; transition: var(--transition-fast);">
+                    </picture>
                 </div>
                 ` : ''}
                 <div style="padding: var(--spacing-md); display: flex; flex-direction: column; flex: 1;">
@@ -219,7 +222,10 @@ const Hub = {
                 </div>
                 ${art.image ? `
                 <div style="width:100%; max-height:380px; overflow:hidden; border-radius:var(--radius-md); margin-bottom:20px; border:1px solid var(--color-gray-border);">
-                    <img src="${art.image}" alt="${art.title}" style="width:100%; max-height:380px; object-fit:cover;">
+                    <picture>
+                        <source srcset="${art.image.replace(/\.(png|jpg|jpeg)$/i, '.webp')}" type="image/webp">
+                        <img src="${art.image.replace(/\.webp$/i, '.jpg')}" alt="${art.title}" loading="lazy" decoding="async" style="width:100%; max-height:380px; object-fit:cover;">
+                    </picture>
                 </div>
                 ` : ''}
                 <div class="blog-body-html" style="line-height: 1.7; font-size: 1.05rem;">
