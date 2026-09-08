@@ -2749,6 +2749,24 @@ Router.register('/contact', () => {
 // 14. Free Gifts Data Registry & Template System
 const FREE_GIFTS_DATA = [
     {
+        id: "harder-not-impossible",
+        slug: "harder-not-impossible",
+        aliases: ["harder-does-not-equal-impossible"],
+        title: "Harder ≠ Impossible",
+        type: "Carousel & Worksheets",
+        badge: "Available Now",
+        meta_title: "Harder ≠ Impossible | Free Carousel & Worksheets by Marchello Sciortino",
+        meta_desc: "Sometimes the first path only looks easier. A 12-page visual carousel guide and practical reflection worksheets by Marchello Sciortino on mapping a route that builds sustainable growth.",
+        bullets: [
+            "10-part visual carousel exploring the Straight Route vs. The Mapped Route.",
+            "Worksheet 1: Spot the route that is draining your energy and peace.",
+            "Worksheet 2: Map a route with tools, support, and sustainable commitments."
+        ],
+        cover_image: "/assets/free-gifts/Harder_Does_Not_Equal_Impossible_cover.png",
+        file_url: "https://www.marchellosciortino.com/assets/free-gifts/Harder_Does_Not_Equal_Impossible_Carousel_and_Worksheets_Marchello_Sciortino.pdf",
+        button_label: "Download Worksheets"
+    },
+    {
         id: "you-are-my-fortress",
         slug: "you-are-my-fortress",
         title: "You Are My Fortress",
@@ -2866,24 +2884,6 @@ const FREE_GIFTS_DATA = [
                 duration: "3:02"
             }
         ]
-    },
-    {
-        id: "harder-not-impossible",
-        slug: "harder-not-impossible",
-        aliases: ["harder-does-not-equal-impossible"],
-        title: "Harder ≠ Impossible",
-        type: "Carousel & Worksheets",
-        badge: "Available Now",
-        meta_title: "Harder ≠ Impossible | Free Carousel & Worksheets by Marchello Sciortino",
-        meta_desc: "Sometimes the first path only looks easier. A 12-page visual carousel guide and practical reflection worksheets by Marchello Sciortino on mapping a route that builds sustainable growth.",
-        bullets: [
-            "10-part visual carousel exploring the Straight Route vs. The Mapped Route.",
-            "Worksheet 1: Spot the route that is draining your energy and peace.",
-            "Worksheet 2: Map a route with tools, support, and sustainable commitments."
-        ],
-        cover_image: "/assets/free-gifts/Harder_Does_Not_Equal_Impossible_cover.png",
-        file_url: "https://www.marchellosciortino.com/assets/free-gifts/Harder_Does_Not_Equal_Impossible_Carousel_and_Worksheets_Marchello_Sciortino.pdf",
-        button_label: "Download Worksheets"
     },
     {
         id: "from-idea-to-free-product",
