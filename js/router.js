@@ -128,6 +128,7 @@ const Router = {
                 '/win-anyway': "Win Anyway | Free Music Album by Marchello Sciortino",
                 '/you-are-my-fortress': "You Are My Fortress | Free Song Download by Marchello Sciortino",
                 '/harder-not-impossible': "Harder ≠ Impossible | Free Carousel & Worksheets by Marchello Sciortino",
+                '/50-images-of-possibility': "50 Images of Possibility | Free AI Prompt Collection by Marchello Sciortino",
                 '/resources': "Resources | Marchello Sciortino",
                 '/privacy': "Privacy Policy | Marchello Sciortino",
                 '/terms': "Terms of Service | Marchello Sciortino",
@@ -2748,6 +2749,23 @@ Router.register('/contact', () => {
 
 // 14. Free Gifts Data Registry & Template System
 const FREE_GIFTS_DATA = [
+    {
+        id: "50-images-of-possibility",
+        slug: "50-images-of-possibility",
+        title: "50 Images of Possibility",
+        type: "AI Prompt Collection",
+        badge: "Available Now",
+        meta_title: "50 Images of Possibility | Free AI Prompt Collection by Marchello Sciortino",
+        meta_desc: "A curated collection of 50 inspirational AI image prompts by Marchello Sciortino for wallpapers, social graphics, vision boards, and motivational artwork.",
+        bullets: [
+            "50 curated AI image prompts for wallpapers, vision boards & social graphics.",
+            "Themes of faith, creativity, community, accessibility, and purposeful impact.",
+            "Ready-to-use prompts designed to spark imagination and creative agency."
+        ],
+        cover_image: "/assets/free-gifts/50_Images_of_Possibility_cover.png",
+        file_url: "https://www.marchellosciortino.com/assets/free-gifts/50_Images_of_Possibility.pdf",
+        button_label: "Download Collection"
+    },
     {
         id: "harder-not-impossible",
         slug: "harder-not-impossible",
