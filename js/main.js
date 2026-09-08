@@ -567,15 +567,24 @@ function initFreeGiftsUnlock() {
             submitBtn.textContent = "Unlocking...";
         }
 
+        const modal = document.getElementById('free-gifts-modal');
+        const giftTitle = (typeof activeDownloadTitle !== 'undefined' && activeDownloadTitle) || 
+                          (modal && modal.getAttribute('data-target-title')) || 
+                          "";
+
         // Save locally as database backup
         saveFormEntry('free-gifts', {
             email,
+            gift_title: giftTitle,
             timestamp: new Date().toISOString()
         });
 
         try {
             const formData = new FormData();
             formData.append('email', email);
+            if (giftTitle) {
+                formData.append('gift_title', giftTitle);
+            }
 
             const response = await fetch('/api/submit-free-gifts', {
                 method: 'POST',
