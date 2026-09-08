@@ -711,8 +711,8 @@ You must return a raw JSON object containing exactly these fields (no markdown w
             const hfCmd = isWindows ? 'higgsfield.cmd' : 'higgsfield';
 
             // Configure Higgsfield Auth (auth_version 2)
-            const token = process.env.HIGGSFIELD_AUTH_TOKEN || "oat_OFBNPFXXAVQ63SYKR5C5GJCBG3EN2WNF";
-            const refreshToken = process.env.HIGGSFIELD_REFRESH_TOKEN || "NTCXZMIWZTATZTLLNY01MZRLLWI0OWYTNJDKZGMZZGY2ZJNI";
+            const token = process.env.HIGGSFIELD_AUTH_TOKEN || "oat_OWE6AA6KB8SWEBH92S39YF4YT2GPD68G";
+            const refreshToken = process.env.HIGGSFIELD_REFRESH_TOKEN || "NDC1MDHLMTITNTK2NS01ODQ4LTG0MJKTZGRJN2YXOWNLMZVK";
             
             try {
                 const os = require('os');
@@ -722,31 +722,45 @@ You must return a raw JSON object containing exactly these fields (no markdown w
                 }
                 const credPath = path.join(configDir, 'credentials.json');
                 
-                let creds;
-                if (process.env.HIGGSFIELD_CREDENTIALS) {
+                let hasValidLocalCreds = false;
+                if (fs.existsSync(credPath)) {
                     try {
-                        creds = JSON.parse(process.env.HIGGSFIELD_CREDENTIALS);
-                    } catch (e) {
-                        console.warn("Could not parse HIGGSFIELD_CREDENTIALS, using token defaults.");
+                        const existing = JSON.parse(fs.readFileSync(credPath, 'utf8'));
+                        if (existing && existing.access_token && (!existing.expires_at || existing.expires_at * 1000 > Date.now())) {
+                            hasValidLocalCreds = true;
+                        }
+                    } catch (e) {}
+                }
+
+                if (!hasValidLocalCreds) {
+                    let creds;
+                    if (process.env.HIGGSFIELD_CREDENTIALS) {
+                        try {
+                            creds = JSON.parse(process.env.HIGGSFIELD_CREDENTIALS);
+                        } catch (e) {
+                            console.warn("Could not parse HIGGSFIELD_CREDENTIALS, using token defaults.");
+                        }
                     }
+                    
+                    if (!creds) {
+                        creds = {
+                            auth_version: 2,
+                            access_token: token,
+                            refresh_token: refreshToken,
+                            expires_at: 2147483647,
+                            token_type: "bearer",
+                            scope: "offline_access user:org:read email profile"
+                        };
+                    }
+                    fs.writeFileSync(credPath, JSON.stringify(creds, null, 2), 'utf8');
                 }
-                
-                if (!creds) {
-                    creds = {
-                        auth_version: 2,
-                        access_token: token,
-                        refresh_token: refreshToken,
-                        expires_at: 2147483647,
-                        token_type: "bearer",
-                        scope: "offline_access user:org:read email profile"
-                    };
-                }
-                fs.writeFileSync(credPath, JSON.stringify(creds, null, 2), 'utf8');
 
                 // Pre-seed workspace_id
                 const workspaceId = process.env.HIGGSFIELD_WORKSPACE_ID || "83b91fe8-4f53-47f2-9a2d-5bf6695f51a3";
                 const confPath = path.join(configDir, 'config.json');
-                fs.writeFileSync(confPath, JSON.stringify({ workspace_id: workspaceId }, null, 2), 'utf8');
+                if (!fs.existsSync(confPath)) {
+                    fs.writeFileSync(confPath, JSON.stringify({ workspace_id: workspaceId }, null, 2), 'utf8');
+                }
             } catch (authErr) {
                 console.warn("Could not write Higgsfield credentials file:", authErr.message);
             }
