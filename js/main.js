@@ -548,8 +548,8 @@ function initFreeGiftsUnlock() {
             const result = await response.json();
             console.log("[ClickFunnels Free Gifts API Success]", result);
             
-            // Set unlocked preference and close modal
-            localStorage.setItem('free-gifts-unlocked', 'true');
+            // Set unlocked preference in sessionStorage and close modal
+            if (typeof sessionStorage !== 'undefined') sessionStorage.setItem('free-gifts-unlocked', 'true');
             const modal = document.getElementById('free-gifts-modal');
             if (modal) {
                 modal.classList.remove('active');
@@ -558,7 +558,7 @@ function initFreeGiftsUnlock() {
         } catch (error) {
             console.error("[ClickFunnels Free Gifts Integration Error]", error);
             // Graceful fallback for local development or missing secrets so UX does not block
-            localStorage.setItem('free-gifts-unlocked', 'true');
+            if (typeof sessionStorage !== 'undefined') sessionStorage.setItem('free-gifts-unlocked', 'true');
             const modal = document.getElementById('free-gifts-modal');
             if (modal) {
                 modal.classList.remove('active');
@@ -582,10 +582,11 @@ function purgeLegacyLocalEmailData() {
         if (typeof localStorage !== 'undefined') {
             localStorage.removeItem('free-gifts-saved-email');
             localStorage.removeItem('user-email');
+            localStorage.removeItem('free-gifts-unlocked');
             const keysToRemove = [];
             for (let i = 0; i < localStorage.length; i++) {
                 const key = localStorage.key(i);
-                if (key && (key.startsWith('ms-form-') || key.includes('email'))) {
+                if (key && (key.startsWith('ms-form-') || key.includes('email') || key.includes('free-gifts'))) {
                     keysToRemove.push(key);
                 }
             }

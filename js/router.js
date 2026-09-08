@@ -6,11 +6,12 @@ const Router = {
     currentPage: null,
 
     init() {
-        // Privacy enforcement: Never hold emails in browser storage
+        // Privacy enforcement: Never hold emails or persistent unlock states in localStorage
         try {
             if (typeof localStorage !== 'undefined') {
                 localStorage.removeItem('free-gifts-saved-email');
                 localStorage.removeItem('user-email');
+                localStorage.removeItem('free-gifts-unlocked');
             }
         } catch (e) {}
 
@@ -3456,10 +3457,22 @@ const freeGiftsTemplate = () => {
     `;
 };
 
+// Helper to check if the current album/track page is unlocked
+function isAlbumPageUnlocked(slug) {
+    const albumWrap = document.getElementById('gift-album-player-wrap');
+    if (albumWrap && albumWrap.style.display !== 'none' && !albumWrap.classList.contains('is-locked')) {
+        return true;
+    }
+    if (typeof sessionStorage !== 'undefined' && slug) {
+        return sessionStorage.getItem('unlocked_album_' + slug) === 'true';
+    }
+    return false;
+}
+
 // Dedicated Single Free Gift Landing Page Template
 const singleGiftTemplate = (gift) => {
     const shareUrl = `https://marchellosciortino.com/${gift.slug}`;
-    const isUnlocked = typeof localStorage !== 'undefined' && localStorage.getItem('free-gifts-unlocked') === 'true';
+    const isUnlocked = typeof sessionStorage !== 'undefined' && sessionStorage.getItem('unlocked_album_' + gift.slug) === 'true';
 
     return `
     <style>
@@ -4599,7 +4612,8 @@ document.addEventListener('click', (e) => {
     if (albumUnlockTrigger) {
         e.preventDefault();
         e.stopPropagation();
-        const isUnlocked = localStorage.getItem('free-gifts-unlocked') === 'true';
+        const currentSlug = window.location.pathname.replace(/^\/|\/$/g, '');
+        const isUnlocked = isAlbumPageUnlocked(currentSlug);
         if (!isUnlocked) {
             openUnlockModal('action:download-full-album', 'Win Anyway (Full Album)', 'Win Anyway - Complete Album.zip');
             return;
@@ -4611,7 +4625,8 @@ document.addEventListener('click', (e) => {
     if (fullAlbumBtn) {
         e.preventDefault();
         e.stopPropagation();
-        const isUnlocked = localStorage.getItem('free-gifts-unlocked') === 'true';
+        const currentSlug = window.location.pathname.replace(/^\/|\/$/g, '');
+        const isUnlocked = isAlbumPageUnlocked(currentSlug);
         if (!isUnlocked) {
             const title = fullAlbumBtn.getAttribute('data-title') || 'Win Anyway (Full Album)';
             openUnlockModal('action:download-full-album', title, 'Win Anyway - Complete Album.zip');
@@ -4630,7 +4645,8 @@ document.addEventListener('click', (e) => {
         const title = trackDownloadBtn.getAttribute('data-title') || 'Track';
         const filename = trackDownloadBtn.getAttribute('data-filename') || `${title}.mp3`;
 
-        const isUnlocked = localStorage.getItem('free-gifts-unlocked') === 'true';
+        const currentSlug = window.location.pathname.replace(/^\/|\/$/g, '');
+        const isUnlocked = isAlbumPageUnlocked(currentSlug);
         if (!isUnlocked) {
             openUnlockModal(fileUrl, title, filename);
             return;
@@ -4705,7 +4721,10 @@ document.addEventListener('submit', async (e) => {
             modal.classList.remove('active');
         }
 
-        localStorage.setItem('free-gifts-unlocked', 'true');
+        const currentSlug = window.location.pathname.replace(/^\/|\/$/g, '');
+        if (typeof sessionStorage !== 'undefined' && currentSlug) {
+            sessionStorage.setItem('unlocked_album_' + currentSlug, 'true');
+        }
         // Clean up email input value from DOM immediately so it does not persist
         if (emailInput) {
             emailInput.value = '';
@@ -4787,7 +4806,8 @@ document.addEventListener('click', (e) => {
             return;
         }
 
-        const isUnlocked = localStorage.getItem('free-gifts-unlocked') === 'true';
+        const currentSlug = window.location.pathname.replace(/^\/|\/$/g, '');
+        const isUnlocked = isAlbumPageUnlocked(currentSlug);
         if (!isUnlocked) {
             e.preventDefault();
             e.stopPropagation();
