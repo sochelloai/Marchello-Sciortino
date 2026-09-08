@@ -4443,12 +4443,15 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     backface-visibility: hidden;
 }
 
-.instagram-post a {
+.instagram-post a,
+.instagram-post-link {
     display: block;
     width: 100%;
     height: 100%;
     position: relative;
     z-index: 2;
+    text-decoration: none;
+    color: inherit;
 }
 
 .instagram-post img {
@@ -4478,17 +4481,74 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
 }
 
 /* Hover animation play state pause */
-.instagram-section-link:hover .instagram-marquee-track {
+.instagram-section:hover .instagram-marquee-track,
+.instagram-section-link:hover .instagram-marquee-track,
+.instagram-marquee-container:hover .instagram-marquee-track {
     animation-play-state: paused !important;
 }
 
-.instagram-section-link:hover .instagram-post img {
-    transform: scale(1.06);
+.instagram-post:hover img {
+    transform: scale(1.08);
     filter: brightness(0.9);
 }
 
-.instagram-section-link:hover .instagram-post::after {
+.instagram-post:hover::after {
+    opacity: 0.7;
+}
+
+/* Interactive Post Overlay */
+.instagram-post-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(11, 19, 43, 0.45);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 3;
+    pointer-events: none;
+}
+
+.instagram-post:hover .instagram-post-overlay {
     opacity: 1;
+}
+
+.instagram-post-view-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: rgba(11, 19, 43, 0.88);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    transform: translateY(4px);
+    transition: transform 0.3s ease;
+}
+
+.instagram-post:hover .instagram-post-view-action {
+    transform: translateY(0);
+}
+
+.instagram-video-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 4;
+    background: rgba(11, 19, 43, 0.85);
+    color: #fff;
+    font-size: 0.75rem;
+    padding: 3px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    pointer-events: none;
 }
 
 /* Floating Center Badge styling */
@@ -4498,7 +4558,7 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 10;
-    background: rgba(11, 19, 43, 0.85);
+    background: rgba(11, 19, 43, 0.88);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.12);
@@ -4512,8 +4572,21 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     align-items: center;
     justify-content: center;
     gap: 8px;
-    pointer-events: none;
-    /* Let clicks pass through to the overlay link */
+    pointer-events: auto;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+}
+
+.instagram-center-badge:hover {
+    background: rgba(11, 19, 43, 0.95);
+    border-color: rgba(10, 216, 173, 0.6);
+    box-shadow: 0 20px 45px rgba(10, 216, 173, 0.25), 0 0 20px rgba(10, 216, 173, 0.2);
+    transform: translate(-50%, -50%) scale(1.05);
+}
+
+.instagram-center-badge:hover .instagram-icon-wrap {
+    transform: scale(1.12) rotate(6deg);
 }
 
 .instagram-icon-wrap {

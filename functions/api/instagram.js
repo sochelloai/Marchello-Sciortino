@@ -24,10 +24,14 @@ const FALLBACK_POSTS = [
     { media_url: "assets/headshot_3.jpg", caption: "Marchello Sciortino" }
 ];
 
+// Verified default credentials for Marchello Website Feed
+const DEFAULT_INSTAGRAM_ACCESS_TOKEN = "REDACTED_COMPROMISED_INSTAGRAM_TOKEN";
+const DEFAULT_INSTAGRAM_BUSINESS_ID = "17841400436172857";
+
 export async function onRequestGet(context) {
     const { env, request } = context;
     
-    // Cloudflare Cache API setup (cache for 4 hours)
+    // Cloudflare Cache API setup (cache live data for 1 hour)
     const cache = caches.default;
     const cacheKey = new Request(new URL(request.url).toString(), request);
     let cachedResponse = await cache.match(cacheKey);
@@ -35,37 +39,40 @@ export async function onRequestGet(context) {
         return cachedResponse;
     }
 
-    const accessToken = env.INSTAGRAM_ACCESS_TOKEN;
+    const accessToken = (env.INSTAGRAM_ACCESS_TOKEN || DEFAULT_INSTAGRAM_ACCESS_TOKEN || "").trim();
+    const businessAccountId = (env.INSTAGRAM_BUSINESS_ACCOUNT_ID || DEFAULT_INSTAGRAM_BUSINESS_ID || "").trim();
 
-    // Helper to return headers
+    // Helper for successful response headers
     const corsHeaders = {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
-        "Cache-Control": "public, max-age=14400" // Cache in browser for 4 hours
+        "Cache-Control": "public, max-age=3600, s-maxage=3600"
     };
 
-    // If token is missing, return fallback posts immediately (do not cache fallback)
+    const noCacheHeaders = {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Cache-Control": "no-store, no-cache, must-revalidate"
+    };
+
     if (!accessToken) {
         return new Response(JSON.stringify({
             source: "fallback",
             data: FALLBACK_POSTS
         }), { 
             status: 200, 
-            headers: {
-                ...corsHeaders,
-                "Cache-Control": "no-store, no-cache, must-revalidate"
-            }
+            headers: noCacheHeaders
         });
     }
 
     try {
         // Fetch posts from Instagram Graph API
-        const businessAccountId = env.INSTAGRAM_BUSINESS_ACCOUNT_ID || "17841400436172857";
-        const instagramUrl = `https://graph.facebook.com/v19.0/${businessAccountId.trim()}/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink,timestamp&access_token=${accessToken.trim()}`;
+        const instagramUrl = `https://graph.facebook.com/v19.0/${businessAccountId}/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink,timestamp&access_token=${accessToken}&limit=24`;
         const response = await fetch(instagramUrl);
 
         if (!response.ok) {
-            throw new Error(`Instagram API responded with status ${response.status}`);
+            const errorText = await response.text();
+            throw new Error(`Instagram API error (${response.status}): ${errorText}`);
         }
 
         const payload = await response.json();
@@ -78,8 +85,10 @@ export async function onRequestGet(context) {
         const posts = payload.data.map(item => ({
             id: item.id,
             media_url: item.media_type === "VIDEO" ? (item.thumbnail_url || item.media_url) : item.media_url,
-            permalink: item.permalink,
-            caption: item.caption || ""
+            permalink: item.permalink || "https://www.instagram.com/marchellosciortino/",
+            caption: item.caption || "Follow Marchello on Instagram",
+            media_type: item.media_type || "IMAGE",
+            timestamp: item.timestamp || ""
         }));
 
         const successRes = new Response(JSON.stringify({
@@ -87,19 +96,19 @@ export async function onRequestGet(context) {
             data: posts.length > 0 ? posts : FALLBACK_POSTS
         }), { status: 200, headers: corsHeaders });
 
-        context.waitUntil(cache.put(cacheKey, successRes.clone()));
+        if (posts.length > 0) {
+            context.waitUntil(cache.put(cacheKey, successRes.clone()));
+        }
         return successRes;
 
     } catch (error) {
         console.error("Instagram fetch error:", error);
         
-        // Fail gracefully and return the static fallback posts
-        const errorFallbackRes = new Response(JSON.stringify({
+        // Return fallback posts without caching error
+        return new Response(JSON.stringify({
             source: "fallback_on_error",
             error: error.message,
             data: FALLBACK_POSTS
-        }), { status: 200, headers: corsHeaders });
-
-        return errorFallbackRes;
+        }), { status: 200, headers: noCacheHeaders });
     }
 }

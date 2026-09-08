@@ -1315,17 +1315,15 @@ function cleanupImmersiveMission() {
  */
 async function initInstagramMarquee() {
     try {
-        const response = await fetch('/api/instagram?v=20260805-2');
+        const response = await fetch('/api/instagram?v=20260907-live-feed');
         if (!response.ok) return;
 
         const result = await response.json();
-        if (!result || !result.data || result.source === 'fallback' || result.source === 'fallback_on_error') {
-            // Keep static fallback HTML already present in index.html
+        if (!result || !result.data || !Array.isArray(result.data) || result.data.length === 0) {
             return;
         }
 
         const posts = result.data;
-        if (posts.length === 0) return;
 
         // Split posts into Row 1 (RTL) and Row 2 (LTR)
         const half = Math.ceil(posts.length / 2);
@@ -1345,30 +1343,41 @@ async function initInstagramMarquee() {
                 .replace(/'/g, '&#039;');
         };
 
-        if (trackRTL && row1Posts.length > 0) {
-            // Double the items for seamless infinite marquee loop
-            const doublePosts = [...row1Posts, ...row1Posts];
-            trackRTL.innerHTML = doublePosts.map((post, idx) => {
-                const fallback = `assets/timeline-${(idx % 5) + 1}.png`;
+        const renderTrackPosts = (postList, defaultFallbackPrefix) => {
+            // Repeat posts if needed for smooth continuous loop
+            const listToRepeat = postList.length < 8 ? [...postList, ...postList, ...postList] : [...postList, ...postList];
+            return listToRepeat.map((post, idx) => {
+                const fallback = `assets/${defaultFallbackPrefix}-${(idx % 5) + 1}.png`;
+                const permalink = post.permalink || 'https://www.instagram.com/marchellosciortino/';
+                const caption = escapeHtml(post.caption || 'Follow Marchello on Instagram');
+                const isVideo = post.media_type === 'VIDEO';
                 return `
-                    <div class="instagram-post">
-                        <img src="${post.media_url}" alt="${escapeHtml(post.caption)}" loading="eager" onerror="this.onerror=null; this.src='${fallback}';">
+                    <div class="instagram-post" title="${caption}">
+                        <a href="${permalink}" target="_blank" rel="noopener noreferrer" class="instagram-post-link" aria-label="View on Instagram: ${caption}">
+                            <img src="${post.media_url}" alt="${caption}" loading="eager" decoding="async" onerror="this.onerror=null; this.src='${fallback}';">
+                            ${isVideo ? '<span class="instagram-video-badge" aria-hidden="true">▶</span>' : ''}
+                            <div class="instagram-post-overlay">
+                                <span class="instagram-post-view-action">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="instagram-post-icon" width="18" height="18">
+                                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                                    </svg>
+                                    <span>View Post</span>
+                                </span>
+                            </div>
+                        </a>
                     </div>
                 `;
             }).join('');
+        };
+
+        if (trackRTL && row1Posts.length > 0) {
+            trackRTL.innerHTML = renderTrackPosts(row1Posts, 'timeline');
         }
 
         if (trackLTR && row2Posts.length > 0) {
-            // Double the items for seamless infinite marquee loop
-            const doublePosts = [...row2Posts, ...row2Posts];
-            trackLTR.innerHTML = doublePosts.map((post, idx) => {
-                const fallback = `assets/headshot_${(idx % 3) + 1}.jpg`;
-                return `
-                    <div class="instagram-post">
-                        <img src="${post.media_url}" alt="${escapeHtml(post.caption)}" loading="eager" onerror="this.onerror=null; this.src='${fallback}';">
-                    </div>
-                `;
-            }).join('');
+            trackLTR.innerHTML = renderTrackPosts(row2Posts, 'headshot');
         }
     } catch (e) {
         console.error("Failed to load Instagram marquee feed:", e);
