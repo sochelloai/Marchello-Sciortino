@@ -239,16 +239,6 @@ function bindFormHandlers() {
             formData.append('location', location);
             formData.append('message', message);
 
-            // Save locally as database backup
-            saveFormEntry('speaking', {
-                name,
-                email,
-                event: eventName,
-                location,
-                message,
-                timestamp: new Date().toISOString()
-            });
-
             try {
                 const response = await fetch('/api/submit-speaking', {
                     method: 'POST',
@@ -305,17 +295,6 @@ function bindFormHandlers() {
                 formData.append('file', fileInput.files[0]);
             }
 
-            // Save locally as database backup
-            saveFormEntry('contact', {
-                name: document.getElementById('contact-name').value,
-                email: document.getElementById('contact-email').value,
-                interest: selectedInterest ? selectedInterest.value : "",
-                subject: document.getElementById('contact-subject').value,
-                description: document.getElementById('contact-description').value,
-                attachmentName: fileInput && fileInput.files && fileInput.files[0] ? fileInput.files[0].name : "",
-                timestamp: new Date().toISOString()
-            });
-
             try {
                 // Call the Cloudflare Pages Function secure endpoint
                 const response = await fetch('/api/submit-contact', {
@@ -368,14 +347,6 @@ function bindFormHandlers() {
             formData.append('email', email);
             formData.append('role', role);
 
-            // Save locally as database backup
-            saveFormEntry('aim-waitlist', {
-                name,
-                email,
-                role,
-                timestamp: new Date().toISOString()
-            });
-
             try {
                 const response = await fetch('/api/submit-aim-waitlist', {
                     method: 'POST',
@@ -425,12 +396,6 @@ function bindFormHandlers() {
             const formData = new FormData();
             formData.append('email', email);
 
-            // Save locally as database backup
-            saveFormEntry('aim-waitlist', {
-                email,
-                timestamp: new Date().toISOString()
-            });
-
             try {
                 const response = await fetch('/api/submit-aim-waitlist', {
                     method: 'POST',
@@ -466,8 +431,7 @@ function bindFormHandlers() {
         bookForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const email = bookForm.querySelector('input[type="email"]').value;
-            saveFormEntry('book-notify', { email, timestamp: new Date().toISOString() });
-            showSuccessModal("Release Notification Setup", `Success! You will be notified at ${email} as soon as 'Limitations to Liberation' launches.`);
+            showSuccessModal("Release Notification Setup", "Success! You will be notified as soon as 'Limitations to Liberation' launches.");
             bookForm.reset();
         });
     }
@@ -483,7 +447,6 @@ function bindFormHandlers() {
                 details: document.getElementById('music-details').value,
                 timestamp: new Date().toISOString()
             };
-            saveFormEntry('music-quote', data);
             showSuccessModal("Jingle Quote Requested", "Thank you. I will review your details and follow up with melody ideas.");
             musicForm.reset();
         });
@@ -504,13 +467,6 @@ function bindFormHandlers() {
 
             const email = document.getElementById('access-email').value;
             const barrier = document.getElementById('access-desc').value;
-
-            // Log locally for backup
-            saveFormEntry('access-feedback', {
-                email,
-                description: barrier,
-                timestamp: new Date().toISOString()
-            });
 
             try {
                 const formData = new FormData();
@@ -572,13 +528,6 @@ function initFreeGiftsUnlock() {
                           (modal && modal.getAttribute('data-target-title')) || 
                           "";
 
-        // Save locally as database backup
-        saveFormEntry('free-gifts', {
-            email,
-            gift_title: giftTitle,
-            timestamp: new Date().toISOString()
-        });
-
         try {
             const formData = new FormData();
             formData.append('email', email);
@@ -625,17 +574,31 @@ function initFreeGiftsUnlock() {
 }
 
 /**
- * Persists submissions locally to simulate databases
+ * Privacy enforcement: Never store emails or form entries locally or in browser storage.
+ * ClickFunnels is the sole database and system of record.
  */
-function saveFormEntry(formId, data) {
-    console.log(`[Form Submission Logged] Form: ${formId}`, data);
-
-    // Save to localStorage array
-    const key = `ms-form-${formId}`;
-    const existing = JSON.parse(localStorage.getItem(key)) || [];
-    existing.push(data);
-    localStorage.setItem(key, JSON.stringify(existing));
+function purgeLegacyLocalEmailData() {
+    try {
+        if (typeof localStorage !== 'undefined') {
+            localStorage.removeItem('free-gifts-saved-email');
+            localStorage.removeItem('user-email');
+            const keysToRemove = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && (key.startsWith('ms-form-') || key.includes('email'))) {
+                    keysToRemove.push(key);
+                }
+            }
+            keysToRemove.forEach(k => localStorage.removeItem(k));
+        }
+        if (typeof sessionStorage !== 'undefined') {
+            sessionStorage.clear();
+        }
+    } catch (e) {
+        // Storage access restricted or disabled
+    }
 }
+purgeLegacyLocalEmailData();
 
 /**
  * Triggers success modal popup

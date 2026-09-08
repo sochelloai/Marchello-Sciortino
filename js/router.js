@@ -6,6 +6,14 @@ const Router = {
     currentPage: null,
 
     init() {
+        // Privacy enforcement: Never hold emails in browser storage
+        try {
+            if (typeof localStorage !== 'undefined') {
+                localStorage.removeItem('free-gifts-saved-email');
+                localStorage.removeItem('user-email');
+            }
+        } catch (e) {}
+
         // Handle browser navigation (back/forward)
         window.addEventListener('popstate', () => this.handleRouting());
 
@@ -3033,7 +3041,10 @@ const freeGiftsTemplate = () => {
         <div class="teaser-card" id="${gift.slug}">
             <div class="card-cover-wrapper">
                 <a href="/${gift.slug}" style="display: block; width: 100%; height: 100%;">
-                    <img src="${gift.cover_image}" alt="${gift.title} Cover" class="card-cover-img">
+                    <picture>
+                        <source srcset="${gift.cover_image.replace(/\.(png|jpe?g)$/i, '.webp')}" type="image/webp">
+                        <img src="${gift.cover_image}" alt="${gift.title} Cover" class="card-cover-img" loading="lazy" decoding="async">
+                    </picture>
                 </a>
                 <span class="card-status-badge active">&#10004; ${gift.badge}</span>
             </div>
@@ -3139,6 +3150,12 @@ const freeGiftsTemplate = () => {
             background: #f1f5f9;
             overflow: hidden;
             border-bottom: 1px solid #e2e8f0;
+        }
+
+        .card-cover-wrapper picture {
+            display: block;
+            width: 100%;
+            height: 100%;
         }
 
         .card-cover-img {
@@ -3495,6 +3512,12 @@ const singleGiftTemplate = (gift) => {
             border-bottom: 1px solid #e2e8f0;
         }
 
+        .single-gift-cover-wrap picture {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
         .single-gift-cover-img {
             width: 100%;
             height: auto;
@@ -3830,6 +3853,13 @@ const singleGiftTemplate = (gift) => {
             flex: 1;
         }
 
+        .track-card-left picture {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
         .track-card-thumb {
             width: 52px;
             height: 52px;
@@ -4088,7 +4118,10 @@ const singleGiftTemplate = (gift) => {
                     <div>
                         <div class="single-gift-card">
                             <div class="single-gift-cover-wrap">
-                                <img src="${gift.display_image || gift.cover_image}" alt="${gift.title} Cover" class="single-gift-cover-img" style="${gift.display_image ? 'aspect-ratio: 1 / 1; object-fit: cover;' : ''}">
+                                <picture>
+                                    <source srcset="${(gift.display_image || gift.cover_image).replace(/\.(png|jpe?g)$/i, '.webp')}" type="image/webp">
+                                    <img src="${gift.display_image || gift.cover_image}" alt="${gift.title} Cover" class="single-gift-cover-img" loading="lazy" decoding="async" style="${gift.display_image ? 'aspect-ratio: 1 / 1; object-fit: cover;' : ''}">
+                                </picture>
                                 <span class="single-gift-badge">&#10004; ${gift.badge}</span>
                             </div>
                         </div>
@@ -4175,7 +4208,10 @@ const singleGiftTemplate = (gift) => {
                                 ${gift.tracks.map((track, tIdx) => `
                                     <div class="gift-track-card" data-src="${track.src}" data-index="${tIdx}" data-title="${track.title}">
                                         <div class="track-card-left">
-                                            <img src="${track.cover}" alt="${track.title} Cover" class="track-card-thumb">
+                                            <picture>
+                                                <source srcset="${track.cover.replace(/\.(png|jpe?g)$/i, '.webp')}" type="image/webp">
+                                                <img src="${track.cover}" alt="${track.title} Cover" class="track-card-thumb" loading="lazy" decoding="async">
+                                            </picture>
                                             <button type="button" class="btn-track-play" aria-label="Play ${track.title}">
                                                 <svg class="track-play-svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
                                                 <svg class="track-pause-svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
@@ -4525,10 +4561,9 @@ function openUnlockModal(targetFile, targetTitle, targetFilename = '') {
         modal.removeAttribute('data-target-filename');
     }
 
-    // Prefill saved email if user already entered it in this browser
-    const savedEmail = localStorage.getItem('free-gifts-saved-email') || localStorage.getItem('user-email') || '';
-    if (emailInput && savedEmail) {
-        emailInput.value = savedEmail;
+    // Never store or prefill emails in browser storage - ensure inputs are clean
+    if (emailInput) {
+        emailInput.value = '';
     }
 
     modal.classList.add('active');
@@ -4536,9 +4571,6 @@ function openUnlockModal(targetFile, targetTitle, targetFilename = '') {
     setTimeout(() => {
         if (emailInput) {
             emailInput.focus();
-            if (savedEmail) {
-                emailInput.select();
-            }
         }
     }, 80);
 }
@@ -4674,7 +4706,10 @@ document.addEventListener('submit', async (e) => {
         }
 
         localStorage.setItem('free-gifts-unlocked', 'true');
-        localStorage.setItem('free-gifts-saved-email', email);
+        // Clean up email input value from DOM immediately so it does not persist
+        if (emailInput) {
+            emailInput.value = '';
+        }
 
         // Immediately hide in-place unlock card
         const inlineUnlockCard = document.getElementById('album-inline-unlock-card');

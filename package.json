@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "compress:free-gifts": "node scripts/compress-free-gifts.js"
+  },
   "dependencies": {
     "playwright": "^1.61.1",
     "sharp": "^0.35.4"
