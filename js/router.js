@@ -4102,7 +4102,7 @@ const singleGiftTemplate = (gift) => {
                 <div class="single-gift-one-column-row">
                     ${gift.tracks && gift.tracks.length > 0 ? `
                     <!-- In-Place Unlock Form Card (Shown on first session until unlocked) -->
-                    <div class="album-inline-unlock-card" id="album-inline-unlock-card" style="${isUnlocked ? 'display: none !important;' : 'display: block;'}">
+                    <div class="album-inline-unlock-card" id="album-inline-unlock-card" data-target-title="${gift.title}" style="${isUnlocked ? 'display: none !important;' : 'display: block;'}">
                         <div style="width: 52px; height: 52px; background: rgba(255, 87, 34, 0.12); border: 2px solid #ff5722; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #ff5722; margin: 0 auto 16px;">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                         </div>
@@ -4110,7 +4110,7 @@ const singleGiftTemplate = (gift) => {
                         <p style="color: #475569; font-size: 0.95rem; margin: 0 0 22px; line-height: 1.5;">
                             Unlock all downloads by entering your email.
                         </p>
-                        <form id="album-inline-unlock-form">
+                        <form id="album-inline-unlock-form" data-target-title="${gift.title}">
                             <input type="email" class="spa-modal-input" id="album-inline-email" placeholder="Enter your email address..." required style="width: 100%; padding: 14px; border: 1px solid #e2e8f0; border-radius: 10px; margin-bottom: 14px; font-size: 1rem; box-sizing: border-box;">
                             <button type="submit" class="btn-unlock-orange" style="background: #ff5722; color: #ffffff; width: 100%; padding: 14px 20px; font-size: 1.05rem; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; transition: background 0.2s, transform 0.15s; box-shadow: 0 8px 20px rgba(255, 87, 34, 0.35);">
                                 Unlock Free Access &rarr;
@@ -4615,7 +4615,9 @@ document.addEventListener('submit', async (e) => {
 
         const modal = document.getElementById('spa-download-modal');
         const targetUrl = modal ? modal.getAttribute('data-target-file') : null;
-        const targetTitle = modal ? (modal.getAttribute('data-target-title') || '') : (isInlineForm ? 'Win Anyway Album' : '');
+        const inlineCard = document.getElementById('album-inline-unlock-card');
+        const inlineTitle = form.getAttribute('data-target-title') || (inlineCard && inlineCard.getAttribute('data-target-title')) || 'Win Anyway Album';
+        const targetTitle = isInlineForm ? inlineTitle : ((modal && modal.getAttribute('data-target-title')) || inlineTitle || '');
 
         // Trigger target action or direct download if initiated from modal
         if (targetUrl === 'action:download-full-album') {

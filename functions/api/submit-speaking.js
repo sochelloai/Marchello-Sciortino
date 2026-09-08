@@ -195,7 +195,7 @@ export async function onRequestPost(context) {
                 body: JSON.stringify({
                     contacts_tag: {
                         name: tagName,
-                        color: "teal"
+                        color: "#0AD8AD"
                     }
                 })
             });
