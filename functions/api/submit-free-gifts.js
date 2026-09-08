@@ -63,6 +63,7 @@ export async function onRequestPost(context) {
             });
         }
 
+    try {
         const formData = await request.formData();
         const email = formData.get('email');
         const giftTitle = formData.get('gift_title') || formData.get('item') || "";
