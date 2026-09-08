@@ -149,22 +149,129 @@ export async function onRequestPost(context) {
             "User-Agent": "MarchelloSciortinoWebsite/1.0"
         };
 
-        // --- STEP 1: Create or Update Contact ---
-        let contactId = null;
         const cleanWorkspaceId = workspaceId;
+
+        // --- STEP 1: Find or Create Tag ID for Contact Form ---
+        const primaryTagName = cleanEnvVar(getEnvVal(env, "CLICKFUNNELS_CONTACT_TAG_NAME")) || 
+                               cleanEnvVar(getEnvVal(env, "CLICKFUNNELS_TAG_NAME")) || 
+                               "ms-contact-form";
+        let tagId = null;
+        let resolvedTagName = primaryTagName;
+
+        const normalizeTag = (str) => (str || "").toLowerCase().replace(/[\s_-]+/g, "");
+        const targetNorm = normalizeTag(primaryTagName);
+
+        // 1a. List existing workspace tags to locate any matching tag
+        const listTagsUrl = `https://${cleanSubdomain}.myclickfunnels.com/api/v2/workspaces/${cleanWorkspaceId}/contacts/tags`;
+        try {
+            const tagsResponse = await fetch(listTagsUrl, {
+                method: "GET",
+                headers: commonHeaders
+            });
+
+            if (tagsResponse.ok) {
+                const tagsData = await tagsResponse.json();
+                const tagsList = Array.isArray(tagsData) ? tagsData : (tagsData.contacts_tags || tagsData.tags || []);
+                
+                let matched = tagsList.find(t => t.name && t.name.toLowerCase() === primaryTagName.toLowerCase());
+                if (!matched) {
+                    matched = tagsList.find(t => t.name && normalizeTag(t.name) === targetNorm);
+                }
+                if (!matched) {
+                    matched = tagsList.find(t => t.name && (normalizeTag(t.name) === "contactform" || normalizeTag(t.name) === "contact" || normalizeTag(t.name) === "mscontactform"));
+                }
+
+                if (matched) {
+                    tagId = parseInt(matched.id, 10);
+                    resolvedTagName = matched.name;
+                }
+            } else {
+                await logErrorResponse("List Workspace Tags", tagsResponse);
+            }
+        } catch (tagListErr) {
+            console.error("[ClickFunnels] Error fetching tags list:", tagListErr);
+        }
+
+        // 1b. If not found in workspace list, try query filter fallback
+        if (!tagId) {
+            try {
+                const filterUrl = `https://${cleanSubdomain}.myclickfunnels.com/api/v2/workspaces/${cleanWorkspaceId}/contacts/tags?filter%5Bname%5D=${encodeURIComponent(primaryTagName)}`;
+                const filterResponse = await fetch(filterUrl, {
+                    method: "GET",
+                    headers: commonHeaders
+                });
+                if (filterResponse.ok) {
+                    const filterData = await filterResponse.json();
+                    const list = Array.isArray(filterData) ? filterData : (filterData.contacts_tags || filterData.tags || []);
+                    if (list.length > 0 && list[0].id) {
+                        tagId = parseInt(list[0].id, 10);
+                        resolvedTagName = list[0].name;
+                    }
+                }
+            } catch (filterErr) {
+                console.error("[ClickFunnels] Error querying tag filter:", filterErr);
+            }
+        }
+
+        // 1c. If tag still does not exist, create it with a valid 6-character hex color code
+        if (!tagId) {
+            try {
+                const createTagUrl = `https://${cleanSubdomain}.myclickfunnels.com/api/v2/workspaces/${cleanWorkspaceId}/contacts/tags`;
+                const createTagResponse = await fetch(createTagUrl, {
+                    method: "POST",
+                    headers: commonHeaders,
+                    body: JSON.stringify({
+                        contacts_tag: {
+                            name: primaryTagName,
+                            color: "#0AD8AD"
+                        }
+                    })
+                });
+
+                if (createTagResponse.ok) {
+                    const newTagData = await createTagResponse.json();
+                    tagId = parseInt(newTagData.id, 10);
+                    resolvedTagName = newTagData.name || primaryTagName;
+                } else {
+                    const errBody = await logErrorResponse("Create Tag", createTagResponse);
+                    if (createTagResponse.status === 422 || errBody.includes("taken")) {
+                        const retryList = await fetch(listTagsUrl, { method: "GET", headers: commonHeaders });
+                        if (retryList.ok) {
+                            const rData = await retryList.json();
+                            const rList = Array.isArray(rData) ? rData : (rData.contacts_tags || rData.tags || []);
+                            const rMatch = rList.find(t => t.name && (t.name.toLowerCase() === primaryTagName.toLowerCase() || normalizeTag(t.name) === targetNorm));
+                            if (rMatch) {
+                                tagId = parseInt(rMatch.id, 10);
+                                resolvedTagName = rMatch.name;
+                            }
+                        }
+                    }
+                }
+            } catch (createErr) {
+                console.error("[ClickFunnels] Error creating tag:", createErr);
+            }
+        }
+
+        // --- STEP 2: Create or Update Contact ---
+        let contactId = null;
         const createContactUrl = `https://${cleanSubdomain}.myclickfunnels.com/api/v2/workspaces/${cleanWorkspaceId}/contacts`;
         
-        const contactBody = {
-            contact: {
-                email_address: email,
-                first_name: name || "",
-                custom_attributes: {
-                    attachments: attachmentUrl || "",
-                    i_want_to: interest || "",
-                    description: description || "",
-                    subject: subject || ""
-                }
+        const contactPayload = {
+            email_address: email,
+            first_name: name || "",
+            custom_attributes: {
+                attachments: attachmentUrl || "",
+                i_want_to: interest || "",
+                description: description || "",
+                subject: subject || ""
             }
+        };
+        if (tagId) {
+            contactPayload.tag_ids = [tagId];
+        }
+
+        const contactBody = {
+            contact: contactPayload
         };
 
         const contactResponse = await fetch(createContactUrl, {
@@ -179,7 +286,7 @@ export async function onRequestPost(context) {
         } else {
             await logErrorResponse("Create Contact", contactResponse);
             // Fallback: If contact already exists or fails, try to fetch it by email address
-            const searchUrl = `https://${cleanSubdomain}.myclickfunnels.com/api/v2/workspaces/${cleanWorkspaceId}/contacts?filter[email_address]=${encodeURIComponent(email)}`;
+            const searchUrl = `https://${cleanSubdomain}.myclickfunnels.com/api/v2/workspaces/${cleanWorkspaceId}/contacts?filter%5Bemail_address%5D=${encodeURIComponent(email)}`;
             const searchResponse = await fetch(searchUrl, {
                 method: "GET",
                 headers: commonHeaders
@@ -218,74 +325,43 @@ export async function onRequestPost(context) {
             }
         }
 
-        // --- STEP 2: Find or Create Tag ID ---
-        let tagId = null;
-        const tagsUrl = `https://${cleanSubdomain}.myclickfunnels.com/api/v2/workspaces/${cleanWorkspaceId}/contacts/tags?filter[name]=${encodeURIComponent(tagName)}`;
-        const tagsResponse = await fetch(tagsUrl, {
-            method: "GET",
-            headers: commonHeaders
-        });
-
-        if (tagsResponse.ok) {
-            const tagsData = await tagsResponse.json();
-            const tagsList = Array.isArray(tagsData) ? tagsData : (tagsData.contacts_tags || tagsData.tags || []);
-            const matchedTag = tagsList.find(t => t.name && t.name.toLowerCase() === tagName.toLowerCase());
-            if (matchedTag) {
-                tagId = matchedTag.id;
-            }
-        } else {
-            await logErrorResponse("Search Tag", tagsResponse);
-        }
-
-        // Try to programmatically create the tag definition if it does not exist
-        if (!tagId) {
-            const createTagUrl = `https://${cleanSubdomain}.myclickfunnels.com/api/v2/workspaces/${cleanWorkspaceId}/contacts/tags`;
-            const createTagResponse = await fetch(createTagUrl, {
-                method: "POST",
-                headers: commonHeaders,
-                body: JSON.stringify({
-                    contacts_tag: {
-                        name: tagName,
-                        color: "#0AD8AD"
-                    }
-                })
-            });
-
-            if (createTagResponse.ok) {
-                const newTagData = await createTagResponse.json();
-                tagId = newTagData.id;
-            } else {
-                await logErrorResponse("Create Tag", createTagResponse);
-                console.warn(`Could not create tag definition '${tagName}' automatically.`);
-            }
-        }
-
-        // --- STEP 3: Apply the Tag to the Contact ---
+        // --- STEP 3: Explicitly Apply the Tag to the Contact ---
+        let tagApplied = Boolean(tagId);
         if (contactId && tagId) {
-            const applyTagUrl = `https://${cleanSubdomain}.myclickfunnels.com/api/v2/contacts/${contactId}/applied_tags`;
-            const applyTagResponse = await fetch(applyTagUrl, {
-                method: "POST",
-                headers: commonHeaders,
-                body: JSON.stringify({
-                    contacts_applied_tag: {
-                        tag_id: tagId
-                    }
-                })
-            });
+            try {
+                const applyTagUrl = `https://${cleanSubdomain}.myclickfunnels.com/api/v2/contacts/${contactId}/applied_tags`;
+                const applyTagResponse = await fetch(applyTagUrl, {
+                    method: "POST",
+                    headers: commonHeaders,
+                    body: JSON.stringify({
+                        contacts_applied_tag: {
+                            tag_id: tagId
+                        }
+                    })
+                });
 
-            if (!applyTagResponse.ok) {
-                const errBody = await logErrorResponse("Apply Tag", applyTagResponse);
-                console.error(`Failed to apply tag: ${applyTagResponse.status} - ${errBody}`);
+                if (applyTagResponse.ok) {
+                    tagApplied = true;
+                } else if (applyTagResponse.status === 422) {
+                    tagApplied = true;
+                } else {
+                    const errBody = await logErrorResponse("Apply Tag", applyTagResponse);
+                    console.error(`Failed to apply tag: ${applyTagResponse.status} - ${errBody}`);
+                }
+            } catch (applyErr) {
+                console.error("[ClickFunnels] Error calling applied_tags:", applyErr);
             }
-        } else if (contactId) {
-            console.warn(`Tag ID for '${tagName}' could not be resolved; skipping tag application.`);
         }
 
         return new Response(JSON.stringify({
             success: true,
             contactId: contactId,
             tagId: tagId,
-            message: "Lead created and tagged successfully in ClickFunnels."
+            tagName: resolvedTagName,
+            tagged: tagApplied,
+            message: tagApplied
+                ? `Lead created and tagged with '${resolvedTagName}' successfully in ClickFunnels.`
+                : "Lead created in ClickFunnels, but tag could not be resolved or applied."
         }), {
             status: 200,
             headers: { 
