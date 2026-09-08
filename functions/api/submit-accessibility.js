@@ -44,7 +44,6 @@ export async function onRequestPost(context) {
     const apiKey = cleanEnvVar(getEnvVal(env, "CLICKFUNNELS_API_KEY"));
     const subdomain = cleanEnvVar(getEnvVal(env, "CLICKFUNNELS_SUBDOMAIN"));
     const workspaceId = cleanWorkspaceId(getEnvVal(env, "CLICKFUNNELS_WORKSPACE_ID"));
-    const tagName = "accessibility-feedback";
 
     // 1. Configuration Validation
     if (!apiKey || !subdomain || !workspaceId) {
@@ -94,6 +93,8 @@ export async function onRequestPost(context) {
             "Accept": "application/json",
             "User-Agent": "MarchelloSciortinoWebsite/1.0"
         };
+
+        const cleanWorkspaceId = workspaceId;
 
         const primaryTagName = cleanEnvVar(getEnvVal(env, "CLICKFUNNELS_ACCESSIBILITY_TAG_NAME")) || 
                                cleanEnvVar(getEnvVal(env, "CLICKFUNNELS_TAG_NAME")) || 
@@ -272,8 +273,11 @@ export async function onRequestPost(context) {
                 error: "ClickFunnels Error",
                 message: "Could not create or locate the contact in ClickFunnels."
             }), {
-                status: 502,
-                headers: { "Content-Type": "application/json" }
+                status: 500,
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*"
+                }
             });
         }
 
