@@ -217,9 +217,6 @@ export async function onRequestPost(context) {
                 role: role || ""
             }
         };
-        if (tagId) {
-            contactPayload.tag_ids = [tagId];
-        }
 
         const contactBody = {
             contact: contactPayload
@@ -249,13 +246,25 @@ export async function onRequestPost(context) {
                 if (contactsList.length > 0) {
                     contactId = contactsList[0].id || contactsList[0].public_id;
                     
-                    // Update existing contact custom attributes
+                    // Update existing contact custom attributes (preserving previous attributes and NEVER overwriting tags)
                     try {
+                        const existingAttrs = (contactsList[0] && typeof contactsList[0].custom_attributes === 'object' && contactsList[0].custom_attributes !== null)
+                            ? contactsList[0].custom_attributes
+                            : {};
+                        const updateBody = {
+                            contact: {
+                                first_name: name || contactsList[0].first_name || "",
+                                custom_attributes: {
+                                    ...existingAttrs,
+                                    role: role || existingAttrs.role || ""
+                                }
+                            }
+                        };
                         const updateUrl = `https://${cleanSubdomain}.myclickfunnels.com/api/v2/contacts/${contactId}`;
                         const updateResponse = await fetch(updateUrl, {
                             method: "PUT",
                             headers: commonHeaders,
-                            body: JSON.stringify(contactBody)
+                            body: JSON.stringify(updateBody)
                         });
                         if (!updateResponse.ok) {
                             await logErrorResponse("Update Contact", updateResponse);
