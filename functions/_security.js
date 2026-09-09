@@ -32,6 +32,47 @@ export function getCorsHeaders(request) {
 }
 
 /**
+ * Checks if the request's Origin or Referer header matches the allowed origins.
+ */
+export function isAllowedOrigin(request) {
+    if (!request) return false;
+    const origin = request.headers.get("Origin") || request.headers.get("origin") || "";
+    const referer = request.headers.get("Referer") || request.headers.get("referer") || "";
+    const secFetchSite = request.headers.get("Sec-Fetch-Site") || request.headers.get("sec-fetch-site") || "";
+
+    if (secFetchSite === "same-origin") {
+        return true;
+    }
+
+    const allowedOrigins = [
+        "https://marchellosciortino.com",
+        "https://www.marchellosciortino.com"
+    ];
+
+    if (origin) {
+        return allowedOrigins.includes(origin) ||
+            origin.startsWith("http://localhost:") ||
+            origin.startsWith("http://127.0.0.1:") ||
+            origin.startsWith("https://localhost:");
+    }
+
+    if (referer) {
+        try {
+            const refUrl = new URL(referer);
+            const refOrigin = refUrl.origin;
+            return allowedOrigins.includes(refOrigin) ||
+                refOrigin.startsWith("http://localhost:") ||
+                refOrigin.startsWith("http://127.0.0.1:") ||
+                refOrigin.startsWith("https://localhost:");
+        } catch (_) {
+            return false;
+        }
+    }
+
+    return false;
+}
+
+/**
  * Handles OPTIONS preflight requests for form endpoints.
  */
 export function handleCorsPreflight(request) {
@@ -238,6 +279,7 @@ export function createErrorResponse(status, message, retryable = true, request =
     return new Response(JSON.stringify({
         success: false,
         error: message,
+        message: message,
         retryable: retryable
     }), {
         status: status,

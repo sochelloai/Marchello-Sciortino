@@ -123,11 +123,21 @@ const Chat = {
         this.iframeTarget.appendChild(loadingDiv);
 
         try {
+            // Include Turnstile token if available in the DOM
+            let turnstileToken = '';
+            const tsInput = document.querySelector('input[name="cf-turnstile-response"]');
+            if (tsInput && tsInput.value) {
+                turnstileToken = tsInput.value;
+            }
+
             const response = await fetch('/api/create-avatar-embed', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
-                }
+                },
+                body: JSON.stringify({
+                    cf_turnstile_response: turnstileToken
+                })
             });
 
             if (!response.ok) {
@@ -136,10 +146,6 @@ const Chat = {
                     const errData = await response.json();
                     if (errData && errData.message) {
                         errorMsg = errData.message;
-                        if (errData.debugEnv && errData.debugEnv.LIVEAVATAR_API_KEY) {
-                            const keyInfo = errData.debugEnv.LIVEAVATAR_API_KEY;
-                            errorMsg += ` (Key: ${keyInfo.configured ? 'Configured, len=' + keyInfo.length + ', prefix=' + keyInfo.prefix + '...' : 'Not Configured'})`;
-                        }
                     }
                 } catch (e) {
                     // Fallback if not JSON

@@ -19,26 +19,63 @@ function getEnvVal(env, keyName) {
     return "";
 }
 
+import {
+    handleCorsPreflight,
+    isAllowedOrigin,
+    checkRateLimit,
+    verifyTurnstileToken,
+    createErrorResponse,
+    createSuccessResponse
+} from "../_security.js";
+
+export async function onRequestOptions(context) {
+    return handleCorsPreflight(context.request);
+}
+
 export async function onRequestPost(context) {
-    const { env } = context;
-    
+    const { env, request } = context;
+
+    // 1. Strict Origin & Referer Enforcement (Block cross-site third-party abuse)
+    if (!isAllowedOrigin(request)) {
+        console.warn("[Avatar Security] Rejected request from unauthorized origin/referer.");
+        return createErrorResponse(403, "Access forbidden from this origin.", false, request);
+    }
+
+    // 2. Server-Side Rate Limiting (Strict sliding window: max 3 sessions per 15 min per IP)
+    const clientIp = request ? (request.headers.get("CF-Connecting-IP") || "unknown") : "unknown";
+    if (!checkRateLimit(clientIp, 3, 900000)) {
+        console.warn(`[Avatar Security] Rate limit exceeded for IP: ${clientIp}`);
+        return createErrorResponse(429, "Too many session requests. Please wait a few minutes before starting a new conversation.", true, request);
+    }
+
+    // 3. Human Verification (Cloudflare Turnstile)
+    let turnstileToken = "";
+    try {
+        const contentType = request ? (request.headers.get("content-type") || "") : "";
+        if (contentType.includes("application/json")) {
+            const body = await request.clone().json().catch(() => ({}));
+            turnstileToken = body.cf_turnstile_response || body["cf-turnstile-response"] || body.turnstile_token || "";
+        } else if (contentType.includes("multipart/form-data") || contentType.includes("application/x-www-form-urlencoded")) {
+            const formData = await request.clone().formData().catch(() => new Map());
+            turnstileToken = formData.get("cf-turnstile-response") || formData.get("turnstile_token") || "";
+        }
+    } catch (_) {}
+
+    const turnstileResult = await verifyTurnstileToken(turnstileToken, clientIp, env);
+    if (!turnstileResult.success) {
+        return createErrorResponse(403, turnstileResult.message || "Human verification is required.", true, request);
+    }
+
     // Check for HEYGEN_API_KEY or LIVEAVATAR_API_KEY
-    let apiKey = cleanEnvVar(getEnvVal(env, "LIVEAVATAR_API_KEY") || getEnvVal(env, "HEYGEN_API_KEY"));
-    
+    const apiKey = cleanEnvVar(getEnvVal(env, "LIVEAVATAR_API_KEY") || getEnvVal(env, "HEYGEN_API_KEY"));
+
     if (!apiKey) {
-        // Return a mock response if no key is configured, so we can test the UI flow without crashing
-        return new Response(JSON.stringify({
-            success: false,
+        // Return a mock response if no key is configured, so we can test the UI flow without crashing or exposing key names
+        return createSuccessResponse({
             isMock: true,
             url: "",
-            message: "HeyGen LiveAvatar API Key not configured. Please add LIVEAVATAR_API_KEY to your wrangler configuration or .dev.vars."
-        }), {
-            status: 200,
-            headers: {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"
-            }
-        });
+            message: "LiveAvatar API Key is not configured."
+        }, request);
     }
 
     try {
@@ -101,7 +138,7 @@ Use the following detailed context to answer queries accurately:
                 }
             }
         } catch (e) {
-            console.error("Failed to fetch existing contexts:", e);
+            console.error("[LiveAvatar] Error fetching existing contexts:", e && e.message ? e.message : e);
         }
 
         // If not found, create a new context
@@ -140,12 +177,13 @@ Use the following detailed context to answer queries accurately:
                             }
                         }
                     } catch (e) {
-                        console.error("Failed to query contexts on fallback:", e);
+                        console.error("[LiveAvatar] Error querying contexts on fallback:", e && e.message ? e.message : e);
                     }
                 }
                 
                 if (!contextId) {
-                    throw new Error(`Failed to create context: ${contextResponse.status} - ${errText}`);
+                    console.error(`[LiveAvatar] Failed to create context: status ${contextResponse.status}`);
+                    return createErrorResponse(502, "Could not initialize conversational context. Please try again.", true, request);
                 }
             } else {
                 const contextData = await contextResponse.json();
@@ -175,7 +213,7 @@ Use the following detailed context to answer queries accurately:
                     }
                 }
             } catch (e) {
-                console.error("Failed to dynamically resolve custom avatar ID:", e);
+                console.error("[LiveAvatar] Error dynamically resolving avatar ID:", e && e.message ? e.message : e);
             }
         }
 
@@ -200,63 +238,21 @@ Use the following detailed context to answer queries accurately:
         });
 
         if (!embedResponse.ok) {
-            const errText = await embedResponse.text();
-            throw new Error(`Failed to create embedding: ${embedResponse.status} - ${errText}`);
+            console.error(`[LiveAvatar] Embedding API call failed: status ${embedResponse.status}`);
+            return createErrorResponse(502, "Could not create avatar video session. Please try again.", true, request);
         }
 
         const embedData = await embedResponse.json();
         const embedUrl = embedData.data.url;
 
-        return new Response(JSON.stringify({
-            success: true,
+        return createSuccessResponse({
             isMock: false,
             url: embedUrl,
             message: "LiveAvatar embed session created successfully."
-        }), {
-            status: 200,
-            headers: {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"
-            }
-        });
+        }, request);
 
     } catch (err) {
-        console.error("Error in create-avatar-embed:", err);
-        
-        // Safely gather environment variable metadata for troubleshooting without leaking secrets
-        const debugEnv = {};
-        if (env) {
-            for (const key of Object.keys(env)) {
-                const val = env[key];
-                if (val) {
-                    const str = String(val);
-                    debugEnv[key] = {
-                        configured: true,
-                        length: str.length,
-                        prefix: str.substring(0, Math.min(4, str.length)),
-                        suffix: str.substring(Math.max(0, str.length - 4))
-                    };
-                } else {
-                    debugEnv[key] = {
-                        configured: false,
-                        length: 0
-                    };
-                }
-            }
-        }
-
-        return new Response(JSON.stringify({
-            success: false,
-            error: "LiveAvatar API Error",
-            message: err.message,
-            stack: err.stack,
-            debugEnv
-        }), {
-            status: 500,
-            headers: {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"
-            }
-        });
+        console.error("[LiveAvatar Session Exception]", err && err.message ? err.message : err);
+        return createErrorResponse(500, "An error occurred while establishing the voice companion session. Please try again.", true, request);
     }
 }
