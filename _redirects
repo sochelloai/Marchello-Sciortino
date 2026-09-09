@@ -30,3 +30,14 @@
 /free-library /free-gifts 301
 /free-library/ /free-gifts 301
 /free-library/* /free-gifts 301
+
+# Security Rules: Block Internal Files from Public Serving
+/wrangler.toml / 404
+/package.json / 404
+/package-lock.json / 404
+/*.toml / 404
+/*.md / 404
+/scripts/* / 404
+/functions/* / 404
+/.git/* / 404
+/.github/* / 404
