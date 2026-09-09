@@ -24,23 +24,59 @@ const FALLBACK_POSTS = [
     { media_url: "assets/headshot_3.jpg", caption: "Marchello Sciortino" }
 ];
 
+// Helper to clean environment variable values (strips accidental quotes and whitespace)
+function cleanEnvVar(val) {
+    if (!val) return "";
+    let clean = String(val).trim();
+    if ((clean.startsWith('"') && clean.endsWith('"')) || (clean.startsWith("'") && clean.endsWith("'"))) {
+        clean = clean.slice(1, -1);
+    }
+    return clean.trim();
+}
+
+// Case-insensitive multi-key environment variable resolver
+function getEnvVal(env, ...keysToTry) {
+    if (!env) return "";
+    for (const key of keysToTry) {
+        if (env[key] !== undefined && env[key] !== null) {
+            const v = cleanEnvVar(env[key]);
+            if (v) return v;
+        }
+    }
+    const envKeys = Object.keys(env);
+    for (const key of keysToTry) {
+        const targetClean = key.trim().toLowerCase();
+        for (const k of envKeys) {
+            if (k.trim().toLowerCase() === targetClean) {
+                const v = cleanEnvVar(env[k]);
+                if (v) return v;
+            }
+        }
+    }
+    return "";
+}
+
 // Default public business account ID for Marchello Website Feed
 const DEFAULT_INSTAGRAM_BUSINESS_ID = "17841400436172857";
 
 export async function onRequestGet(context) {
     const { env, request } = context;
+    const requestUrl = new URL(request.url);
+    const bypassCache = requestUrl.searchParams.has('nocache') || request.headers.get('cache-control') === 'no-cache';
     
-    // Cloudflare Cache API setup (cache live data for 1 hour)
+    // Cloudflare Cache API setup (cache live data for 1 hour if not bypassing)
     const cache = caches.default;
-    const cacheKey = new Request(new URL(request.url).toString(), request);
-    let cachedResponse = await cache.match(cacheKey);
-    if (cachedResponse) {
-        return cachedResponse;
+    const cacheKey = new Request(requestUrl.toString(), request);
+    if (!bypassCache) {
+        const cachedResponse = await cache.match(cacheKey);
+        if (cachedResponse) {
+            return cachedResponse;
+        }
     }
 
-    // Read token STRICTLY from encrypted Cloudflare secret
-    const accessToken = (env.INSTAGRAM_ACCESS_TOKEN || "").trim();
-    const businessAccountId = (env.INSTAGRAM_BUSINESS_ACCOUNT_ID || DEFAULT_INSTAGRAM_BUSINESS_ID || "").trim();
+    // Read token STRICTLY from encrypted Cloudflare secret with flexible key resolution
+    const accessToken = getEnvVal(env, "INSTAGRAM_ACCESS_TOKEN", "INSTAGRAM_TOKEN", "INSTA_ACCESS_TOKEN", "IG_ACCESS_TOKEN", "INSTAGRAM_API_KEY");
+    const businessAccountId = getEnvVal(env, "INSTAGRAM_BUSINESS_ACCOUNT_ID", "INSTAGRAM_BUSINESS_ID", "INSTAGRAM_ACCOUNT_ID") || DEFAULT_INSTAGRAM_BUSINESS_ID;
 
     // Helper for successful response headers
     const corsHeaders = {
@@ -55,10 +91,12 @@ export async function onRequestGet(context) {
         "Cache-Control": "no-store, no-cache, must-revalidate"
     };
 
-    // If the encrypted secret is not configured, gracefully return curated fallback posts
+    // If the encrypted secret is not detected in Cloudflare runtime, gracefully return curated fallback posts
     if (!accessToken) {
         return new Response(JSON.stringify({
             source: "fallback",
+            status: "missing_secret",
+            message: "INSTAGRAM_ACCESS_TOKEN secret not yet bound to this deployment. A new build/deployment binds secrets into Cloudflare runtime.",
             data: FALLBACK_POSTS
         }), { 
             status: 200, 
@@ -67,13 +105,18 @@ export async function onRequestGet(context) {
     }
 
     try {
-        // Fetch posts from Instagram Graph API using Authorization Header (token is NEVER exposed in the URL)
-        const instagramUrl = `https://graph.facebook.com/v19.0/${businessAccountId}/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink,timestamp&limit=24`;
-        const response = await fetch(instagramUrl, {
+        // Attempt 1: Fetch posts from Instagram Graph API using Authorization Header
+        const baseGraphUrl = `https://graph.facebook.com/v19.0/${businessAccountId}/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink,timestamp&limit=24`;
+        let response = await fetch(baseGraphUrl, {
             headers: {
                 "Authorization": `Bearer ${accessToken}`
             }
         });
+
+        // Attempt 2: If Bearer header is rejected by Meta endpoint, try access_token parameter
+        if (!response.ok && (response.status === 400 || response.status === 401)) {
+            response = await fetch(`${baseGraphUrl}&access_token=${encodeURIComponent(accessToken)}`);
+        }
 
         if (!response.ok) {
             throw new Error(`Instagram Graph API request failed with status ${response.status}`);
@@ -97,10 +140,11 @@ export async function onRequestGet(context) {
 
         const successRes = new Response(JSON.stringify({
             source: "live",
+            status: "active",
             data: posts.length > 0 ? posts : FALLBACK_POSTS
         }), { status: 200, headers: corsHeaders });
 
-        if (posts.length > 0) {
+        if (posts.length > 0 && !bypassCache) {
             context.waitUntil(cache.put(cacheKey, successRes.clone()));
         }
         return successRes;
@@ -112,6 +156,7 @@ export async function onRequestGet(context) {
         // Return fallback posts without leaking any error details or URLs
         return new Response(JSON.stringify({
             source: "fallback_on_error",
+            status: "api_error",
             data: FALLBACK_POSTS
         }), { status: 200, headers: noCacheHeaders });
     }
