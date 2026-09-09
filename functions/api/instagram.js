@@ -24,8 +24,7 @@ const FALLBACK_POSTS = [
     { media_url: "assets/headshot_3.jpg", caption: "Marchello Sciortino" }
 ];
 
-// Verified default credentials for Marchello Website Feed
-const DEFAULT_INSTAGRAM_ACCESS_TOKEN = "REDACTED_COMPROMISED_INSTAGRAM_TOKEN";
+// Default public business account ID for Marchello Website Feed
 const DEFAULT_INSTAGRAM_BUSINESS_ID = "17841400436172857";
 
 export async function onRequestGet(context) {
@@ -39,7 +38,8 @@ export async function onRequestGet(context) {
         return cachedResponse;
     }
 
-    const accessToken = (env.INSTAGRAM_ACCESS_TOKEN || DEFAULT_INSTAGRAM_ACCESS_TOKEN || "").trim();
+    // Read token STRICTLY from encrypted Cloudflare secret
+    const accessToken = (env.INSTAGRAM_ACCESS_TOKEN || "").trim();
     const businessAccountId = (env.INSTAGRAM_BUSINESS_ACCOUNT_ID || DEFAULT_INSTAGRAM_BUSINESS_ID || "").trim();
 
     // Helper for successful response headers
@@ -55,6 +55,7 @@ export async function onRequestGet(context) {
         "Cache-Control": "no-store, no-cache, must-revalidate"
     };
 
+    // If the encrypted secret is not configured, gracefully return curated fallback posts
     if (!accessToken) {
         return new Response(JSON.stringify({
             source: "fallback",
@@ -66,19 +67,22 @@ export async function onRequestGet(context) {
     }
 
     try {
-        // Fetch posts from Instagram Graph API
-        const instagramUrl = `https://graph.facebook.com/v19.0/${businessAccountId}/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink,timestamp&access_token=${accessToken}&limit=24`;
-        const response = await fetch(instagramUrl);
+        // Fetch posts from Instagram Graph API using Authorization Header (token is NEVER exposed in the URL)
+        const instagramUrl = `https://graph.facebook.com/v19.0/${businessAccountId}/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink,timestamp&limit=24`;
+        const response = await fetch(instagramUrl, {
+            headers: {
+                "Authorization": `Bearer ${accessToken}`
+            }
+        });
 
         if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(`Instagram API error (${response.status}): ${errorText}`);
+            throw new Error(`Instagram Graph API request failed with status ${response.status}`);
         }
 
         const payload = await response.json();
         
         if (!payload.data || !Array.isArray(payload.data)) {
-            throw new Error("Invalid payload structure from Instagram API");
+            throw new Error("Invalid payload structure received from Instagram API");
         }
 
         // Format posts for the marquee
@@ -102,12 +106,12 @@ export async function onRequestGet(context) {
         return successRes;
 
     } catch (error) {
-        console.error("Instagram fetch error:", error);
+        // Log generic error message without any tokens, headers, or URLs
+        console.error("Instagram fetch error:", error && error.message ? error.message : "Unknown error");
         
-        // Return fallback posts without caching error
+        // Return fallback posts without leaking any error details or URLs
         return new Response(JSON.stringify({
             source: "fallback_on_error",
-            error: error.message,
             data: FALLBACK_POSTS
         }), { status: 200, headers: noCacheHeaders });
     }

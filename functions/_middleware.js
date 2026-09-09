@@ -14,6 +14,40 @@ export async function onRequest(context) {
         return Response.redirect('https://marchellosciortino.com/free-gifts', 301);
     }
 
+    // Security Guard: Prevent internal configuration files, source scripts, workflows, and dotfiles from being served
+    const blockedExact = [
+        '/wrangler.toml',
+        '/package.json',
+        '/package-lock.json',
+        '/agents.md',
+        '/brand-voice.md',
+        '/readme.md',
+        '/tsconfig.json',
+        '/_routes.json',
+        '/_redirects',
+        '/_headers'
+    ];
+    const isBlocked = blockedExact.includes(pathname) ||
+        pathname.endsWith('.toml') ||
+        pathname.endsWith('.md') ||
+        pathname.startsWith('/scripts/') ||
+        pathname.startsWith('/.git') ||
+        pathname.startsWith('/.github') ||
+        pathname.startsWith('/.wrangler') ||
+        pathname.startsWith('/functions/') ||
+        pathname.startsWith('/node_modules/');
+
+    if (isBlocked) {
+        return new Response("Not Found", { 
+            status: 404, 
+            statusText: "Not Found",
+            headers: {
+                "Content-Type": "text/plain; charset=utf-8",
+                "Cache-Control": "no-store, no-cache, must-revalidate"
+            }
+        });
+    }
+
     const response = await context.next();
     
     // Check if the response is an HTML page
