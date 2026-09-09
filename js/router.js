@@ -6,12 +6,27 @@ const Router = {
     currentPage: null,
 
     init() {
-        // Privacy enforcement: Never hold emails or persistent unlock states in localStorage
+        // Privacy enforcement: Never hold emails or persistent unlock states in storage
         try {
             if (typeof localStorage !== 'undefined') {
                 localStorage.removeItem('free-gifts-saved-email');
                 localStorage.removeItem('user-email');
                 localStorage.removeItem('free-gifts-unlocked');
+                for (let i = localStorage.length - 1; i >= 0; i--) {
+                    const key = localStorage.key(i);
+                    if (key && (key.startsWith('ms-form-') || key.includes('email') || key.includes('free-gifts') || key.startsWith('unlocked_album_'))) {
+                        localStorage.removeItem(key);
+                    }
+                }
+            }
+            if (typeof sessionStorage !== 'undefined') {
+                sessionStorage.removeItem('free-gifts-unlocked');
+                for (let i = sessionStorage.length - 1; i >= 0; i--) {
+                    const key = sessionStorage.key(i);
+                    if (key && (key.startsWith('unlocked_album_') || key.includes('free-gifts'))) {
+                        sessionStorage.removeItem(key);
+                    }
+                }
             }
         } catch (e) {}
 
@@ -3463,16 +3478,14 @@ function isAlbumPageUnlocked(slug) {
     if (albumWrap && albumWrap.style.display !== 'none' && !albumWrap.classList.contains('is-locked')) {
         return true;
     }
-    if (typeof sessionStorage !== 'undefined' && slug) {
-        return sessionStorage.getItem('unlocked_album_' + slug) === 'true';
-    }
     return false;
 }
 
 // Dedicated Single Free Gift Landing Page Template
 const singleGiftTemplate = (gift) => {
     const shareUrl = `https://marchellosciortino.com/${gift.slug}`;
-    const isUnlocked = typeof sessionStorage !== 'undefined' && sessionStorage.getItem('unlocked_album_' + gift.slug) === 'true';
+    // Official track cards are strictly hidden by default until unlock form is submitted
+    const isUnlocked = false;
 
     return `
     <style>
@@ -4166,7 +4179,7 @@ const singleGiftTemplate = (gift) => {
                 <div class="single-gift-one-column-row">
                     ${gift.tracks && gift.tracks.length > 0 ? `
                     <!-- In-Place Unlock Form Card (Gates live streaming & MP3 downloads until unlocked) -->
-                    <div class="album-inline-unlock-card" id="album-inline-unlock-card" data-target-title="${gift.title}" style="${isUnlocked ? 'display: none !important;' : 'display: block;'}">
+                    <div class="album-inline-unlock-card" id="album-inline-unlock-card" data-target-title="${gift.title}" style="display: block;">
                         <div style="width: 52px; height: 52px; background: rgba(255, 87, 34, 0.12); border: 2px solid #ff5722; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #ff5722; margin: 0 auto 16px;">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                         </div>
@@ -4188,8 +4201,8 @@ const singleGiftTemplate = (gift) => {
                         </form>
                     </div>
 
-                    <!-- Official Track Album / Single Player Card (Revealed upon unlock) -->
-                    <div class="gift-album-player-wrap" id="gift-album-player-wrap" style="${isUnlocked ? 'display: block;' : 'display: none !important;'} background: #081b29; border-radius: 20px; padding: 28px; color: #fff; border: 1px solid rgba(10, 216, 173, 0.3); box-shadow: 0 16px 40px rgba(0,0,0,0.35); width: 100%; box-sizing: border-box; position: relative;">
+                    <!-- Official Track Album / Single Player Card (Hidden until unlock form is submitted) -->
+                    <div class="gift-album-player-wrap" id="gift-album-player-wrap" style="display: none !important; background: #081b29; border-radius: 20px; padding: 28px; color: #fff; border: 1px solid rgba(10, 216, 173, 0.3); box-shadow: 0 16px 40px rgba(0,0,0,0.35); width: 100%; box-sizing: border-box; position: relative;">
                         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 16px;">
                             <div style="display: flex; align-items: center; gap: 14px;">
                                 <div class="album-header-icon" style="width: 42px; height: 42px; background: rgba(10, 216, 173, 0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #0ad8ad; transition: all 0.3s ease;">
