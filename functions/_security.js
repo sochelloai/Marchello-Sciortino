@@ -299,3 +299,157 @@ export function createSuccessResponse(data = {}, request = null) {
         headers: getCorsHeaders(request)
     });
 }
+
+/**
+ * Allowed MIME types and extensions for contact form attachments.
+ */
+export const ALLOWED_FILE_TYPES = {
+    "pdf": { mime: "application/pdf", label: "PDF document" },
+    "png": { mime: "image/png", label: "PNG image" },
+    "jpg": { mime: "image/jpeg", label: "JPEG image" },
+    "jpeg": { mime: "image/jpeg", label: "JPEG image" },
+    "webp": { mime: "image/webp", label: "WebP image" },
+    "docx": { mime: "application/vnd.openxmlformats-officedocument.wordprocessingml.document", label: "Word document" },
+    "doc": { mime: "application/msword", label: "Word document" },
+    "txt": { mime: "text/plain", label: "Text file" }
+};
+
+/**
+ * Validates an uploaded File object against strict size, extension, and binary magic-bytes.
+ */
+export async function validateUploadedFile(file, options = {}) {
+    const maxBytes = options.maxBytes || (5 * 1024 * 1024); // 5 MB default
+    if (!file || typeof file !== "object" || typeof file.size !== "number" || file.size === 0) {
+        return { valid: false, error: "No file provided or file is empty." };
+    }
+
+    if (file.size > maxBytes) {
+        const maxMb = Math.round(maxBytes / (1024 * 1024));
+        return { valid: false, error: `Attachment exceeds the maximum allowed limit of ${maxMb}MB.` };
+    }
+
+    const rawName = String(file.name || "attachment").trim();
+    // Sanitize filename: remove directory traversal, control chars, and non-printable chars
+    const baseName = rawName.replace(/^.*[\\\/]/, "").replace(/[^a-zA-Z0-9._-]/g, "_");
+    const lastDot = baseName.lastIndexOf(".");
+    if (lastDot === -1 || lastDot === 0 || lastDot === baseName.length - 1) {
+        return { valid: false, error: "Attachment must have a valid file extension (e.g., .pdf, .docx, .png, .jpg)." };
+    }
+
+    const ext = baseName.slice(lastDot + 1).toLowerCase();
+    if (!ALLOWED_FILE_TYPES[ext]) {
+        return { valid: false, error: `Files of type .${ext} are not permitted. Allowed formats: PDF, PNG, JPG, DOCX, TXT.` };
+    }
+
+    // Magic-byte inspection: Read first 16 bytes of the file
+    let headerBytes = new Uint8Array(0);
+    try {
+        const slice = file.slice(0, 16);
+        const arrayBuf = await slice.arrayBuffer();
+        headerBytes = new Uint8Array(arrayBuf);
+    } catch (e) {
+        return { valid: false, error: "Unable to read file content for security inspection." };
+    }
+
+    let magicMatch = false;
+
+    if (ext === "pdf") {
+        // PDF magic bytes: %PDF (0x25 0x50 0x44 0x46)
+        magicMatch = headerBytes[0] === 0x25 && headerBytes[1] === 0x50 && headerBytes[2] === 0x44 && headerBytes[3] === 0x46;
+    } else if (ext === "png") {
+        // PNG magic bytes: 0x89 0x50 0x4E 0x47
+        magicMatch = headerBytes[0] === 0x89 && headerBytes[1] === 0x50 && headerBytes[2] === 0x4E && headerBytes[3] === 0x47;
+    } else if (ext === "jpg" || ext === "jpeg") {
+        // JPEG magic bytes: 0xFF 0xD8 0xFF
+        magicMatch = headerBytes[0] === 0xFF && headerBytes[1] === 0xD8 && headerBytes[2] === 0xFF;
+    } else if (ext === "webp") {
+        // WebP magic bytes: RIFF at 0..3 and WEBP at 8..11
+        magicMatch = headerBytes[0] === 0x52 && headerBytes[1] === 0x49 && headerBytes[2] === 0x46 && headerBytes[3] === 0x46 &&
+                     headerBytes[8] === 0x57 && headerBytes[9] === 0x45 && headerBytes[10] === 0x42 && headerBytes[11] === 0x50;
+    } else if (ext === "docx") {
+        // DOCX is a zip archive: PK\x03\x04 (0x50 0x4B 0x03 0x04)
+        magicMatch = headerBytes[0] === 0x50 && headerBytes[1] === 0x4B && headerBytes[2] === 0x03 && headerBytes[3] === 0x04;
+    } else if (ext === "doc") {
+        // Legacy DOC: OLE compound file header (0xD0 0xCF 0x11 0xE0)
+        magicMatch = headerBytes[0] === 0xD0 && headerBytes[1] === 0xCF && headerBytes[2] === 0x11 && headerBytes[3] === 0xE0;
+    } else if (ext === "txt") {
+        // Plain text: Ensure no binary null bytes in initial 16 bytes
+        magicMatch = !headerBytes.includes(0x00);
+    }
+
+    if (!magicMatch) {
+        return { valid: false, error: "The file format does not match its extension. Please upload a genuine document or image." };
+    }
+
+    const now = new Date();
+    const year = now.getUTCFullYear();
+    const month = String(now.getUTCMonth() + 1).padStart(2, "0");
+    const uniqueId = crypto.randomUUID ? crypto.randomUUID() : (Math.random().toString(36).substring(2) + Date.now().toString(36));
+    const storageKey = `attachments/${year}/${month}/${uniqueId}.${ext}`;
+
+    return {
+        valid: true,
+        originalName: baseName,
+        storageKey,
+        ext,
+        mimeType: ALLOWED_FILE_TYPES[ext].mime,
+        size: file.size
+    };
+}
+
+/**
+ * Computes an HMAC-SHA256 signature for a file download link.
+ */
+async function computeAttachmentHmac(secret, message) {
+    const encoder = new TextEncoder();
+    const key = await crypto.subtle.importKey(
+        "raw",
+        encoder.encode(secret),
+        { name: "HMAC", hash: "SHA-256" },
+        false,
+        ["sign"]
+    );
+    const signature = await crypto.subtle.sign("HMAC", key, encoder.encode(message));
+    return Array.from(new Uint8Array(signature)).map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
+/**
+ * Generates an expiring signed link for viewing or downloading an attachment.
+ */
+export async function generateSignedAttachmentUrl(storageKey, originalName, env, expiresInDays = 14) {
+    const secret = (env && (env.ATTACHMENT_SIGNING_SECRET || env.CLICKFUNNELS_API_KEY)) || "marchello-secure-vault-token";
+    const exp = Math.floor(Date.now() / 1000) + (expiresInDays * 86400);
+    const message = `${storageKey}:${exp}:${originalName}`;
+    const sig = await computeAttachmentHmac(secret, message);
+    return `https://www.marchellosciortino.com/api/view-attachment?key=${encodeURIComponent(storageKey)}&exp=${exp}&name=${encodeURIComponent(originalName)}&sig=${sig}`;
+}
+
+/**
+ * Verifies the validity and expiration of a signed attachment access request.
+ */
+export async function verifyAttachmentSignature(storageKey, exp, originalName, sig, env) {
+    if (!storageKey || !exp || !sig) {
+        return { valid: false, error: "Missing required parameters for attachment access." };
+    }
+
+    const expNum = parseInt(exp, 10);
+    if (isNaN(expNum) || expNum <= 0) {
+        return { valid: false, error: "Invalid link expiration." };
+    }
+
+    const now = Math.floor(Date.now() / 1000);
+    if (now > expNum) {
+        return { valid: false, error: "This secure attachment link has expired. Attachments are retained for 30 days." };
+    }
+
+    const secret = (env && (env.ATTACHMENT_SIGNING_SECRET || env.CLICKFUNNELS_API_KEY)) || "marchello-secure-vault-token";
+    const message = `${storageKey}:${exp}:${originalName || ""}`;
+    const expectedSig = await computeAttachmentHmac(secret, message);
+
+    if (sig.toLowerCase() !== expectedSig.toLowerCase()) {
+        return { valid: false, error: "Invalid signature or unauthorized access request." };
+    }
+
+    return { valid: true };
+}
+

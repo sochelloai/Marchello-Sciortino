@@ -405,6 +405,31 @@ function bindFormHandlers() {
     const contactForm = document.getElementById('contact-page-form');
     if (contactForm && !contactForm.hasAttribute('data-security-bound')) {
         contactForm.setAttribute('data-security-bound', 'true');
+
+        const fileInputEarly = document.getElementById('contact-attachments');
+        if (fileInputEarly && !fileInputEarly.hasAttribute('data-change-bound')) {
+            fileInputEarly.setAttribute('data-change-bound', 'true');
+            fileInputEarly.addEventListener('change', () => {
+                window.clearFormError(contactForm);
+                if (fileInputEarly.files && fileInputEarly.files[0]) {
+                    const chosenFile = fileInputEarly.files[0];
+                    const parts = chosenFile.name.split('.');
+                    const ext = parts.length > 1 ? parts.pop().toLowerCase() : '';
+                    const allowedExts = ['pdf', 'png', 'jpg', 'jpeg', 'webp', 'docx', 'doc', 'txt'];
+                    if (!allowedExts.includes(ext)) {
+                        window.showFormError(contactForm, `Files of type .${ext || 'unknown'} are not supported. Allowed formats: PDF, PNG, JPG, DOCX, TXT.`);
+                        fileInputEarly.value = '';
+                        return;
+                    }
+                    if (chosenFile.size > 5 * 1024 * 1024) {
+                        window.showFormError(contactForm, 'Selected file exceeds the maximum 5 MB limit. Please choose a file under 5 MB.');
+                        fileInputEarly.value = '';
+                        return;
+                    }
+                }
+            });
+        }
+
         contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             window.clearFormError(contactForm);
@@ -418,9 +443,34 @@ function bindFormHandlers() {
             }
 
             const fileInput = document.getElementById('contact-attachments');
+            const allowedExtensions = ['pdf', 'png', 'jpg', 'jpeg', 'webp', 'docx', 'doc', 'txt'];
+            const maxAttachmentBytes = 5 * 1024 * 1024; // 5 MB
+
             const selectedInterest = contactForm.querySelector('input[name="contact-interest"]:checked');
             const turnstileInput = contactForm.querySelector('input[name="cf-turnstile-response"]');
             const turnstileToken = turnstileInput ? turnstileInput.value : "";
+
+            if (fileInput && fileInput.files && fileInput.files[0]) {
+                const chosenFile = fileInput.files[0];
+                const parts = chosenFile.name.split('.');
+                const ext = parts.length > 1 ? parts.pop().toLowerCase() : '';
+                if (!allowedExtensions.includes(ext)) {
+                    window.showFormError(contactForm, `Files of type .${ext || 'unknown'} are not supported. Allowed formats: PDF, PNG, JPG, DOCX, TXT.`);
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = originalBtnText;
+                    }
+                    return;
+                }
+                if (chosenFile.size > maxAttachmentBytes) {
+                    window.showFormError(contactForm, 'Selected file exceeds the maximum 5 MB limit. Please upload a file under 5 MB.');
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = originalBtnText;
+                    }
+                    return;
+                }
+            }
 
             const formData = new FormData();
             formData.append('name', document.getElementById('contact-name').value);

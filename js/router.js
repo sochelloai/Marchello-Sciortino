@@ -2756,8 +2756,8 @@ Router.register('/contact', () => {
                             <div class="contact-form-group">
                                 <label for="contact-attachments" class="contact-label">ATTACHMENTS:</label>
                                 <div class="contact-file-wrapper">
-                                    <input type="file" id="contact-attachments" class="contact-file-input">
-                                    <span class="contact-file-info">Max. file size: 50 MB.</span>
+                                    <input type="file" id="contact-attachments" class="contact-file-input" accept=".pdf,.png,.jpg,.jpeg,.webp,.docx,.doc,.txt">
+                                    <span class="contact-file-info" style="display: block; margin-top: 6px; font-size: 0.82rem; color: var(--color-gray-steel); line-height: 1.4;">Allowed formats: PDF, PNG, JPG, DOCX, TXT (Max 5 MB). Files are stored in private encrypted storage and automatically deleted after 30 days.</span>
                                 </div>
                             </div>
                             <div class="contact-form-group" style="margin-bottom: 0;">

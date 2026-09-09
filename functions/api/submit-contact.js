@@ -45,6 +45,8 @@ import {
     checkRateLimit,
     validateFormFields,
     verifyTurnstileToken,
+    validateUploadedFile,
+    generateSignedAttachmentUrl,
     createErrorResponse,
     createSuccessResponse
 } from "../_security.js";
@@ -96,7 +98,7 @@ export async function onRequestPost(context) {
             subject: { type: "text", required: false, maxLength: 150, label: "Subject" },
             description: { type: "text", required: false, maxLength: 3000, label: "Message" },
             interest: { type: "text", required: false, maxLength: 100, label: "Area of Interest" },
-            file: { type: "file", maxBytes: 10 * 1024 * 1024 }
+            file: { type: "file", maxBytes: 5 * 1024 * 1024 }
         };
 
         const validation = validateFormFields(formData, fieldRules);
@@ -106,52 +108,44 @@ export async function onRequestPost(context) {
 
         const { name, email, subject, description, interest, file } = validation.data;
 
-        // Upload attachment to file hosting to get a public download link
+        // Secure Private Storage handling (Cloudflare R2)
         let attachmentUrl = "";
         if (file && typeof file === "object" && file.size > 0) {
-            const catboxForm = new FormData();
-            catboxForm.append("reqtype", "fileupload");
-            catboxForm.append("fileToUpload", file);
-
-            try {
-                const catboxResponse = await fetch("https://catbox.moe/user/api.php", {
-                    method: "POST",
-                    body: catboxForm
-                });
-                if (catboxResponse.ok) {
-                    const resultText = await catboxResponse.text();
-                    if (resultText && resultText.startsWith("http")) {
-                        attachmentUrl = resultText.trim();
-                    } else {
-                        console.error(`Catbox returned non-URL response: ${resultText}`);
-                    }
-                } else {
-                    console.error(`Catbox upload failed with status ${catboxResponse.status}`);
-                }
-            } catch (uploadError) {
-                console.error("Failed to upload to Catbox:", uploadError);
+            // Validate file type, extension, and magic-bytes
+            const fileCheck = await validateUploadedFile(file, { maxBytes: 5 * 1024 * 1024 });
+            if (!fileCheck.valid) {
+                return createErrorResponse(400, fileCheck.error, true, request);
             }
 
-            // Fallback: If catbox failed or returned an error, try tmpfiles.org
-            if (!attachmentUrl) {
+            const r2Bucket = env ? (env.CONTACT_ATTACHMENTS || env.ATTACHMENTS_BUCKET || env.R2_ATTACHMENTS) : null;
+            if (r2Bucket && typeof r2Bucket.put === "function") {
                 try {
-                    const tmpForm = new FormData();
-                    tmpForm.append("file", file);
-                    const tmpResponse = await fetch("https://tmpfiles.org/api/v1/upload", {
-                        method: "POST",
-                        body: tmpForm
-                    });
-                    if (tmpResponse.ok) {
-                        const tmpData = await tmpResponse.json();
-                        if (tmpData && tmpData.status === "success" && tmpData.data && tmpData.data.url) {
-                            attachmentUrl = tmpData.data.url.replace("tmpfiles.org/", "tmpfiles.org/dl/");
+                    const fileBuffer = await file.arrayBuffer();
+                    await r2Bucket.put(fileCheck.storageKey, fileBuffer, {
+                        httpMetadata: {
+                            contentType: fileCheck.mimeType
+                        },
+                        customMetadata: {
+                            "original-filename": fileCheck.originalName,
+                            "retention-days": "30",
+                            "uploaded-at": new Date().toISOString()
                         }
-                    } else {
-                        console.error(`Tmpfiles upload failed with status ${tmpResponse.status}`);
-                    }
-                } catch (tmpError) {
-                    console.error("Failed to upload to Tmpfiles fallback:", tmpError);
+                    });
+
+                    // Generate a secure 14-day signed access link for ClickFunnels
+                    attachmentUrl = await generateSignedAttachmentUrl(
+                        fileCheck.storageKey,
+                        fileCheck.originalName,
+                        env,
+                        14
+                    );
+                } catch (r2Error) {
+                    console.error("[R2 Attachment Storage Error]", r2Error);
+                    return createErrorResponse(500, "Unable to store attachment securely. Please try again or submit without an attachment.", true, request);
                 }
+            } else {
+                console.warn("[Storage Warning] CONTACT_ATTACHMENTS R2 binding not detected in Cloudflare Pages environment.");
+                return createErrorResponse(400, "File uploads are currently being upgraded to private encrypted Cloudflare R2 storage. Please describe your project in the message or send attachments directly via email.", true, request);
             }
         }
 

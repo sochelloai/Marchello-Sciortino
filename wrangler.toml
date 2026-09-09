@@ -5,3 +5,7 @@ pages_build_output_dir = "."
 
 [vars]
 INSTAGRAM_BUSINESS_ACCOUNT_ID = "17841400436172857"
+
+[[r2_buckets]]
+binding = "CONTACT_ATTACHMENTS"
+bucket_name = "marchello-contact-attachments"
