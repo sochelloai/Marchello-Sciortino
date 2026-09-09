@@ -210,14 +210,129 @@ function setupGlobalModals() {
 }
 
 /**
- * Form Interceptor & Success Modal Launcher
+ * Cloudflare Turnstile & Anti-Spam Security Helpers
+ */
+const TURNSTILE_SITE_KEY = "0x4AAAAAAEuF7sIPXDFT3peQ";
+
+window.renderTurnstileForForm = function(containerElement, theme = 'auto') {
+    if (!containerElement) return;
+    if (containerElement.hasAttribute('data-turnstile-widget-id')) {
+        return containerElement.getAttribute('data-turnstile-widget-id');
+    }
+    const attemptRender = () => {
+        if (typeof window.turnstile === 'undefined') {
+            setTimeout(attemptRender, 250);
+            return;
+        }
+        try {
+            const widgetId = window.turnstile.render(containerElement, {
+                sitekey: TURNSTILE_SITE_KEY,
+                theme: theme,
+                size: 'normal',
+                'expired-callback': function() {
+                    if (window.turnstile) window.turnstile.reset(widgetId);
+                }
+            });
+            containerElement.setAttribute('data-turnstile-widget-id', widgetId);
+        } catch (e) {
+            console.warn('[Turnstile render exception]', e);
+        }
+    };
+    attemptRender();
+};
+
+window.resetTurnstileForForm = function(containerElement) {
+    if (!containerElement || !window.turnstile) return;
+    const widgetId = containerElement.getAttribute('data-turnstile-widget-id');
+    if (widgetId !== null && widgetId !== undefined) {
+        try {
+            window.turnstile.reset(widgetId);
+        } catch (e) {}
+    }
+};
+
+window.showFormError = function(formElement, message, onRetry = null) {
+    if (!formElement) return;
+    window.clearFormError(formElement);
+
+    const banner = document.createElement('div');
+    banner.className = 'form-error-banner';
+    banner.setAttribute('role', 'alert');
+    banner.setAttribute('aria-live', 'assertive');
+
+    const content = document.createElement('div');
+    content.className = 'error-msg-content';
+    content.innerHTML = `
+        <svg class="error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <span>${message || 'Something went wrong. Please try again.'}</span>
+    `;
+
+    const retryBtn = document.createElement('button');
+    retryBtn.type = 'button';
+    retryBtn.className = 'form-retry-btn';
+    retryBtn.textContent = 'Try Again';
+    retryBtn.addEventListener('click', () => {
+        window.clearFormError(formElement);
+        if (typeof onRetry === 'function') {
+            onRetry();
+        } else {
+            const submitBtn = formElement.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.focus();
+            }
+        }
+    });
+
+    banner.appendChild(content);
+    banner.appendChild(retryBtn);
+
+    const submitBtn = formElement.querySelector('button[type="submit"]');
+    if (submitBtn && submitBtn.parentNode) {
+        submitBtn.parentNode.insertBefore(banner, submitBtn);
+    } else {
+        formElement.appendChild(banner);
+    }
+};
+
+window.clearFormError = function(formElement) {
+    if (!formElement) return;
+    const existing = formElement.querySelectorAll('.form-error-banner');
+    existing.forEach(el => el.remove());
+};
+
+/**
+ * Form Interceptor & Anti-Spam Security Binding
  */
 function bindFormHandlers() {
+    // Initialize Turnstile widgets on any visible containers
+    const speakingTurnstile = document.getElementById('speaking-turnstile');
+    if (speakingTurnstile) window.renderTurnstileForForm(speakingTurnstile, 'light');
+
+    const contactTurnstile = document.getElementById('contact-turnstile');
+    if (contactTurnstile) window.renderTurnstileForForm(contactTurnstile, 'light');
+
+    const aimDedicatedTurnstile = document.getElementById('aim-dedicated-turnstile');
+    if (aimDedicatedTurnstile) window.renderTurnstileForForm(aimDedicatedTurnstile, 'auto');
+
+    const accessTurnstile = document.getElementById('access-turnstile');
+    if (accessTurnstile) window.renderTurnstileForForm(accessTurnstile, 'light');
+
+    const albumInlineTurnstile = document.getElementById('album-inline-turnstile');
+    if (albumInlineTurnstile) window.renderTurnstileForForm(albumInlineTurnstile, 'light');
+
     // 1. Speaking Inquiry Form
     const speakingForm = document.getElementById('speaking-inquiry-form');
-    if (speakingForm) {
+    if (speakingForm && !speakingForm.hasAttribute('data-security-bound')) {
+        speakingForm.setAttribute('data-security-bound', 'true');
         speakingForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            window.clearFormError(speakingForm);
+
             const submitBtn = speakingForm.querySelector('button[type="submit"]');
             const originalBtnText = submitBtn ? submitBtn.textContent : "Submit Speaking Inquiry";
 
@@ -231,6 +346,8 @@ function bindFormHandlers() {
             const eventName = document.getElementById('event-name').value;
             const location = document.getElementById('event-location').value;
             const message = document.getElementById('speaking-message').value;
+            const turnstileInput = speakingForm.querySelector('input[name="cf-turnstile-response"]');
+            const turnstileToken = turnstileInput ? turnstileInput.value : "";
 
             const formData = new FormData();
             formData.append('name', name);
@@ -238,6 +355,9 @@ function bindFormHandlers() {
             formData.append('event', eventName);
             formData.append('location', location);
             formData.append('message', message);
+            if (turnstileToken) {
+                formData.append('cf-turnstile-response', turnstileToken);
+            }
 
             try {
                 const response = await fetch('/api/submit-speaking', {
@@ -246,19 +366,32 @@ function bindFormHandlers() {
                 });
 
                 if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(`CF Function Error: ${response.status} - ${errorText}`);
+                    let errorMsg = "Could not submit your speaking inquiry. Please try again.";
+                    try {
+                        const errData = await response.json();
+                        if (errData && errData.error) errorMsg = errData.error;
+                    } catch (_) {
+                        const text = await response.text().catch(() => '');
+                        if (text && text.length < 150) errorMsg = text;
+                    }
+                    throw new Error(errorMsg);
                 }
 
                 const result = await response.json();
-                console.log("[ClickFunnels Speaking API Success]", result);
+                console.log("[Speaking API Success]", result);
                 showSuccessModal("Speaking Inquiry Received", "Thank you for reaching out. I will review your event details and respond within 2 business days.");
                 speakingForm.reset();
+                window.resetTurnstileForForm(speakingTurnstile);
             } catch (error) {
-                console.error("[ClickFunnels Speaking Integration Error]", error);
-                // Graceful fallback for local development or missing secrets so UX does not block
-                showSuccessModal("Speaking Inquiry Received", "Thank you for reaching out. I will review your event details and respond within 2 business days.");
-                speakingForm.reset();
+                console.error("[Speaking Submission Error]", error);
+                window.showFormError(speakingForm, error.message || "Could not submit your inquiry. Please try again.", () => {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = originalBtnText;
+                        submitBtn.focus();
+                    }
+                });
+                window.resetTurnstileForForm(speakingTurnstile);
             } finally {
                 if (submitBtn) {
                     submitBtn.disabled = false;
@@ -270,9 +403,12 @@ function bindFormHandlers() {
 
     // 2. Contact Page Form
     const contactForm = document.getElementById('contact-page-form');
-    if (contactForm) {
+    if (contactForm && !contactForm.hasAttribute('data-security-bound')) {
+        contactForm.setAttribute('data-security-bound', 'true');
         contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            window.clearFormError(contactForm);
+
             const submitBtn = contactForm.querySelector('button[type="submit"]');
             const originalBtnText = submitBtn ? submitBtn.textContent : "Submit";
 
@@ -283,6 +419,8 @@ function bindFormHandlers() {
 
             const fileInput = document.getElementById('contact-attachments');
             const selectedInterest = contactForm.querySelector('input[name="contact-interest"]:checked');
+            const turnstileInput = contactForm.querySelector('input[name="cf-turnstile-response"]');
+            const turnstileToken = turnstileInput ? turnstileInput.value : "";
 
             const formData = new FormData();
             formData.append('name', document.getElementById('contact-name').value);
@@ -290,83 +428,47 @@ function bindFormHandlers() {
             formData.append('interest', selectedInterest ? selectedInterest.value : "");
             formData.append('subject', document.getElementById('contact-subject').value);
             formData.append('description', document.getElementById('contact-description').value);
+            if (turnstileToken) {
+                formData.append('cf-turnstile-response', turnstileToken);
+            }
 
             if (fileInput && fileInput.files && fileInput.files[0]) {
                 formData.append('file', fileInput.files[0]);
             }
 
             try {
-                // Call the Cloudflare Pages Function secure endpoint
                 const response = await fetch('/api/submit-contact', {
                     method: 'POST',
                     body: formData
                 });
 
                 if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(`CF Function Error: ${response.status} - ${errorText}`);
+                    let errorMsg = "Could not send your message. Please try again.";
+                    try {
+                        const errData = await response.json();
+                        if (errData && errData.error) errorMsg = errData.error;
+                    } catch (_) {
+                        const text = await response.text().catch(() => '');
+                        if (text && text.length < 150) errorMsg = text;
+                    }
+                    throw new Error(errorMsg);
                 }
 
                 const result = await response.json();
-                console.log("[ClickFunnels API Success]", result);
+                console.log("[Contact API Success]", result);
                 showSuccessModal("Message Sent", "Thank you. I have received your message. I prioritize genuine connections and will get back to you shortly.");
                 contactForm.reset();
+                window.resetTurnstileForForm(contactTurnstile);
             } catch (error) {
-                console.error("[ClickFunnels Integration Error]", error);
-                // Graceful fallback for local development or missing secrets so UX does not block
-                showSuccessModal("Message Sent", "Thank you. I have received your message. I prioritize genuine connections and will get back to you shortly.");
-                contactForm.reset();
-            } finally {
-                if (submitBtn) {
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = originalBtnText;
-                }
-            }
-        });
-    }
-
-    // 3. AIM Waitlist Form
-    const aimForm = document.getElementById('aim-waitlist-form');
-    if (aimForm) {
-        aimForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const submitBtn = aimForm.querySelector('button[type="submit"]');
-            const originalBtnText = submitBtn ? submitBtn.textContent : "Join the waitlist";
-
-            if (submitBtn) {
-                submitBtn.disabled = true;
-                submitBtn.textContent = "Sending...";
-            }
-
-            const name = document.getElementById('aim-name').value;
-            const email = document.getElementById('aim-email').value;
-            const role = document.getElementById('aim-role').value;
-
-            const formData = new FormData();
-            formData.append('name', name);
-            formData.append('email', email);
-            formData.append('role', role);
-
-            try {
-                const response = await fetch('/api/submit-aim-waitlist', {
-                    method: 'POST',
-                    body: formData
+                console.error("[Contact Submission Error]", error);
+                window.showFormError(contactForm, error.message || "Could not send your message. Please try again.", () => {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = originalBtnText;
+                        submitBtn.focus();
+                    }
                 });
-
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(`CF Function Error: ${response.status} - ${errorText}`);
-                }
-
-                const result = await response.json();
-                console.log("[ClickFunnels AIM Waitlist API Success]", result);
-                showSuccessModal("Waitlist Joined", "Welcome to Accessible AIM! You are on the waitlist. I will email you prompt starter files soon.");
-                aimForm.reset();
-            } catch (error) {
-                console.error("[ClickFunnels AIM Waitlist Integration Error]", error);
-                // Graceful fallback for local development or missing secrets so UX does not block
-                showSuccessModal("Waitlist Joined", "Welcome to Accessible AIM! You are on the waitlist. I will email you prompt starter files soon.");
-                aimForm.reset();
+                window.resetTurnstileForForm(contactTurnstile);
             } finally {
                 if (submitBtn) {
                     submitBtn.disabled = false;
@@ -376,11 +478,14 @@ function bindFormHandlers() {
         });
     }
 
-    // Dedicated AIM Waitlist Form (Email-only)
+    // 3. AIM Dedicated Waitlist Form (Email-only)
     const aimDedicatedForm = document.getElementById('aim-dedicated-waitlist-form');
-    if (aimDedicatedForm) {
+    if (aimDedicatedForm && !aimDedicatedForm.hasAttribute('data-security-bound')) {
+        aimDedicatedForm.setAttribute('data-security-bound', 'true');
         aimDedicatedForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            window.clearFormError(aimDedicatedForm);
+
             const emailInput = document.getElementById('aim-dedicated-email');
             if (!emailInput) return;
 
@@ -393,8 +498,14 @@ function bindFormHandlers() {
             }
 
             const email = emailInput.value;
+            const turnstileInput = aimDedicatedForm.querySelector('input[name="cf-turnstile-response"]');
+            const turnstileToken = turnstileInput ? turnstileInput.value : "";
+
             const formData = new FormData();
             formData.append('email', email);
+            if (turnstileToken) {
+                formData.append('cf-turnstile-response', turnstileToken);
+            }
 
             try {
                 const response = await fetch('/api/submit-aim-waitlist', {
@@ -403,19 +514,32 @@ function bindFormHandlers() {
                 });
 
                 if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(`CF Function Error: ${response.status} - ${errorText}`);
+                    let errorMsg = "Could not join the waitlist. Please try again.";
+                    try {
+                        const errData = await response.json();
+                        if (errData && errData.error) errorMsg = errData.error;
+                    } catch (_) {
+                        const text = await response.text().catch(() => '');
+                        if (text && text.length < 150) errorMsg = text;
+                    }
+                    throw new Error(errorMsg);
                 }
 
                 const result = await response.json();
-                console.log("[ClickFunnels AIM Dedicated Waitlist API Success]", result);
+                console.log("[AIM Waitlist API Success]", result);
                 showSuccessModal("Waitlist Joined", "Welcome to Accessible AIM! You are on the waitlist. I will email you prompt starter files soon.");
                 aimDedicatedForm.reset();
+                window.resetTurnstileForForm(aimDedicatedTurnstile);
             } catch (error) {
-                console.error("[ClickFunnels AIM Dedicated Waitlist Integration Error]", error);
-                // Graceful fallback for local development or missing secrets so UX does not block
-                showSuccessModal("Waitlist Joined", "Welcome to Accessible AIM! You are on the waitlist. I will email you prompt starter files soon.");
-                aimDedicatedForm.reset();
+                console.error("[AIM Waitlist Submission Error]", error);
+                window.showFormError(aimDedicatedForm, error.message || "Could not join the waitlist. Please try again.", () => {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = originalBtnText;
+                        submitBtn.focus();
+                    }
+                });
+                window.resetTurnstileForForm(aimDedicatedTurnstile);
             } finally {
                 if (submitBtn) {
                     submitBtn.disabled = false;
@@ -425,39 +549,14 @@ function bindFormHandlers() {
         });
     }
 
-    // 4. Book Pre-registration Form
-    const bookForm = document.getElementById('book-notify-form');
-    if (bookForm) {
-        bookForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = bookForm.querySelector('input[type="email"]').value;
-            showSuccessModal("Release Notification Setup", "Success! You will be notified as soon as 'Limitations to Liberation' launches.");
-            bookForm.reset();
-        });
-    }
-
-    // 5. AI Music Quote Form
-    const musicForm = document.getElementById('music-quote-form');
-    if (musicForm) {
-        musicForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const data = {
-                name: document.getElementById('music-name').value,
-                email: document.getElementById('music-email').value,
-                details: document.getElementById('music-details').value,
-                timestamp: new Date().toISOString()
-            };
-            showSuccessModal("Jingle Quote Requested", "Thank you. I will review your details and follow up with melody ideas.");
-            musicForm.reset();
-        });
-    }
-
-    // 6. Accessibility Feedback Form
+    // 4. Accessibility Feedback Form
     const accessForm = document.getElementById('access-feedback-form');
-    if (accessForm) {
+    if (accessForm && !accessForm.hasAttribute('data-security-bound')) {
+        accessForm.setAttribute('data-security-bound', 'true');
         accessForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
+            window.clearFormError(accessForm);
+
             const submitBtn = accessForm.querySelector('button[type="submit"]');
             const originalText = submitBtn ? submitBtn.textContent : "Submit Accessibility Feedback";
             if (submitBtn) {
@@ -467,11 +566,16 @@ function bindFormHandlers() {
 
             const email = document.getElementById('access-email').value;
             const barrier = document.getElementById('access-desc').value;
+            const turnstileInput = accessForm.querySelector('input[name="cf-turnstile-response"]');
+            const turnstileToken = turnstileInput ? turnstileInput.value : "";
 
             try {
                 const formData = new FormData();
                 formData.append('email', email);
                 formData.append('barrier', barrier);
+                if (turnstileToken) {
+                    formData.append('cf-turnstile-response', turnstileToken);
+                }
 
                 const response = await fetch('/api/submit-accessibility', {
                     method: 'POST',
@@ -479,19 +583,32 @@ function bindFormHandlers() {
                 });
 
                 if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(`CF Function Error: ${response.status} - ${errorText}`);
+                    let errorMsg = "Could not log accessibility feedback. Please try again.";
+                    try {
+                        const errData = await response.json();
+                        if (errData && errData.error) errorMsg = errData.error;
+                    } catch (_) {
+                        const text = await response.text().catch(() => '');
+                        if (text && text.length < 150) errorMsg = text;
+                    }
+                    throw new Error(errorMsg);
                 }
 
                 const result = await response.json();
-                console.log("[ClickFunnels Accessibility API Success]", result);
+                console.log("[Accessibility API Success]", result);
                 showSuccessModal("Feedback Logged", "Thank you for helping me improve this site. The details have been successfully synced and logged.");
                 accessForm.reset();
+                window.resetTurnstileForForm(accessTurnstile);
             } catch (err) {
-                console.error("[ClickFunnels Accessibility Integration Error]", err);
-                // Graceful fallback for local development or missing secrets so UX does not block
-                showSuccessModal("Feedback Logged", "Thank you for helping me improve this site. The details have been successfully synced and logged.");
-                accessForm.reset();
+                console.error("[Accessibility Submission Error]", err);
+                window.showFormError(accessForm, err.message || "Could not log feedback. Please try again.", () => {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = originalText;
+                        submitBtn.focus();
+                    }
+                });
+                window.resetTurnstileForForm(accessTurnstile);
             } finally {
                 if (submitBtn) {
                     submitBtn.disabled = false;
@@ -500,22 +617,47 @@ function bindFormHandlers() {
             }
         });
     }
+
+    // 5. Book Pre-registration Form
+    const bookForm = document.getElementById('book-notify-form');
+    if (bookForm && !bookForm.hasAttribute('data-security-bound')) {
+        bookForm.setAttribute('data-security-bound', 'true');
+        bookForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            showSuccessModal("Release Notification Setup", "Success! You will be notified as soon as 'Limitations to Liberation' launches.");
+            bookForm.reset();
+        });
+    }
+
+    // 6. AI Music Quote Form
+    const musicForm = document.getElementById('music-quote-form');
+    if (musicForm && !musicForm.hasAttribute('data-security-bound')) {
+        musicForm.setAttribute('data-security-bound', 'true');
+        musicForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            showSuccessModal("Jingle Quote Requested", "Thank you. I will review your details and follow up with melody ideas.");
+            musicForm.reset();
+        });
+    }
 }
 
 /**
- * Redesigned Gated Content Unlocker for Free Gifts
+ * Gated Content Unlocker for Free Gifts (Universal Modal Fallback)
  */
 function initFreeGiftsUnlock() {
     const form = document.getElementById('free-gifts-unlock-form');
-    if (!form) return;
+    if (!form || form.hasAttribute('data-security-bound')) return;
+    form.setAttribute('data-security-bound', 'true');
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
+        window.clearFormError(form);
+
         const submitBtn = form.querySelector('button[type="submit"]') || form.querySelector('.free-gifts-unlock-btn');
         const emailInput = document.getElementById('free-gifts-email');
         if (!emailInput) return;
 
-        const email = emailInput.value;
+        const email = emailInput.value.trim();
         const originalBtnText = submitBtn ? submitBtn.textContent : "Unlock Downloads →";
 
         if (submitBtn) {
@@ -527,12 +669,17 @@ function initFreeGiftsUnlock() {
         const giftTitle = (typeof activeDownloadTitle !== 'undefined' && activeDownloadTitle) || 
                           (modal && modal.getAttribute('data-target-title')) || 
                           "";
+        const turnstileInput = form.querySelector('input[name="cf-turnstile-response"]');
+        const turnstileToken = turnstileInput ? turnstileInput.value : "";
 
         try {
             const formData = new FormData();
             formData.append('email', email);
             if (giftTitle) {
                 formData.append('gift_title', giftTitle);
+            }
+            if (turnstileToken) {
+                formData.append('cf-turnstile-response', turnstileToken);
             }
 
             const response = await fetch('/api/submit-free-gifts', {
@@ -541,29 +688,40 @@ function initFreeGiftsUnlock() {
             });
 
             if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`CF Function Error: ${response.status} - ${errorText}`);
+                let errorMsg = "Could not unlock downloads. Please try again.";
+                try {
+                    const errData = await response.json();
+                    if (errData && errData.error) errorMsg = errData.error;
+                } catch (_) {
+                    const text = await response.text().catch(() => '');
+                    if (text && text.length < 150) errorMsg = text;
+                }
+                throw new Error(errorMsg);
             }
 
             const result = await response.json();
-            console.log("[ClickFunnels Free Gifts API Success]", result);
+            console.log("[Free Gifts API Success]", result);
             
+            // Clean up email from DOM immediately (Zero browser email retention constraint)
+            emailInput.value = '';
+
             // Set unlocked preference in sessionStorage and close modal
             if (typeof sessionStorage !== 'undefined') sessionStorage.setItem('free-gifts-unlocked', 'true');
-            const modal = document.getElementById('free-gifts-modal');
             if (modal) {
                 modal.classList.remove('active');
                 setTimeout(() => modal.remove(), 400);
             }
         } catch (error) {
-            console.error("[ClickFunnels Free Gifts Integration Error]", error);
-            // Graceful fallback for local development or missing secrets so UX does not block
-            if (typeof sessionStorage !== 'undefined') sessionStorage.setItem('free-gifts-unlocked', 'true');
-            const modal = document.getElementById('free-gifts-modal');
-            if (modal) {
-                modal.classList.remove('active');
-                setTimeout(() => modal.remove(), 400);
-            }
+            console.error("[Free Gifts Integration Error]", error);
+            window.showFormError(form, error.message || "Could not unlock downloads. Please try again.", () => {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalBtnText;
+                    submitBtn.focus();
+                }
+            });
+            const turnstileContainer = form.querySelector('.turnstile-container');
+            if (turnstileContainer) window.resetTurnstileForForm(turnstileContainer);
         } finally {
             if (submitBtn) {
                 submitBtn.disabled = false;

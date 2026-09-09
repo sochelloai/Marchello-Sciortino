@@ -37,46 +37,70 @@ function getEnvVal(env, keyName) {
     return "";
 }
 
+import {
+    handleCorsPreflight,
+    validateContentType,
+    checkRateLimit,
+    validateFormFields,
+    verifyTurnstileToken,
+    createErrorResponse,
+    createSuccessResponse
+} from "../_security.js";
+
+export async function onRequestOptions(context) {
+    return handleCorsPreflight(context.request);
+}
+
 export async function onRequestPost(context) {
     const { env, request } = context;
-    
+
+    // 1. Content-Type Validation
+    if (!validateContentType(request)) {
+        return createErrorResponse(415, "Unsupported form media type. Please submit standard form data.", false, request);
+    }
+
+    // 2. Server-Side Rate Limiting (5 requests per 5 minutes per IP)
+    const clientIp = request.headers.get("CF-Connecting-IP") || "unknown";
+    if (!checkRateLimit(clientIp, 5, 300000)) {
+        return createErrorResponse(429, "Too many submission attempts. Please wait a few minutes before trying again.", true, request);
+    }
+
     // Retrieve ClickFunnels credentials from environment variables / secrets
     const apiKey = cleanEnvVar(getEnvVal(env, "CLICKFUNNELS_API_KEY"));
     const subdomain = cleanEnvVar(getEnvVal(env, "CLICKFUNNELS_SUBDOMAIN"));
     const workspaceId = cleanWorkspaceId(getEnvVal(env, "CLICKFUNNELS_WORKSPACE_ID"));
 
-    // 1. Configuration Validation
+    // Configuration Validation (Friendly visitor error without leaking internal secret names)
     if (!apiKey || !subdomain || !workspaceId) {
-        const availableKeys = env ? Object.keys(env) : [];
-        return new Response(JSON.stringify({
-            error: "Configuration Error",
-            message: `CLICKFUNNELS_API_KEY, CLICKFUNNELS_SUBDOMAIN, and CLICKFUNNELS_WORKSPACE_ID must be defined. Available keys: [${availableKeys.join(", ")}]`
-        }), {
-            status: 500,
-            headers: { 
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"
-            }
-        });
+        console.error("[Configuration Error] Missing ClickFunnels credentials in environment.");
+        return createErrorResponse(500, "The accessibility feedback service is temporarily unavailable. Please try again later.", true, request);
     }
 
     try {
         const formData = await request.formData();
-        const email = formData.get('email');
-        const barrier = formData.get('barrier');
+        const turnstileToken = formData.get("cf-turnstile-response") || formData.get("turnstile_token") || "";
 
-        if (!email) {
-            return new Response(JSON.stringify({
-                error: "Bad Request",
-                message: "Email address is required."
-            }), {
-                status: 400,
-                headers: { 
-                    "Content-Type": "application/json",
-                    "Access-Control-Allow-Origin": "*"
-                }
-            });
+        // 3. Cloudflare Turnstile Verification
+        const turnstileResult = await verifyTurnstileToken(turnstileToken, clientIp, env);
+        if (!turnstileResult.success) {
+            return createErrorResponse(403, turnstileResult.message, true, request);
         }
+
+        // 4. Field Validation & Length Limits
+        const fieldRules = {
+            email: { type: "email", required: true, maxLength: 254, label: "Email" },
+            barrier: { type: "text", required: false, maxLength: 3000, label: "Barrier Description" },
+            name: { type: "text", required: false, maxLength: 100, label: "Name" },
+            page_url: { type: "text", required: false, maxLength: 500, label: "Page URL" },
+            assistive_tech: { type: "text", required: false, maxLength: 200, label: "Assistive Technology" }
+        };
+
+        const validation = validateFormFields(formData, fieldRules);
+        if (validation.error) {
+            return createErrorResponse(400, validation.error, true, request);
+        }
+
+        const { email, barrier, name, page_url, assistive_tech } = validation.data;
 
         // Sanitize the subdomain if full URL is supplied
         let cleanSubdomain = subdomain.trim();
@@ -200,12 +224,17 @@ export async function onRequestPost(context) {
         let contactId = null;
         const createContactUrl = `https://${cleanSubdomain}.myclickfunnels.com/api/v2/workspaces/${cleanWorkspaceId}/contacts`;
         
+        const customAttrs = {
+            barrier_encountered: barrier || "",
+            description: barrier || ""
+        };
+        if (page_url) customAttrs.page_url = page_url;
+        if (assistive_tech) customAttrs.assistive_tech = assistive_tech;
+
         const contactPayload = {
             email_address: email,
-            custom_attributes: {
-                barrier_encountered: barrier || "",
-                description: barrier || ""
-            }
+            first_name: name || "",
+            custom_attributes: customAttrs
         };
 
         const contactBody = {
@@ -236,17 +265,19 @@ export async function onRequestPost(context) {
                 if (contactsList.length > 0) {
                     contactId = contactsList[0].id || contactsList[0].public_id;
                     
-                    // Update existing contact custom attributes (preserving previous attributes and NEVER overwriting tags)
                     try {
                         const existingAttrs = (contactsList[0] && typeof contactsList[0].custom_attributes === 'object' && contactsList[0].custom_attributes !== null)
                             ? contactsList[0].custom_attributes
                             : {};
                         const updateBody = {
                             contact: {
+                                first_name: name || contactsList[0].first_name || "",
                                 custom_attributes: {
                                     ...existingAttrs,
                                     barrier_encountered: barrier || existingAttrs.barrier_encountered || "",
-                                    description: barrier || existingAttrs.description || ""
+                                    description: barrier || existingAttrs.description || "",
+                                    ...(page_url ? { page_url } : {}),
+                                    ...(assistive_tech ? { assistive_tech } : {})
                                 }
                             }
                         };
@@ -260,7 +291,7 @@ export async function onRequestPost(context) {
                             await logErrorResponse("Update Contact", updateResponse);
                         }
                     } catch (updateErr) {
-                        printError("Failed to update existing contact's custom attributes:", updateErr);
+                        console.error("Failed to update existing contact's custom attributes:", updateErr);
                     }
                 }
             } else {
@@ -269,16 +300,8 @@ export async function onRequestPost(context) {
         }
 
         if (!contactId) {
-            return new Response(JSON.stringify({
-                error: "ClickFunnels Error",
-                message: "Could not create or locate the contact in ClickFunnels."
-            }), {
-                status: 500,
-                headers: { 
-                    "Content-Type": "application/json",
-                    "Access-Control-Allow-Origin": "*"
-                }
-            });
+            console.error("[ClickFunnels] Failed to create or locate contact in ClickFunnels.");
+            return createErrorResponse(502, "Could not log your feedback to ClickFunnels. Please try again.", true, request);
         }
 
         // --- STEP 3: Ensure Tag is Applied to the Contact ---
@@ -309,32 +332,14 @@ export async function onRequestPost(context) {
             }
         }
 
-        return new Response(JSON.stringify({
-            success: true,
+        return createSuccessResponse({
             contactId: contactId,
-            tagId: tagId,
-            tagName: resolvedTagName,
-            tagApplied: tagApplied,
-            message: "Accessibility feedback logged and contact tagged successfully in ClickFunnels."
-        }), {
-            status: 200,
-            headers: { 
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"
-            }
-        });
+            message: "Thank you for helping improve accessibility. Your feedback has been received."
+        }, request);
 
     } catch (error) {
-        return new Response(JSON.stringify({
-            error: "API Execution Error",
-            message: error.message
-        }), {
-            status: 500,
-            headers: { 
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"
-            }
-        });
+        console.error("[Accessibility API Error]", error && error.message ? error.message : error);
+        return createErrorResponse(500, "We could not process your feedback right now. Please try again in a moment.", true, request);
     }
 }
 
@@ -347,8 +352,4 @@ async function logErrorResponse(stepName, response) {
     }
     console.error(`[ClickFunnels] ${stepName} failed with status ${response.status}: ${body}`);
     return body;
-}
-
-function printError(msg, err) {
-    console.error(msg, err);
 }

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: https: blob:; media-src 'self' data: https: blob:; connect-src 'self' https:; frame-src 'self' https: blob:; child-src 'self' https: blob:; object-src 'self' blob:; frame-ancestors 'none';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: https: blob:; media-src 'self' data: https: blob:; connect-src 'self' https:; frame-src 'self' https: blob: https://challenges.cloudflare.com; child-src 'self' https: blob: https://challenges.cloudflare.com; object-src 'self' blob:; frame-ancestors 'none';">
     <title>Marchello Sciortino | Official Digital Hub</title>
     <meta name="description"
         content="Official digital hub of Marchello Sciortino: keynote speaker, ClickFunnels certified builder, creator, and disability advocate turning limitations into creative agency through AI.">
@@ -19,6 +19,8 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Cloudflare Turnstile Anti-Spam Verification -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
     <!-- Stylesheets -->
     <link rel="stylesheet" href="css/style.css?v=20260907-v17-instagram-live">
     <link rel="stylesheet" href="css/accessibility.css?v=20260902-v16-hero-cta-sameline">

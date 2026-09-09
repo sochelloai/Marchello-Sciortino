@@ -38,8 +38,34 @@ function getEnvVal(env, keyName) {
     return "";
 }
 
+import {
+    getCorsHeaders,
+    handleCorsPreflight,
+    validateContentType,
+    checkRateLimit,
+    validateFormFields,
+    verifyTurnstileToken,
+    createErrorResponse,
+    createSuccessResponse
+} from "../_security.js";
+
+export async function onRequestOptions(context) {
+    return handleCorsPreflight(context.request);
+}
+
 export async function onRequestPost(context) {
     const { env, request } = context;
+
+    // 1. Content-Type Validation
+    if (!validateContentType(request)) {
+        return createErrorResponse(415, "Unsupported form media type. Please submit standard form data.", false, request);
+    }
+
+    // 2. Server-Side Rate Limiting (5 requests per 5 minutes per IP)
+    const clientIp = request.headers.get("CF-Connecting-IP") || "unknown";
+    if (!checkRateLimit(clientIp, 5, 300000)) {
+        return createErrorResponse(429, "Too many submission attempts. Please wait a few minutes before trying again.", true, request);
+    }
     
     // Retrieve credentials and configs from Cloudflare Environment Variables / Secrets
     const apiKey = cleanEnvVar(getEnvVal(env, "CLICKFUNNELS_API_KEY"));
@@ -47,42 +73,38 @@ export async function onRequestPost(context) {
     const workspaceId = cleanWorkspaceId(getEnvVal(env, "CLICKFUNNELS_WORKSPACE_ID"));
     const tagName = cleanEnvVar(getEnvVal(env, "CLICKFUNNELS_TAG_NAME")) || "ms-contact-form";
 
-    // 1. Configuration Validation
+    // Configuration Validation (Friendly visitor error without leaking internal secret names)
     if (!apiKey || !subdomain || !workspaceId) {
-        const availableKeys = env ? Object.keys(env) : [];
-        return new Response(JSON.stringify({
-            error: "Configuration Error",
-            message: `CLICKFUNNELS_API_KEY, CLICKFUNNELS_SUBDOMAIN, and CLICKFUNNELS_WORKSPACE_ID must be defined in Cloudflare Variables and Secrets. Available keys: [${availableKeys.join(", ")}]`
-        }), {
-            status: 500,
-            headers: { 
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"
-            }
-        });
+        console.error("[Configuration Error] Missing ClickFunnels credentials in environment.");
+        return createErrorResponse(500, "The contact service is temporarily unavailable. Please try again later.", true, request);
     }
 
     try {
         const formData = await request.formData();
-        const name = formData.get('name');
-        const email = formData.get('email');
-        const subject = formData.get('subject');
-        const description = formData.get('description');
-        const interest = formData.get('interest');
-        const file = formData.get('file');
+        const turnstileToken = formData.get("cf-turnstile-response") || formData.get("turnstile_token") || "";
 
-        if (!email) {
-            return new Response(JSON.stringify({
-                error: "Bad Request",
-                message: "Email address is required."
-            }), {
-                status: 400,
-                headers: { 
-                    "Content-Type": "application/json",
-                    "Access-Control-Allow-Origin": "*"
-                }
-            });
+        // 3. Cloudflare Turnstile Verification
+        const turnstileResult = await verifyTurnstileToken(turnstileToken, clientIp, env);
+        if (!turnstileResult.success) {
+            return createErrorResponse(403, turnstileResult.message, true, request);
         }
+
+        // 4. Field Validation & Length Limits
+        const fieldRules = {
+            name: { type: "text", required: false, maxLength: 100, label: "Name" },
+            email: { type: "email", required: true, maxLength: 254, label: "Email" },
+            subject: { type: "text", required: false, maxLength: 150, label: "Subject" },
+            description: { type: "text", required: false, maxLength: 3000, label: "Message" },
+            interest: { type: "text", required: false, maxLength: 100, label: "Area of Interest" },
+            file: { type: "file", maxBytes: 10 * 1024 * 1024 }
+        };
+
+        const validation = validateFormFields(formData, fieldRules);
+        if (validation.error) {
+            return createErrorResponse(400, validation.error, true, request);
+        }
+
+        const { name, email, subject, description, interest, file } = validation.data;
 
         // Upload attachment to file hosting to get a public download link
         let attachmentUrl = "";
@@ -365,34 +387,14 @@ export async function onRequestPost(context) {
             }
         }
 
-        return new Response(JSON.stringify({
-            success: true,
+        return createSuccessResponse({
             contactId: contactId,
-            tagId: tagId,
-            tagName: resolvedTagName,
-            tagged: tagApplied,
-            message: tagApplied
-                ? `Lead created and tagged with '${resolvedTagName}' successfully in ClickFunnels.`
-                : "Lead created in ClickFunnels, but tag could not be resolved or applied."
-        }), {
-            status: 200,
-            headers: { 
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"
-            }
-        });
+            message: "Thank you. Your message has been received."
+        }, request);
 
     } catch (error) {
-        return new Response(JSON.stringify({
-            error: "API Execution Error",
-            message: error.message
-        }), {
-            status: 500,
-            headers: { 
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"
-            }
-        });
+        console.error("[Contact API Error]", error && error.message ? error.message : error);
+        return createErrorResponse(500, "We could not process your submission right now. Please try again in a moment.", true, request);
     }
 }
 

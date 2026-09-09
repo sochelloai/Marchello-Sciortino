@@ -2191,6 +2191,7 @@ Router.register('/speaking', () => {
                             <label for="speaking-message">Message: <span class="contact-asterisk">*</span></label>
                             <textarea id="speaking-message" class="form-control" placeholder="Provide any details about the speaking request..." required></textarea>
                         </div>
+                        <div class="turnstile-container" id="speaking-turnstile"></div>
                         <button type="submit" class="btn btn-teal" style="width: 100%;">Submit Speaking Inquiry</button>
                     </form>
                 </div>
@@ -2760,6 +2761,7 @@ Router.register('/contact', () => {
                                 </div>
                             </div>
                             <div class="contact-form-group" style="margin-bottom: 0;">
+                                <div class="turnstile-container" id="contact-turnstile"></div>
                                 <button type="submit" class="contact-btn-submit" style="width: 100%;">Submit</button>
                             </div>
                         </form>
@@ -3456,6 +3458,7 @@ const freeGiftsTemplate = () => {
                 </p>
                 <form id="spa-modal-login-form">
                     <input type="email" class="spa-modal-input" id="spa-modal-email" placeholder="Enter your email address..." required style="width: 100%; padding: 14px; border: 1px solid #e2e8f0; border-radius: 10px; margin-bottom: 12px; font-size: 1rem; box-sizing: border-box;">
+                    <div class="turnstile-container" id="spa-modal-turnstile"></div>
                     <button type="submit" class="btn-unlock-orange" style="background: #ff5722; color: #ffffff; width: 100%; padding: 14px 20px; font-size: 1rem; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; transition: background 0.2s, transform 0.15s;">
                         Unlock Free Access &rarr;
                     </button>
@@ -4189,6 +4192,7 @@ const singleGiftTemplate = (gift) => {
                         </p>
                         <form id="album-inline-unlock-form" data-target-title="${gift.title}">
                             <input type="email" class="spa-modal-input" id="album-inline-email" placeholder="Enter your email address..." required style="width: 100%; padding: 14px; border: 1px solid #e2e8f0; border-radius: 10px; margin-bottom: 14px; font-size: 1rem; box-sizing: border-box;">
+                            <div class="turnstile-container" id="album-inline-turnstile"></div>
                             <button type="submit" class="btn-unlock-orange" style="background: #ff5722; color: #ffffff; width: 100%; padding: 14px 20px; font-size: 1.05rem; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; transition: background 0.2s, transform 0.15s; box-shadow: 0 8px 20px rgba(255, 87, 34, 0.35);">
                                 Unlock Free Access &rarr;
                             </button>
@@ -4305,6 +4309,7 @@ const singleGiftTemplate = (gift) => {
                 </p>
                 <form id="spa-modal-login-form">
                     <input type="email" class="spa-modal-input" id="spa-modal-email" placeholder="Enter your email address..." required style="width: 100%; padding: 14px; border: 1px solid #e2e8f0; border-radius: 10px; margin-bottom: 12px; font-size: 1rem; box-sizing: border-box;">
+                    <div class="turnstile-container" id="spa-modal-turnstile"></div>
                     <button type="submit" class="btn-unlock-orange" style="background: #ff5722; color: #ffffff; width: 100%; padding: 14px 20px; font-size: 1rem; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; transition: background 0.2s, transform 0.15s;">
                         Unlock Free Access &rarr;
                     </button>
@@ -4592,6 +4597,16 @@ function openUnlockModal(targetFile, targetTitle, targetFilename = '') {
         emailInput.value = '';
     }
 
+    // Render Turnstile verification widget in modal and clear any previous error
+    const modalForm = modal.querySelector('form');
+    if (modalForm && typeof window.clearFormError === 'function') {
+        window.clearFormError(modalForm);
+    }
+    const turnstileContainer = modal.querySelector('.turnstile-container');
+    if (turnstileContainer && typeof window.renderTurnstileForForm === 'function') {
+        window.renderTurnstileForForm(turnstileContainer, 'light');
+    }
+
     modal.classList.add('active');
 
     setTimeout(() => {
@@ -4709,7 +4724,7 @@ document.addEventListener('submit', async (e) => {
         const submitBtn = form.querySelector('button[type="submit"]');
         const emailInput = form.querySelector('input[type="email"]');
         if (!emailInput) return;
-        const email = emailInput.value;
+        const email = emailInput.value.trim();
         const originalText = submitBtn ? submitBtn.textContent : "Unlock Free Access →";
 
         const modal = document.getElementById('spa-download-modal');
@@ -4718,47 +4733,14 @@ document.addEventListener('submit', async (e) => {
         const inlineTitle = form.getAttribute('data-target-title') || (inlineCard && inlineCard.getAttribute('data-target-title')) || 'Win Anyway Album';
         const targetTitle = isInlineForm ? inlineTitle : ((modal && modal.getAttribute('data-target-title')) || inlineTitle || '');
 
-        // Trigger target action or direct download if initiated from modal
-        if (targetUrl === 'action:download-full-album') {
-            downloadFullAlbumZip(document.querySelector('.btn-download-full-album, .js-full-album-btn'));
-        } else if (targetUrl && (targetUrl.endsWith('.mp3') || modal.hasAttribute('data-target-filename'))) {
-            const targetFilename = modal ? modal.getAttribute('data-target-filename') || 'Track.mp3' : 'Track.mp3';
-            directDownloadFile(targetUrl, targetFilename, null);
-        } else if (targetUrl && targetUrl !== '#' && !targetUrl.endsWith('#') && targetUrl !== 'action:unlock-album') {
-            const suggestedName = targetUrl.split('/').pop() || 'download';
-            directDownloadFile(targetUrl, suggestedName, null);
+        // Clear any previous error banner
+        if (typeof window.clearFormError === 'function') {
+            window.clearFormError(form);
         }
 
-        // Close modal immediately so returning users see the page without any pop-up
-        if (modal) {
-            modal.classList.remove('active');
-        }
-
-        const currentSlug = window.location.pathname.replace(/^\/|\/$/g, '');
-        if (typeof sessionStorage !== 'undefined' && currentSlug) {
-            sessionStorage.setItem('unlocked_album_' + currentSlug, 'true');
-        }
-        // Clean up email input value from DOM immediately so it does not persist
-        if (emailInput) {
-            emailInput.value = '';
-        }
-
-        // Immediately hide in-place unlock card
-        const inlineUnlockCard = document.getElementById('album-inline-unlock-card');
-        if (inlineUnlockCard) {
-            inlineUnlockCard.style.setProperty('display', 'none', 'important');
-        }
-
-        // Immediately unhide and activate the official 10-track album card
-        const albumWrap = document.getElementById('gift-album-player-wrap');
-        if (albumWrap) {
-            albumWrap.style.setProperty('display', 'block', 'important');
-            albumWrap.classList.remove('is-locked');
-            const nowPlayingTitle = document.getElementById('album-now-playing-title');
-            if (nowPlayingTitle) {
-                nowPlayingTitle.textContent = 'Preview tracks or download individually below';
-            }
-        }
+        // Retrieve Turnstile token from form
+        const turnstileInput = form.querySelector('input[name="cf-turnstile-response"]') || document.querySelector('input[name="cf-turnstile-response"]');
+        const turnstileToken = turnstileInput ? turnstileInput.value : '';
 
         if (submitBtn) {
             submitBtn.disabled = true;
@@ -4771,6 +4753,9 @@ document.addEventListener('submit', async (e) => {
             if (targetTitle) {
                 formData.append('gift_title', targetTitle);
             }
+            if (turnstileToken) {
+                formData.append('cf-turnstile-response', turnstileToken);
+            }
 
             const response = await fetch('/api/submit-free-gifts', {
                 method: 'POST',
@@ -4778,14 +4763,84 @@ document.addEventListener('submit', async (e) => {
             });
 
             if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`CF Function Error: ${response.status} - ${errorText}`);
+                let errorMsg = "Could not unlock downloads. Please try again.";
+                try {
+                    const errData = await response.json();
+                    if (errData && errData.error) errorMsg = errData.error;
+                } catch (_) {
+                    const text = await response.text().catch(() => '');
+                    if (text && text.length < 150) errorMsg = text;
+                }
+                throw new Error(errorMsg);
             }
 
             const result = await response.json();
-            console.log("[ClickFunnels Free Gifts API Success]", result);
+            console.log("[Free Gifts API Success]", result);
+
+            // Submission succeeded: clean up email from DOM immediately (Zero browser email retention constraint)
+            if (emailInput) {
+                emailInput.value = '';
+            }
+
+            const currentSlug = window.location.pathname.replace(/^\/|\/$/g, '');
+            if (typeof sessionStorage !== 'undefined' && currentSlug) {
+                sessionStorage.setItem('unlocked_album_' + currentSlug, 'true');
+            }
+
+            // Trigger target action or direct download if initiated from modal
+            if (targetUrl === 'action:download-full-album') {
+                downloadFullAlbumZip(document.querySelector('.btn-download-full-album, .js-full-album-btn'));
+            } else if (targetUrl && (targetUrl.endsWith('.mp3') || (modal && modal.hasAttribute('data-target-filename')))) {
+                const targetFilename = modal ? modal.getAttribute('data-target-filename') || 'Track.mp3' : 'Track.mp3';
+                directDownloadFile(targetUrl, targetFilename, null);
+            } else if (targetUrl && targetUrl !== '#' && !targetUrl.endsWith('#') && targetUrl !== 'action:unlock-album') {
+                const suggestedName = targetUrl.split('/').pop() || 'download';
+                directDownloadFile(targetUrl, suggestedName, null);
+            }
+
+            // Close modal
+            if (modal) {
+                modal.classList.remove('active');
+            }
+
+            // Hide in-place unlock card
+            if (inlineCard) {
+                inlineCard.style.setProperty('display', 'none', 'important');
+            }
+
+            // Immediately unhide and activate the official album player
+            const albumWrap = document.getElementById('gift-album-player-wrap');
+            if (albumWrap) {
+                albumWrap.style.setProperty('display', 'block', 'important');
+                albumWrap.classList.remove('is-locked');
+                const nowPlayingTitle = document.getElementById('album-now-playing-title');
+                if (nowPlayingTitle) {
+                    nowPlayingTitle.textContent = 'Preview tracks or download individually below';
+                }
+            }
+
+            // Reset Turnstile token
+            const turnstileContainer = form.querySelector('.turnstile-container');
+            if (turnstileContainer && typeof window.resetTurnstileForForm === 'function') {
+                window.resetTurnstileForForm(turnstileContainer);
+            }
+
         } catch (error) {
-            console.error("[ClickFunnels Free Gifts API Error]", error);
+            console.error("[Free Gifts Unlock Error]", error);
+            if (typeof window.showFormError === 'function') {
+                window.showFormError(form, error.message || "We could not verify your access right now. Please try again.", () => {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = originalText;
+                        submitBtn.focus();
+                    }
+                });
+            }
+            // Reset Turnstile widget so user can re-verify
+            const turnstileContainer = form.querySelector('.turnstile-container');
+            if (turnstileContainer && typeof window.resetTurnstileForForm === 'function') {
+                window.resetTurnstileForForm(turnstileContainer);
+            }
         } finally {
             if (submitBtn) {
                 submitBtn.disabled = false;
@@ -5036,6 +5091,7 @@ Router.register('/accessibility-statement', () => `
                         <label for="access-desc">Describe the barrier you encountered</label>
                         <textarea id="access-desc" class="form-control" required></textarea>
                     </div>
+                    <div class="turnstile-container" id="access-turnstile"></div>
                     <button type="submit" class="btn btn-teal">Submit Accessibility Feedback</button>
                 </form>
             </div>
@@ -5286,6 +5342,7 @@ Router.register('/accessible-aim', () => `
                     <!-- Opt-in form -->
                     <form id="aim-dedicated-waitlist-form" class="aim-waitlist-form">
                         <input type="email" id="aim-dedicated-email" class="aim-email-input" placeholder="Enter your email address" required aria-label="Email address for waitlist">
+                        <div class="turnstile-container" id="aim-dedicated-turnstile" style="width: 100%;"></div>
                         <button type="submit" class="aim-submit-btn">Join the waitlist</button>
                     </form>
                 </div>

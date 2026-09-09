@@ -14,7 +14,6 @@ function cleanWorkspaceId(val) {
         clean = clean.slice(1, -1);
     }
     clean = clean.trim();
-    // Try to extract workspaces/\d+ or any number
     const match = clean.match(/\/workspaces\/(\d+)/);
     if (match) {
         return match[1];
@@ -38,50 +37,71 @@ function getEnvVal(env, keyName) {
     return "";
 }
 
+import {
+    handleCorsPreflight,
+    validateContentType,
+    checkRateLimit,
+    validateFormFields,
+    verifyTurnstileToken,
+    createErrorResponse,
+    createSuccessResponse
+} from "../_security.js";
+
+export async function onRequestOptions(context) {
+    return handleCorsPreflight(context.request);
+}
+
 export async function onRequestPost(context) {
     const { env, request } = context;
-    
+
+    // 1. Content-Type Validation
+    if (!validateContentType(request)) {
+        return createErrorResponse(415, "Unsupported form media type. Please submit standard form data.", false, request);
+    }
+
+    // 2. Server-Side Rate Limiting (5 requests per 5 minutes per IP)
+    const clientIp = request.headers.get("CF-Connecting-IP") || "unknown";
+    if (!checkRateLimit(clientIp, 5, 300000)) {
+        return createErrorResponse(429, "Too many submission attempts. Please wait a few minutes before trying again.", true, request);
+    }
+
     // Retrieve credentials and configs from Cloudflare Environment Variables / Secrets
     const apiKey = cleanEnvVar(getEnvVal(env, "CLICKFUNNELS_API_KEY"));
     const subdomain = cleanEnvVar(getEnvVal(env, "CLICKFUNNELS_SUBDOMAIN"));
     const workspaceId = cleanWorkspaceId(getEnvVal(env, "CLICKFUNNELS_WORKSPACE_ID"));
     const tagName = cleanEnvVar(getEnvVal(env, "CLICKFUNNELS_SPEAKING_TAG_NAME")) || "ms-speaking-form";
 
-    // 1. Configuration Validation
+    // Configuration Validation (Friendly visitor error without leaking internal secret names)
     if (!apiKey || !subdomain || !workspaceId) {
-        const availableKeys = env ? Object.keys(env) : [];
-        return new Response(JSON.stringify({
-            error: "Configuration Error",
-            message: `CLICKFUNNELS_API_KEY, CLICKFUNNELS_SUBDOMAIN, and CLICKFUNNELS_WORKSPACE_ID must be defined in Cloudflare Variables and Secrets. Available keys: [${availableKeys.join(", ")}]`
-        }), {
-            status: 500,
-            headers: { 
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"
-            }
-        });
+        console.error("[Configuration Error] Missing ClickFunnels credentials in environment.");
+        return createErrorResponse(500, "The speaking inquiry service is temporarily unavailable. Please try again later.", true, request);
     }
 
     try {
         const formData = await request.formData();
-        const name = formData.get('name');
-        const email = formData.get('email');
-        const event = formData.get('event');
-        const location = formData.get('location');
-        const message = formData.get('message');
+        const turnstileToken = formData.get("cf-turnstile-response") || formData.get("turnstile_token") || "";
 
-        if (!email) {
-            return new Response(JSON.stringify({
-                error: "Bad Request",
-                message: "Email address is required."
-            }), {
-                status: 400,
-                headers: { 
-                    "Content-Type": "application/json",
-                    "Access-Control-Allow-Origin": "*"
-                }
-            });
+        // 3. Cloudflare Turnstile Verification
+        const turnstileResult = await verifyTurnstileToken(turnstileToken, clientIp, env);
+        if (!turnstileResult.success) {
+            return createErrorResponse(403, turnstileResult.message, true, request);
         }
+
+        // 4. Field Validation & Length Limits
+        const fieldRules = {
+            name: { type: "text", required: false, maxLength: 100, label: "Name" },
+            email: { type: "email", required: true, maxLength: 254, label: "Email" },
+            event: { type: "text", required: false, maxLength: 150, label: "Event Name" },
+            location: { type: "text", required: false, maxLength: 150, label: "Event Location" },
+            message: { type: "text", required: false, maxLength: 3000, label: "Message" }
+        };
+
+        const validation = validateFormFields(formData, fieldRules);
+        if (validation.error) {
+            return createErrorResponse(400, validation.error, true, request);
+        }
+
+        const { name, email, event, location, message } = validation.data;
 
         // Sanitize the subdomain if a full URL was pasted
         let cleanSubdomain = subdomain.trim();
@@ -244,7 +264,6 @@ export async function onRequestPost(context) {
                 if (contactsList.length > 0) {
                     contactId = contactsList[0].id || contactsList[0].public_id;
                     
-                    // Update existing contact custom attributes (preserving previous attributes and NEVER overwriting tags)
                     try {
                         const existingAttrs = (contactsList[0] && typeof contactsList[0].custom_attributes === 'object' && contactsList[0].custom_attributes !== null)
                             ? contactsList[0].custom_attributes
@@ -274,14 +293,12 @@ export async function onRequestPost(context) {
                     }
                 }
             } else {
-                const searchErrBody = await searchResponse.clone().text();
                 await logErrorResponse("Search Contact", searchResponse);
-                throw new Error(`[DEBUG] CF Search failed. URL: ${searchUrl}. Status: ${searchResponse.status}. Body: ${searchErrBody}`);
             }
 
             if (!contactId) {
-                const errBody = await contactResponse.clone().text();
-                throw new Error(`[DEBUG] CF Create failed. URL: ${createContactUrl}. Status: ${contactResponse.status}. Body: ${errBody}. Subdomain: [${cleanSubdomain}]. Workspace: [${cleanWorkspaceId}]. API Key Len: ${apiKey ? apiKey.length : 0}`);
+                console.error("[ClickFunnels] Failed to create or locate contact in ClickFunnels.");
+                return createErrorResponse(502, "Could not submit your speaking inquiry to ClickFunnels. Please try again.", true, request);
             }
         }
 
@@ -305,42 +322,21 @@ export async function onRequestPost(context) {
                 } else if (applyTagResponse.status === 422) {
                     tagApplied = true;
                 } else {
-                    const errBody = await logErrorResponse("Apply Tag", applyTagResponse);
-                    console.error(`Failed to apply tag: ${applyTagResponse.status} - ${errBody}`);
+                    await logErrorResponse("Apply Tag", applyTagResponse);
                 }
             } catch (applyErr) {
                 console.error("[ClickFunnels] Error calling applied_tags:", applyErr);
             }
         }
 
-        return new Response(JSON.stringify({
-            success: true,
+        return createSuccessResponse({
             contactId: contactId,
-            tagId: tagId,
-            tagName: resolvedTagName,
-            tagged: tagApplied,
-            message: tagApplied
-                ? `Speaking inquiry created and tagged with '${resolvedTagName}' successfully in ClickFunnels.`
-                : "Speaking inquiry created in ClickFunnels, but tag could not be resolved or applied."
-        }), {
-            status: 200,
-            headers: { 
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"
-            }
-        });
+            message: "Thank you for reaching out. Your speaking inquiry has been received."
+        }, request);
 
     } catch (error) {
-        return new Response(JSON.stringify({
-            error: "API Execution Error",
-            message: error.message
-        }), {
-            status: 500,
-            headers: { 
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"
-            }
-        });
+        console.error("[Speaking API Error]", error && error.message ? error.message : error);
+        return createErrorResponse(500, "We could not process your speaking inquiry right now. Please try again in a moment.", true, request);
     }
 }
 
