@@ -35,6 +35,8 @@
 /wrangler.toml / 404
 /package.json / 404
 /package-lock.json / 404
+/_routes.json / 404
+/_redirects / 404
 /*.toml / 404
 /*.md / 404
 /scripts/* / 404
