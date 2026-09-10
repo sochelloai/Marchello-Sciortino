@@ -763,283 +763,184 @@ You must return a raw JSON object containing exactly these fields (no markdown w
 
         const imagePromptText = `${generatedArticle.image_prompt}. ${brandStyleInstructions}`;
 
-        // Attempt 1: Higgsfield Generation (GPT Image 2)
-        console.log("Attempting image generation via Higgsfield (gpt_image_2)...");
-        try {
-            const isWindows = process.platform === 'win32';
-            const hfCmd = isWindows ? 'higgsfield.cmd' : 'higgsfield';
+        // =========================================================================
+        // Step 2: Image Generation Pipeline
+        // Tier 1 (Initial Tier): Highest-Quality Google Gemini API (Multimodal Image Generation via generateContent)
+        // Tier 2 (Fallback Tier): Google Imagen 3 (imagen-3.0-generate-002 / imagen-3.0-generate-001)
+        // Optional Local Tier: Higgsfield (if USE_HIGGSFIELD=true and valid local creds exist)
+        // Tier 3 (Zero-Auth Fallback): Pollinations AI (Flux / SDXL high-res)
+        // Tier 4 (Offline Fallback): Bespoke Branded Geometric Vector SVG
+        // =========================================================================
 
-            // Configure Higgsfield Auth (auth_version 2)
-            const token = process.env.HIGGSFIELD_AUTH_TOKEN;
-            const refreshToken = process.env.HIGGSFIELD_REFRESH_TOKEN;
-            
-            try {
-                const os = require('os');
-                const configDir = path.join(os.homedir(), '.config', 'higgsfield');
-                if (!fs.existsSync(configDir)) {
-                    fs.mkdirSync(configDir, { recursive: true });
-                }
-                const credPath = path.join(configDir, 'credentials.json');
-                
-                let hasValidLocalCreds = false;
-                if (fs.existsSync(credPath)) {
-                    try {
-                        const existing = JSON.parse(fs.readFileSync(credPath, 'utf8'));
-                        if (existing && existing.access_token && (!existing.expires_at || existing.expires_at * 1000 > Date.now())) {
-                            hasValidLocalCreds = true;
-                        }
-                    } catch (e) {}
-                }
-
-                if (!hasValidLocalCreds) {
-                    let creds = null;
-                    if (process.env.HIGGSFIELD_CREDENTIALS) {
-                        try {
-                            creds = JSON.parse(process.env.HIGGSFIELD_CREDENTIALS);
-                        } catch (e) {
-                            console.warn("Could not parse HIGGSFIELD_CREDENTIALS, using token environment.");
-                        }
-                    }
-                    
-                    if (!creds && token) {
-                        creds = {
-                            auth_version: 2,
-                            access_token: token,
-                            refresh_token: refreshToken || "",
-                            expires_at: 2147483647,
-                            token_type: "bearer",
-                            scope: "offline_access user:org:read email profile"
-                        };
-                    }
-
-                    if (creds) {
-                        fs.writeFileSync(credPath, JSON.stringify(creds, null, 2), 'utf8');
-                    }
-                }
-
-                // Pre-seed workspace_id if provided
-                const workspaceId = process.env.HIGGSFIELD_WORKSPACE_ID;
-                if (workspaceId) {
-                    const confPath = path.join(configDir, 'config.json');
-                    if (!fs.existsSync(confPath)) {
-                        fs.writeFileSync(confPath, JSON.stringify({ workspace_id: workspaceId }, null, 2), 'utf8');
-                    }
-                }
-            } catch (authErr) {
-                console.warn("Could not write Higgsfield credentials file:", authErr.message);
-            }
-
-            // Auto-detect and select an active workspace if needed
-            try {
-                const wsOutput = execFileSync(hfCmd, ['workspace', 'list', '--json'], {
-                    encoding: 'utf8',
-                    stdio: ['pipe', 'pipe', 'pipe'],
-                    timeout: 15000
-                });
-                const wsList = JSON.parse(wsOutput);
-                if (Array.isArray(wsList) && wsList.length > 0) {
-                    const selected = wsList.find(w => w.is_selected) || wsList[0];
-                    if (selected && selected.id) {
-                        execFileSync(hfCmd, ['workspace', 'set', selected.id], {
-                            encoding: 'utf8',
-                            stdio: ['pipe', 'pipe', 'pipe'],
-                            timeout: 10000
-                        });
-                        console.log(`Using Higgsfield workspace: "${selected.name || 'default'}" (${selected.id})`);
-                    }
-                }
-            } catch (wsErr) {
-                console.warn("Workspace selection notice:", wsErr.message);
-            }
-
-            const blogAssetsDir = path.join(__dirname, '..', 'assets', 'blog');
-            if (!fs.existsSync(blogAssetsDir)) {
-                fs.mkdirSync(blogAssetsDir, { recursive: true });
-            }
-            const imageSlug = sanitizeId(generatedArticle.url_slug || articleId);
-            const localImageName = `${imageSlug}.png`;
-            const localImagePath = path.join(blogAssetsDir, localImageName);
-            
-            // Clean prompt for CLI arguments (no shell escaping needed with execFileSync)
-            const cleanedPrompt = imagePromptText.replace(/[\r\n]+/g, ' ').trim();
-
-            console.log(`Executing Higgsfield generation command...`);
-            const hfOutput = execFileSync(hfCmd, [
-                'generate', 'create', 'gpt_image_2',
-                '--prompt', cleanedPrompt,
-                '--aspect_ratio', '1:1',
-                '--wait'
-            ], {
-                encoding: 'utf8',
-                stdio: ['pipe', 'pipe', 'pipe'],
-                timeout: 300000 // 5-minute timeout for high-res generation
-            });
-
-            // Extract image URL from Higgsfield stdout
-            const urlMatch = hfOutput.match(/https:\/\/[^\s"'<>]+\.(png|jpg|jpeg|webp)/i);
-            if (urlMatch) {
-                const imageUrl = urlMatch[0];
-                console.log(`Downloading generated Higgsfield image from: ${imageUrl}`);
-                const tempDownloadPath = path.join(blogAssetsDir, `${imageSlug}_temp_raw.png`);
-                await downloadFile(imageUrl, tempDownloadPath);
-                const rawBuffer = fs.readFileSync(tempDownloadPath);
-                try { fs.unlinkSync(tempDownloadPath); } catch (_) {}
-                imageBuffer = rawBuffer;
-                relativeImageSrc = await processAndSaveBlogImages(rawBuffer, imageSlug, blogAssetsDir);
-                console.log("Image downloaded, compressed, and saved successfully via Higgsfield.");
-            } else {
-                console.warn("Higgsfield CLI command completed but no image URL was found in output:", hfOutput);
-            }
-        } catch (hfErr) {
-            console.warn(`Higgsfield generation attempt failed: ${hfErr.message}`);
-        }
-
+        // --- Tier 1: Highest-Quality Google Gemini API (Native Multimodal Image Generation) ---
         if (!imageBuffer && GEMINI_API_KEY) {
-            console.log("Attempting Google image generation...");
+            console.log("Tier 1: Attempting highest-quality Google Gemini API image generation...");
 
-            // 1. Fetch available models from Google AI Studio to adapt programmatically
+            // Fetch available models from Google AI Studio to detect active models dynamically
             let availableModels = [];
             try {
-                console.log("Querying ModelService.ListModels for enabled models...");
                 const modelsList = await getJson(`https://generativelanguage.googleapis.com/v1beta/models?key=${GEMINI_API_KEY}`);
-                if (modelsList && modelsList.models) {
+                if (modelsList && Array.isArray(modelsList.models)) {
                     availableModels = modelsList.models;
                 }
             } catch (err) {
                 console.warn("Could not retrieve models list for auto-detection:", err.message);
             }
 
-            // Helper to get methods from Google model object
             const getMethods = m => m.supportedGenerationMethods || m.supportedMethods || [];
 
-            // 2. Identify candidate image models in the list
-            const imageModels = availableModels.filter(m =>
-                m.name.includes("imagen") ||
-                m.name.includes("image") ||
-                (getMethods(m).some(method => method.toLowerCase().includes("image")))
-            );
+            // Primary Gemini multimodal image generation candidate models (ordered by quality)
+            const geminiCandidates = [
+                "gemini-2.0-flash-exp",
+                "gemini-2.0-flash",
+                "gemini-2.5-flash-image",
+                "gemini-3.0-flash-image",
+                "gemini-exp-1206",
+                "gemini-flash-latest"
+            ];
 
-            if (imageModels.length > 0) {
-                console.log(`Detected ${imageModels.length} image generation models on this key:`);
-                imageModels.forEach(m => {
-                    const methods = getMethods(m);
-                    console.log(`- ${m.name} (methods: ${methods.length > 0 ? methods.join(', ') : 'none'})`);
-                });
+            // Add any auto-detected Gemini models supporting generateContent with image capabilities
+            const detectedGemini = availableModels
+                .filter(m => {
+                    const name = m.name.toLowerCase();
+                    const methods = getMethods(m).map(x => x.toLowerCase());
+                    return name.includes("gemini") && methods.some(met => met.includes("generatecontent")) &&
+                           (name.includes("image") || name.includes("flash") || name.includes("exp"));
+                })
+                .map(m => m.name.replace(/^models\//, ''));
 
-                for (const model of imageModels) {
-                    console.log(`Attempting image generation using auto-detected model: "${model.name}"...`);
+            const allGeminiCandidates = [...new Set([...geminiCandidates, ...detectedGemini])];
 
-                    // Attempt based on supported methods
-                    const methods = getMethods(model).map(m => m.split('/').pop() || m);
+            for (const modelName of allGeminiCandidates) {
+                console.log(`Tier 1: Trying Gemini multimodal model "${modelName}"...`);
+                try {
+                    const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${GEMINI_API_KEY}`;
+                    
+                    // 1. Try with responseModalities: ["IMAGE", "TEXT"]
+                    const bodyDual = {
+                        contents: [{ parts: [{ text: `Generate a high-quality featured image: ${imagePromptText}` }] }],
+                        generationConfig: { responseModalities: ["IMAGE", "TEXT"] }
+                    };
+                    let res = await postJson(url, {}, bodyDual).catch(() => null);
 
-                    if (methods.includes("generateContent")) {
-                        try {
-                            console.log(`Calling generateContent on "${model.name}"...`);
-                            const url = `https://generativelanguage.googleapis.com/v1beta/${model.name}:generateContent?key=${GEMINI_API_KEY}`;
-                            const body = {
-                                contents: [{ parts: [{ text: imagePromptText }] }],
-                                generationConfig: { responseModalities: ["TEXT", "IMAGE"] }
-                            };
-                            const res = await postJson(url, {}, body);
-                            const part = res?.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
-                            const b64 = part?.inlineData?.data;
-                            if (b64) {
-                                imageBuffer = Buffer.from(b64, 'base64');
-                                console.log(`Image generated successfully via "${model.name}" (generateContent).`);
-                                break;
-                            }
-                        } catch (err) {
-                            console.warn(`Auto-detected method generateContent failed for "${model.name}": ${err.message}`);
-                        }
+                    // 2. If dual modalities wasn't accepted, try responseModalities: ["IMAGE"]
+                    if (!res) {
+                        const bodyImageOnly = {
+                            contents: [{ parts: [{ text: imagePromptText }] }],
+                            generationConfig: { responseModalities: ["IMAGE"] }
+                        };
+                        res = await postJson(url, {}, bodyImageOnly).catch(() => null);
                     }
 
-                    if (methods.includes("predict")) {
-                        try {
-                            console.log(`Calling predict on "${model.name}"...`);
-                            const url = `https://generativelanguage.googleapis.com/v1beta/${model.name}:predict?key=${GEMINI_API_KEY}`;
-                            const body = {
-                                instances: [{ prompt: imagePromptText }],
-                                parameters: { sampleCount: 1, outputMimeType: "image/png", aspectRatio: "1:1" }
-                            };
-                            const res = await postJson(url, {}, body);
-                            const b64 = res?.predictions?.[0]?.bytesBase64Encoded || res?.predictions?.[0]?.image?.imageBytes;
-                            if (b64) {
-                                imageBuffer = Buffer.from(b64, 'base64');
-                                console.log(`Image generated successfully via "${model.name}" (predict).`);
-                                break;
-                            }
-                        } catch (err) {
-                            console.warn(`Auto-detected method predict failed for "${model.name}": ${err.message}`);
+                    if (res && res.candidates && res.candidates[0] && res.candidates[0].content && res.candidates[0].content.parts) {
+                        const part = res.candidates[0].content.parts.find(p => p.inlineData && p.inlineData.data);
+                        if (part && part.inlineData && part.inlineData.data) {
+                            imageBuffer = Buffer.from(part.inlineData.data, 'base64');
+                            console.log(`✓ Image generated successfully via Google Gemini API model "${modelName}".`);
+                            break;
                         }
                     }
-
-                    if (methods.includes("generateImages")) {
-                        try {
-                            console.log(`Calling generateImages on "${model.name}"...`);
-                            const url = `https://generativelanguage.googleapis.com/v1beta/${model.name}:generateImages?key=${GEMINI_API_KEY}`;
-                            const body = {
-                                prompt: imagePromptText,
-                                numberOfImages: 1,
-                                outputMimeType: "image/png",
-                                aspectRatio: "1:1"
-                            };
-                            const res = await postJson(url, {}, body);
-                            const b64 = res?.generatedImages?.[0]?.image?.imageBytes;
-                            if (b64) {
-                                imageBuffer = Buffer.from(b64, 'base64');
-                                console.log(`Image generated successfully via "${model.name}" (generateImages).`);
-                                break;
-                            }
-                        } catch (err) {
-                            console.warn(`Auto-detected method generateImages failed for "${model.name}": ${err.message}`);
-                        }
-                    }
+                } catch (geminiErr) {
+                    console.warn(`Tier 1: Gemini model "${modelName}" attempt failed: ${geminiErr.message}`);
                 }
             }
+        }
 
-            // 3. If auto-detection yielded nothing or failed, use static fallback candidates
-            if (!imageBuffer) {
-                console.log("No auto-detected models succeeded. Attempting static fallback candidates...");
-                const staticCandidates = [
-                    {
-                        name: "imagen-3.0-generate-002",
-                        method: "predict",
-                        url: `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${GEMINI_API_KEY}`,
-                        body: { instances: [{ prompt: imagePromptText }], parameters: { sampleCount: 1, outputMimeType: "image/png", aspectRatio: "1:1" } },
-                        parser: res => res?.predictions?.[0]?.bytesBase64Encoded || res?.predictions?.[0]?.image?.imageBytes
-                    },
-                    {
-                        name: "imagen-3.0-generate-002",
-                        method: "generateImages",
-                        url: `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:generateImages?key=${GEMINI_API_KEY}`,
-                        body: { prompt: imagePromptText, numberOfImages: 1, outputMimeType: "image/png", aspectRatio: "1:1" },
-                        parser: res => res?.generatedImages?.[0]?.image?.imageBytes
-                    },
-                    {
-                        name: "gemini-2.5-flash-image",
-                        method: "generateContent",
-                        url: `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent?key=${GEMINI_API_KEY}`,
-                        body: { contents: [{ parts: [{ text: imagePromptText }] }], generationConfig: { responseModalities: ["TEXT", "IMAGE"] } },
-                        parser: res => res?.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData?.data
-                    }
-                ];
+        // --- Tier 2: Google Imagen 3 (Fallback) ---
+        if (!imageBuffer && GEMINI_API_KEY) {
+            console.log("Tier 2: Attempting Google Imagen 3 image generation fallback...");
 
-                for (const cand of staticCandidates) {
-                    console.log(`Attempting static fallback model: "${cand.name}" via "${cand.method}"...`);
-                    try {
-                        const res = await postJson(cand.url, {}, cand.body);
-                        const b64 = cand.parser(res);
-                        if (b64) {
-                            imageBuffer = Buffer.from(b64, 'base64');
-                            console.log(`Image generated successfully via static fallback: "${cand.name}" (${cand.method}).`);
-                            break;
-                        } else {
-                            console.warn(`Response from static candidate "${cand.name}" did not parse correctly.`);
-                        }
-                    } catch (candErr) {
-                        console.warn(`Static candidate "${cand.name}" (${cand.method}) failed: ${candErr.message}`);
+            const imagenModels = [
+                "imagen-3.0-generate-002",
+                "imagen-3.0-generate-001",
+                "imagen-3.0-capability-001"
+            ];
+
+            for (const modelName of imagenModels) {
+                console.log(`Tier 2: Trying Imagen 3 model "${modelName}"...`);
+
+                // 1. Try :generateImages endpoint
+                try {
+                    const genImagesUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateImages?key=${GEMINI_API_KEY}`;
+                    const genBody = {
+                        prompt: imagePromptText,
+                        numberOfImages: 1,
+                        outputMimeType: "image/png",
+                        aspectRatio: "1:1",
+                        personGeneration: "allow_adult"
+                    };
+                    const res = await postJson(genImagesUrl, {}, genBody);
+                    const b64 = res?.generatedImages?.[0]?.image?.imageBytes;
+                    if (b64) {
+                        imageBuffer = Buffer.from(b64, 'base64');
+                        console.log(`✓ Image generated successfully via Google Imagen 3 ("${modelName}" :generateImages).`);
+                        break;
                     }
+                } catch (genErr) {
+                    console.warn(`Tier 2: Imagen 3 (:generateImages) failed for "${modelName}": ${genErr.message}`);
                 }
+
+                // 2. Try :predict endpoint
+                try {
+                    const predictUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:predict?key=${GEMINI_API_KEY}`;
+                    const predBody = {
+                        instances: [{ prompt: imagePromptText }],
+                        parameters: {
+                            sampleCount: 1,
+                            outputMimeType: "image/png",
+                            aspectRatio: "1:1"
+                        }
+                    };
+                    const resPred = await postJson(predictUrl, {}, predBody);
+                    const b64Pred = resPred?.predictions?.[0]?.bytesBase64Encoded || resPred?.predictions?.[0]?.image?.imageBytes;
+                    if (b64Pred) {
+                        imageBuffer = Buffer.from(b64Pred, 'base64');
+                        console.log(`✓ Image generated successfully via Google Imagen 3 ("${modelName}" :predict).`);
+                        break;
+                    }
+                } catch (predErr) {
+                    console.warn(`Tier 2: Imagen 3 (:predict) failed for "${modelName}": ${predErr.message}`);
+                }
+            }
+        }
+
+        // --- Optional Local Higgsfield Generation (Only if explicitly enabled with USE_HIGGSFIELD=true) ---
+        if (!imageBuffer && process.env.USE_HIGGSFIELD === 'true') {
+            console.log("Attempting local Higgsfield generation (USE_HIGGSFIELD=true)...");
+            try {
+                const isWindows = process.platform === 'win32';
+                const hfCmd = isWindows ? 'higgsfield.cmd' : 'higgsfield';
+                const blogAssetsDir = path.join(__dirname, '..', 'assets', 'blog');
+                if (!fs.existsSync(blogAssetsDir)) {
+                    fs.mkdirSync(blogAssetsDir, { recursive: true });
+                }
+                const imageSlug = sanitizeId(generatedArticle.url_slug || articleId);
+                const cleanedPrompt = imagePromptText.replace(/[\r\n]+/g, ' ').trim();
+
+                const hfOutput = execFileSync(hfCmd, [
+                    'generate', 'create', 'gpt_image_2',
+                    '--prompt', cleanedPrompt,
+                    '--aspect_ratio', '1:1',
+                    '--wait'
+                ], {
+                    encoding: 'utf8',
+                    stdio: ['pipe', 'pipe', 'pipe'],
+                    timeout: 300000
+                });
+
+                const urlMatch = hfOutput.match(/https:\/\/[^\s"'<>]+\.(png|jpg|jpeg|webp)/i);
+                if (urlMatch) {
+                    const imageUrl = urlMatch[0];
+                    const tempDownloadPath = path.join(blogAssetsDir, `${imageSlug}_temp_raw.png`);
+                    await downloadFile(imageUrl, tempDownloadPath);
+                    const rawBuffer = fs.readFileSync(tempDownloadPath);
+                    try { fs.unlinkSync(tempDownloadPath); } catch (_) {}
+                    imageBuffer = rawBuffer;
+                    relativeImageSrc = await processAndSaveBlogImages(rawBuffer, imageSlug, blogAssetsDir);
+                    console.log("✓ Image generated successfully via local Higgsfield.");
+                }
+            } catch (hfErr) {
+                console.warn(`Local Higgsfield attempt failed: ${hfErr.message}`);
             }
         }
 
