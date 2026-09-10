@@ -156,6 +156,7 @@ export async function onRequestGet(context) {
         let payload = null;
         let lastErrorStatus = null;
         let lastMetaError = null;
+        const candidateSummary = [];
 
         for (const candidate of candidates) {
             try {
@@ -166,6 +167,7 @@ export async function onRequestGet(context) {
                     fetchOptions.headers = candidate.headers;
                 }
 
+                const urlObj = new URL(candidate.url);
                 const response = await fetch(candidate.url, fetchOptions);
                 if (response.ok) {
                     const data = await response.json();
@@ -175,6 +177,7 @@ export async function onRequestGet(context) {
                     }
                 } else {
                     lastErrorStatus = response.status;
+                    let errSnippet = "status " + response.status;
                     try {
                         const errJson = await response.json();
                         if (errJson && errJson.error) {
@@ -184,19 +187,23 @@ export async function onRequestGet(context) {
                                 code: errJson.error.code || response.status,
                                 subcode: errJson.error.error_subcode || null
                             };
-                            console.error(`[Instagram API] Candidate returned ${response.status}: code ${errJson.error.code} - ${errJson.error.message}`);
+                            errSnippet = `code ${errJson.error.code}: ${errJson.error.message}`;
+                            console.error(`[Instagram API] ${urlObj.hostname}${urlObj.pathname} -> ${errSnippet}`);
                         }
                     } catch (_) {}
+                    candidateSummary.push(`${urlObj.hostname}${urlObj.pathname} (${errSnippet})`);
                 }
             } catch (candErr) {
                 console.error("[Instagram Candidate Error]", candErr && candErr.message ? candErr.message : candErr);
+                candidateSummary.push(`${candidate.url} (network error: ${candErr.message})`);
             }
         }
 
         if (!payload || !payload.data || !Array.isArray(payload.data) || payload.data.length === 0) {
+            const summaryStr = candidateSummary.length > 0 ? candidateSummary.join(" | ") : "No candidates succeeded";
             const errReason = lastMetaError
-                ? `Meta returned ${lastErrorStatus || 400}: ${lastMetaError.message} (code ${lastMetaError.code})`
-                : `No media records returned (status ${lastErrorStatus || "unknown"})`;
+                ? `Meta returned ${lastErrorStatus || 400}: ${lastMetaError.message} (code ${lastMetaError.code}) [Summary: ${summaryStr}]`
+                : `No media records returned (status ${lastErrorStatus || "unknown"}) [Summary: ${summaryStr}]`;
             throw new Error(errReason);
         }
 
