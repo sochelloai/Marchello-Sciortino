@@ -201,9 +201,10 @@ export async function onRequestGet(context) {
 
         if (!payload || !payload.data || !Array.isArray(payload.data) || payload.data.length === 0) {
             const summaryStr = candidateSummary.length > 0 ? candidateSummary.join(" | ") : "No candidates succeeded";
+            console.error(`[Instagram API Summary] ${summaryStr}`);
             const errReason = lastMetaError
-                ? `Meta returned ${lastErrorStatus || 400}: ${lastMetaError.message} (code ${lastMetaError.code}) [Summary: ${summaryStr}]`
-                : `No media records returned (status ${lastErrorStatus || "unknown"}) [Summary: ${summaryStr}]`;
+                ? `Meta returned status ${lastErrorStatus || 400} (code ${lastMetaError.code}: ${lastMetaError.message})`
+                : `No media records returned (status ${lastErrorStatus || "unknown"})`;
             throw new Error(errReason);
         }
 
