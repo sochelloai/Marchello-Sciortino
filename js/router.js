@@ -4299,7 +4299,7 @@ const singleGiftTemplate = (gift) => {
     </div>
 
     <!-- Login / Unlock Modal -->
-    <div class="spa-modal-overlay" id="spa-download-modal" data-target-file="${gift.file_url}" data-target-title="${gift.title}">
+    <div class="spa-modal-overlay" id="spa-download-modal" data-target-file="${gift.tracks ? '' : (gift.file_url || '')}" data-target-title="${gift.title}">
         <div class="spa-modal-card">
             <button class="spa-modal-close" id="spa-modal-close">&times;</button>
             <div id="spa-form-view">
@@ -4728,7 +4728,7 @@ document.addEventListener('submit', async (e) => {
         const originalText = submitBtn ? submitBtn.textContent : "Unlock Free Access →";
 
         const modal = document.getElementById('spa-download-modal');
-        const targetUrl = modal ? modal.getAttribute('data-target-file') : null;
+        const targetUrl = isModalForm && modal ? modal.getAttribute('data-target-file') : null;
         const inlineCard = document.getElementById('album-inline-unlock-card');
         const inlineTitle = form.getAttribute('data-target-title') || (inlineCard && inlineCard.getAttribute('data-target-title')) || 'Win Anyway Album';
         const targetTitle = isInlineForm ? inlineTitle : ((modal && modal.getAttribute('data-target-title')) || inlineTitle || '');
@@ -4775,7 +4775,7 @@ document.addEventListener('submit', async (e) => {
             }
 
             const result = await response.json();
-            console.log("[Free Gifts API Success]", result);
+            console.log("[Free Gifts API] Access granted.");
 
             // Submission succeeded: clean up email from DOM immediately (Zero browser email retention constraint)
             if (emailInput) {
@@ -4787,19 +4787,26 @@ document.addEventListener('submit', async (e) => {
                 sessionStorage.setItem('unlocked_album_' + currentSlug, 'true');
             }
 
-            // Trigger target action or direct download if initiated from modal
-            if (targetUrl === 'action:download-full-album') {
-                downloadFullAlbumZip(document.querySelector('.btn-download-full-album, .js-full-album-btn'));
-            } else if (targetUrl && (targetUrl.endsWith('.mp3') || (modal && modal.hasAttribute('data-target-filename')))) {
-                const targetFilename = modal ? modal.getAttribute('data-target-filename') || 'Track.mp3' : 'Track.mp3';
-                directDownloadFile(targetUrl, targetFilename, null);
-            } else if (targetUrl && targetUrl !== '#' && !targetUrl.endsWith('#') && targetUrl !== 'action:unlock-album') {
-                const suggestedName = targetUrl.split('/').pop() || 'download';
-                directDownloadFile(targetUrl, suggestedName, null);
+            // Trigger target action or direct download ONLY if initiated from the download modal!
+            // When unlocking via the in-place unlock card on direct pages, a download must NEVER start automatically.
+            // Downloads start ONLY when the visitor explicitly clicks a track download or full album download button.
+            if (isModalForm && targetUrl) {
+                if (targetUrl === 'action:download-full-album') {
+                    downloadFullAlbumZip(document.querySelector('.btn-download-full-album, .js-full-album-btn'));
+                } else if (targetUrl.endsWith('.mp3') || (modal && modal.hasAttribute('data-target-filename'))) {
+                    const targetFilename = modal ? modal.getAttribute('data-target-filename') || 'Track.mp3' : 'Track.mp3';
+                    directDownloadFile(targetUrl, targetFilename, null);
+                } else if (targetUrl !== '#' && !targetUrl.endsWith('#') && targetUrl !== 'action:unlock-album') {
+                    const suggestedName = targetUrl.split('/').pop() || 'download';
+                    directDownloadFile(targetUrl, suggestedName, null);
+                }
             }
 
-            // Close modal
+            // Close modal and clear any target attributes
             if (modal) {
+                modal.removeAttribute('data-target-file');
+                modal.removeAttribute('data-target-filename');
+                modal.removeAttribute('data-target-title');
                 modal.classList.remove('active');
             }
 
