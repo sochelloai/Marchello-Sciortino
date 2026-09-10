@@ -129,6 +129,68 @@ const MONTHLY_ART_STYLES = {
     }
 };
 
+// Define dynamic holiday highlights by month to branch off seasonal accents
+const HOLIDAY_HIGHLIGHTS = {
+    0: [ // January: New Year, MLK Day
+        { name: "New Year / Dawn of Possibility", highlight: "a solitary radiant dawn beam cutting through morning mist, glowing horizon line, crisp crystalline sparkles of renewal" },
+        { name: "Martin Luther King Jr. Day / Purpose & Unity", highlight: "harmonious ascending concentric rings, pillars of quiet dignity, uplifting golden resonance lines" }
+    ],
+    1: [ // February: Valentine's, Presidents' Day
+        { name: "Valentine's Season / Compassion & Heart", highlight: "subtle heart-resonance waveforms, warm rose-gold ambient halos, interlocking ribbons of warmth" },
+        { name: "Presidents' Day / Enduring Leadership", highlight: "stately geometric arches, grounded marble-like facets, steady unwavering pillars of light" }
+    ],
+    2: [ // March: Spring Equinox, St. Patrick's
+        { name: "St. Patrick's Season / Abundance & Heritage", highlight: "shimmering clover-green facets, luminous emerald crystal refraction, golden thread accents" },
+        { name: "Spring Equinox / Awakening", highlight: "unfurling spiral fronds, blossoming geometric petals, dawn-gold rays piercing fertile deep green" }
+    ],
+    3: [ // April: Easter, Earth Day
+        { name: "Easter & Resurrection / Light Victorious", highlight: "an empty radiant archway, transcendent golden sunburst breaking through soft lavender clouds, morning triumph" },
+        { name: "Earth Day / Stewardship & Harmony", highlight: "spherical terrarium-like glass orb, interconnected ecological lines, vibrant leaf geometry" }
+    ],
+    4: [ // May: Mother's Day, Memorial Day
+        { name: "Mother's Day / Unconditional Nurture", highlight: "gentle protective sheltering arches, soft blooming rose-gold petals, warm welcoming hearth glow" },
+        { name: "Memorial Day / Honor & Sacrifice", highlight: "reverent solitary monolith, poignant beam of celestial light, deep crimson and bronze commemorative textures" }
+    ],
+    5: [ // June: Father's Day, Juneteenth, Summer Solstice
+        { name: "Father's Day / Steady Foundation", highlight: "strong geometric cornerstone, towering oak-like angular pillars, reassuring warm amber foundation" },
+        { name: "Juneteenth / Liberation & Jubilation", highlight: "broken geometric bonds bursting into golden sparks, soaring kinetic ribbons, unconstrained light vectors" },
+        { name: "Summer Solstice / Maximum Vitality", highlight: "a blazing radiant solar crown, zenith light pouring down in brilliant golden shafts, energetic warmth" }
+    ],
+    6: [ // July: Independence Day
+        { name: "Independence Day / Freedom & Vision", highlight: "bursting celebratory radial starbursts, soaring dynamic kinetic arcs, electric crimson and sapphire illumination" },
+        { name: "Summer Expansion / Open Frontiers", highlight: "boundless open horizontal vistas, sweeping wind-like curvilinear ribbons, soaring perspective lines" }
+    ],
+    7: [ // August: Back to School, Harvest Eve
+        { name: "Back-to-School Season / Wisdom & Growth", highlight: "ascending geometric staircases of light, illuminated isometric book-like leaves, inquisitive prisms" },
+        { name: "Late Summer Warmth / Anticipation", highlight: "honeyed golden dusk light, ripening wheat-like diagonal vectors, calm balanced composition" }
+    ],
+    8: [ // September: Labor Day, Autumn Equinox
+        { name: "Labor Day Season / Craft & Calling", highlight: "precision interlocking brass gears, industrious geometric clockwork, warm hearth illumination celebrating diligent craft" },
+        { name: "Autumn Equinox / Harvest Balance", highlight: "balanced dual-tone geometry, golden harvest sheaves of stylized lines, rich amber foliage abstractions" }
+    ],
+    9: [ // October: Disability Awareness, Autumn Harvest
+        { name: "Disability Awareness Month / Unstoppable Adaptability", highlight: "a glowing geometric prism transforming obstacles into radiant light beams, adaptive interlocking bridges, fearless inner radiance" },
+        { name: "Autumn Harvest Season / Golden Bounty", highlight: "glowing lantern-like faceted spheres, rich pumpkin-gold and obsidian contrasts, atmospheric autumn warmth" }
+    ],
+    10: [ // November: Thanksgiving, Veterans Day
+        { name: "Veterans Day / Courage & Dedication", highlight: "steadfast geometric shield motifs, dignified metallic gold chevron bands, resilient angular forms" },
+        { name: "Thanksgiving / Abundant Gratitude", highlight: "cornucopia of flowing concentric ripples, rich mahogany and warm peach glow, brimming chalice geometry" }
+    ],
+    11: [ // December: Christmas, New Year's Eve
+        { name: "Christmas Season / Wonder & The Star", highlight: "a brilliant eight-pointed solitary Bethlehem star of pure diamond light, evergreen conical forms, sacred warmth" },
+        { name: "New Year's Eve / Reflective Horizon", highlight: "crystalline hourglass geometry, shimmering midnight and champagne gold confetti bursts, threshold archways" }
+    ]
+};
+
+// Select a specific holiday highlight based on day of month for rich daily variety
+function getHolidayHighlight(monthIdx, dayOfMonth) {
+    const list = HOLIDAY_HIGHLIGHTS[monthIdx] || [];
+    if (list.length === 0) return { name: "Seasonal Reflection", highlight: "luminous seasonal atmospheric light and delicate ambient depth" };
+    // Rotate between available holiday themes depending on the day of the month
+    const item = list[(dayOfMonth - 1) % list.length];
+    return item;
+}
+
 // Calculate Date in Central Time (US)
 let centralDate;
 if (process.env.TARGET_DATE) {
@@ -139,9 +201,11 @@ if (process.env.TARGET_DATE) {
     centralDate = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Chicago" }));
 }
 const monthIndex = centralDate.getMonth(); // 0-11
+const dayOfMonth = centralDate.getDate(); // 1-31
 const currentYear = centralDate.getFullYear();
 const currentMonthTheme = MONTHLY_THEMES[monthIndex];
 const currentMonthArtStyle = MONTHLY_ART_STYLES[monthIndex];
+const currentHolidayHighlight = getHolidayHighlight(monthIndex, dayOfMonth);
 
 const dateOptions = { month: 'long', day: 'numeric', year: 'numeric' };
 const todayDateStr = centralDate.toLocaleDateString('en-US', dateOptions);
@@ -604,7 +668,16 @@ Visual theme parameters:
 - Style: ${currentMonthArtStyle.style}.
 - Geometry: ${currentMonthArtStyle.geometry}.
 - Textures: ${currentMonthArtStyle.textures}.
-When generating the "image_prompt" in the JSON response, make sure it matches these visual theme elements (e.g., suggest geometric shapes, layouts, colors, and textures that fit this specific monthly theme).
+- Today's Holiday / Seasonal Highlight: ${currentHolidayHighlight.name} (${currentHolidayHighlight.highlight}).
+
+CRITICAL - IMAGE PROMPT GENERATION RULES:
+When writing the "image_prompt" in the JSON response, follow these strict creative guidelines:
+1. Cover the exact contents, core concept, and title of today's post in visual, metaphorical terms.
+2. Abstract, Cinematic, Artistic, Illustrated, 3D: The visual must represent the post's topic through tangible, high-end 3D sculptural and architectural metaphors.
+3. ABSOLUTELY NO PEOPLE OR HUMAN FIGURES: Do NOT generate actual people, faces, silhouettes, crowds, or hands. Keep it purely conceptual, architectural, sculptural, and atmospheric.
+4. STRICTLY NO TEXT OR WORDS: Do NOT render letters, typography, slogans, titles, captions, watermarks, or logos.
+5. Harmonize with this month's color palette (${currentMonthArtStyle.colorPalette}) and geometric style, while branching off with highlights from today's holiday/seasonal highlight (${currentHolidayHighlight.name}: ${currentHolidayHighlight.highlight}).
+6. Safety Filters: Do NOT mention medical terms, diseases, physical limitations, or wheelchairs in the image prompt. Communicate triumph, clarity, and breakthrough through visual composition alone.
 
 CRITICAL - BLOG CONTENT DIVERSITY RULE (AVOID REPETITION):
 To ensure every automated daily blog post feels fresh, unique, and timely, you MUST NOT repeat themes, stories, or lessons from recent posts. Avoid repetitive time-based themes or references (such as end-of-the-month reflections, midyear momentum, weekly or Monday motivation, seasonal transitions, holidays, or similar calendar topics) on consecutive days. Each post must introduce a new perspective, lesson, story, insight, or real-world application that provides readers with a genuinely different experience from previous posts.
@@ -642,7 +715,7 @@ You must return a raw JSON object containing exactly these fields (no markdown w
   "desc": "A one-sentence summary of the daily lesson",
   "tag": "Choose exactly one: 'Story Notes', 'AI and Accessibility', 'Lessons From Limitation', 'Tools I Use', 'Daily Inspiration'",
   "body": "HTML formatted body content matching the heading hierarchy, list formatting, FAQ, and internal/external links instructions above. Do not output markdown inside the body string, only HTML.",
-  "image_prompt": "A detailed descriptive prompt for generating a premium featured image representing the article's theme. The prompt must strictly follow the Marchello Brand Image Style Guide for this month: it must be a purely symbolic visual metaphor using this month's geometry and color palette. It must communicate optimism, hope, and human potential. Do NOT mention any medical terms, diseases, physical limitations, or wheelchairs to avoid safety filters. Do NOT request text, logos, watermarks, or UI elements.",
+  "image_prompt": "A detailed, descriptive prompt for an abstract, cinematic, artistic, illustrated 3D render representing the exact topic, title, and core metaphor of today's post. Must be purely conceptual without any people, faces, human silhouettes, hands, text, letters, logos, or watermarks. Must weave in this month's color palette and geometry with today's holiday highlight.",
   "meta_title": "A compelling meta title designed to maximize click-through rate",
   "meta_description": "A compelling meta description designed to maximize click-through rate (under 160 characters)",
   "url_slug": "A clean, URL-safe slug containing the primary keyword (lowercase, hyphen-separated)",
@@ -747,21 +820,70 @@ You must return a raw JSON object containing exactly these fields (no markdown w
         console.log(`Tag: ${generatedArticle.tag}`);
         console.log(`Image Prompt: "${generatedArticle.image_prompt}"`);
 
-        // Step 2: Generate the image (Try Higgsfield first, then Google Imagen 3 / Gemini)
+        // Step 2: Dedicated Image Prompt Rewriter
+        // Rewrites the prompt before generation to cover exact contents, title, month style, and holiday highlights
+        console.log("Rewriting image prompt to cover exact title, content, month palette, and holiday highlight...");
+
+        const dailyStyleVariations = [
+            "3D sculptural minimalism with refractive glass and warm metals",
+            "isometric architectural concept art with dramatic lighting",
+            "surreal conceptual 3D illustration with floating dimensional geometry",
+            "hyper-detailed cinematic 3D octane render with subsurface scattering",
+            "abstract geometric spatial installation with volumetric fog and rim lighting",
+            "futuristic architectural diorama with layered textures and internal glow"
+        ];
+        const selectedDailyStyle = dailyStyleVariations[(dayOfMonth - 1) % dailyStyleVariations.length];
+
+        const promptRewriterSystem = `You are a world-class concept artist and 3D art director.
+Your task is to write a single, rich, highly-detailed image generation prompt for a blog post's featured cover artwork.
+
+ARTICLE CONTEXT:
+- Title: "${generatedArticle.title}"
+- Summary/Description: "${generatedArticle.desc}"
+- Key Topic & Metaphor: "${generatedArticle.primary_keyword || generatedArticle.tag}"
+- Article Excerpt: "${(generatedArticle.body || '').replace(/<[^>]+>/g, ' ').slice(0, 400).trim()}..."
+
+STRICT VISUAL DIRECTION & CONSTRAINTS:
+1. Resonate Directly with Content: The artwork MUST visually express the specific topic, metaphor, and title of this post in a tangible, symbolic form (e.g. if the post is about energy cycles, show rhythmic oscillating sculptural waveforms; if about structural freedom, show an elegant architectural framework).
+2. Art Style: Abstract, cinematic, artistic, illustrated, 3D render (${selectedDailyStyle}).
+3. NO HUMAN FIGURES: Absolutely NO actual people, human silhouettes, faces, bodies, or hands. Keep it purely conceptual, sculptural, architectural, and atmospheric.
+4. STRICTLY NO TEXT: Absolutely NO text, letters, words, titles, typography, slogans, watermark, or logos in the image.
+5. Monthly Color Palette & Materials:
+   - Base Palette: ${currentMonthArtStyle.colorPalette}
+   - Textures & Geometry: ${currentMonthArtStyle.geometry}, ${currentMonthArtStyle.textures}
+   - Mood: ${currentMonthArtStyle.mood}
+6. Holiday / Seasonal Accent:
+   - Branch off with subtle visual highlights from today's seasonal theme: ${currentHolidayHighlight.name} (${currentHolidayHighlight.highlight}).
+7. Composition & Lighting: 16:9 widescreen cinematic composition, raytraced volumetric lighting, glowing edges, atmospheric depth, editorial museum quality.
+8. Output Format: Return ONLY the final prompt string (no markdown, no quotes, no conversational intro). Keep it between 60 and 120 words.`;
+
+        let tailoredImagePrompt = generatedArticle.image_prompt || "";
+        try {
+            const rewriterUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+            const rewriterRes = await postJson(rewriterUrl, {}, {
+                contents: [{ parts: [{ text: promptRewriterSystem }] }],
+                generationConfig: {
+                    temperature: 0.7,
+                    maxOutputTokens: 300
+                }
+            });
+            const candText = rewriterRes?.candidates?.[0]?.content?.parts?.[0]?.text;
+            if (candText && candText.trim().length > 20) {
+                tailoredImagePrompt = candText.trim().replace(/^["']|["']$/g, '');
+                console.log(`✓ Image prompt rewritten successfully:`);
+                console.log(`"${tailoredImagePrompt}"`);
+            }
+        } catch (rewriteErr) {
+            console.warn(`Prompt rewriter fallback to rule-based prompt: ${rewriteErr.message}`);
+        }
+
+        // Final consolidated prompt text passed to generation models
+        const imagePromptText = `${tailoredImagePrompt}. 16:9 widescreen cinematic composition, premium abstract 3D illustrated conceptual artwork, ${selectedDailyStyle}, ${currentMonthArtStyle.colorPalette}, ${currentHolidayHighlight.highlight}, no people, no faces, no humans, no text, no words, no letters, no logos, no watermark, 8k render, masterpiece.`;
+
+        console.log(`Final image prompt sent to model: "${imagePromptText}"`);
+
         let imageBuffer = null;
         let relativeImageSrc = "";
-        // Define unified Marchello Brand Image Style Guide parameters (customized dynamically for this month)
-        const brandStyleInstructions = [
-            `Style: Premium abstract conceptual artwork, geometric composition, layered symbolism, ${currentMonthArtStyle.style}, modern visual storytelling, sophisticated artistic balance, museum-quality digital illustration, contemporary brand design, editorial artwork, generous negative space, crisp details.`,
-            `Mood: ${currentMonthArtStyle.mood}.`,
-            `Color Palette: ${currentMonthArtStyle.colorPalette}.`,
-            `Geometry: ${currentMonthArtStyle.geometry}, architectural balance, dimensional depth.`,
-            "Lighting: cinematic volumetric light beams, soft glowing edges, internal glow, ambient illumination.",
-            `Textures & Surfaces: ${currentMonthArtStyle.textures}, transparent layers, depth fog.`,
-            "Quality Standards: ultra-high-resolution, clean luxury aesthetic, 16:9 widescreen cinematic composition, no clutter, no stock-photo appearance, strictly no text, no captions, no logos, no watermarks, no borders, no UI elements."
-        ].join(" ");
-
-        const imagePromptText = `${generatedArticle.image_prompt}. Aspect ratio: 16:9 widescreen. ${brandStyleInstructions}`;
 
         // =========================================================================
         // Step 2: Image Generation Pipeline

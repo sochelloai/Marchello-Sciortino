@@ -22,12 +22,18 @@
     - Automation: Run `npm run compress:free-gifts` (`node scripts/compress-free-gifts.js`) whenever adding or updating free gift images.
     - Frontend: Free gifts templates in `js/router.js` must use `<picture>` with WebP `<source>`, fallback `<img>`, with `loading="lazy"` and `decoding="async"`.
 
-## Blog Images Compression Rules
+## Blog Images Compression & Art Direction Rules
 - **Mandatory Compression**: All blog post images in `assets/blog/` must ALWAYS be compressed to load fast / instantly. Never commit raw, uncompressed 1MB+ PNG files.
 - **Specifications & Multi-Format**:
   - Dimensions: 16:9 aspect ratio (maximum 1280x720px, fitted/cropped to 16:9 widescreen).
   - Primary format: `.webp` (quality 82, target ≤ 100–120 KB) referenced in `data/articles.json`.
   - Fallbacks: `.jpg` (mozjpeg quality 82, target ≤ 120–150 KB for social crawlers and legacy browsers) and compressed `.png` (palette quantized, target ≤ 350–400 KB).
   - Both `.webp`, `.jpg`, and `.png` versions must always be saved side-by-side in `assets/blog/`.
+- **Art Direction & Prompt Engineering**:
+  - **Prompt Rewriting**: Before generation, every image prompt is dynamically rewritten to resonate directly with the specific post title, core metaphor, and body contents.
+  - **Style**: Abstract, cinematic, artistic, illustrated, 3D render (rotating through distinct architectural/sculptural daily sub-styles).
+  - **Color Palette & Themes**: Grounded in the designated monthly color palette and geometry, branching off into seasonal/holiday highlights depending on the date.
+  - **Strict Negative Constraints**: NEVER include actual people, human silhouettes, faces, bodies, or hands. NEVER include text, letters, slogans, titles, captions, watermarks, or logos.
 - **Frontend Performance**: All blog post images in `js/hub.js` must use `<picture>` with WebP `<source>`, JPEG `<img>`, and enforce `loading="lazy"` and `decoding="async"`.
+
 
