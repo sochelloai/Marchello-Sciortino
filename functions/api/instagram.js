@@ -105,27 +105,94 @@ export async function onRequestGet(context) {
     }
 
     try {
-        // Attempt 1: Fetch posts from Instagram Graph API using Authorization Header
-        const baseGraphUrl = `https://graph.facebook.com/v19.0/${businessAccountId}/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink,timestamp&limit=24`;
-        let response = await fetch(baseGraphUrl, {
-            headers: {
-                "Authorization": `Bearer ${accessToken}`
-            }
+        const isInstagramToken = accessToken.startsWith("IG") || accessToken.startsWith("ig");
+        const encodedToken = encodeURIComponent(accessToken);
+
+        // Define candidate endpoints to try in order of token type
+        const candidates = [];
+
+        if (isInstagramToken) {
+            // Instagram Basic Display / Professional Login User Token
+            candidates.push({
+                url: `https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink,timestamp&limit=24&access_token=${encodedToken}`,
+                method: "GET"
+            });
+            candidates.push({
+                url: `https://graph.instagram.com/v21.0/me/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink,timestamp&limit=24&access_token=${encodedToken}`,
+                method: "GET"
+            });
+        }
+
+        // Meta Graph API with business ID parameter
+        candidates.push({
+            url: `https://graph.facebook.com/v19.0/${businessAccountId}/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink,timestamp&limit=24&access_token=${encodedToken}`,
+            method: "GET"
         });
 
-        // Attempt 2: If Bearer header is rejected by Meta endpoint, try access_token parameter
-        if (!response.ok && (response.status === 400 || response.status === 401)) {
-            response = await fetch(`${baseGraphUrl}&access_token=${encodeURIComponent(accessToken)}`);
+        // Meta Graph API with Authorization Bearer header
+        candidates.push({
+            url: `https://graph.facebook.com/v19.0/${businessAccountId}/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink,timestamp&limit=24`,
+            headers: { "Authorization": `Bearer ${accessToken}` },
+            method: "GET"
+        });
+
+        // Additional fallback: graph.instagram.com/me/media if token wasn't prefixed with IG
+        if (!isInstagramToken) {
+            candidates.push({
+                url: `https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink,timestamp&limit=24&access_token=${encodedToken}`,
+                method: "GET"
+            });
+            candidates.push({
+                url: `https://graph.instagram.com/v21.0/me/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink,timestamp&limit=24&access_token=${encodedToken}`,
+                method: "GET"
+            });
         }
 
-        if (!response.ok) {
-            throw new Error(`Instagram Graph API request failed with status ${response.status}`);
+        let payload = null;
+        let lastErrorStatus = null;
+        let lastMetaError = null;
+
+        for (const candidate of candidates) {
+            try {
+                const fetchOptions = {
+                    method: candidate.method || "GET"
+                };
+                if (candidate.headers) {
+                    fetchOptions.headers = candidate.headers;
+                }
+
+                const response = await fetch(candidate.url, fetchOptions);
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data && data.data && Array.isArray(data.data) && data.data.length > 0) {
+                        payload = data;
+                        break;
+                    }
+                } else {
+                    lastErrorStatus = response.status;
+                    try {
+                        const errJson = await response.json();
+                        if (errJson && errJson.error) {
+                            lastMetaError = {
+                                message: errJson.error.message || "Meta API error",
+                                type: errJson.error.type || "",
+                                code: errJson.error.code || response.status,
+                                subcode: errJson.error.error_subcode || null
+                            };
+                            console.error(`[Instagram API] Candidate returned ${response.status}: code ${errJson.error.code} - ${errJson.error.message}`);
+                        }
+                    } catch (_) {}
+                }
+            } catch (candErr) {
+                console.error("[Instagram Candidate Error]", candErr && candErr.message ? candErr.message : candErr);
+            }
         }
 
-        const payload = await response.json();
-        
-        if (!payload.data || !Array.isArray(payload.data)) {
-            throw new Error("Invalid payload structure received from Instagram API");
+        if (!payload || !payload.data || !Array.isArray(payload.data) || payload.data.length === 0) {
+            const errReason = lastMetaError
+                ? `Meta returned ${lastErrorStatus || 400}: ${lastMetaError.message} (code ${lastMetaError.code})`
+                : `No media records returned (status ${lastErrorStatus || "unknown"})`;
+            throw new Error(errReason);
         }
 
         // Format posts for the marquee
@@ -150,13 +217,13 @@ export async function onRequestGet(context) {
         return successRes;
 
     } catch (error) {
-        // Log generic error message without any tokens, headers, or URLs
-        console.error("Instagram fetch error:", error && error.message ? error.message : "Unknown error");
+        console.error("[Instagram Fetch Exception]", error && error.message ? error.message : "Unknown error");
         
-        // Return fallback posts without leaking any error details or URLs
+        // Return fallback posts with safe diagnostic message
         return new Response(JSON.stringify({
             source: "fallback_on_error",
             status: "api_error",
+            message: error && error.message ? error.message : "Could not fetch Instagram feed",
             data: FALLBACK_POSTS
         }), { status: 200, headers: noCacheHeaders });
     }
