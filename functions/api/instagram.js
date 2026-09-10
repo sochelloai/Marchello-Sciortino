@@ -24,14 +24,19 @@ const FALLBACK_POSTS = [
     { media_url: "assets/headshot_3.jpg", caption: "Marchello Sciortino" }
 ];
 
-// Helper to clean environment variable values (strips accidental quotes and whitespace)
+// Helper to clean environment variable values (strips accidental quotes, prefixes, and whitespace)
 function cleanEnvVar(val) {
     if (!val) return "";
     let clean = String(val).trim();
     if ((clean.startsWith('"') && clean.endsWith('"')) || (clean.startsWith("'") && clean.endsWith("'"))) {
-        clean = clean.slice(1, -1);
+        clean = clean.slice(1, -1).trim();
     }
-    return clean.trim();
+    if (clean.toLowerCase().startsWith("bearer ")) {
+        clean = clean.slice(7).trim();
+    }
+    // Remove any accidental zero-width spaces or hidden unicode formatting
+    clean = clean.replace(/[\u200B-\u200D\uFEFF]/g, "").trim();
+    return clean;
 }
 
 // Case-insensitive multi-key environment variable resolver
