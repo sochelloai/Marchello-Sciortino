@@ -25,7 +25,7 @@
 ## Blog Images Compression Rules
 - **Mandatory Compression**: All blog post images in `assets/blog/` must ALWAYS be compressed to load fast / instantly. Never commit raw, uncompressed 1MB+ PNG files.
 - **Specifications & Multi-Format**:
-  - Dimensions: Maximum 1024x1024px.
+  - Dimensions: 16:9 aspect ratio (maximum 1280x720px, fitted/cropped to 16:9 widescreen).
   - Primary format: `.webp` (quality 82, target ≤ 100–120 KB) referenced in `data/articles.json`.
   - Fallbacks: `.jpg` (mozjpeg quality 82, target ≤ 120–150 KB for social crawlers and legacy browsers) and compressed `.png` (palette quantized, target ≤ 350–400 KB).
   - Both `.webp`, `.jpg`, and `.png` versions must always be saved side-by-side in `assets/blog/`.

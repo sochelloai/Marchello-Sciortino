@@ -309,9 +309,9 @@ async function processAndSaveBlogImages(imageBuffer, imageSlug, blogAssetsDir) {
         }
 
         if (sharp) {
-            const base = sharp(imageBuffer).resize(1024, 1024, {
-                fit: 'inside',
-                withoutEnlargement: true
+            const base = sharp(imageBuffer).resize(1280, 720, {
+                fit: 'cover',
+                position: 'center'
             });
 
             const webpPath = path.join(blogAssetsDir, `${imageSlug}.webp`);
@@ -758,10 +758,10 @@ You must return a raw JSON object containing exactly these fields (no markdown w
             `Geometry: ${currentMonthArtStyle.geometry}, architectural balance, dimensional depth.`,
             "Lighting: cinematic volumetric light beams, soft glowing edges, internal glow, ambient illumination.",
             `Textures & Surfaces: ${currentMonthArtStyle.textures}, transparent layers, depth fog.`,
-            "Quality Standards: ultra-high-resolution, clean luxury aesthetic, no clutter, no stock-photo appearance, strictly no text, no captions, no logos, no watermarks, no borders, no UI elements."
+            "Quality Standards: ultra-high-resolution, clean luxury aesthetic, 16:9 widescreen cinematic composition, no clutter, no stock-photo appearance, strictly no text, no captions, no logos, no watermarks, no borders, no UI elements."
         ].join(" ");
 
-        const imagePromptText = `${generatedArticle.image_prompt}. ${brandStyleInstructions}`;
+        const imagePromptText = `${generatedArticle.image_prompt}. Aspect ratio: 16:9 widescreen. ${brandStyleInstructions}`;
 
         // =========================================================================
         // Step 2: Image Generation Pipeline
@@ -809,39 +809,40 @@ You must return a raw JSON object containing exactly these fields (no markdown w
                 })
                 .map(m => m.name.replace(/^models\//, ''));
 
-            const allGeminiCandidates = [...new Set([...geminiCandidates, ...detectedGemini])];
+            const allGeminiModels = [...new Set([...geminiCandidates, ...detectedGemini])];
 
-            for (const modelName of allGeminiCandidates) {
-                console.log(`Tier 1: Trying Gemini multimodal model "${modelName}"...`);
+            for (const modelName of allGeminiModels) {
                 try {
-                    const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${GEMINI_API_KEY}`;
-                    
-                    // 1. Try with responseModalities: ["IMAGE", "TEXT"]
-                    const bodyDual = {
-                        contents: [{ parts: [{ text: `Generate a high-quality featured image: ${imagePromptText}` }] }],
-                        generationConfig: { responseModalities: ["IMAGE", "TEXT"] }
-                    };
-                    let res = await postJson(url, {}, bodyDual).catch(() => null);
-
-                    // 2. If dual modalities wasn't accepted, try responseModalities: ["IMAGE"]
-                    if (!res) {
-                        const bodyImageOnly = {
-                            contents: [{ parts: [{ text: imagePromptText }] }],
-                            generationConfig: { responseModalities: ["IMAGE"] }
-                        };
-                        res = await postJson(url, {}, bodyImageOnly).catch(() => null);
-                    }
-
-                    if (res && res.candidates && res.candidates[0] && res.candidates[0].content && res.candidates[0].content.parts) {
-                        const part = res.candidates[0].content.parts.find(p => p.inlineData && p.inlineData.data);
-                        if (part && part.inlineData && part.inlineData.data) {
-                            imageBuffer = Buffer.from(part.inlineData.data, 'base64');
-                            console.log(`✓ Image generated successfully via Google Gemini API model "${modelName}".`);
-                            break;
+                    console.log(`Tier 1: Trying Google Gemini API with model "${modelName}"...`);
+                    const genUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${GEMINI_API_KEY}`;
+                    const payload = {
+                        contents: [{
+                            parts: [{
+                                text: `Generate a high-resolution 16:9 widescreen artwork image matching this prompt exactly: ${imagePromptText}`
+                            }]
+                        }],
+                        generationConfig: {
+                            responseMimeType: "image/png"
                         }
+                    };
+
+                    const responseData = await postJson(genUrl, {}, payload);
+                    const candidates = responseData?.candidates || [];
+                    for (const cand of candidates) {
+                        const parts = cand?.content?.parts || [];
+                        for (const part of parts) {
+                            if (part?.inlineData?.data) {
+                                imageBuffer = Buffer.from(part.inlineData.data, 'base64');
+                                console.log(`✓ Image generated successfully via Google Gemini API ("${modelName}").`);
+                                break;
+                            }
+                        }
+                        if (imageBuffer) break;
                     }
+
+                    if (imageBuffer) break;
                 } catch (geminiErr) {
-                    console.warn(`Tier 1: Gemini model "${modelName}" attempt failed: ${geminiErr.message}`);
+                    console.warn(`Tier 1: Google Gemini API (${modelName}) failed or does not support native direct image generation: ${geminiErr.message}`);
                 }
             }
         }
@@ -866,7 +867,7 @@ You must return a raw JSON object containing exactly these fields (no markdown w
                         prompt: imagePromptText,
                         numberOfImages: 1,
                         outputMimeType: "image/png",
-                        aspectRatio: "1:1",
+                        aspectRatio: "16:9",
                         personGeneration: "allow_adult"
                     };
                     const res = await postJson(genImagesUrl, {}, genBody);
@@ -888,7 +889,7 @@ You must return a raw JSON object containing exactly these fields (no markdown w
                         parameters: {
                             sampleCount: 1,
                             outputMimeType: "image/png",
-                            aspectRatio: "1:1"
+                            aspectRatio: "16:9"
                         }
                     };
                     const resPred = await postJson(predictUrl, {}, predBody);
@@ -920,7 +921,7 @@ You must return a raw JSON object containing exactly these fields (no markdown w
                 const hfOutput = execFileSync(hfCmd, [
                     'generate', 'create', 'gpt_image_2',
                     '--prompt', cleanedPrompt,
-                    '--aspect_ratio', '1:1',
+                    '--aspect_ratio', '16:9',
                     '--wait'
                 ], {
                     encoding: 'utf8',
@@ -950,7 +951,7 @@ You must return a raw JSON object containing exactly these fields (no markdown w
             try {
                 const cleanPrompt = imagePromptText.replace(/[\r\n]+/g, ' ').trim();
                 const seed = Math.floor(Math.random() * 10000000);
-                const pollinationsUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(cleanPrompt.slice(0, 1500))}?width=1024&height=1024&nologo=true&seed=${seed}`;
+                const pollinationsUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(cleanPrompt.slice(0, 1500))}?width=1280&height=720&nologo=true&seed=${seed}`;
                 console.log("Querying Pollinations AI generation endpoint...");
                 const fetchedBuf = await fetchBuffer(pollinationsUrl);
                 if (fetchedBuf && fetchedBuf.length > 5000) {
