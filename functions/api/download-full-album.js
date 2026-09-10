@@ -1,5 +1,18 @@
 export async function onRequest(context) {
     const { request } = context;
+
+    // Enforce allowed HTTP methods: only GET and HEAD
+    if (request.method !== 'GET' && request.method !== 'HEAD') {
+        return new Response('Method Not Allowed', {
+            status: 405,
+            headers: {
+                'Allow': 'GET, HEAD',
+                'Content-Type': 'text/plain; charset=utf-8',
+                'X-Content-Type-Options': 'nosniff'
+            }
+        });
+    }
+
     const url = new URL(request.url);
     const origin = url.origin;
 
@@ -10,7 +23,9 @@ export async function onRequest(context) {
                 "Content-Type": "application/zip",
                 "Content-Disposition": 'attachment; filename="Win_Anyway_Full_Album.zip"',
                 "Content-Length": "66156645",
-                "Cache-Control": "public, max-age=86400"
+                "Cache-Control": "public, max-age=86400",
+                "X-Content-Type-Options": "nosniff",
+                "X-Robots-Tag": "noindex, nofollow"
             }
         });
     }
@@ -66,10 +81,19 @@ export async function onRequest(context) {
                 "Content-Type": "application/zip",
                 "Content-Disposition": 'attachment; filename="Win_Anyway_Full_Album.zip"',
                 "Content-Length": "66156645",
-                "Cache-Control": "public, max-age=86400"
+                "Cache-Control": "public, max-age=86400",
+                "X-Content-Type-Options": "nosniff",
+                "X-Robots-Tag": "noindex, nofollow"
             }
         });
     } catch (e) {
-        return new Response(`Error assembling album: ${e.message}`, { status: 500 });
+        console.error("[Album Assembly Error]", e && e.message ? e.message : "Unknown error");
+        return new Response('Error assembling album package', {
+            status: 500,
+            headers: {
+                "Content-Type": "text/plain; charset=utf-8",
+                "X-Content-Type-Options": "nosniff"
+            }
+        });
     }
 }

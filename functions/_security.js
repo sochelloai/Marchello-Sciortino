@@ -27,6 +27,8 @@ export function getCorsHeaders(request) {
         "Access-Control-Allow-Origin": matchedOrigin,
         "Access-Control-Allow-Methods": "POST, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type, X-Requested-With",
+        "Cache-Control": "no-store, no-cache, must-revalidate",
+        "X-Content-Type-Options": "nosniff",
         "Vary": "Origin"
     };
 }
@@ -453,3 +455,20 @@ export async function verifyAttachmentSignature(storageKey, exp, originalName, s
     return { valid: true };
 }
 
+/**
+ * Safely reads and logs upstream error responses with email and PII redaction.
+ */
+export async function logSanitizedError(serviceName, stepName, response) {
+    let body = "";
+    try {
+        body = await response.clone().text();
+    } catch (_) {
+        body = "(failed to read body)";
+    }
+    // Scrub email addresses and truncate length to prevent log pollution or PII leaks
+    const redacted = body
+        .replace(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g, "[REDACTED_EMAIL]")
+        .slice(0, 500);
+    console.error(`[${serviceName}] ${stepName} failed with status ${response.status}: ${redacted}`);
+    return body;
+}

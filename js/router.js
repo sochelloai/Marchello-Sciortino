@@ -1085,7 +1085,7 @@ Router.register('/services', () => `
                                                 <h4 class="portfolio-title">Accessible AIM Membership Site</h4>
                                             </div>
                                         </div>
-                                        <div class="portfolio-card" data-type="funnel" data-src="assets/book_sales_funnel_preview.png?v=20260807-3" data-link="https://www.limitationstoliberation.com/" aria-label="View Book Sales Funnel" role="button" tabindex="0">
+                                        <div class="portfolio-card" data-type="funnel" data-id="book-sales-funnel" data-src="assets/book_sales_funnel_preview.png?v=20260807-3" data-link="https://www.limitationstoliberation.com/" aria-label="View Book Sales Funnel" role="button" tabindex="0">
                                             <div class="portfolio-card-bg" style="background-image: url('assets/book_sales_funnel_preview.png?v=20260807-3');"></div>
                                             <div class="portfolio-card-overlay"></div>
                                             <div class="portfolio-card-icon">
@@ -1125,7 +1125,7 @@ Router.register('/services', () => `
                                     
                                     <!-- Right Column: 3 Portfolio Squares -->
                                     <div class="explorer-grid-col explorer-grid-right">
-                                         <div class="portfolio-card" data-type="website" data-src="assets/jesus-bello.png" data-link="https://jesus-bello.pages.dev/" aria-label="View Jesus Bello Website" role="button" tabindex="0">
+                                         <div class="portfolio-card" data-type="website" data-id="jesus-bello" data-src="assets/jesus-bello.png" data-link="https://jesus-bello.pages.dev/" aria-label="View Jesus Bello Website" role="button" tabindex="0">
                                              <div class="portfolio-card-bg" style="background-image: url('assets/jesus-bello.png');"></div>
                                              <div class="portfolio-card-overlay"></div>
                                              <div class="portfolio-card-icon">
@@ -1136,7 +1136,7 @@ Router.register('/services', () => `
                                                  <h4 class="portfolio-title">Jesus Bello Website</h4>
                                              </div>
                                          </div>
-                                         <div class="portfolio-card" data-type="website" data-src="assets/ai-song-quiz.png" data-link="https://ai-song-quiz-app.pages.dev/" aria-label="View AI Song Quiz App Website" role="button" tabindex="0">
+                                         <div class="portfolio-card" data-type="website" data-id="ai-song-quiz" data-src="assets/ai-song-quiz.png" data-link="https://ai-song-quiz-app.pages.dev/" aria-label="View AI Song Quiz App Website" role="button" tabindex="0">
                                              <div class="portfolio-card-bg" style="background-image: url('assets/ai-song-quiz.png');"></div>
                                              <div class="portfolio-card-overlay"></div>
                                              <div class="portfolio-card-icon">
@@ -1147,7 +1147,7 @@ Router.register('/services', () => `
                                                  <h4 class="portfolio-title">AI Song Quiz App</h4>
                                              </div>
                                          </div>
-                                        <div class="portfolio-card" data-type="website" data-src="assets/stlmc-website.png" data-link="https://stlmc-website.pages.dev/" aria-label="View St. Louis Medical Center Website" role="button" tabindex="0">
+                                        <div class="portfolio-card" data-type="website" data-id="stlmc-website" data-src="assets/stlmc-website.png" data-link="https://stlmc-website.pages.dev/" aria-label="View St. Louis Medical Center Website" role="button" tabindex="0">
                                             <div class="portfolio-card-bg" style="background-image: url('assets/stlmc-website.png');"></div>
                                             <div class="portfolio-card-overlay"></div>
                                             <div class="portfolio-card-icon">

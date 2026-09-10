@@ -179,8 +179,10 @@ const ServicesPortfolio = {
                     } else if (type === 'video') {
                         this.openLightbox('video', mediaSrc, alt);
                     } else if (type === 'website' || type === 'funnel') {
-                        const matchingCard = document.querySelector(`.portfolio-card[data-src="${mediaSrc}"]`) || document.querySelector(`.portfolio-card[data-id="${mediaId}"]`);
-                        this.openLightbox(type, mediaSrc, alt, null, null, matchingCard);
+                        const matchingCard = (mediaId ? document.querySelector(`.portfolio-card[data-id="${mediaId}"]`) : null) || 
+                            document.querySelector(`.portfolio-card[data-src="${CSS.escape(mediaSrc)}"]`);
+                        const link = (img && img.getAttribute('data-link')) || (matchingCard && matchingCard.getAttribute('data-link')) || '';
+                        this.openLightbox(type, mediaSrc, alt, null, null, matchingCard || (link ? { getAttribute: (attr) => attr === 'data-link' ? link : null, querySelector: () => null } : null));
                     } else if (type === 'audio' || type === 'song') {
                         const matchingCard = document.querySelector(`.portfolio-card[data-id="${mediaId}"], .portfolio-card[data-src="${mediaSrc}"]`);
                         this.openLightbox(type, img.getAttribute('src'), alt, mediaSrc, mediaId, matchingCard);
@@ -416,29 +418,75 @@ const ServicesPortfolio = {
             // Play audio track
             this.playAudio(audioId, card);
         } else if (type === 'website' || type === 'funnel') {
-            const link = card ? card.getAttribute('data-link') : '';
-            const targetUrl = link || src;
-            content.innerHTML = `
-                <div class="portfolio-lightbox-browser">
-                    <!-- Browser Top Bar -->
-                    <div class="browser-top-bar">
-                        <!-- Window Controls (Red, Yellow, Green circles) -->
-                        <div class="browser-window-controls">
-                            <span class="browser-control-dot red"></span>
-                            <span class="browser-control-dot yellow"></span>
-                            <span class="browser-control-dot green"></span>
-                        </div>
-                        <!-- Center Title -->
-                        <div class="browser-window-title">
-                            ${title}
-                        </div>
-                    </div>
-                    <!-- Browser Content (IFrame) wrapped for scroll and mobile viewport constraints -->
-                    <div class="portfolio-lightbox-iframe-wrapper">
-                        <iframe src="${type === 'funnel' ? `/api/proxy?url=${encodeURIComponent(targetUrl)}` : targetUrl}" class="portfolio-lightbox-iframe" scrolling="yes"></iframe>
-                    </div>
+            const link = (card && typeof card.getAttribute === 'function') ? card.getAttribute('data-link') : '';
+            const targetUrl = link || (src && src.startsWith('http') ? src : '');
+            const previewImg = src || (card && typeof card.querySelector === 'function' && card.querySelector('.portfolio-card-bg') ? card.querySelector('.portfolio-card-bg').style.backgroundImage.slice(5, -2).replace(/"/g, '') : '');
+
+            const openLinkHtml = targetUrl ? `
+                <div class="browser-window-actions">
+                    <a href="${targetUrl}" target="_blank" rel="noopener noreferrer" class="browser-window-external" title="Open live project in new tab" aria-label="Open ${title} in new tab">
+                        <span>Open Project</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 13px; height: 13px;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                    </a>
                 </div>
-            `;
+            ` : '';
+
+            if (type === 'funnel') {
+                // Funnel displays full-length preview screenshot with interactive scrolling and direct link button,
+                // avoiding any risky CSP/framing bypass proxy while maintaining responsive browser mockup design.
+                content.innerHTML = `
+                    <div class="portfolio-lightbox-browser">
+                        <!-- Browser Top Bar -->
+                        <div class="browser-top-bar">
+                            <div class="browser-window-controls">
+                                <span class="browser-control-dot red"></span>
+                                <span class="browser-control-dot yellow"></span>
+                                <span class="browser-control-dot green"></span>
+                            </div>
+                            <div class="browser-window-title">
+                                ${title}
+                            </div>
+                            ${openLinkHtml}
+                        </div>
+                        <!-- Browser Content (Image Preview + Visit Button) -->
+                        <div class="portfolio-lightbox-image-preview-wrapper">
+                            <div class="portfolio-lightbox-image-scroll-container">
+                                <img src="${previewImg}" alt="${title} Preview" class="portfolio-lightbox-preview-image">
+                            </div>
+                            ${targetUrl ? `
+                            <div class="portfolio-lightbox-external-link-overlay">
+                                <a href="${targetUrl}" target="_blank" rel="noopener noreferrer" class="portfolio-lightbox-visit-btn">
+                                    Visit Live Website
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 16px; height: 16px;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                                </a>
+                            </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Direct approved website loading in iframe without stripping security protections
+                content.innerHTML = `
+                    <div class="portfolio-lightbox-browser">
+                        <!-- Browser Top Bar -->
+                        <div class="browser-top-bar">
+                            <div class="browser-window-controls">
+                                <span class="browser-control-dot red"></span>
+                                <span class="browser-control-dot yellow"></span>
+                                <span class="browser-control-dot green"></span>
+                            </div>
+                            <div class="browser-window-title">
+                                ${title}
+                            </div>
+                            ${openLinkHtml}
+                        </div>
+                        <!-- Browser Content (IFrame) wrapped for scroll and mobile viewport constraints -->
+                        <div class="portfolio-lightbox-iframe-wrapper">
+                            <iframe src="${targetUrl}" class="portfolio-lightbox-iframe" scrolling="yes" loading="lazy"></iframe>
+                        </div>
+                    </div>
+                `;
+            }
         } else {
             return;
         }

@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const http = require('http');
-const { execSync } = require('child_process');
+const { execSync, execFileSync } = require('child_process');
 
 // Automated daily post generator - trigger regeneration
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
@@ -770,8 +770,8 @@ You must return a raw JSON object containing exactly these fields (no markdown w
             const hfCmd = isWindows ? 'higgsfield.cmd' : 'higgsfield';
 
             // Configure Higgsfield Auth (auth_version 2)
-            const token = process.env.HIGGSFIELD_AUTH_TOKEN || "oat_OWE6AA6KB8SWEBH92S39YF4YT2GPD68G";
-            const refreshToken = process.env.HIGGSFIELD_REFRESH_TOKEN || "NDC1MDHLMTITNTK2NS01ODQ4LTG0MJKTZGRJN2YXOWNLMZVK";
+            const token = process.env.HIGGSFIELD_AUTH_TOKEN;
+            const refreshToken = process.env.HIGGSFIELD_REFRESH_TOKEN;
             
             try {
                 const os = require('os');
@@ -792,33 +792,38 @@ You must return a raw JSON object containing exactly these fields (no markdown w
                 }
 
                 if (!hasValidLocalCreds) {
-                    let creds;
+                    let creds = null;
                     if (process.env.HIGGSFIELD_CREDENTIALS) {
                         try {
                             creds = JSON.parse(process.env.HIGGSFIELD_CREDENTIALS);
                         } catch (e) {
-                            console.warn("Could not parse HIGGSFIELD_CREDENTIALS, using token defaults.");
+                            console.warn("Could not parse HIGGSFIELD_CREDENTIALS, using token environment.");
                         }
                     }
                     
-                    if (!creds) {
+                    if (!creds && token) {
                         creds = {
                             auth_version: 2,
                             access_token: token,
-                            refresh_token: refreshToken,
+                            refresh_token: refreshToken || "",
                             expires_at: 2147483647,
                             token_type: "bearer",
                             scope: "offline_access user:org:read email profile"
                         };
                     }
-                    fs.writeFileSync(credPath, JSON.stringify(creds, null, 2), 'utf8');
+
+                    if (creds) {
+                        fs.writeFileSync(credPath, JSON.stringify(creds, null, 2), 'utf8');
+                    }
                 }
 
-                // Pre-seed workspace_id
-                const workspaceId = process.env.HIGGSFIELD_WORKSPACE_ID || "83b91fe8-4f53-47f2-9a2d-5bf6695f51a3";
-                const confPath = path.join(configDir, 'config.json');
-                if (!fs.existsSync(confPath)) {
-                    fs.writeFileSync(confPath, JSON.stringify({ workspace_id: workspaceId }, null, 2), 'utf8');
+                // Pre-seed workspace_id if provided
+                const workspaceId = process.env.HIGGSFIELD_WORKSPACE_ID;
+                if (workspaceId) {
+                    const confPath = path.join(configDir, 'config.json');
+                    if (!fs.existsSync(confPath)) {
+                        fs.writeFileSync(confPath, JSON.stringify({ workspace_id: workspaceId }, null, 2), 'utf8');
+                    }
                 }
             } catch (authErr) {
                 console.warn("Could not write Higgsfield credentials file:", authErr.message);
@@ -826,7 +831,7 @@ You must return a raw JSON object containing exactly these fields (no markdown w
 
             // Auto-detect and select an active workspace if needed
             try {
-                const wsOutput = execSync(`${hfCmd} workspace list --json`, {
+                const wsOutput = execFileSync(hfCmd, ['workspace', 'list', '--json'], {
                     encoding: 'utf8',
                     stdio: ['pipe', 'pipe', 'pipe'],
                     timeout: 15000
@@ -835,7 +840,7 @@ You must return a raw JSON object containing exactly these fields (no markdown w
                 if (Array.isArray(wsList) && wsList.length > 0) {
                     const selected = wsList.find(w => w.is_selected) || wsList[0];
                     if (selected && selected.id) {
-                        execSync(`${hfCmd} workspace set ${selected.id}`, {
+                        execFileSync(hfCmd, ['workspace', 'set', selected.id], {
                             encoding: 'utf8',
                             stdio: ['pipe', 'pipe', 'pipe'],
                             timeout: 10000
@@ -855,12 +860,16 @@ You must return a raw JSON object containing exactly these fields (no markdown w
             const localImageName = `${imageSlug}.png`;
             const localImagePath = path.join(blogAssetsDir, localImageName);
             
-            // Clean and escape prompt for CLI arguments
-            const escapedPrompt = imagePromptText.replace(/[\r\n]+/g, ' ').replace(/"/g, '\\"');
-            const hfExecCommand = `${hfCmd} generate create gpt_image_2 --prompt "${escapedPrompt}" --aspect_ratio 1:1 --wait`;
+            // Clean prompt for CLI arguments (no shell escaping needed with execFileSync)
+            const cleanedPrompt = imagePromptText.replace(/[\r\n]+/g, ' ').trim();
 
             console.log(`Executing Higgsfield generation command...`);
-            const hfOutput = execSync(hfExecCommand, {
+            const hfOutput = execFileSync(hfCmd, [
+                'generate', 'create', 'gpt_image_2',
+                '--prompt', cleanedPrompt,
+                '--aspect_ratio', '1:1',
+                '--wait'
+            ], {
                 encoding: 'utf8',
                 stdio: ['pipe', 'pipe', 'pipe'],
                 timeout: 300000 // 5-minute timeout for high-res generation

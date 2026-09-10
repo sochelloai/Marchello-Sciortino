@@ -1526,7 +1526,7 @@ async function initInstagramMarquee() {
                 return `
                     <div class="instagram-post" title="${caption}">
                         <a href="${permalink}" target="_blank" rel="noopener noreferrer" class="instagram-post-link" aria-label="View on Instagram: ${caption}">
-                            <img src="${post.media_url}" alt="${caption}" loading="eager" decoding="async" onerror="this.onerror=null; this.src='${fallback}';">
+                            <img src="${post.media_url}" alt="${caption}" loading="eager" decoding="async" data-fallback="${fallback}">
                             ${isVideo ? '<span class="instagram-video-badge" aria-hidden="true">▶</span>' : ''}
                             <div class="instagram-post-overlay">
                                 <span class="instagram-post-view-action">
@@ -1544,12 +1544,22 @@ async function initInstagramMarquee() {
             }).join('');
         };
 
+        const handleImgError = (e) => {
+            const img = e.target;
+            if (img && img.dataset && img.dataset.fallback) {
+                img.src = img.dataset.fallback;
+                delete img.dataset.fallback;
+            }
+        };
+
         if (trackRTL && row1Posts.length > 0) {
             trackRTL.innerHTML = renderTrackPosts(row1Posts, 'timeline');
+            trackRTL.addEventListener('error', handleImgError, true);
         }
 
         if (trackLTR && row2Posts.length > 0) {
             trackLTR.innerHTML = renderTrackPosts(row2Posts, 'headshot');
+            trackLTR.addEventListener('error', handleImgError, true);
         }
     } catch (e) {
         console.error("Failed to load Instagram marquee feed:", e);

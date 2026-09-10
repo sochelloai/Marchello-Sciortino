@@ -48,7 +48,8 @@ import {
     validateUploadedFile,
     generateSignedAttachmentUrl,
     createErrorResponse,
-    createSuccessResponse
+    createSuccessResponse,
+    logSanitizedError
 } from "../_security.js";
 
 export async function onRequestOptions(context) {
@@ -373,8 +374,7 @@ export async function onRequestPost(context) {
                 } else if (applyTagResponse.status === 422) {
                     tagApplied = true;
                 } else {
-                    const errBody = await logErrorResponse("Apply Tag", applyTagResponse);
-                    console.error(`Failed to apply tag: ${applyTagResponse.status} - ${errBody}`);
+                    await logErrorResponse("Apply Tag", applyTagResponse);
                 }
             } catch (applyErr) {
                 console.error("[ClickFunnels] Error calling applied_tags:", applyErr);
@@ -393,12 +393,5 @@ export async function onRequestPost(context) {
 }
 
 async function logErrorResponse(stepName, response) {
-    let body = "";
-    try {
-        body = await response.clone().text();
-    } catch (e) {
-        body = "(failed to read body)";
-    }
-    console.error(`[ClickFunnels] ${stepName} failed with status ${response.status}: ${body}`);
-    return body;
+    return logSanitizedError("ClickFunnels", stepName, response);
 }

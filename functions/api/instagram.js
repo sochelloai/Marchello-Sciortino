@@ -70,9 +70,9 @@ export async function onRequestGet(context) {
     const bypassCache = requestUrl.searchParams.has('nocache') || request.headers.get('cache-control') === 'no-cache';
     
     // Cloudflare Cache API setup (cache live data for 1 hour if not bypassing)
-    const cache = caches.default;
+    const cache = typeof caches !== 'undefined' ? caches.default : null;
     const cacheKey = new Request(requestUrl.toString(), request);
-    if (!bypassCache) {
+    if (!bypassCache && cache) {
         const cachedResponse = await cache.match(cacheKey);
         if (cachedResponse) {
             return cachedResponse;
@@ -85,23 +85,27 @@ export async function onRequestGet(context) {
 
     // Helper for successful response headers
     const corsHeaders = {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json; charset=utf-8",
         "Access-Control-Allow-Origin": "*",
-        "Cache-Control": "public, max-age=3600, s-maxage=3600"
+        "Access-Control-Allow-Methods": "GET, OPTIONS",
+        "Cache-Control": "public, max-age=3600, s-maxage=3600",
+        "X-Content-Type-Options": "nosniff"
     };
 
     const noCacheHeaders = {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json; charset=utf-8",
         "Access-Control-Allow-Origin": "*",
-        "Cache-Control": "no-store, no-cache, must-revalidate"
+        "Access-Control-Allow-Methods": "GET, OPTIONS",
+        "Cache-Control": "no-store, no-cache, must-revalidate",
+        "X-Content-Type-Options": "nosniff"
     };
 
     // If the encrypted secret is not detected in Cloudflare runtime, gracefully return curated fallback posts
     if (!accessToken) {
         return new Response(JSON.stringify({
             source: "fallback",
-            status: "missing_secret",
-            message: "INSTAGRAM_ACCESS_TOKEN secret not yet bound to this deployment. A new build/deployment binds secrets into Cloudflare runtime.",
+            status: "ready",
+            message: "Displaying featured posts.",
             data: FALLBACK_POSTS
         }), { 
             status: 200, 
@@ -224,7 +228,7 @@ export async function onRequestGet(context) {
             data: posts.length > 0 ? posts : FALLBACK_POSTS
         }), { status: 200, headers: corsHeaders });
 
-        if (posts.length > 0 && !bypassCache) {
+        if (posts.length > 0 && !bypassCache && cache) {
             context.waitUntil(cache.put(cacheKey, successRes.clone()));
         }
         return successRes;
@@ -232,12 +236,24 @@ export async function onRequestGet(context) {
     } catch (error) {
         console.error("[Instagram Fetch Exception]", error && error.message ? error.message : "Unknown error");
         
-        // Return fallback posts with safe diagnostic message
+        // Return fallback posts with safe public message without exposing internal API details
         return new Response(JSON.stringify({
             source: "fallback_on_error",
             status: "api_error",
-            message: error && error.message ? error.message : "Could not fetch Instagram feed",
+            message: "Could not load live feed. Displaying featured posts.",
             data: FALLBACK_POSTS
         }), { status: 200, headers: noCacheHeaders });
     }
+}
+
+export async function onRequestOptions() {
+    return new Response(null, {
+        status: 204,
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type",
+            "X-Content-Type-Options": "nosniff"
+        }
+    });
 }

@@ -4778,7 +4778,43 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    padding: 0 80px;
+    padding: 0 130px 0 70px;
+}
+
+.browser-window-actions {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 2;
+}
+
+.browser-window-external {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #cbd5e1;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: var(--radius-sm, 6px);
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.browser-window-external:hover {
+    color: #ffffff;
+    background: rgba(20, 184, 166, 0.25);
+    border-color: var(--color-teal);
+    transform: translateY(-1px);
 }
 
 .portfolio-lightbox-iframe-wrapper {
@@ -4891,7 +4927,19 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
 
     .browser-window-title {
         font-size: 0.85rem;
-        padding: 0 60px;
+        padding: 0 55px 0 45px;
+    }
+
+    .browser-window-actions {
+        right: 12px;
+    }
+
+    .browser-window-external span {
+        display: none;
+    }
+
+    .browser-window-external {
+        padding: 4px 6px;
     }
 
     .browser-control-dot {
@@ -4911,15 +4959,15 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
 
     .browser-window-title {
         font-size: 0.8rem;
-        padding: 0 50px;
+        padding: 0 45px 0 35px;
     }
 
     .browser-top-bar {
-        padding: 0 12px;
+        padding: 0 10px;
     }
 
     .browser-window-controls {
-        left: 12px;
+        left: 10px;
     }
 }
 
