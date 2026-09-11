@@ -3453,6 +3453,17 @@ const freeGiftsTemplate = () => {
 
     <section class="section bg-white" style="padding: 60px 0 90px; background-color: #f8fafc;">
         <div class="container">
+            ${isFreeGiftsSessionUnlocked() ? `
+            <div class="session-profile-status-bar" id="session-profile-status-bar" style="max-width: 900px; margin: 0 auto 36px; background: rgba(10, 216, 173, 0.08); border: 1px solid rgba(10, 216, 173, 0.35); border-radius: 12px; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; box-sizing: border-box;">
+                <div style="display: flex; align-items: center; gap: 10px; color: #0f172a; font-size: 0.95rem; font-weight: 600;">
+                    <span style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: #0ad8ad; color: #081b29; border-radius: 50%; font-size: 0.8rem; font-weight: 800;">✓</span>
+                    <span>Free Gifts Profile Active &bull; All Downloads Unlocked for this Session</span>
+                </div>
+                <button type="button" class="btn-session-logout js-session-logout" style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 6px 14px; font-size: 0.84rem; font-weight: 600; color: #475569; cursor: pointer; transition: all 0.2s ease;">
+                    Log Out of Session
+                </button>
+            </div>
+            ` : ''}
             <div class="teaser-grid">
                 ${cardsHtml}
             </div>
@@ -3464,21 +3475,24 @@ const freeGiftsTemplate = () => {
         <div class="spa-modal-card">
             <button class="spa-modal-close" id="spa-modal-close" aria-label="Close modal">&times;</button>
             <div id="spa-form-view">
-                <h3 style="color: #0f172a; margin-bottom: 8px;">Unlock All Downloads</h3>
-                <p id="spa-copy-text" style="color: #475569; font-size: 0.95rem; margin-bottom: 20px;">
-                    Unlock all downloads by entering your email.
+                <div style="width: 48px; height: 48px; background: rgba(10, 216, 173, 0.12); border: 2px solid #0ad8ad; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #0ad8ad; margin: 0 auto 14px;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                </div>
+                <h3 style="color: #0f172a; margin-bottom: 8px; font-family: var(--font-heading); font-size: 1.45rem; font-weight: 800;">Member Access &amp; Free Gifts Profile</h3>
+                <p id="spa-copy-text" style="color: #475569; font-size: 0.95rem; margin-bottom: 20px; line-height: 1.5;">
+                    Enter your email to log into your Free Gifts profile or unlock all downloads across the site for your session.
                 </p>
                 <form id="spa-modal-login-form">
-                    <input type="email" class="spa-modal-input" id="spa-modal-email" placeholder="Enter your email address..." required style="width: 100%; padding: 14px; border: 1px solid #e2e8f0; border-radius: 10px; margin-bottom: 12px; font-size: 1rem; box-sizing: border-box;">
+                    <input type="email" class="spa-modal-input" id="spa-modal-email" placeholder="Enter your email address to log in..." required style="width: 100%; padding: 14px; border: 1px solid #e2e8f0; border-radius: 10px; margin-bottom: 12px; font-size: 1rem; box-sizing: border-box;">
                     <div class="turnstile-container" id="spa-modal-turnstile"></div>
-                    <button type="submit" class="btn-unlock-orange" style="background: #ff5722; color: #ffffff; width: 100%; padding: 14px 20px; font-size: 1rem; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; transition: background 0.2s, transform 0.15s;">
-                        Unlock Free Access &rarr;
+                    <button type="submit" class="btn-unlock-orange" style="background: #ff5722; color: #ffffff; width: 100%; padding: 14px 20px; font-size: 1rem; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; transition: background 0.2s, transform 0.15s; box-shadow: 0 8px 20px rgba(255, 87, 34, 0.35);">
+                        Log In &amp; Access All Free Gifts &rarr;
                     </button>
                     <p class="unlock-security-disclaimer" style="margin: 12px 0 0 0; font-size: clamp(0.62rem, 2.4vw, 0.82rem); color: #64748b; display: flex; align-items: center; justify-content: center; gap: 5px; line-height: 1.2; white-space: nowrap; letter-spacing: -0.015em;">
-                        <span>🔒</span> <span>“No spam. Your email address stays strictly confidential.”</span>
+                        <span>🔒</span> <span>“No spam. Secure, passwordless email login verified against ClickFunnels.”</span>
                     </p>
                     <a href="/" class="btn-decline-home" style="display: block; text-align: center; margin-top: 14px; color: #64748b; font-size: 0.78rem; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; transition: color 0.2s;">
-                        I do not want to unlock. Take me back to the home page.
+                        I do not want to log in. Take me back to the home page.
                     </a>
                 </form>
             </div>
@@ -3521,10 +3535,6 @@ function isFreeGiftsSessionUnlocked() {
 function isAlbumPageUnlocked(slug) {
     if (isFreeGiftsSessionUnlocked()) return true;
     if (typeof sessionStorage !== 'undefined' && slug && sessionStorage.getItem('unlocked_album_' + slug) === 'true') {
-        return true;
-    }
-    const albumWrap = document.getElementById('gift-album-player-wrap');
-    if (albumWrap && albumWrap.style.display !== 'none' && !albumWrap.classList.contains('is-locked')) {
         return true;
     }
     return false;
@@ -4188,6 +4198,17 @@ const singleGiftTemplate = (gift) => {
         <!-- Single Gift Showcase Section -->
         <section class="single-gift-section">
             <div class="container">
+                ${isUnlocked ? `
+                <div class="session-profile-status-bar" id="session-profile-status-bar" style="max-width: 900px; margin: 0 auto 30px; background: rgba(10, 216, 173, 0.08); border: 1px solid rgba(10, 216, 173, 0.35); border-radius: 12px; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; box-sizing: border-box;">
+                    <div style="display: flex; align-items: center; gap: 10px; color: #0f172a; font-size: 0.95rem; font-weight: 600;">
+                        <span style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: #0ad8ad; color: #081b29; border-radius: 50%; font-size: 0.8rem; font-weight: 800;">✓</span>
+                        <span>Free Gifts Profile Active &bull; All Downloads Unlocked for this Session</span>
+                    </div>
+                    <button type="button" class="btn-session-logout js-session-logout" style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 6px 14px; font-size: 0.84rem; font-weight: 600; color: #475569; cursor: pointer; transition: all 0.2s ease;">
+                        Log Out of Session
+                    </button>
+                </div>
+                ` : ''}
                 <div class="single-gift-container">
                     <!-- Left: Artwork Card -->
                     <div>
@@ -4229,24 +4250,24 @@ const singleGiftTemplate = (gift) => {
                     ${gift.tracks && gift.tracks.length > 0 ? `
                     <!-- In-Place Unlock Form Card (Gates live streaming & MP3 downloads until unlocked) -->
                     <div class="album-inline-unlock-card" id="album-inline-unlock-card" data-target-title="${gift.title}" style="display: ${isUnlocked ? 'none' : 'block'};">
-                        <div style="width: 52px; height: 52px; background: rgba(255, 87, 34, 0.12); border: 2px solid #ff5722; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #ff5722; margin: 0 auto 16px;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                        <div style="width: 52px; height: 52px; background: rgba(10, 216, 173, 0.12); border: 2px solid #0ad8ad; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #0ad8ad; margin: 0 auto 16px;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                         </div>
-                        <h3 style="color: #0f172a; margin: 0 0 8px; font-family: var(--font-heading); font-size: 1.45rem; font-weight: 800;">Unlock Live Streaming &amp; Downloads</h3>
+                        <h3 style="color: #0f172a; margin: 0 0 8px; font-family: var(--font-heading); font-size: 1.45rem; font-weight: 800;">Member Access &amp; Free Gifts Profile</h3>
                         <p style="color: #475569; font-size: 0.95rem; margin: 0 0 22px; line-height: 1.5;">
-                            Unlock live streaming and MP3 downloads by entering your email.
+                            Enter your email to log into your Free Gifts profile or unlock all tracks, live streams, and downloads across the entire website for your session.
                         </p>
                         <form id="album-inline-unlock-form" data-target-title="${gift.title}">
-                            <input type="email" class="spa-modal-input" id="album-inline-email" placeholder="Enter your email address..." required style="width: 100%; padding: 14px; border: 1px solid #e2e8f0; border-radius: 10px; margin-bottom: 14px; font-size: 1rem; box-sizing: border-box;">
+                            <input type="email" class="spa-modal-input" id="album-inline-email" placeholder="Enter your email address to log in..." required style="width: 100%; padding: 14px; border: 1px solid #e2e8f0; border-radius: 10px; margin-bottom: 14px; font-size: 1rem; box-sizing: border-box;">
                             <div class="turnstile-container" id="album-inline-turnstile"></div>
                             <button type="submit" class="btn-unlock-orange" style="background: #ff5722; color: #ffffff; width: 100%; padding: 14px 20px; font-size: 1.05rem; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; transition: background 0.2s, transform 0.15s; box-shadow: 0 8px 20px rgba(255, 87, 34, 0.35);">
-                                Unlock Free Access &rarr;
+                                Log In &amp; Access All Free Gifts &rarr;
                             </button>
                             <p class="unlock-security-disclaimer" style="margin: 14px 0 0 0; font-size: clamp(0.62rem, 2.4vw, 0.82rem); color: #64748b; display: flex; align-items: center; justify-content: center; gap: 5px; line-height: 1.2; white-space: nowrap; letter-spacing: -0.015em;">
-                                <span>🔒</span> <span>“No spam. Your email address stays strictly confidential.”</span>
+                                <span>🔒</span> <span>“No spam. Secure, passwordless email login verified against ClickFunnels.”</span>
                             </p>
                             <a href="/" class="btn-decline-home" style="display: block; text-align: center; margin-top: 16px; color: #64748b; font-size: 0.8rem; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; transition: color 0.2s;">
-                                I do not want to unlock. Take me back to the home page.
+                                I do not want to log in. Take me back to the home page.
                             </a>
                         </form>
                     </div>
@@ -4349,21 +4370,24 @@ const singleGiftTemplate = (gift) => {
         <div class="spa-modal-card">
             <button class="spa-modal-close" id="spa-modal-close" aria-label="Close modal">&times;</button>
             <div id="spa-form-view">
-                <h3 style="color: #0f172a; margin-bottom: 8px;">Unlock All Downloads</h3>
-                <p id="spa-copy-text" style="color: #475569; font-size: 0.95rem; margin-bottom: 20px;">
-                    Unlock all downloads by entering your email.
+                <div style="width: 48px; height: 48px; background: rgba(10, 216, 173, 0.12); border: 2px solid #0ad8ad; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #0ad8ad; margin: 0 auto 14px;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                </div>
+                <h3 style="color: #0f172a; margin-bottom: 8px; font-family: var(--font-heading); font-size: 1.45rem; font-weight: 800;">Member Access &amp; Free Gifts Profile</h3>
+                <p id="spa-copy-text" style="color: #475569; font-size: 0.95rem; margin-bottom: 20px; line-height: 1.5;">
+                    Enter your email to log into your Free Gifts profile or unlock all downloads across the site for your session.
                 </p>
                 <form id="spa-modal-login-form">
-                    <input type="email" class="spa-modal-input" id="spa-modal-email" placeholder="Enter your email address..." required style="width: 100%; padding: 14px; border: 1px solid #e2e8f0; border-radius: 10px; margin-bottom: 12px; font-size: 1rem; box-sizing: border-box;">
+                    <input type="email" class="spa-modal-input" id="spa-modal-email" placeholder="Enter your email address to log in..." required style="width: 100%; padding: 14px; border: 1px solid #e2e8f0; border-radius: 10px; margin-bottom: 12px; font-size: 1rem; box-sizing: border-box;">
                     <div class="turnstile-container" id="spa-modal-turnstile"></div>
-                    <button type="submit" class="btn-unlock-orange" style="background: #ff5722; color: #ffffff; width: 100%; padding: 14px 20px; font-size: 1rem; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; transition: background 0.2s, transform 0.15s;">
-                        Unlock Free Access &rarr;
+                    <button type="submit" class="btn-unlock-orange" style="background: #ff5722; color: #ffffff; width: 100%; padding: 14px 20px; font-size: 1rem; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; transition: background 0.2s, transform 0.15s; box-shadow: 0 8px 20px rgba(255, 87, 34, 0.35);">
+                        Log In &amp; Access All Free Gifts &rarr;
                     </button>
                     <p class="unlock-security-disclaimer" style="margin: 12px 0 0 0; font-size: clamp(0.62rem, 2.4vw, 0.82rem); color: #64748b; display: flex; align-items: center; justify-content: center; gap: 5px; line-height: 1.2; white-space: nowrap; letter-spacing: -0.015em;">
-                        <span>🔒</span> <span>“No spam. Your email address stays strictly confidential.”</span>
+                        <span>🔒</span> <span>“No spam. Secure, passwordless email login verified against ClickFunnels.”</span>
                     </p>
                     <a href="/" class="btn-decline-home" style="display: block; text-align: center; margin-top: 14px; color: #64748b; font-size: 0.78rem; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; transition: color 0.2s;">
-                        I do not want to unlock. Take me back to the home page.
+                        I do not want to log in. Take me back to the home page.
                     </a>
                 </form>
             </div>
@@ -4687,10 +4711,10 @@ function openUnlockModal(targetFile, targetTitle, targetFilename = '') {
     const emailInput = document.getElementById('spa-modal-email');
 
     if (heading) {
-        heading.textContent = targetTitle ? `Unlock ${targetTitle}` : 'Unlock Free Download';
+        heading.textContent = targetTitle ? `Member Access: ${targetTitle}` : 'Member Access & Free Gifts Profile';
     }
     if (copyText) {
-        copyText.textContent = targetTitle ? `Unlock "${targetTitle}" by entering your email.` : 'Unlock all downloads by entering your email.';
+        copyText.textContent = 'Enter your email to log into your Free Gifts profile or unlock all downloads across the site for your session.';
     }
     if (formView) formView.style.display = 'block';
     if (successView) successView.style.display = 'none';
@@ -4739,6 +4763,26 @@ document.addEventListener('click', (e) => {
         return;
     }
 
+    // Session Logout Button
+    const logoutBtn = e.target.closest('.js-session-logout');
+    if (logoutBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        try {
+            if (typeof sessionStorage !== 'undefined') {
+                sessionStorage.removeItem('free_gifts_session_unlocked');
+                for (let i = sessionStorage.length - 1; i >= 0; i--) {
+                    const key = sessionStorage.key(i);
+                    if (key && (key.startsWith('unlocked_album_') || key.includes('free-gifts') || key.includes('free_gifts'))) {
+                        sessionStorage.removeItem(key);
+                    }
+                }
+            }
+        } catch (_) {}
+        Router.handleRouting();
+        return;
+    }
+
     // Modal Close Button, Success Close Button, or Backdrop Click
     if (e.target && (e.target.id === 'spa-modal-close' || e.target.closest('#spa-modal-close') || e.target.id === 'spa-success-close-btn' || e.target.closest('#spa-success-close-btn') || e.target.classList.contains('spa-modal-overlay'))) {
         const modal = document.getElementById('spa-download-modal');
@@ -4748,6 +4792,9 @@ document.addEventListener('click', (e) => {
             const successView = document.getElementById('spa-success-view');
             if (formView) formView.style.display = 'block';
             if (successView) successView.style.display = 'none';
+        }
+        if (isFreeGiftsSessionUnlocked()) {
+            Router.handleRouting();
         }
         return;
     }
@@ -4950,8 +4997,12 @@ document.addEventListener('submit', async (e) => {
                 const successBtn = document.getElementById('spa-success-download-btn');
                 const viewBtn = document.getElementById('spa-success-view-btn');
 
-                if (successTitle && targetTitle) {
-                    successTitle.textContent = `${targetTitle} Unlocked!`;
+                if (successTitle) {
+                    successTitle.textContent = (result && result.isReturning) ? "Welcome Back! Profile Verified" : (targetTitle ? `${targetTitle} Unlocked!` : "Access Unlocked!");
+                }
+                const successMsg = document.getElementById('spa-success-msg');
+                if (successMsg && result && result.message) {
+                    successMsg.textContent = `${result.message} Your download is starting automatically. If it didn't begin, tap the button below:`;
                 }
 
                 // Standardize the download filename for proper device file manager organization
@@ -4999,9 +5050,10 @@ document.addEventListener('submit', async (e) => {
                         directDownloadFile(targetUrl, finalFilename, null);
                     }
                 }
-            } else if (isInlineForm && modal) {
-                // If unlocked through inline form, close modal if open
-                modal.classList.remove('active');
+            } else if (isInlineForm) {
+                // If unlocked through inline form, close modal if open and refresh route to show session status bar
+                if (modal) modal.classList.remove('active');
+                Router.handleRouting();
             }
 
         } catch (error) {

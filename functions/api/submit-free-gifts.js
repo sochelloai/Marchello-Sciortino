@@ -221,37 +221,20 @@ export async function onRequestPost(context) {
             }
         }
 
-        // --- STEP 2: Create or Update Contact with Tag and Custom Attributes ---
+        // --- STEP 2: Verify Existing Profile or Create New Contact with Custom Attributes ---
         let contactId = null;
-        const createContactUrl = `https://${cleanSubdomain}.myclickfunnels.com/api/v2/workspaces/${cleanWorkspaceId}/contacts`;
-        
+        let isReturning = false;
+
         const customAttributes = {
-            unlocked_free_gifts: "true"
+            unlocked_free_gifts: "true",
+            last_login_at: new Date().toISOString()
         };
         if (giftTitle) {
             customAttributes.last_unlocked_gift = giftTitle;
         }
 
-        const contactPayload = {
-            email_address: email,
-            custom_attributes: customAttributes
-        };
-
-        const contactBody = { contact: contactPayload };
-
-        const contactResponse = await fetch(createContactUrl, {
-            method: "POST",
-            headers: commonHeaders,
-            body: JSON.stringify(contactBody)
-        });
-
-        if (contactResponse.ok) {
-            const contactData = await contactResponse.json();
-            contactId = contactData.id || contactData.public_id;
-        } else {
-            await logErrorResponse("Create Contact", contactResponse);
-            // Fallback: If contact already exists or fails, try to fetch it by email address
-            const searchUrl = `https://${cleanSubdomain}.myclickfunnels.com/api/v2/workspaces/${cleanWorkspaceId}/contacts?filter%5Bemail_address%5D=${encodeURIComponent(email)}`;
+        const searchUrl = `https://${cleanSubdomain}.myclickfunnels.com/api/v2/workspaces/${cleanWorkspaceId}/contacts?filter%5Bemail_address%5D=${encodeURIComponent(email)}`;
+        try {
             const searchResponse = await fetch(searchUrl, {
                 method: "GET",
                 headers: commonHeaders
@@ -260,9 +243,10 @@ export async function onRequestPost(context) {
             if (searchResponse.ok) {
                 const searchData = await searchResponse.json();
                 const contactsList = Array.isArray(searchData) ? searchData : (searchData.contacts || []);
-                if (contactsList.length > 0) {
+                if (contactsList.length > 0 && (contactsList[0].id || contactsList[0].public_id)) {
                     contactId = contactsList[0].id || contactsList[0].public_id;
-                    
+                    isReturning = true;
+
                     try {
                         const existingAttrs = (contactsList[0] && typeof contactsList[0].custom_attributes === 'object' && contactsList[0].custom_attributes !== null)
                             ? contactsList[0].custom_attributes
@@ -286,17 +270,53 @@ export async function onRequestPost(context) {
                             await logErrorResponse("Update Contact", updateResponse);
                         }
                     } catch (updateErr) {
-                        console.error("Failed to update existing contact's custom attributes:", updateErr);
+                        console.error("[ClickFunnels] Failed to update existing contact's custom attributes:", updateErr);
                     }
                 }
             } else {
                 await logErrorResponse("Search Contact", searchResponse);
             }
+        } catch (searchErr) {
+            console.error("[ClickFunnels] Error querying contact profile:", searchErr);
+        }
+
+        // If not found in existing contacts, create new contact record in ClickFunnels
+        if (!contactId) {
+            const createContactUrl = `https://${cleanSubdomain}.myclickfunnels.com/api/v2/workspaces/${cleanWorkspaceId}/contacts`;
+            const contactPayload = {
+                email_address: email,
+                custom_attributes: customAttributes
+            };
+
+            const contactResponse = await fetch(createContactUrl, {
+                method: "POST",
+                headers: commonHeaders,
+                body: JSON.stringify({ contact: contactPayload })
+            });
+
+            if (contactResponse.ok) {
+                const contactData = await contactResponse.json();
+                contactId = contactData.id || contactData.public_id;
+            } else {
+                await logErrorResponse("Create Contact", contactResponse);
+                // Fallback check in case contact was created concurrently
+                try {
+                    const retryResponse = await fetch(searchUrl, { method: "GET", headers: commonHeaders });
+                    if (retryResponse.ok) {
+                        const retryData = await retryResponse.json();
+                        const retryList = Array.isArray(retryData) ? retryData : (retryData.contacts || []);
+                        if (retryList.length > 0) {
+                            contactId = retryList[0].id || retryList[0].public_id;
+                            isReturning = true;
+                        }
+                    }
+                } catch (_) {}
+            }
         }
 
         if (!contactId) {
             console.error("[ClickFunnels] Failed to create or locate contact in ClickFunnels.");
-            return createErrorResponse(502, "Could not unlock access in ClickFunnels. Please try again.", true, request);
+            return createErrorResponse(502, "Could not verify profile access in ClickFunnels. Please try again.", true, request);
         }
 
         // --- STEP 3: Explicitly Apply the Tag to the Contact via Applied Tags ---
@@ -328,7 +348,10 @@ export async function onRequestPost(context) {
 
         return createSuccessResponse({
             contactId: contactId,
-            message: "Access granted! Your free downloads are now unlocked."
+            isReturning: isReturning,
+            message: isReturning
+                ? "Welcome back! Your profile is verified and all free gifts are unlocked for your session."
+                : "Welcome! Your free gifts profile is active and all downloads are unlocked for your session."
         }, request);
 
     } catch (error) {
