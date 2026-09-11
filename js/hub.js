@@ -27,7 +27,7 @@ const Hub = {
             `;
 
             try {
-                const response = await fetch('data/articles.json');
+                const response = await fetch(`data/articles.json?v=${new Date().toISOString().slice(0, 10)}`);
                 if (!response.ok) {
                     throw new Error(`HTTP error ${response.status}`);
                 }
@@ -145,7 +145,7 @@ const Hub = {
                 <div class="blog-card-image" style="width: 100%; height: 180px; overflow: hidden; border-bottom: 1px solid var(--color-gray-border);">
                     <picture>
                         <source srcset="${art.image.replace(/\.(png|jpg|jpeg)$/i, '.webp')}" type="image/webp">
-                        <img src="${art.image.replace(/\.webp$/i, '.jpg')}" alt="${art.title}" loading="lazy" decoding="async" style="width: 100%; height: 100%; object-fit: cover; transition: var(--transition-fast);">
+                        <img src="${art.image.replace(/\.webp$/i, '.jpg')}" alt="${art.title}" loading="lazy" decoding="async" style="width: 100%; height: 100%; object-fit: cover; transition: var(--transition-fast);" onerror="this.onerror=null; this.src='${art.image.replace(/\.webp$/i, '.png')}';">
                     </picture>
                 </div>
                 ` : ''}
@@ -224,7 +224,7 @@ const Hub = {
                 <div style="width:100%; max-height:380px; overflow:hidden; border-radius:var(--radius-md); margin-bottom:20px; border:1px solid var(--color-gray-border);">
                     <picture>
                         <source srcset="${art.image.replace(/\.(png|jpg|jpeg)$/i, '.webp')}" type="image/webp">
-                        <img src="${art.image.replace(/\.webp$/i, '.jpg')}" alt="${art.title}" loading="lazy" decoding="async" style="width:100%; max-height:380px; object-fit:cover;">
+                        <img src="${art.image.replace(/\.webp$/i, '.jpg')}" alt="${art.title}" loading="lazy" decoding="async" style="width:100%; max-height:380px; object-fit:cover;" onerror="this.onerror=null; this.src='${art.image.replace(/\.webp$/i, '.png')}';">
                     </picture>
                 </div>
                 ` : ''}
