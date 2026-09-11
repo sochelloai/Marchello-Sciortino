@@ -5,6 +5,7 @@ const Hub = {
     articles: [],
     tags: ["All", "Story Notes", "AI and Accessibility", "Lessons From Limitation", "Tools I Use", "Daily Inspiration"],
     activeTag: "All",
+    version: "20260910-v17",
 
     async init() {
         this.tagFilters = document.getElementById('hub-tag-filters');
@@ -140,12 +141,16 @@ const Hub = {
             card.style.overflow = 'hidden';
             card.style.padding = '0'; // reset standard card padding to make image bleed
             
+            const webpUrl = art.image ? `${art.image.replace(/\.(png|jpg|jpeg)$/i, '.webp')}?v=${this.version}` : '';
+            const jpgUrl = art.image ? `${art.image.replace(/\.webp$/i, '.jpg')}?v=${this.version}` : '';
+            const pngUrl = art.image ? `${art.image.replace(/\.webp$/i, '.png')}?v=${this.version}` : '';
+
             card.innerHTML = `
                 ${art.image ? `
                 <div class="blog-card-image" style="width: 100%; height: 180px; overflow: hidden; border-bottom: 1px solid var(--color-gray-border);">
                     <picture>
-                        <source srcset="${art.image.replace(/\.(png|jpg|jpeg)$/i, '.webp')}" type="image/webp">
-                        <img src="${art.image.replace(/\.webp$/i, '.jpg')}" alt="${art.title}" loading="lazy" decoding="async" style="width: 100%; height: 100%; object-fit: cover; transition: var(--transition-fast);" onerror="this.onerror=null; this.src='${art.image.replace(/\.webp$/i, '.png')}';">
+                        <source srcset="${webpUrl}" type="image/webp">
+                        <img src="${jpgUrl}" alt="${art.title}" loading="lazy" decoding="async" style="width: 100%; height: 100%; object-fit: cover; transition: var(--transition-fast);" onerror="this.onerror=null; this.src='${pngUrl}';">
                     </picture>
                 </div>
                 ` : ''}
@@ -193,6 +198,10 @@ const Hub = {
             const shareUrl = encodeURIComponent(rawShareUrl);
             const shareTitle = encodeURIComponent(art.title);
             
+            const modalWebpUrl = art.image ? `${art.image.replace(/\.(png|jpg|jpeg)$/i, '.webp')}?v=${this.version}` : '';
+            const modalJpgUrl = art.image ? `${art.image.replace(/\.webp$/i, '.jpg')}?v=${this.version}` : '';
+            const modalPngUrl = art.image ? `${art.image.replace(/\.webp$/i, '.png')}?v=${this.version}` : '';
+
             body.innerHTML = `
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 15px; border-bottom: 1px solid var(--color-gray-border); padding-bottom: 10px;">
                     <div style="font-size:0.9rem; color:var(--color-gray-steel);">Published: ${art.date}</div>
@@ -223,8 +232,8 @@ const Hub = {
                 ${art.image ? `
                 <div style="width:100%; max-height:380px; overflow:hidden; border-radius:var(--radius-md); margin-bottom:20px; border:1px solid var(--color-gray-border);">
                     <picture>
-                        <source srcset="${art.image.replace(/\.(png|jpg|jpeg)$/i, '.webp')}" type="image/webp">
-                        <img src="${art.image.replace(/\.webp$/i, '.jpg')}" alt="${art.title}" loading="lazy" decoding="async" style="width:100%; max-height:380px; object-fit:cover;" onerror="this.onerror=null; this.src='${art.image.replace(/\.webp$/i, '.png')}';">
+                        <source srcset="${modalWebpUrl}" type="image/webp">
+                        <img src="${modalJpgUrl}" alt="${art.title}" loading="lazy" decoding="async" style="width:100%; max-height:380px; object-fit:cover;" onerror="this.onerror=null; this.src='${modalPngUrl}';">
                     </picture>
                 </div>
                 ` : ''}
