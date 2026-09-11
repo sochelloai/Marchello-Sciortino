@@ -2781,6 +2781,7 @@ const FREE_GIFTS_DATA = [
         slug: "50-images-of-possibility",
         title: "50 Images of Possibility",
         type: "AI Prompt Collection",
+        category: "collections",
         badge: "Available Now",
         meta_title: "50 Images of Possibility | Free AI Prompt Collection by Marchello Sciortino",
         meta_desc: "A curated collection of 50 inspirational AI image prompts by Marchello Sciortino for wallpapers, social graphics, vision boards, and motivational artwork.",
@@ -2800,6 +2801,7 @@ const FREE_GIFTS_DATA = [
         aliases: ["harder-does-not-equal-impossible"],
         title: "Harder ≠ Impossible",
         type: "Carousel & Worksheets",
+        category: "worksheets",
         badge: "Available Now",
         meta_title: "Harder ≠ Impossible | Free Carousel & Worksheets by Marchello Sciortino",
         meta_desc: "Sometimes the first path only looks easier. A 12-page visual carousel guide and practical reflection worksheets by Marchello Sciortino on mapping a route that builds sustainable growth.",
@@ -2818,6 +2820,7 @@ const FREE_GIFTS_DATA = [
         slug: "you-are-my-fortress",
         title: "You Are My Fortress",
         type: "Music Single",
+        category: "songs",
         badge: "Available Now",
         meta_title: "You Are My Fortress | Free Song Download by Marchello Sciortino",
         meta_desc: "An uplifting and powerful anthem of faith, strength, and resilience by Marchello Sciortino. Stream online or download the official high-quality MP3 track for free.",
@@ -2847,6 +2850,7 @@ const FREE_GIFTS_DATA = [
         slug: "win-anyway",
         title: "Win Anyway",
         type: "Music Album",
+        category: "songs",
         badge: "Available Now",
         meta_title: "Win Anyway | Free Music Album by Marchello Sciortino",
         meta_desc: "Winning Despite the Odds — The official 10-track album by Marchello Sciortino. Stream and download all 10 original anthems of faith, resilience, and triumph.",
@@ -2939,6 +2943,7 @@ const FREE_GIFTS_DATA = [
         slug: "from-idea-to-free-product",
         title: "From Idea to Free Product",
         type: "PDF Guide",
+        category: "pdfs",
         badge: "Available Now",
         meta_title: "From Idea to Free Product | Free PDF Guide by Marchello Sciortino",
         meta_desc: "How I create PDFs, images, checklists, worksheets, e-books, and downloads through creative amplification.",
@@ -2957,6 +2962,7 @@ const FREE_GIFTS_DATA = [
         slug: "10-ways-to-win",
         title: "10 Ways to Win Despite the Odds",
         type: "PDF Guide",
+        category: "pdfs",
         badge: "Available Now",
         meta_title: "10 Ways to Win Despite the Odds | Free PDF Guide by Marchello Sciortino",
         meta_desc: "Rise with purpose through faith & resilience, 10 actionable principles to overcome obstacles, and leveraging creativity, support, and AI tools.",
@@ -2975,6 +2981,7 @@ const FREE_GIFTS_DATA = [
         slug: "turn-a-still-ad-into-motion",
         title: "Turn a Still Ad Into Motion",
         type: "AI Video Guide",
+        category: "pdfs",
         badge: "Available Now",
         meta_title: "Turn a Still Ad Into Motion | Free AI Guide by Marchello Sciortino",
         meta_desc: "Simple ad-to-video workflow with Higgsfield AI, step-by-step Marketing Studio animation process, and transforming static image ads into dynamic motion.",
@@ -2993,6 +3000,7 @@ const FREE_GIFTS_DATA = [
         slug: "creative-amplification",
         title: "Creative Amplification Through AI",
         type: "PDF Guide",
+        category: "pdfs",
         badge: "Available Now",
         meta_title: "Creative Amplification Through AI | Free Download by Marchello Sciortino",
         meta_desc: "Principles of Articulated Inspiration, turning constraints into strategic leverage, and practical prompt configurations for creators.",
@@ -3011,6 +3019,7 @@ const FREE_GIFTS_DATA = [
         slug: "digital-flow-audit",
         title: "Digital Flow Audit Checklist",
         type: "Interactive Checklist",
+        category: "worksheets",
         badge: "Available Now",
         meta_title: "Digital Flow Audit Checklist | Free Download by Marchello Sciortino",
         meta_desc: "ADA accessibility compliance audit, speed & user experience friction check, and landing page conversion optimization.",
@@ -3029,6 +3038,7 @@ const FREE_GIFTS_DATA = [
         slug: "ai-accessibility-commands",
         title: "AI Accessibility Commands",
         type: "Prompt Cheat Sheet",
+        category: "collections",
         badge: "Available Now",
         meta_title: "AI Accessibility Commands | Free Guide by Marchello Sciortino",
         meta_desc: "Sketch notebook prompt cheat sheet, voice transcription guide templates, and configuring AI as a cognitive prosthetic.",
@@ -3047,6 +3057,7 @@ const FREE_GIFTS_DATA = [
         slug: "win-reframe-matrix",
         title: "W.I.N. Reframe Matrix",
         type: "Ebook & Worksheet",
+        category: "worksheets",
         badge: "Available Now",
         meta_title: "W.I.N. Reframe Matrix | Free Ebook by Marchello Sciortino",
         meta_desc: "Reflection grid for active constraints, breaking mental friction loops, and custom tactical action plan builder.",
@@ -3064,11 +3075,21 @@ const FREE_GIFTS_DATA = [
 
 // Free Gifts & Free Library Main Grid Template
 const freeGiftsTemplate = () => {
+    // Dynamic counts per category
+    const categoryCounts = {
+        all: FREE_GIFTS_DATA.length,
+        worksheets: FREE_GIFTS_DATA.filter(g => g.category === 'worksheets').length,
+        collections: FREE_GIFTS_DATA.filter(g => g.category === 'collections').length,
+        pdfs: FREE_GIFTS_DATA.filter(g => g.category === 'pdfs').length,
+        songs: FREE_GIFTS_DATA.filter(g => g.category === 'songs').length
+    };
+
     const cardsHtml = FREE_GIFTS_DATA.map((gift, index) => {
         const isDirectPage = gift.direct_page_only || (gift.file_url && gift.file_url.startsWith('/') && !gift.file_url.endsWith('.pdf'));
+        const category = gift.category || 'worksheets';
         return `
         <!-- Item ${index + 1}: ${gift.title} -->
-        <div class="teaser-card" id="${gift.slug}">
+        <div class="teaser-card" id="${gift.slug}" data-category="${category}">
             <div class="card-cover-wrapper">
                 <a href="/${gift.slug}" style="display: block; width: 100%; height: 100%;">
                     <picture>
@@ -3145,6 +3166,140 @@ const freeGiftsTemplate = () => {
             color: #475569;
             font-size: 1.05rem;
             line-height: 1.65;
+        }
+
+        /* Horizontal Category Navigation Bar */
+        .gift-nav-wrapper {
+            margin: 0 auto 34px;
+            max-width: 1200px;
+            position: relative;
+        }
+
+        .gift-nav-scroll {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 6px 4px 12px;
+            margin: 0 -4px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .gift-nav-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        @media (min-width: 900px) {
+            .gift-nav-scroll {
+                justify-content: center;
+                flex-wrap: wrap;
+                padding-bottom: 4px;
+            }
+        }
+
+        .gift-topic-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            padding: 10px 18px;
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 9999px;
+            color: #475569;
+            font-family: var(--font-heading, inherit);
+            font-size: 0.92rem;
+            font-weight: 700;
+            white-space: nowrap;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+            transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+            outline: none;
+            flex-shrink: 0;
+            user-select: none;
+        }
+
+        .gift-topic-btn:hover {
+            background: #ffffff;
+            border-color: #0ad8ad;
+            color: #0f172a;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(10, 216, 173, 0.18);
+        }
+
+        .gift-topic-btn.active {
+            background: #081b29;
+            border-color: #0ad8ad;
+            color: #ffffff;
+            box-shadow: 0 6px 20px rgba(10, 216, 173, 0.28);
+            transform: translateY(-2px);
+        }
+
+        .gift-topic-icon {
+            font-size: 1.1rem;
+            line-height: 1;
+            display: inline-block;
+            transition: transform 0.2s ease;
+        }
+
+        .gift-topic-btn:hover .gift-topic-icon {
+            transform: scale(1.15);
+        }
+
+        .gift-topic-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 22px;
+            height: 22px;
+            padding: 0 6px;
+            border-radius: 9999px;
+            background: #f1f5f9;
+            color: #64748b;
+            font-size: 0.76rem;
+            font-weight: 800;
+            line-height: 1;
+            transition: all 0.22s ease;
+        }
+
+        .gift-topic-btn:hover .gift-topic-badge {
+            background: rgba(10, 216, 173, 0.18);
+            color: #081b29;
+        }
+
+        .gift-topic-btn.active .gift-topic-badge {
+            background: #0ad8ad;
+            color: #081b29;
+            font-weight: 900;
+        }
+
+        .gift-empty-filter {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 50px 24px;
+            background: #ffffff;
+            border: 2px dashed #cbd5e1;
+            border-radius: 18px;
+            color: #64748b;
+            display: none;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+        }
+
+        .teaser-card.fade-in {
+            animation: giftCardFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes giftCardFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
         .teaser-grid {
@@ -3451,10 +3606,10 @@ const freeGiftsTemplate = () => {
         </div>
     </div>
 
-    <section class="section bg-white" style="padding: 60px 0 90px; background-color: #f8fafc;">
+    <section class="section bg-white" style="padding: 40px 0 90px; background-color: #f8fafc;">
         <div class="container">
             ${isFreeGiftsSessionUnlocked() ? `
-            <div class="session-profile-status-bar" id="session-profile-status-bar" style="max-width: 900px; margin: 0 auto 36px; background: rgba(10, 216, 173, 0.08); border: 1px solid rgba(10, 216, 173, 0.35); border-radius: 12px; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; box-sizing: border-box;">
+            <div class="session-profile-status-bar" id="session-profile-status-bar" style="max-width: 900px; margin: 0 auto 30px; background: rgba(10, 216, 173, 0.08); border: 1px solid rgba(10, 216, 173, 0.35); border-radius: 12px; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; box-sizing: border-box;">
                 <div style="display: flex; align-items: center; gap: 10px; color: #0f172a; font-size: 0.95rem; font-weight: 600;">
                     <span style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: #0ad8ad; color: #081b29; border-radius: 50%; font-size: 0.8rem; font-weight: 800;">✓</span>
                     <span>Free Gifts Profile Active &bull; All Downloads Unlocked for this Session</span>
@@ -3464,8 +3619,48 @@ const freeGiftsTemplate = () => {
                 </button>
             </div>
             ` : ''}
-            <div class="teaser-grid">
+
+            <!-- Horizontal Category / Topic Filter Navigation Bar -->
+            <div class="gift-nav-wrapper">
+                <nav class="gift-nav-scroll" role="tablist" aria-label="Free Gift Categories">
+                    <button type="button" class="gift-topic-btn active js-gift-topic-btn" data-topic="all" role="tab" aria-selected="true">
+                        <span class="gift-topic-icon">✨</span>
+                        <span class="gift-topic-label">All Downloads</span>
+                        <span class="gift-topic-badge">${categoryCounts.all}</span>
+                    </button>
+                    <button type="button" class="gift-topic-btn js-gift-topic-btn" data-topic="worksheets" role="tab" aria-selected="false">
+                        <span class="gift-topic-icon">📝</span>
+                        <span class="gift-topic-label">Worksheets &amp; Checklists</span>
+                        <span class="gift-topic-badge">${categoryCounts.worksheets}</span>
+                    </button>
+                    <button type="button" class="gift-topic-btn js-gift-topic-btn" data-topic="collections" role="tab" aria-selected="false">
+                        <span class="gift-topic-icon">🎨</span>
+                        <span class="gift-topic-label">Collections &amp; Prompts</span>
+                        <span class="gift-topic-badge">${categoryCounts.collections}</span>
+                    </button>
+                    <button type="button" class="gift-topic-btn js-gift-topic-btn" data-topic="pdfs" role="tab" aria-selected="false">
+                        <span class="gift-topic-icon">📄</span>
+                        <span class="gift-topic-label">PDF Guides &amp; Ebooks</span>
+                        <span class="gift-topic-badge">${categoryCounts.pdfs}</span>
+                    </button>
+                    <button type="button" class="gift-topic-btn js-gift-topic-btn" data-topic="songs" role="tab" aria-selected="false">
+                        <span class="gift-topic-icon">🎵</span>
+                        <span class="gift-topic-label">Songs &amp; Audio</span>
+                        <span class="gift-topic-badge">${categoryCounts.songs}</span>
+                    </button>
+                </nav>
+            </div>
+
+            <div class="teaser-grid" id="free-gifts-grid">
                 ${cardsHtml}
+                <div id="gift-empty-filter" class="gift-empty-filter">
+                    <div style="font-size: 2.2rem; margin-bottom: 8px;">📂</div>
+                    <h4 style="font-family: var(--font-heading); color: #0f172a; margin: 0 0 6px; font-size: 1.2rem;">No downloads found</h4>
+                    <p style="margin: 0 0 16px; font-size: 0.95rem;">There are currently no items matching this category.</p>
+                    <button type="button" class="gift-topic-btn active js-gift-topic-btn" data-topic="all" style="margin: 0 auto;">
+                        Show All Downloads
+                    </button>
+                </div>
             </div>
         </div>
     </section>
@@ -4751,6 +4946,53 @@ function openUnlockModal(targetFile, targetTitle, targetFilename = '') {
     }, 80);
 }
 
+// Apply category filter on Free Gifts page
+function applyGiftTopicFilter(topic, targetBtn) {
+    const navBar = document.querySelector('.gift-nav-scroll');
+    if (!navBar) return;
+
+    const allBtns = navBar.querySelectorAll('.js-gift-topic-btn');
+    allBtns.forEach(btn => {
+        const btnTopic = btn.getAttribute('data-topic');
+        const isSelected = (btnTopic === topic) || (targetBtn && btn === targetBtn);
+        btn.classList.toggle('active', isSelected);
+        btn.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+    });
+
+    const activeBtn = targetBtn || navBar.querySelector(`.js-gift-topic-btn[data-topic="${topic}"]`);
+    if (activeBtn && typeof activeBtn.scrollIntoView === 'function') {
+        try {
+            activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        } catch (_) {}
+    }
+
+    const cards = document.querySelectorAll('.teaser-grid .teaser-card');
+    let visibleCount = 0;
+    cards.forEach(card => {
+        const cardCategory = card.getAttribute('data-category');
+        if (topic === 'all' || cardCategory === topic) {
+            card.style.display = 'flex';
+            card.classList.remove('fade-in');
+            void card.offsetWidth; // Force reflow for animation
+            card.classList.add('fade-in');
+            visibleCount++;
+        } else {
+            card.style.display = 'none';
+        }
+    });
+
+    const emptyNotice = document.getElementById('gift-empty-filter');
+    if (emptyNotice) {
+        emptyNotice.style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+
+    if (window.history && window.history.replaceState) {
+        const hash = topic === 'all' ? '' : '#' + topic;
+        const newUrl = window.location.pathname + window.location.search + hash;
+        window.history.replaceState(null, '', newUrl);
+    }
+}
+
 // Global click event listener for SPA download triggers
 document.addEventListener('click', (e) => {
     // Only handle genuine human user clicks; ignore programmatic synthetic clicks
@@ -4760,6 +5002,16 @@ document.addEventListener('click', (e) => {
 
     // Ignore synthetic programmatic click events from download triggers
     if (e.target.closest('.js-bypass-download')) {
+        return;
+    }
+
+    // Category / Topic Filter Navigation Buttons on Free Gifts Page
+    const topicBtn = e.target.closest('.js-gift-topic-btn');
+    if (topicBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const selectedTopic = topicBtn.getAttribute('data-topic') || 'all';
+        applyGiftTopicFilter(selectedTopic, topicBtn);
         return;
     }
 
@@ -5173,8 +5425,8 @@ document.addEventListener('click', (e) => {
     }
 });
 
-// Auto-advance track on ended
-document.addEventListener('page-loaded', () => {
+// Auto-advance track on ended & initialize Free Gifts category filter
+document.addEventListener('page-loaded', (e) => {
     const audio = document.getElementById('gift-album-audio');
     if (audio) {
         audio.addEventListener('ended', () => {
@@ -5187,6 +5439,17 @@ document.addEventListener('page-loaded', () => {
                 resetAlbumTrackStates();
             }
         });
+    }
+
+    // Auto-apply hash category filter on Free Gifts page
+    if (e.detail && (e.detail.page === 'free-gifts' || e.detail.page === 'free-library')) {
+        const hash = (window.location.hash || '').replace('#', '').toLowerCase();
+        const validTopics = ['worksheets', 'collections', 'pdfs', 'songs'];
+        if (validTopics.includes(hash)) {
+            setTimeout(() => {
+                applyGiftTopicFilter(hash);
+            }, 30);
+        }
     }
 });
 

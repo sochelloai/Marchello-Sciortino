@@ -14,7 +14,8 @@
     ],
     "cover_image": "/assets/free-gifts/50_Images_of_Possibility_cover.png",
     "file_url": "/assets/free-gifts/50_Images_of_Possibility.pdf",
-    "button_label": "Download Collection"
+    "button_label": "Download Collection",
+    "category": "collections"
   },
   {
     "id": "harder-not-impossible",
@@ -34,7 +35,8 @@
     ],
     "cover_image": "/assets/free-gifts/Harder_Does_Not_Equal_Impossible_cover.png",
     "file_url": "/assets/free-gifts/Harder_Does_Not_Equal_Impossible_Carousel_and_Worksheets_Marchello_Sciortino.pdf",
-    "button_label": "Download Worksheets"
+    "button_label": "Download Worksheets",
+    "category": "worksheets"
   },
   {
     "id": "you-are-my-fortress",
@@ -62,7 +64,8 @@
         "cover": "/assets/free-gifts/you-are-my-fortress/you_are_my_fortress_display.png",
         "duration": "6:32"
       }
-    ]
+    ],
+    "category": "songs"
   },
   {
     "id": "win-anyway",
@@ -153,7 +156,8 @@
         "cover": "/assets/free-gifts/win-anyway/10-the-next-step-cover.png",
         "duration": "3:02"
       }
-    ]
+    ],
+    "category": "songs"
   },
   {
     "id": "from-idea-to-free-product",
@@ -170,7 +174,8 @@
     ],
     "cover_image": "/assets/free-gifts/From_Idea_to_Free_Product_cover.png",
     "file_url": "/assets/free-gifts/From_Idea_to_Free_Product_Marchello_Sciortino.pdf",
-    "button_label": "Download PDF"
+    "button_label": "Download PDF",
+    "category": "pdfs"
   },
   {
     "id": "10-ways-to-win",
@@ -187,7 +192,8 @@
     ],
     "cover_image": "/assets/free-gifts/10_Ways_to_Win_Despite_the_Odds_cover.png",
     "file_url": "/assets/free-gifts/10_Ways_to_Win_Despite_the_Odds_Marchello_Sciortino.pdf",
-    "button_label": "Download PDF"
+    "button_label": "Download PDF",
+    "category": "pdfs"
   },
   {
     "id": "turn-a-still-ad-into-motion",
@@ -204,7 +210,8 @@
     ],
     "cover_image": "/assets/free-gifts/creative_amplification_higgsfield_guide_cover.png",
     "file_url": "/assets/free-gifts/creative_amplification_higgsfield_guide.pdf",
-    "button_label": "Download Guide"
+    "button_label": "Download Guide",
+    "category": "pdfs"
   },
   {
     "id": "creative-amplification",
@@ -221,7 +228,8 @@
     ],
     "cover_image": "/assets/free-gifts/creative_amplification_cover.png",
     "file_url": "/assets/free-gifts/Creative_amplification_through_AI.pdf",
-    "button_label": "Download PDF"
+    "button_label": "Download PDF",
+    "category": "pdfs"
   },
   {
     "id": "digital-flow-audit",
@@ -238,7 +246,8 @@
     ],
     "cover_image": "/assets/free-gifts/Digital_Flow_Audit_cover_image.png",
     "file_url": "/assets/free-gifts/Digital_Flow_Audit_Checklist_Enhanced.pdf",
-    "button_label": "Download Checklist"
+    "button_label": "Download Checklist",
+    "category": "worksheets"
   },
   {
     "id": "ai-accessibility-commands",
@@ -255,7 +264,8 @@
     ],
     "cover_image": "/assets/free-gifts/Prompt_Cheat_Sheat_cover_image.png",
     "file_url": "/assets/free-gifts/Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf",
-    "button_label": "Download Guide"
+    "button_label": "Download Guide",
+    "category": "collections"
   },
   {
     "id": "win-reframe-matrix",
@@ -272,6 +282,7 @@
     ],
     "cover_image": "/assets/free-gifts/WIN_Reframe_Matrix_cover_image.png",
     "file_url": "/assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf",
-    "button_label": "Download Ebook"
+    "button_label": "Download Ebook",
+    "category": "worksheets"
   }
 ]
