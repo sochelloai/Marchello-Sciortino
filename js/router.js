@@ -3563,8 +3563,8 @@ const freeGiftsTemplate = () => {
         .spa-modal-card {
             background: #ffffff;
             border-radius: 20px;
-            padding: 36px;
-            max-width: 460px;
+            padding: 36px 24px 30px;
+            max-width: 490px;
             width: 100%;
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
             position: relative;
@@ -3627,19 +3627,18 @@ const freeGiftsTemplate = () => {
 
         .unlock-security-disclaimer {
             white-space: normal !important;
-            font-size: 0.76rem !important;
-            letter-spacing: -0.01em;
+            font-size: 0.72rem !important;
+            letter-spacing: -0.015em;
             display: block;
             margin: 12px auto 0;
             color: #64748b;
-            line-height: 1.35;
+            line-height: 1.4;
             text-align: center;
             width: 100%;
-            max-width: 320px;
+            max-width: 100%;
             box-sizing: border-box;
             overflow: visible !important;
             text-overflow: clip !important;
-            text-wrap: balance;
         }
 
         .unlock-security-disclaimer .lock-icon {
@@ -3657,12 +3656,11 @@ const freeGiftsTemplate = () => {
             text-decoration: underline;
             text-underline-offset: 3px;
             white-space: normal !important;
-            line-height: 1.35;
+            line-height: 1.4;
             transition: color 0.2s;
-            max-width: 320px;
-            margin-left: auto;
-            margin-right: auto;
-            text-wrap: balance;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
         }
 
         .btn-decline-home:hover {
@@ -3688,14 +3686,14 @@ const freeGiftsTemplate = () => {
             .unlock-security-disclaimer {
                 font-size: 0.70rem !important;
                 line-height: 1.35 !important;
-                max-width: 290px;
                 margin: 10px auto 0 !important;
+                max-width: 100% !important;
             }
             .btn-decline-home {
                 font-size: 0.72rem !important;
-                line-height: 1.3 !important;
-                max-width: 290px;
+                line-height: 1.35 !important;
                 margin-top: 10px !important;
+                max-width: 100% !important;
             }
         }
 
@@ -3710,14 +3708,12 @@ const freeGiftsTemplate = () => {
             }
             .unlock-security-disclaimer {
                 font-size: 0.65rem !important;
-                line-height: 1.28 !important;
-                max-width: 260px;
+                line-height: 1.3 !important;
                 margin: 8px auto 0 !important;
             }
             .btn-decline-home {
                 font-size: 0.68rem !important;
-                line-height: 1.28 !important;
-                max-width: 260px;
+                line-height: 1.3 !important;
             }
         }
 
@@ -4198,8 +4194,8 @@ const singleGiftTemplate = (gift) => {
         .spa-modal-card {
             background: #ffffff;
             border-radius: 20px;
-            padding: 36px;
-            max-width: 460px;
+            padding: 36px 24px 30px;
+            max-width: 490px;
             width: 100%;
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
             position: relative;
@@ -4489,8 +4485,8 @@ const singleGiftTemplate = (gift) => {
         .album-inline-unlock-card {
             background: #ffffff;
             border-radius: 20px;
-            padding: 38px 30px;
-            max-width: 480px;
+            padding: 38px 24px 32px;
+            max-width: 520px;
             width: 100%;
             margin: 0 auto;
             box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08), 0 0 25px rgba(10, 216, 173, 0.12);
@@ -4507,19 +4503,18 @@ const singleGiftTemplate = (gift) => {
 
         .unlock-security-disclaimer {
             white-space: normal !important;
-            font-size: 0.76rem !important;
-            letter-spacing: -0.01em;
+            font-size: 0.72rem !important;
+            letter-spacing: -0.015em;
             display: block;
             margin: 12px auto 0;
             color: #64748b;
-            line-height: 1.35;
+            line-height: 1.4;
             text-align: center;
             width: 100%;
-            max-width: 320px;
+            max-width: 100%;
             box-sizing: border-box;
             overflow: visible !important;
             text-overflow: clip !important;
-            text-wrap: balance;
         }
 
         .unlock-security-disclaimer .lock-icon {
@@ -4537,12 +4532,11 @@ const singleGiftTemplate = (gift) => {
             text-decoration: underline;
             text-underline-offset: 3px;
             white-space: normal !important;
-            line-height: 1.35;
+            line-height: 1.4;
             transition: color 0.2s;
-            max-width: 320px;
-            margin-left: auto;
-            margin-right: auto;
-            text-wrap: balance;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
         }
 
         .btn-decline-home:hover {
@@ -4572,14 +4566,14 @@ const singleGiftTemplate = (gift) => {
             .unlock-security-disclaimer {
                 font-size: 0.70rem !important;
                 line-height: 1.35 !important;
-                max-width: 290px;
                 margin: 10px auto 0 !important;
+                max-width: 100% !important;
             }
             .btn-decline-home {
                 font-size: 0.72rem !important;
-                line-height: 1.3 !important;
-                max-width: 290px;
+                line-height: 1.35 !important;
                 margin-top: 10px !important;
+                max-width: 100% !important;
             }
         }
 
@@ -4595,14 +4589,12 @@ const singleGiftTemplate = (gift) => {
             }
             .unlock-security-disclaimer {
                 font-size: 0.65rem !important;
-                line-height: 1.28 !important;
-                max-width: 260px;
+                line-height: 1.3 !important;
                 margin: 8px auto 0 !important;
             }
             .btn-decline-home {
                 font-size: 0.68rem !important;
-                line-height: 1.28 !important;
-                max-width: 260px;
+                line-height: 1.3 !important;
             }
         }
 
