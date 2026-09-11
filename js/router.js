@@ -154,6 +154,8 @@ const Router = {
                 '/you-are-my-fortress': "You Are My Fortress | Free Song Download by Marchello Sciortino",
                 '/harder-not-impossible': "Harder ≠ Impossible | Free Carousel & Worksheets by Marchello Sciortino",
                 '/50-images-of-possibility': "50 Images of Possibility | Free AI Prompt Collection by Marchello Sciortino",
+                '/i-need-help-with-this': "I Need Help With This | Free Prompt Pack & Visual Guide by Marchello Sciortino",
+                '/i-need-help-with-this-prompt-pack': "I Need Help With This | Free Prompt Pack & Visual Guide by Marchello Sciortino",
                 '/resources': "Resources | Marchello Sciortino",
                 '/privacy': "Privacy Policy | Marchello Sciortino",
                 '/terms': "Terms of Service | Marchello Sciortino",
@@ -2776,6 +2778,26 @@ Router.register('/contact', () => {
 
 // 14. Free Gifts Data Registry & Template System
 const FREE_GIFTS_DATA = [
+    {
+        id: "i-need-help-with-this",
+        slug: "i-need-help-with-this",
+        aliases: ["i-need-help-with-this-prompt-pack"],
+        title: "I Need Help With This",
+        type: "Prompt Pack & Visual Guide",
+        category: "collections",
+        badge: "Available Now",
+        meta_title: "I Need Help With This | Free Prompt Pack & Visual Guide by Marchello Sciortino",
+        meta_desc: "40 copy-and-paste prompts for when you feel stuck, overwhelmed, low-energy, or unsure of the next step. A 10-page visual edition by Marchello Sciortino.",
+        bullets: [
+            "40 copy-and-paste prompts for when you feel stuck, overwhelmed, or low-energy.",
+            "Break down big problems, discover easier routes, and let AI assist with clarity.",
+            "10-page full-color visual edition designed for creative amplification and real momentum."
+        ],
+        cover_image: "/assets/free-gifts/I_Need_Help_With_This_cover.png",
+        file_url: "/assets/free-gifts/I_Need_Help_With_This_Prompt_Pack_10_Page_Visual_Edition.pdf",
+        download_filename: "I_Need_Help_With_This_Prompt_Pack_Marchello_Sciortino.pdf",
+        button_label: "Download Prompt Pack"
+    },
     {
         id: "50-images-of-possibility",
         slug: "50-images-of-possibility",
