@@ -250,7 +250,7 @@ window.renderTurnstileForForm = function(containerElement, theme = 'auto') {
             const widgetId = window.turnstile.render(containerElement, {
                 sitekey: TURNSTILE_SITE_KEY,
                 theme: theme,
-                size: 'normal',
+                size: 'flexible',
                 'expired-callback': function() {
                     if (window.turnstile) window.turnstile.reset(widgetId);
                 }

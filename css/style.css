@@ -6502,15 +6502,52 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 14px 0;
+    margin: 14px auto;
     min-height: 65px;
     width: 100%;
-    overflow: hidden;
+    max-width: 100%;
+    overflow: visible;
+    box-sizing: border-box;
 }
 
 .turnstile-container:empty {
     min-height: 0;
     margin: 0;
+}
+
+.turnstile-container > * {
+    margin: 0 auto !important;
+    max-width: 100% !important;
+}
+
+.turnstile-container iframe {
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    display: block !important;
+}
+
+/* Ensure Cloudflare Turnstile card fits seamlessly on all mobile screens */
+@media (max-width: 480px) {
+    .turnstile-container {
+        margin: 12px auto;
+        overflow: visible;
+    }
+}
+
+@media (max-width: 360px) {
+    .turnstile-container {
+        transform: scale(0.92);
+        transform-origin: center center;
+        margin: 8px auto;
+    }
+}
+
+@media (max-width: 330px) {
+    .turnstile-container {
+        transform: scale(0.85);
+        transform-origin: center center;
+        margin: 6px auto;
+    }
 }
 
 .form-error-banner {

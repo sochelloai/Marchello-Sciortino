@@ -3571,6 +3571,7 @@ const freeGiftsTemplate = () => {
             transform: translateY(20px);
             transition: transform 0.3s ease;
             text-align: center;
+            box-sizing: border-box;
         }
 
         .spa-modal-overlay.active .spa-modal-card {
@@ -3642,9 +3643,43 @@ const freeGiftsTemplate = () => {
         }
 
         @media (max-width: 640px) {
+            .spa-modal-overlay {
+                padding: 10px;
+            }
+            .spa-modal-card {
+                padding: 26px 14px 20px;
+                border-radius: 16px;
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+            .turnstile-container {
+                margin: 12px auto;
+                width: 100%;
+                max-width: 100%;
+                overflow: visible;
+            }
             .unlock-security-disclaimer {
                 font-size: clamp(0.60rem, 2.3vw, 0.74rem) !important;
                 letter-spacing: -0.02em;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .spa-modal-card {
+                padding: 22px 10px 18px;
+            }
+            .turnstile-container {
+                transform: scale(0.92);
+                transform-origin: center center;
+                margin: 8px auto;
+            }
+        }
+
+        @media (max-width: 330px) {
+            .turnstile-container {
+                transform: scale(0.85);
+                transform-origin: center center;
+                margin: 6px auto;
             }
         }
     </style>
@@ -4442,12 +4477,48 @@ const singleGiftTemplate = (gift) => {
         }
 
         @media (max-width: 640px) {
+            .spa-modal-overlay {
+                padding: 10px;
+            }
+            .spa-modal-card {
+                padding: 26px 14px 20px;
+                border-radius: 16px;
+                max-width: 100%;
+                box-sizing: border-box;
+            }
             .album-inline-unlock-card {
-                padding: 28px 18px;
+                padding: 24px 14px 20px;
+                border-radius: 16px;
+            }
+            .turnstile-container {
+                margin: 12px auto;
+                width: 100%;
+                max-width: 100%;
+                overflow: visible;
             }
             .unlock-security-disclaimer {
                 font-size: clamp(0.60rem, 2.3vw, 0.74rem) !important;
                 letter-spacing: -0.02em;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .spa-modal-card,
+            .album-inline-unlock-card {
+                padding: 22px 10px 18px;
+            }
+            .turnstile-container {
+                transform: scale(0.92);
+                transform-origin: center center;
+                margin: 8px auto;
+            }
+        }
+
+        @media (max-width: 330px) {
+            .turnstile-container {
+                transform: scale(0.85);
+                transform-origin: center center;
+                margin: 6px auto;
             }
         }
     </style>
