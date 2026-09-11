@@ -823,7 +823,16 @@ function purgeLegacyLocalEmailData() {
             keysToRemove.forEach(k => localStorage.removeItem(k));
         }
         if (typeof sessionStorage !== 'undefined') {
-            sessionStorage.clear();
+            sessionStorage.removeItem('free-gifts-saved-email');
+            sessionStorage.removeItem('user-email');
+            const sessionKeysToRemove = [];
+            for (let i = 0; i < sessionStorage.length; i++) {
+                const key = sessionStorage.key(i);
+                if (key && (key.startsWith('ms-form-') || key.includes('email'))) {
+                    sessionKeysToRemove.push(key);
+                }
+            }
+            sessionKeysToRemove.forEach(k => sessionStorage.removeItem(k));
         }
     } catch (e) {
         // Storage access restricted or disabled

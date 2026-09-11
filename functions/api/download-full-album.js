@@ -21,7 +21,7 @@ export async function onRequest(context) {
         return new Response(null, {
             headers: {
                 "Content-Type": "application/zip",
-                "Content-Disposition": 'attachment; filename="Win_Anyway_Full_Album.zip"',
+                "Content-Disposition": 'attachment; filename="Win_Anyway_Full_Album_Marchello_Sciortino.zip"',
                 "Content-Length": "66156645",
                 "Cache-Control": "public, max-age=86400",
                 "X-Content-Type-Options": "nosniff",
@@ -79,7 +79,7 @@ export async function onRequest(context) {
         return new Response(readable, {
             headers: {
                 "Content-Type": "application/zip",
-                "Content-Disposition": 'attachment; filename="Win_Anyway_Full_Album.zip"',
+                "Content-Disposition": 'attachment; filename="Win_Anyway_Full_Album_Marchello_Sciortino.zip"',
                 "Content-Length": "66156645",
                 "Cache-Control": "public, max-age=86400",
                 "X-Content-Type-Options": "nosniff",

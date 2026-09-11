@@ -20,10 +20,11 @@ const Router = {
                 }
             }
             if (typeof sessionStorage !== 'undefined') {
-                sessionStorage.removeItem('free-gifts-unlocked');
+                sessionStorage.removeItem('free-gifts-saved-email');
+                sessionStorage.removeItem('user-email');
                 for (let i = sessionStorage.length - 1; i >= 0; i--) {
                     const key = sessionStorage.key(i);
-                    if (key && (key.startsWith('unlocked_album_') || key.includes('free-gifts'))) {
+                    if (key && (key.startsWith('ms-form-') || key.includes('email'))) {
                         sessionStorage.removeItem(key);
                     }
                 }
@@ -2789,7 +2790,8 @@ const FREE_GIFTS_DATA = [
             "Ready-to-use prompts designed to spark imagination and creative agency."
         ],
         cover_image: "/assets/free-gifts/50_Images_of_Possibility_cover.png",
-        file_url: "https://www.marchellosciortino.com/assets/free-gifts/50_Images_of_Possibility.pdf",
+        file_url: "/assets/free-gifts/50_Images_of_Possibility.pdf",
+        download_filename: "50_Images_of_Possibility_Marchello_Sciortino.pdf",
         button_label: "Download Collection"
     },
     {
@@ -2807,7 +2809,8 @@ const FREE_GIFTS_DATA = [
             "Worksheet 2: Map a route with tools, support, and sustainable commitments."
         ],
         cover_image: "/assets/free-gifts/Harder_Does_Not_Equal_Impossible_cover.png",
-        file_url: "https://www.marchellosciortino.com/assets/free-gifts/Harder_Does_Not_Equal_Impossible_Carousel_and_Worksheets_Marchello_Sciortino.pdf",
+        file_url: "/assets/free-gifts/Harder_Does_Not_Equal_Impossible_Carousel_and_Worksheets_Marchello_Sciortino.pdf",
+        download_filename: "Harder_Does_Not_Equal_Impossible_Worksheets_Marchello_Sciortino.pdf",
         button_label: "Download Worksheets"
     },
     {
@@ -2826,6 +2829,7 @@ const FREE_GIFTS_DATA = [
         cover_image: "/assets/free-gifts/you-are-my-fortress/you_are_my_fortress_thumbnail.png",
         display_image: "/assets/free-gifts/you-are-my-fortress/you_are_my_fortress_display.png",
         file_url: "/you-are-my-fortress",
+        download_filename: "You_Are_My_Fortress_Marchello_Sciortino.mp3",
         button_label: "Listen & Download",
         direct_page_only: true,
         tracks: [
@@ -2854,6 +2858,7 @@ const FREE_GIFTS_DATA = [
         cover_image: "/assets/free-gifts/win_anyway_cover.jpg",
         file_url: "/win-anyway",
         album_zip_url: "#download-full-album",
+        download_filename: "Win_Anyway_Full_Album_Marchello_Sciortino.zip",
         button_label: "Win Anyway Album",
         direct_page_only: true,
         tracks: [
@@ -2943,7 +2948,8 @@ const FREE_GIFTS_DATA = [
             "Creative amplification download framework."
         ],
         cover_image: "/assets/free-gifts/From_Idea_to_Free_Product_cover.png",
-        file_url: "https://www.marchellosciortino.com/assets/free-gifts/From_Idea_to_Free_Product_Marchello_Sciortino.pdf",
+        file_url: "/assets/free-gifts/From_Idea_to_Free_Product_Marchello_Sciortino.pdf",
+        download_filename: "From_Idea_to_Free_Product_Guide_Marchello_Sciortino.pdf",
         button_label: "Download PDF"
     },
     {
@@ -2960,7 +2966,8 @@ const FREE_GIFTS_DATA = [
             "Leveraging creativity, support, and AI tools."
         ],
         cover_image: "/assets/free-gifts/10_Ways_to_Win_Despite_the_Odds_cover.png",
-        file_url: "https://www.marchellosciortino.com/assets/free-gifts/10_Ways_to_Win_Despite_the_Odds_Marchello_Sciortino.pdf",
+        file_url: "/assets/free-gifts/10_Ways_to_Win_Despite_the_Odds_Marchello_Sciortino.pdf",
+        download_filename: "10_Ways_to_Win_Despite_the_Odds_Marchello_Sciortino.pdf",
         button_label: "Download PDF"
     },
     {
@@ -2977,7 +2984,8 @@ const FREE_GIFTS_DATA = [
             "Transforming static image ads into dynamic motion."
         ],
         cover_image: "/assets/free-gifts/creative_amplification_higgsfield_guide_cover.png",
-        file_url: "https://www.marchellosciortino.com/assets/free-gifts/creative_amplification_higgsfield_guide.pdf",
+        file_url: "/assets/free-gifts/creative_amplification_higgsfield_guide.pdf",
+        download_filename: "Turn_a_Still_Ad_Into_Motion_Higgsfield_Guide.pdf",
         button_label: "Download Guide"
     },
     {
@@ -2994,7 +3002,8 @@ const FREE_GIFTS_DATA = [
             "Practical prompt configurations for creators."
         ],
         cover_image: "/assets/free-gifts/creative_amplification_cover.png",
-        file_url: "https://www.marchellosciortino.com/assets/free-gifts/Creative_amplification_through_AI.pdf",
+        file_url: "/assets/free-gifts/Creative_amplification_through_AI.pdf",
+        download_filename: "Creative_Amplification_Through_AI_Marchello_Sciortino.pdf",
         button_label: "Download PDF"
     },
     {
@@ -3011,7 +3020,8 @@ const FREE_GIFTS_DATA = [
             "Landing page conversion optimization."
         ],
         cover_image: "/assets/free-gifts/Digital_Flow_Audit_cover_image.png",
-        file_url: "https://www.marchellosciortino.com/assets/free-gifts/Digital_Flow_Audit_Checklist_Enhanced.pdf",
+        file_url: "/assets/free-gifts/Digital_Flow_Audit_Checklist_Enhanced.pdf",
+        download_filename: "Digital_Flow_Audit_Checklist_Marchello_Sciortino.pdf",
         button_label: "Download Checklist"
     },
     {
@@ -3028,7 +3038,8 @@ const FREE_GIFTS_DATA = [
             "Configuring AI as a cognitive prosthetic."
         ],
         cover_image: "/assets/free-gifts/Prompt_Cheat_Sheat_cover_image.png",
-        file_url: "https://www.marchellosciortino.com/assets/free-gifts/Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf",
+        file_url: "/assets/free-gifts/Prompt_Cheat_Sheet_Sketch_Notebook_Edition.pdf",
+        download_filename: "AI_Accessibility_Commands_Prompt_Cheat_Sheet.pdf",
         button_label: "Download Guide"
     },
     {
@@ -3045,7 +3056,8 @@ const FREE_GIFTS_DATA = [
             "Custom tactical action plan builder."
         ],
         cover_image: "/assets/free-gifts/WIN_Reframe_Matrix_cover_image.png",
-        file_url: "https://www.marchellosciortino.com/assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf",
+        file_url: "/assets/free-gifts/WIN_Reframe_Matrix_Ebook_by_Marchello_Sciortino.pdf",
+        download_filename: "WIN_Reframe_Matrix_Ebook_Marchello_Sciortino.pdf",
         button_label: "Download Ebook"
     }
 ];
@@ -3078,7 +3090,7 @@ const freeGiftsTemplate = () => {
                         ${gift.button_label} &rarr;
                     </a>
                 ` : `
-                    <a href="${gift.file_url}" target="_blank" rel="noopener noreferrer" class="btn-download-trigger js-spa-download-btn" data-title="${gift.title}" data-file="${gift.file_url}">
+                    <a href="${gift.file_url}" class="btn-download-trigger js-spa-download-btn" data-title="${gift.title}" data-file="${gift.file_url}" data-filename="${gift.download_filename || ''}">
                         ${gift.button_label}
                     </a>
                 `}
@@ -3450,7 +3462,7 @@ const freeGiftsTemplate = () => {
     <!-- Login / Unlock Modal -->
     <div class="spa-modal-overlay" id="spa-download-modal">
         <div class="spa-modal-card">
-            <button class="spa-modal-close" id="spa-modal-close">&times;</button>
+            <button class="spa-modal-close" id="spa-modal-close" aria-label="Close modal">&times;</button>
             <div id="spa-form-view">
                 <h3 style="color: #0f172a; margin-bottom: 8px;">Unlock All Downloads</h3>
                 <p id="spa-copy-text" style="color: #475569; font-size: 0.95rem; margin-bottom: 20px;">
@@ -3470,13 +3482,47 @@ const freeGiftsTemplate = () => {
                     </a>
                 </form>
             </div>
+            <div id="spa-success-view" style="display: none; text-align: center; padding: 10px 0;">
+                <div style="width: 56px; height: 56px; background: rgba(16, 185, 129, 0.12); border: 2px solid #10b981; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #10b981; margin: 0 auto 16px;">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <h3 id="spa-success-title" style="color: #0f172a; font-family: var(--font-heading); font-size: 1.45rem; font-weight: 800; margin: 0 0 8px;">Access Unlocked!</h3>
+                <p id="spa-success-msg" style="color: #475569; font-size: 0.95rem; margin: 0 0 20px; line-height: 1.5;">
+                    Your download is starting automatically. If it didn't begin, tap the button below:
+                </p>
+                <a id="spa-success-download-btn" href="#" download="" class="btn-unlock-orange" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #ff5722; color: #ffffff; width: 100%; padding: 15px 20px; font-size: 1.05rem; font-weight: 700; border-radius: 10px; text-decoration: none; box-sizing: border-box; box-shadow: 0 8px 20px rgba(255, 87, 34, 0.35); transition: background 0.2s, transform 0.15s;">
+                    ⬇ Download File Now
+                </a>
+                <div style="margin-top: 14px; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                    <a id="spa-success-view-btn" href="#" target="_blank" rel="noopener noreferrer" style="display: none; color: #0ad8ad; font-weight: 700; font-size: 0.92rem; text-decoration: underline; text-underline-offset: 3px;">
+                        👁 View / Save in Browser
+                    </a>
+                    <button type="button" id="spa-success-close-btn" style="background: transparent; border: none; color: #94a3b8; font-size: 0.88rem; cursor: pointer; text-decoration: underline; margin-top: 6px;">
+                        Done / Return to Page
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
     `;
 };
 
+// Session-level download access check (Zero email retention rule respected)
+function isFreeGiftsSessionUnlocked() {
+    try {
+        if (typeof sessionStorage !== 'undefined') {
+            return sessionStorage.getItem('free_gifts_session_unlocked') === 'true';
+        }
+    } catch (_) {}
+    return false;
+}
+
 // Helper to check if the current album/track page is unlocked
 function isAlbumPageUnlocked(slug) {
+    if (isFreeGiftsSessionUnlocked()) return true;
+    if (typeof sessionStorage !== 'undefined' && slug && sessionStorage.getItem('unlocked_album_' + slug) === 'true') {
+        return true;
+    }
     const albumWrap = document.getElementById('gift-album-player-wrap');
     if (albumWrap && albumWrap.style.display !== 'none' && !albumWrap.classList.contains('is-locked')) {
         return true;
@@ -3487,8 +3533,8 @@ function isAlbumPageUnlocked(slug) {
 // Dedicated Single Free Gift Landing Page Template
 const singleGiftTemplate = (gift) => {
     const shareUrl = `https://marchellosciortino.com/${gift.slug}`;
-    // Official track cards are strictly hidden by default until unlock form is submitted
-    const isUnlocked = false;
+    // Check if session is already unlocked
+    const isUnlocked = isAlbumPageUnlocked(gift.slug);
 
     return `
     <style>
@@ -4182,7 +4228,7 @@ const singleGiftTemplate = (gift) => {
                 <div class="single-gift-one-column-row">
                     ${gift.tracks && gift.tracks.length > 0 ? `
                     <!-- In-Place Unlock Form Card (Gates live streaming & MP3 downloads until unlocked) -->
-                    <div class="album-inline-unlock-card" id="album-inline-unlock-card" data-target-title="${gift.title}" style="display: block;">
+                    <div class="album-inline-unlock-card" id="album-inline-unlock-card" data-target-title="${gift.title}" style="display: ${isUnlocked ? 'none' : 'block'};">
                         <div style="width: 52px; height: 52px; background: rgba(255, 87, 34, 0.12); border: 2px solid #ff5722; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #ff5722; margin: 0 auto 16px;">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                         </div>
@@ -4206,7 +4252,7 @@ const singleGiftTemplate = (gift) => {
                     </div>
 
                     <!-- Official Track Album / Single Player Card (Hidden until unlock form is submitted) -->
-                    <div class="gift-album-player-wrap" id="gift-album-player-wrap" style="display: none !important; background: #081b29; border-radius: 20px; padding: 28px; color: #fff; border: 1px solid rgba(10, 216, 173, 0.3); box-shadow: 0 16px 40px rgba(0,0,0,0.35); width: 100%; box-sizing: border-box; position: relative;">
+                    <div class="gift-album-player-wrap" id="gift-album-player-wrap" style="display: ${isUnlocked ? 'block' : 'none'} !important; background: #081b29; border-radius: 20px; padding: 28px; color: #fff; border: 1px solid rgba(10, 216, 173, 0.3); box-shadow: 0 16px 40px rgba(0,0,0,0.35); width: 100%; box-sizing: border-box; position: relative;">
                         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 16px;">
                             <div style="display: flex; align-items: center; gap: 14px;">
                                 <div class="album-header-icon" style="width: 42px; height: 42px; background: rgba(10, 216, 173, 0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #0ad8ad; transition: all 0.3s ease;">
@@ -4281,7 +4327,7 @@ const singleGiftTemplate = (gift) => {
                     </div>
                     ` : `
                     <div class="action-row" style="margin-bottom: 24px;">
-                        <a href="${gift.file_url}" target="_blank" rel="noopener noreferrer" class="btn-download-primary js-spa-download-btn" data-title="${gift.title}" data-file="${gift.file_url}">
+                        <a href="${gift.file_url}" class="btn-download-primary js-spa-download-btn" data-title="${gift.title}" data-file="${gift.file_url}" data-filename="${gift.download_filename || ''}">
                             ${gift.button_label} &darr;
                         </a>
                     </div>
@@ -4299,9 +4345,9 @@ const singleGiftTemplate = (gift) => {
     </div>
 
     <!-- Login / Unlock Modal -->
-    <div class="spa-modal-overlay" id="spa-download-modal" data-target-file="${gift.tracks ? '' : (gift.file_url || '')}" data-target-title="${gift.title}">
+    <div class="spa-modal-overlay" id="spa-download-modal" data-target-file="${gift.tracks ? '' : (gift.file_url || '')}" data-target-title="${gift.title}" data-target-filename="${gift.download_filename || ''}">
         <div class="spa-modal-card">
-            <button class="spa-modal-close" id="spa-modal-close">&times;</button>
+            <button class="spa-modal-close" id="spa-modal-close" aria-label="Close modal">&times;</button>
             <div id="spa-form-view">
                 <h3 style="color: #0f172a; margin-bottom: 8px;">Unlock All Downloads</h3>
                 <p id="spa-copy-text" style="color: #475569; font-size: 0.95rem; margin-bottom: 20px;">
@@ -4321,87 +4367,150 @@ const singleGiftTemplate = (gift) => {
                     </a>
                 </form>
             </div>
+            <div id="spa-success-view" style="display: none; text-align: center; padding: 10px 0;">
+                <div style="width: 56px; height: 56px; background: rgba(16, 185, 129, 0.12); border: 2px solid #10b981; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #10b981; margin: 0 auto 16px;">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <h3 id="spa-success-title" style="color: #0f172a; font-family: var(--font-heading); font-size: 1.45rem; font-weight: 800; margin: 0 0 8px;">Access Unlocked!</h3>
+                <p id="spa-success-msg" style="color: #475569; font-size: 0.95rem; margin: 0 0 20px; line-height: 1.5;">
+                    Your download is starting automatically. If it didn't begin, tap the button below:
+                </p>
+                <a id="spa-success-download-btn" href="#" download="" class="btn-unlock-orange" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #ff5722; color: #ffffff; width: 100%; padding: 15px 20px; font-size: 1.05rem; font-weight: 700; border-radius: 10px; text-decoration: none; box-sizing: border-box; box-shadow: 0 8px 20px rgba(255, 87, 34, 0.35); transition: background 0.2s, transform 0.15s;">
+                    ⬇ Download File Now
+                </a>
+                <div style="margin-top: 14px; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                    <a id="spa-success-view-btn" href="#" target="_blank" rel="noopener noreferrer" style="display: none; color: #0ad8ad; font-weight: 700; font-size: 0.92rem; text-decoration: underline; text-underline-offset: 3px;">
+                        👁 View / Save in Browser
+                    </a>
+                    <button type="button" id="spa-success-close-btn" style="background: transparent; border: none; color: #94a3b8; font-size: 0.88rem; cursor: pointer; text-decoration: underline; margin-top: 6px;">
+                        Done / Return to Page
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
     `;
 };
 
-// Force direct download of any file to local disk (mobile-compatible & desktop-compatible)
-function directDownloadFile(fileUrl, suggestedFilename, btn) {
+// Clean and standardize filename for proper device file manager organization
+function formatProperDownloadFilename(fileUrl, suggestedFilename) {
+    if (suggestedFilename && typeof suggestedFilename === 'string' && suggestedFilename.trim() && suggestedFilename.includes('.')) {
+        return suggestedFilename.trim().replace(/[^a-zA-Z0-9._ -]/g, '_');
+    }
+    const cleanPath = (fileUrl || '').split('?')[0].split('#')[0];
+    let base = cleanPath.split('/').pop() || 'download';
+    if (!base.includes('.')) {
+        base += cleanPath.endsWith('.mp3') ? '.mp3' : (cleanPath.endsWith('.zip') ? '.zip' : '.pdf');
+    }
+    return base.replace(/[^a-zA-Z0-9._ -]/g, '_');
+}
+
+// Session-level download access check (Zero email retention rule respected)
+function isFreeGiftsSessionUnlocked() {
+    try {
+        if (typeof sessionStorage !== 'undefined') {
+            return sessionStorage.getItem('free_gifts_session_unlocked') === 'true';
+        }
+    } catch (_) {}
+    return false;
+}
+
+// Force direct download of any file to local disk (cross-platform desktop, mobile, & tablet)
+async function directDownloadFile(fileUrl, suggestedFilename, btn) {
     if (!fileUrl) return;
 
     let originalHtml = '';
     if (btn) {
         originalHtml = btn.innerHTML;
-        btn.innerHTML = `<span style="display:inline-block; animation: spin 1s linear infinite;">⟳</span> Starting Download...`;
+        btn.innerHTML = `<span style="display:inline-block; animation: spin 1s linear infinite;">⟳</span> Downloading...`;
+        btn.disabled = true;
     }
 
+    const restoreBtn = (msg = '✓ Download Started!') => {
+        if (btn) {
+            btn.innerHTML = msg;
+            setTimeout(() => {
+                btn.innerHTML = originalHtml;
+                btn.disabled = false;
+                btn.style.pointerEvents = 'auto';
+            }, 3000);
+        }
+    };
+
+    // Normalize path and clean filename
+    let cleanPath = fileUrl;
+    try {
+        if (fileUrl.startsWith('http://') || fileUrl.startsWith('https://')) {
+            cleanPath = new URL(fileUrl).pathname;
+        }
+    } catch (_) {}
+
+    const properFilename = formatProperDownloadFilename(cleanPath, suggestedFilename);
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && window.innerWidth < 1024);
     const isLocalhost = window.location.hostname.includes('127.0.0.1') || window.location.hostname.includes('localhost');
 
-    let downloadUrl = fileUrl;
-    if (typeof fileUrl === 'string' && fileUrl.startsWith('/assets/free-gifts/') && fileUrl.endsWith('.mp3')) {
-        // Use dedicated download-track endpoint with Content-Disposition: attachment
-        if (!isLocalhost || isMobile) {
-            downloadUrl = `/api/download-track?file=${encodeURIComponent(fileUrl)}&name=${encodeURIComponent(suggestedFilename)}`;
+    const apiDownloadUrl = `/api/download-gift?file=${encodeURIComponent(cleanPath)}&name=${encodeURIComponent(properFilename)}`;
+
+    // Strategy 1: In-Memory Blob Download (Universally compatible on Desktop & Android Chrome)
+    // Same-origin blob URLs force desktop and mobile Chrome to honor the download attribute and save to disk
+    try {
+        const fetchRes = await fetch(cleanPath);
+        if (fetchRes.ok) {
+            const blob = await fetchRes.blob();
+            const blobUrl = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.className = 'js-bypass-download';
+            a.style.display = 'none';
+            a.href = blobUrl;
+            a.download = properFilename;
+            a.setAttribute('download', properFilename);
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(() => {
+                if (a.parentNode) document.body.removeChild(a);
+                URL.revokeObjectURL(blobUrl);
+            }, 60000);
+
+            restoreBtn('✓ Download Started!');
+            return;
+        }
+    } catch (blobErr) {
+        console.warn('[Direct Download] Local blob fetch attempt failed, using server stream:', blobErr);
+    }
+
+    // Strategy 2: Server-Side Attachment Stream (Native iOS Safari / iPadOS Files App & Android)
+    // Cloudflare Pages Function emits Content-Disposition: attachment; filename="${properFilename}"
+    if (!isLocalhost) {
+        if (isMobile) {
+            window.location.href = apiDownloadUrl;
         } else {
-            downloadUrl = fileUrl;
-        }
-    }
-
-    // On mobile, for PDFs, opening directly gives iOS Safari and Chrome native reader and share/save options
-    if (isMobile && typeof fileUrl === 'string' && fileUrl.endsWith('.pdf')) {
-        window.open(fileUrl, '_blank');
-        if (btn) {
-            btn.innerHTML = `✓ Opened Guide`;
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = apiDownloadUrl;
+            document.body.appendChild(iframe);
             setTimeout(() => {
-                btn.innerHTML = originalHtml;
-                btn.disabled = false;
-                btn.style.pointerEvents = 'auto';
-            }, 2000);
+                if (iframe.parentNode) document.body.removeChild(iframe);
+            }, 15000);
         }
+        restoreBtn('✓ Download Started!');
         return;
     }
 
-    // On mobile devices, setting location directly triggers the native download window immediately on the 1st tap!
-    if (isMobile) {
-        window.location.href = downloadUrl;
-        if (btn) {
-            btn.innerHTML = `✓ Download Started!`;
-            setTimeout(() => {
-                btn.innerHTML = originalHtml;
-                btn.disabled = false;
-                btn.style.pointerEvents = 'auto';
-            }, 2500);
-        }
-        return;
-    }
-
-    // Direct synchronous download trigger with off-screen element (desktop compatible)
-    const a = document.createElement('a');
-    a.className = 'js-bypass-download';
-    a.style.position = 'fixed';
-    a.style.left = '-9999px';
-    a.style.top = '0';
-    a.style.opacity = '0';
-    a.href = downloadUrl;
-    a.download = suggestedFilename;
-    a.setAttribute('download', suggestedFilename);
-    a.addEventListener('click', (e) => e.stopPropagation());
-    document.body.appendChild(a);
-    a.click();
-
+    // Strategy 3: Direct Link Fallback (Local static dev server)
+    const directLink = document.createElement('a');
+    directLink.className = 'js-bypass-download';
+    directLink.style.display = 'none';
+    directLink.href = cleanPath;
+    directLink.download = properFilename;
+    directLink.setAttribute('download', properFilename);
+    directLink.target = '_blank';
+    document.body.appendChild(directLink);
+    directLink.click();
     setTimeout(() => {
-        if (a.parentNode) document.body.removeChild(a);
-        if (btn) {
-            btn.innerHTML = `✓ Download Started!`;
-            setTimeout(() => {
-                btn.innerHTML = originalHtml;
-                btn.disabled = false;
-                btn.style.pointerEvents = 'auto';
-            }, 2500);
-        }
-    }, 150);
+        if (directLink.parentNode) document.body.removeChild(directLink);
+    }, 1000);
+
+    restoreBtn('✓ Download Started!');
 }
 
 // Downloads the real 10-track zipped folder directly without leaving the page
@@ -4414,10 +4523,10 @@ async function downloadFullAlbumZip(btn) {
     }
 
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && window.innerWidth < 1024);
+    const isLocalhost = window.location.hostname.includes('127.0.0.1') || window.location.hostname.includes('localhost');
 
     // On mobile devices (or in production), trigger server stream directly for zero RAM footprint
     const triggerServerStream = () => {
-        // On mobile devices, direct navigation immediately triggers the native iOS/Android download prompt on the 1st tap!
         if (isMobile) {
             window.location.href = '/api/download-full-album';
             if (btn) {
@@ -4438,8 +4547,8 @@ async function downloadFullAlbumZip(btn) {
         downloadLink.style.top = '0';
         downloadLink.style.opacity = '0';
         downloadLink.href = '/api/download-full-album';
-        downloadLink.download = 'Win_Anyway_Full_Album.zip';
-        downloadLink.setAttribute('download', 'Win_Anyway_Full_Album.zip');
+        downloadLink.download = 'Win_Anyway_Full_Album_Marchello_Sciortino.zip';
+        downloadLink.setAttribute('download', 'Win_Anyway_Full_Album_Marchello_Sciortino.zip');
         downloadLink.addEventListener('click', (e) => e.stopPropagation());
         document.body.appendChild(downloadLink);
         downloadLink.click();
@@ -4457,13 +4566,13 @@ async function downloadFullAlbumZip(btn) {
         }, 150);
     };
 
-    // If mobile or live production domain, always use server stream
-    if (isMobile || (!window.location.hostname.includes('127.0.0.1') && !window.location.hostname.includes('localhost'))) {
+    // If on live production or endpoint is available, use server stream
+    if (!isLocalhost) {
         triggerServerStream();
         return;
     }
 
-    // On localhost desktop only: verify if /api/download-full-album exists, else assemble chunks locally
+    // On localhost: verify if /api/download-full-album exists, else assemble chunks locally
     try {
         const check = await fetch('/api/download-full-album', { method: 'HEAD' });
         if (check.ok) {
@@ -4471,7 +4580,7 @@ async function downloadFullAlbumZip(btn) {
             return;
         }
     } catch (e) {
-        // Fall through to local chunk assembly on bare static dev server
+        // Fall through to local chunk assembly on static dev server
     }
 
     // Local static server chunk assembly fallback
@@ -4506,8 +4615,8 @@ async function downloadFullAlbumZip(btn) {
         downloadLink.className = 'js-bypass-download js-full-album-btn';
         downloadLink.style.display = 'none';
         downloadLink.href = downloadUrl;
-        downloadLink.download = 'Win_Anyway_Full_Album.zip';
-        downloadLink.setAttribute('download', 'Win_Anyway_Full_Album.zip');
+        downloadLink.download = 'Win_Anyway_Full_Album_Marchello_Sciortino.zip';
+        downloadLink.setAttribute('download', 'Win_Anyway_Full_Album_Marchello_Sciortino.zip');
         document.body.appendChild(downloadLink);
         downloadLink.click();
         document.body.removeChild(downloadLink);
@@ -4574,6 +4683,7 @@ function openUnlockModal(targetFile, targetTitle, targetFilename = '') {
     const heading = modal.querySelector('h3');
     const copyText = document.getElementById('spa-copy-text');
     const formView = document.getElementById('spa-form-view');
+    const successView = document.getElementById('spa-success-view');
     const emailInput = document.getElementById('spa-modal-email');
 
     if (heading) {
@@ -4583,6 +4693,7 @@ function openUnlockModal(targetFile, targetTitle, targetFilename = '') {
         copyText.textContent = targetTitle ? `Unlock "${targetTitle}" by entering your email.` : 'Unlock all downloads by entering your email.';
     }
     if (formView) formView.style.display = 'block';
+    if (successView) successView.style.display = 'none';
 
     if (targetFile) modal.setAttribute('data-target-file', targetFile);
     if (targetTitle) modal.setAttribute('data-target-title', targetTitle);
@@ -4628,10 +4739,16 @@ document.addEventListener('click', (e) => {
         return;
     }
 
-    // Modal Close Button or Backdrop Click
-    if (e.target && (e.target.id === 'spa-modal-close' || e.target.closest('#spa-modal-close') || e.target.classList.contains('spa-modal-overlay'))) {
+    // Modal Close Button, Success Close Button, or Backdrop Click
+    if (e.target && (e.target.id === 'spa-modal-close' || e.target.closest('#spa-modal-close') || e.target.id === 'spa-success-close-btn' || e.target.closest('#spa-success-close-btn') || e.target.classList.contains('spa-modal-overlay'))) {
         const modal = document.getElementById('spa-download-modal');
-        if (modal) modal.classList.remove('active');
+        if (modal) {
+            modal.classList.remove('active');
+            const formView = document.getElementById('spa-form-view');
+            const successView = document.getElementById('spa-success-view');
+            if (formView) formView.style.display = 'block';
+            if (successView) successView.style.display = 'none';
+        }
         return;
     }
 
@@ -4641,9 +4758,9 @@ document.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
         const currentSlug = window.location.pathname.replace(/^\/|\/$/g, '');
-        const isUnlocked = isAlbumPageUnlocked(currentSlug);
+        const isUnlocked = isAlbumPageUnlocked(currentSlug) || isFreeGiftsSessionUnlocked();
         if (!isUnlocked) {
-            openUnlockModal('action:download-full-album', 'Win Anyway (Full Album)', 'Win Anyway - Complete Album.zip');
+            openUnlockModal('action:download-full-album', 'Win Anyway (Full Album)', 'Win_Anyway_Full_Album_Marchello_Sciortino.zip');
             return;
         }
     }
@@ -4654,10 +4771,10 @@ document.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
         const currentSlug = window.location.pathname.replace(/^\/|\/$/g, '');
-        const isUnlocked = isAlbumPageUnlocked(currentSlug);
+        const isUnlocked = isAlbumPageUnlocked(currentSlug) || isFreeGiftsSessionUnlocked();
         if (!isUnlocked) {
             const title = fullAlbumBtn.getAttribute('data-title') || 'Win Anyway (Full Album)';
-            openUnlockModal('action:download-full-album', title, 'Win Anyway - Complete Album.zip');
+            openUnlockModal('action:download-full-album', title, 'Win_Anyway_Full_Album_Marchello_Sciortino.zip');
             return;
         }
         downloadFullAlbumZip(fullAlbumBtn);
@@ -4674,7 +4791,7 @@ document.addEventListener('click', (e) => {
         const filename = trackDownloadBtn.getAttribute('data-filename') || `${title}.mp3`;
 
         const currentSlug = window.location.pathname.replace(/^\/|\/$/g, '');
-        const isUnlocked = isAlbumPageUnlocked(currentSlug);
+        const isUnlocked = isAlbumPageUnlocked(currentSlug) || isFreeGiftsSessionUnlocked();
         if (!isUnlocked) {
             openUnlockModal(fileUrl, title, filename);
             return;
@@ -4697,7 +4814,15 @@ document.addEventListener('click', (e) => {
 
         const fileUrl = docDownloadBtn.getAttribute('data-file') || docDownloadBtn.getAttribute('href');
         const title = docDownloadBtn.getAttribute('data-title') || 'Free Gift';
-        const filename = fileUrl ? fileUrl.split('/').pop() : `${title}.pdf`;
+        const filename = docDownloadBtn.getAttribute('data-filename') || (fileUrl ? fileUrl.split('/').pop() : `${title}.pdf`);
+
+        const currentSlug = window.location.pathname.replace(/^\/|\/$/g, '');
+        const isUnlocked = isAlbumPageUnlocked(currentSlug) || isFreeGiftsSessionUnlocked();
+        if (isUnlocked && fileUrl) {
+            directDownloadFile(fileUrl, filename, docDownloadBtn);
+            return;
+        }
+
         openUnlockModal(fileUrl, title, filename);
         return;
     }
@@ -4709,6 +4834,10 @@ document.addEventListener('keydown', (e) => {
         const modal = document.getElementById('spa-download-modal');
         if (modal && modal.classList.contains('active')) {
             modal.classList.remove('active');
+            const formView = document.getElementById('spa-form-view');
+            const successView = document.getElementById('spa-success-view');
+            if (formView) formView.style.display = 'block';
+            if (successView) successView.style.display = 'none';
         }
     }
 });
@@ -4783,34 +4912,14 @@ document.addEventListener('submit', async (e) => {
             }
 
             const currentSlug = window.location.pathname.replace(/^\/|\/$/g, '');
-            if (typeof sessionStorage !== 'undefined' && currentSlug) {
-                sessionStorage.setItem('unlocked_album_' + currentSlug, 'true');
-            }
-
-            // Trigger target action or direct download ONLY if initiated from the download modal!
-            // When unlocking via the in-place unlock card on direct pages, a download must NEVER start automatically.
-            // Downloads start ONLY when the visitor explicitly clicks a track download or full album download button.
-            if (isModalForm && targetUrl) {
-                if (targetUrl === 'action:download-full-album') {
-                    downloadFullAlbumZip(document.querySelector('.btn-download-full-album, .js-full-album-btn'));
-                } else if (targetUrl.endsWith('.mp3') || (modal && modal.hasAttribute('data-target-filename'))) {
-                    const targetFilename = modal ? modal.getAttribute('data-target-filename') || 'Track.mp3' : 'Track.mp3';
-                    directDownloadFile(targetUrl, targetFilename, null);
-                } else if (targetUrl !== '#' && !targetUrl.endsWith('#') && targetUrl !== 'action:unlock-album') {
-                    const suggestedName = targetUrl.split('/').pop() || 'download';
-                    directDownloadFile(targetUrl, suggestedName, null);
+            if (typeof sessionStorage !== 'undefined') {
+                sessionStorage.setItem('free_gifts_session_unlocked', 'true');
+                if (currentSlug) {
+                    sessionStorage.setItem('unlocked_album_' + currentSlug, 'true');
                 }
             }
 
-            // Close modal and clear any target attributes
-            if (modal) {
-                modal.removeAttribute('data-target-file');
-                modal.removeAttribute('data-target-filename');
-                modal.removeAttribute('data-target-title');
-                modal.classList.remove('active');
-            }
-
-            // Hide in-place unlock card
+            // Hide in-place unlock card if present
             if (inlineCard) {
                 inlineCard.style.setProperty('display', 'none', 'important');
             }
@@ -4830,6 +4939,69 @@ document.addEventListener('submit', async (e) => {
             const turnstileContainer = form.querySelector('.turnstile-container');
             if (turnstileContainer && typeof window.resetTurnstileForForm === 'function') {
                 window.resetTurnstileForForm(turnstileContainer);
+            }
+
+            // If unlocked from the modal, transition to the robust success view and trigger the download
+            if (isModalForm && modal) {
+                const targetFilename = modal.getAttribute('data-target-filename');
+                const formView = document.getElementById('spa-form-view');
+                const successView = document.getElementById('spa-success-view');
+                const successTitle = document.getElementById('spa-success-title');
+                const successBtn = document.getElementById('spa-success-download-btn');
+                const viewBtn = document.getElementById('spa-success-view-btn');
+
+                if (successTitle && targetTitle) {
+                    successTitle.textContent = `${targetTitle} Unlocked!`;
+                }
+
+                // Standardize the download filename for proper device file manager organization
+                let finalFilename = '';
+                let directApiUrl = '';
+
+                if (targetUrl === 'action:download-full-album') {
+                    finalFilename = 'Win_Anyway_Full_Album_Marchello_Sciortino.zip';
+                    directApiUrl = '/api/download-full-album';
+                } else if (targetUrl) {
+                    let cleanPath = targetUrl;
+                    try {
+                        if (targetUrl.startsWith('http://') || targetUrl.startsWith('https://')) {
+                            cleanPath = new URL(targetUrl).pathname;
+                        }
+                    } catch (_) {}
+                    finalFilename = formatProperDownloadFilename(cleanPath, targetFilename || (targetTitle ? `${targetTitle}.pdf` : 'download.pdf'));
+                    directApiUrl = `/api/download-gift?file=${encodeURIComponent(cleanPath)}&name=${encodeURIComponent(finalFilename)}`;
+                }
+
+                if (successBtn && directApiUrl) {
+                    successBtn.href = directApiUrl;
+                    successBtn.setAttribute('download', finalFilename);
+                    successBtn.download = finalFilename;
+                }
+
+                if (viewBtn) {
+                    if (targetUrl && (targetUrl.endsWith('.pdf') || (!targetUrl.endsWith('.mp3') && !targetUrl.endsWith('.zip') && targetUrl !== 'action:download-full-album'))) {
+                        viewBtn.href = targetUrl;
+                        viewBtn.style.display = 'inline-block';
+                    } else {
+                        viewBtn.style.display = 'none';
+                    }
+                }
+
+                // Transition modal views: hide form, show high-visibility success view
+                if (formView) formView.style.display = 'none';
+                if (successView) successView.style.display = 'block';
+
+                // Automatically trigger download in parallel
+                if (targetUrl) {
+                    if (targetUrl === 'action:download-full-album') {
+                        downloadFullAlbumZip(document.querySelector('.btn-download-full-album, .js-full-album-btn'));
+                    } else if (targetUrl !== '#' && !targetUrl.endsWith('#') && targetUrl !== 'action:unlock-album') {
+                        directDownloadFile(targetUrl, finalFilename, null);
+                    }
+                }
+            } else if (isInlineForm && modal) {
+                // If unlocked through inline form, close modal if open
+                modal.classList.remove('active');
             }
 
         } catch (error) {
