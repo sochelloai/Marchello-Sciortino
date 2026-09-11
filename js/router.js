@@ -3168,43 +3168,29 @@ const freeGiftsTemplate = () => {
             line-height: 1.65;
         }
 
-        /* Horizontal Category Navigation Bar */
+        /* Simplified Navigation & Responsive Mobile Dropdown */
         .gift-nav-wrapper {
-            margin: 0 auto 34px;
+            margin: 0 auto 32px;
             max-width: 1200px;
             position: relative;
+            padding: 0 16px;
+            box-sizing: border-box;
         }
 
-        .gift-nav-scroll {
+        /* Desktop pills */
+        .gift-nav-desktop {
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
-            overflow-x: auto;
-            overflow-y: hidden;
-            padding: 6px 4px 12px;
-            margin: 0 -4px;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .gift-nav-scroll::-webkit-scrollbar {
-            display: none;
-        }
-
-        @media (min-width: 900px) {
-            .gift-nav-scroll {
-                justify-content: center;
-                flex-wrap: wrap;
-                padding-bottom: 4px;
-            }
+            flex-wrap: wrap;
         }
 
         .gift-topic-btn {
             display: inline-flex;
             align-items: center;
-            gap: 9px;
-            padding: 10px 18px;
+            gap: 8px;
+            padding: 9px 18px;
             background: #ffffff;
             border: 1.5px solid #e2e8f0;
             border-radius: 9999px;
@@ -3214,7 +3200,7 @@ const freeGiftsTemplate = () => {
             font-weight: 700;
             white-space: nowrap;
             cursor: pointer;
-            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
             transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
             outline: none;
             flex-shrink: 0;
@@ -3238,7 +3224,7 @@ const freeGiftsTemplate = () => {
         }
 
         .gift-topic-icon {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             line-height: 1;
             display: inline-block;
             transition: transform 0.2s ease;
@@ -3252,13 +3238,13 @@ const freeGiftsTemplate = () => {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            min-width: 22px;
-            height: 22px;
+            min-width: 20px;
+            height: 20px;
             padding: 0 6px;
             border-radius: 9999px;
             background: #f1f5f9;
             color: #64748b;
-            font-size: 0.76rem;
+            font-size: 0.74rem;
             font-weight: 800;
             line-height: 1;
             transition: all 0.22s ease;
@@ -3273,6 +3259,81 @@ const freeGiftsTemplate = () => {
             background: #0ad8ad;
             color: #081b29;
             font-weight: 900;
+        }
+
+        /* Mobile Dropdown Element */
+        .gift-nav-mobile {
+            display: none;
+            width: 100%;
+            max-width: 440px;
+            margin: 0 auto;
+        }
+
+        .gift-mobile-select-wrap {
+            position: relative;
+            width: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .gift-mobile-prefix-icon {
+            position: absolute;
+            left: 16px;
+            pointer-events: none;
+            font-size: 1.15rem;
+            z-index: 2;
+        }
+
+        .gift-mobile-select {
+            width: 100%;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 13px 44px 13px 46px;
+            font-family: var(--font-heading, inherit);
+            font-size: 1rem;
+            font-weight: 700;
+            color: #0f172a;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+            transition: all 0.2s ease;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .gift-mobile-select:focus {
+            border-color: #0ad8ad;
+            box-shadow: 0 0 0 3px rgba(10, 216, 173, 0.2), 0 6px 20px rgba(10, 216, 173, 0.15);
+            background: #ffffff;
+        }
+
+        .gift-mobile-select-arrow {
+            position: absolute;
+            right: 16px;
+            pointer-events: none;
+            color: #0ad8ad;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+            z-index: 2;
+        }
+
+        .gift-mobile-select:focus ~ .gift-mobile-select-arrow {
+            transform: rotate(180deg);
+        }
+
+        /* Responsive Breakpoint: Pills on desktop, Dropdown on mobile */
+        @media (max-width: 680px) {
+            .gift-nav-desktop {
+                display: none !important;
+            }
+            .gift-nav-mobile {
+                display: block !important;
+            }
         }
 
         .gift-empty-filter {
@@ -3620,35 +3681,55 @@ const freeGiftsTemplate = () => {
             </div>
             ` : ''}
 
-            <!-- Horizontal Category / Topic Filter Navigation Bar -->
+            <!-- Simplified Category / Topic Navigation (Pills on Desktop, Dropdown on Mobile) -->
             <div class="gift-nav-wrapper">
-                <nav class="gift-nav-scroll" role="tablist" aria-label="Free Gift Categories">
+                <!-- Desktop Navigation: Simplified Horizontal Pills (> 680px) -->
+                <nav class="gift-nav-desktop" role="tablist" aria-label="Free Gift Categories">
                     <button type="button" class="gift-topic-btn active js-gift-topic-btn" data-topic="all" role="tab" aria-selected="true">
                         <span class="gift-topic-icon">✨</span>
-                        <span class="gift-topic-label">All Downloads</span>
+                        <span class="gift-topic-label">All</span>
                         <span class="gift-topic-badge">${categoryCounts.all}</span>
                     </button>
                     <button type="button" class="gift-topic-btn js-gift-topic-btn" data-topic="worksheets" role="tab" aria-selected="false">
                         <span class="gift-topic-icon">📝</span>
-                        <span class="gift-topic-label">Worksheets &amp; Checklists</span>
+                        <span class="gift-topic-label">Worksheets</span>
                         <span class="gift-topic-badge">${categoryCounts.worksheets}</span>
                     </button>
                     <button type="button" class="gift-topic-btn js-gift-topic-btn" data-topic="collections" role="tab" aria-selected="false">
                         <span class="gift-topic-icon">🎨</span>
-                        <span class="gift-topic-label">Collections &amp; Prompts</span>
+                        <span class="gift-topic-label">Collections</span>
                         <span class="gift-topic-badge">${categoryCounts.collections}</span>
                     </button>
                     <button type="button" class="gift-topic-btn js-gift-topic-btn" data-topic="pdfs" role="tab" aria-selected="false">
                         <span class="gift-topic-icon">📄</span>
-                        <span class="gift-topic-label">PDF Guides &amp; Ebooks</span>
+                        <span class="gift-topic-label">PDFs</span>
                         <span class="gift-topic-badge">${categoryCounts.pdfs}</span>
                     </button>
                     <button type="button" class="gift-topic-btn js-gift-topic-btn" data-topic="songs" role="tab" aria-selected="false">
                         <span class="gift-topic-icon">🎵</span>
-                        <span class="gift-topic-label">Songs &amp; Audio</span>
+                        <span class="gift-topic-label">Songs</span>
                         <span class="gift-topic-badge">${categoryCounts.songs}</span>
                     </button>
                 </nav>
+
+                <!-- Mobile Navigation: Clean Touch Dropdown Element (<= 680px) -->
+                <div class="gift-nav-mobile">
+                    <div class="gift-mobile-select-wrap">
+                        <span class="gift-mobile-prefix-icon" aria-hidden="true">🏷️</span>
+                        <select id="gift-mobile-filter" class="gift-mobile-select js-gift-mobile-select" aria-label="Filter downloads by category">
+                            <option value="all">✨ All Downloads (${categoryCounts.all})</option>
+                            <option value="worksheets">📝 Worksheets (${categoryCounts.worksheets})</option>
+                            <option value="collections">🎨 Collections (${categoryCounts.collections})</option>
+                            <option value="pdfs">📄 PDF Guides (${categoryCounts.pdfs})</option>
+                            <option value="songs">🎵 Songs &amp; Audio (${categoryCounts.songs})</option>
+                        </select>
+                        <div class="gift-mobile-select-arrow" aria-hidden="true">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="teaser-grid" id="free-gifts-grid">
@@ -4948,10 +5029,8 @@ function openUnlockModal(targetFile, targetTitle, targetFilename = '') {
 
 // Apply category filter on Free Gifts page
 function applyGiftTopicFilter(topic, targetBtn) {
-    const navBar = document.querySelector('.gift-nav-scroll');
-    if (!navBar) return;
-
-    const allBtns = navBar.querySelectorAll('.js-gift-topic-btn');
+    // 1. Sync desktop pill buttons
+    const allBtns = document.querySelectorAll('.js-gift-topic-btn');
     allBtns.forEach(btn => {
         const btnTopic = btn.getAttribute('data-topic');
         const isSelected = (btnTopic === topic) || (targetBtn && btn === targetBtn);
@@ -4959,13 +5038,13 @@ function applyGiftTopicFilter(topic, targetBtn) {
         btn.setAttribute('aria-selected', isSelected ? 'true' : 'false');
     });
 
-    const activeBtn = targetBtn || navBar.querySelector(`.js-gift-topic-btn[data-topic="${topic}"]`);
-    if (activeBtn && typeof activeBtn.scrollIntoView === 'function') {
-        try {
-            activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-        } catch (_) {}
+    // 2. Sync mobile dropdown selector
+    const mobileSelect = document.getElementById('gift-mobile-filter');
+    if (mobileSelect && mobileSelect.value !== topic) {
+        mobileSelect.value = topic;
     }
 
+    // 3. Filter cards with smooth entrance animation
     const cards = document.querySelectorAll('.teaser-grid .teaser-card');
     let visibleCount = 0;
     cards.forEach(card => {
@@ -4992,6 +5071,13 @@ function applyGiftTopicFilter(topic, targetBtn) {
         window.history.replaceState(null, '', newUrl);
     }
 }
+
+// Dropdown change listener for mobile category filter
+document.addEventListener('change', (e) => {
+    if (e.target && (e.target.id === 'gift-mobile-filter' || e.target.classList.contains('js-gift-mobile-select'))) {
+        applyGiftTopicFilter(e.target.value);
+    }
+});
 
 // Global click event listener for SPA download triggers
 document.addEventListener('click', (e) => {
