@@ -72,6 +72,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Always bind forms rendered inside the page view
         bindFormHandlers();
 
+        // Ensure all video elements have the fallback loading poster
+        enforceVideoPoster();
+
         // Initialize global scroll reveals on all page sections (except immersive mission)
         if (page !== 'mission') {
             cleanupImmersiveMission();
@@ -82,6 +85,25 @@ document.addEventListener('DOMContentLoaded', () => {
     // 4. Initialize Router and components
     Router.init();
     initInstagramMarquee();
+
+    // 5. Enforce fallback display loading image for every video element
+    enforceVideoPoster();
+    if (typeof MutationObserver !== 'undefined') {
+        const videoObserver = new MutationObserver((mutations) => {
+            for (const mutation of mutations) {
+                for (const node of mutation.addedNodes) {
+                    if (node.nodeType === 1) { // Node.ELEMENT_NODE
+                        if (node.tagName === 'VIDEO') {
+                            enforceVideoPoster(node.parentElement || document);
+                        } else if (node.querySelectorAll && node.querySelectorAll('video').length > 0) {
+                            enforceVideoPoster(node);
+                        }
+                    }
+                }
+            }
+        });
+        videoObserver.observe(document.body, { childList: true, subtree: true });
+    }
 });
 
 /**
@@ -1660,6 +1682,7 @@ const GlobalMediaLightbox = {
                 video.controls = true;
                 video.autoplay = true;
                 video.playsInline = true;
+                video.poster = 'assets/video-loading-placeholder.jpg';
                 video.className = 'lightbox-media-element';
                 content.appendChild(video);
             }
@@ -1767,10 +1790,33 @@ const GlobalMediaLightbox = {
 };
 
 /**
+ * Ensures all <video> elements have the fallback display loading image before the video appears
+ */
+function enforceVideoPoster(root = document) {
+    const DEFAULT_VIDEO_POSTER = 'assets/video-loading-placeholder.jpg';
+    const videos = root.querySelectorAll ? root.querySelectorAll('video') : [];
+    videos.forEach(video => {
+        if (!video.getAttribute('poster') || video.getAttribute('poster') === 'assets/hero-bg.jpg') {
+            video.setAttribute('poster', DEFAULT_VIDEO_POSTER);
+        }
+        if (!video.style.backgroundImage) {
+            video.style.backgroundImage = `url("${DEFAULT_VIDEO_POSTER}")`;
+            video.style.backgroundSize = 'cover';
+            video.style.backgroundPosition = 'center center';
+            video.style.backgroundRepeat = 'no-repeat';
+        }
+    });
+}
+
+/**
  * Generic Interactive Video Handler
  */
 function initInteractiveVideo(videoEl, badgeEl, centerPlayEl, wrapperEl) {
     if (!videoEl) return;
+
+    if (!videoEl.getAttribute('poster') || videoEl.getAttribute('poster') === 'assets/hero-bg.jpg') {
+        videoEl.setAttribute('poster', 'assets/video-loading-placeholder.jpg');
+    }
 
     // Reset initial state
     const resetToAutoplayMuted = () => {

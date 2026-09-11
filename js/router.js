@@ -2146,7 +2146,7 @@ Router.register('/speaking', () => {
                 <div>
                     <h3 style="text-align: center; margin-bottom: 15px; color: var(--color-navy); font-family: var(--font-heading); font-weight: 700; font-size: 2.2rem;">A quick message from Marchello</h3>
                     <div class="aim-video-wrapper" id="speaking-video-wrapper">
-                        <video id="speaking-video" autoplay muted loop playsinline poster="assets/hero-bg.jpg">
+                        <video id="speaking-video" autoplay muted loop playsinline poster="assets/video-loading-placeholder.jpg">
                             <source src="assets/videos/speaking-reel.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
@@ -5310,7 +5310,7 @@ Router.register('/accessible-aim', () => `
                 <!-- Left Column: Video -->
                 <div class="aim-video-col">
                     <div class="aim-video-wrapper" id="aim-video-wrapper">
-                        <video id="aim-video" autoplay muted loop playsinline poster="assets/hero-bg.jpg">
+                        <video id="aim-video" autoplay muted loop playsinline poster="assets/video-loading-placeholder.jpg">
                             <source src="assets/videos/accessible-aim-intro.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>

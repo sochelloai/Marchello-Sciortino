@@ -140,7 +140,8 @@ const ServicesPortfolio = {
                     this.openLightbox('image', src, title);
                 } else if (type === 'video') {
                     if (pane) {
-                        pane.innerHTML = `<img src="${bgUrl}" alt="${title}" class="explorer-visual-img" data-type="video" data-media-src="${src}" data-id="${id}">`;
+                        const fallbackPoster = bgUrl || 'assets/video-loading-placeholder.jpg';
+                        pane.innerHTML = `<img src="${fallbackPoster}" alt="${title}" class="explorer-visual-img" data-type="video" data-media-src="${src}" data-id="${id}">`;
                     }
                     this.openLightbox('video', src, title);
                 } else if (type === 'website' || type === 'funnel') {
@@ -399,7 +400,7 @@ const ServicesPortfolio = {
                 const videoId = vimeoMatch[3];
                 content.innerHTML = `<iframe src="https://player.vimeo.com/video/${videoId}?autoplay=1" class="portfolio-lightbox-video" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="width: 80vw; height: 60vh; min-height: 320px; border: none; border-radius: var(--radius-md);"></iframe>`;
             } else {
-                content.innerHTML = `<video src="${src}" controls autoplay loop class="portfolio-lightbox-video"></video>`;
+                content.innerHTML = `<video src="${src}" controls autoplay loop playsinline poster="assets/video-loading-placeholder.jpg" class="portfolio-lightbox-video"></video>`;
             }
         } else if (type === 'audio' || type === 'song') {
             content.innerHTML = `

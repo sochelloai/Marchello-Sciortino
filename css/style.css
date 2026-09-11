@@ -148,6 +148,18 @@ img {
     border-radius: var(--radius-md);
 }
 
+/* Fallback display loading image for every video element before the video appears */
+video {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    background-color: var(--color-navy-dark, #030d17);
+    background-image: url('../assets/video-loading-placeholder.jpg');
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
 /* Accessibility Focus Ring Styles */
 :focus-visible {
     outline: 3px solid var(--color-teal);
@@ -4114,7 +4126,7 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     overflow: hidden;
     box-shadow: var(--shadow-lg);
     border: 1px solid rgba(10, 216, 173, 0.25);
-    background: var(--color-navy-dark);
+    background: var(--color-navy-dark) url('../assets/video-loading-placeholder.jpg') center center / cover no-repeat;
     aspect-ratio: 16 / 9;
     line-height: 0;
 }
