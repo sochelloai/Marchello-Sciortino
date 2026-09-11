@@ -3626,20 +3626,47 @@ const freeGiftsTemplate = () => {
         }
 
         .unlock-security-disclaimer {
-            white-space: nowrap !important;
-            font-size: clamp(0.62rem, 2.4vw, 0.82rem) !important;
-            letter-spacing: -0.015em;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-            margin: 12px 0 0 0;
+            white-space: normal !important;
+            font-size: 0.76rem !important;
+            letter-spacing: -0.01em;
+            display: block;
+            margin: 12px auto 0;
             color: #64748b;
-            line-height: 1.2;
+            line-height: 1.35;
             text-align: center;
             width: 100%;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            max-width: 320px;
+            box-sizing: border-box;
+            overflow: visible !important;
+            text-overflow: clip !important;
+            text-wrap: balance;
+        }
+
+        .unlock-security-disclaimer .lock-icon {
+            display: inline-block;
+            margin-right: 4px;
+            vertical-align: -1px;
+        }
+
+        .btn-decline-home {
+            display: block;
+            text-align: center;
+            margin-top: 12px;
+            color: #64748b;
+            font-size: 0.76rem;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            white-space: normal !important;
+            line-height: 1.35;
+            transition: color 0.2s;
+            max-width: 320px;
+            margin-left: auto;
+            margin-right: auto;
+            text-wrap: balance;
+        }
+
+        .btn-decline-home:hover {
+            color: #0f172a;
         }
 
         @media (max-width: 640px) {
@@ -3659,8 +3686,16 @@ const freeGiftsTemplate = () => {
                 overflow: visible;
             }
             .unlock-security-disclaimer {
-                font-size: clamp(0.60rem, 2.3vw, 0.74rem) !important;
-                letter-spacing: -0.02em;
+                font-size: 0.70rem !important;
+                line-height: 1.35 !important;
+                max-width: 290px;
+                margin: 10px auto 0 !important;
+            }
+            .btn-decline-home {
+                font-size: 0.72rem !important;
+                line-height: 1.3 !important;
+                max-width: 290px;
+                margin-top: 10px !important;
             }
         }
 
@@ -3672,6 +3707,17 @@ const freeGiftsTemplate = () => {
                 transform: scale(0.92);
                 transform-origin: center center;
                 margin: 8px auto;
+            }
+            .unlock-security-disclaimer {
+                font-size: 0.65rem !important;
+                line-height: 1.28 !important;
+                max-width: 260px;
+                margin: 8px auto 0 !important;
+            }
+            .btn-decline-home {
+                font-size: 0.68rem !important;
+                line-height: 1.28 !important;
+                max-width: 260px;
             }
         }
 
@@ -3799,10 +3845,10 @@ const freeGiftsTemplate = () => {
                     <button type="submit" class="btn-unlock-orange" style="background: #ff5722; color: #ffffff; width: 100%; padding: 14px 20px; font-size: 1rem; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; transition: background 0.2s, transform 0.15s; box-shadow: 0 8px 20px rgba(255, 87, 34, 0.35);">
                         Log In &amp; Access All Free Gifts &rarr;
                     </button>
-                    <p class="unlock-security-disclaimer" style="margin: 12px 0 0 0; font-size: clamp(0.62rem, 2.4vw, 0.82rem); color: #64748b; display: flex; align-items: center; justify-content: center; gap: 5px; line-height: 1.2; white-space: nowrap; letter-spacing: -0.015em;">
-                        <span>🔒</span> <span>“No spam. Secure, passwordless email login verified against ClickFunnels.”</span>
+                    <p class="unlock-security-disclaimer">
+                        <span class="lock-icon">🔒</span>“No spam. Secure, passwordless email login verified against ClickFunnels.”
                     </p>
-                    <a href="/" class="btn-decline-home" style="display: block; text-align: center; margin-top: 14px; color: #64748b; font-size: 0.78rem; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; transition: color 0.2s;">
+                    <a href="/" class="btn-decline-home">
                         I do not want to log in. Take me back to the home page.
                     </a>
                 </form>
@@ -4460,20 +4506,47 @@ const singleGiftTemplate = (gift) => {
         }
 
         .unlock-security-disclaimer {
-            white-space: nowrap !important;
-            font-size: clamp(0.62rem, 2.4vw, 0.82rem) !important;
-            letter-spacing: -0.015em;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-            margin: 12px 0 0 0;
+            white-space: normal !important;
+            font-size: 0.76rem !important;
+            letter-spacing: -0.01em;
+            display: block;
+            margin: 12px auto 0;
             color: #64748b;
-            line-height: 1.2;
+            line-height: 1.35;
             text-align: center;
             width: 100%;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            max-width: 320px;
+            box-sizing: border-box;
+            overflow: visible !important;
+            text-overflow: clip !important;
+            text-wrap: balance;
+        }
+
+        .unlock-security-disclaimer .lock-icon {
+            display: inline-block;
+            margin-right: 4px;
+            vertical-align: -1px;
+        }
+
+        .btn-decline-home {
+            display: block;
+            text-align: center;
+            margin-top: 12px;
+            color: #64748b;
+            font-size: 0.76rem;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            white-space: normal !important;
+            line-height: 1.35;
+            transition: color 0.2s;
+            max-width: 320px;
+            margin-left: auto;
+            margin-right: auto;
+            text-wrap: balance;
+        }
+
+        .btn-decline-home:hover {
+            color: #0f172a;
         }
 
         @media (max-width: 640px) {
@@ -4497,8 +4570,16 @@ const singleGiftTemplate = (gift) => {
                 overflow: visible;
             }
             .unlock-security-disclaimer {
-                font-size: clamp(0.60rem, 2.3vw, 0.74rem) !important;
-                letter-spacing: -0.02em;
+                font-size: 0.70rem !important;
+                line-height: 1.35 !important;
+                max-width: 290px;
+                margin: 10px auto 0 !important;
+            }
+            .btn-decline-home {
+                font-size: 0.72rem !important;
+                line-height: 1.3 !important;
+                max-width: 290px;
+                margin-top: 10px !important;
             }
         }
 
@@ -4511,6 +4592,17 @@ const singleGiftTemplate = (gift) => {
                 transform: scale(0.92);
                 transform-origin: center center;
                 margin: 8px auto;
+            }
+            .unlock-security-disclaimer {
+                font-size: 0.65rem !important;
+                line-height: 1.28 !important;
+                max-width: 260px;
+                margin: 8px auto 0 !important;
+            }
+            .btn-decline-home {
+                font-size: 0.68rem !important;
+                line-height: 1.28 !important;
+                max-width: 260px;
             }
         }
 
@@ -4610,10 +4702,10 @@ const singleGiftTemplate = (gift) => {
                             <button type="submit" class="btn-unlock-orange" style="background: #ff5722; color: #ffffff; width: 100%; padding: 14px 20px; font-size: 1.05rem; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; transition: background 0.2s, transform 0.15s; box-shadow: 0 8px 20px rgba(255, 87, 34, 0.35);">
                                 Log In &amp; Access All Free Gifts &rarr;
                             </button>
-                            <p class="unlock-security-disclaimer" style="margin: 14px 0 0 0; font-size: clamp(0.62rem, 2.4vw, 0.82rem); color: #64748b; display: flex; align-items: center; justify-content: center; gap: 5px; line-height: 1.2; white-space: nowrap; letter-spacing: -0.015em;">
-                                <span>🔒</span> <span>“No spam. Secure, passwordless email login verified against ClickFunnels.”</span>
+                            <p class="unlock-security-disclaimer">
+                                <span class="lock-icon">🔒</span>“No spam. Secure, passwordless email login verified against ClickFunnels.”
                             </p>
-                            <a href="/" class="btn-decline-home" style="display: block; text-align: center; margin-top: 16px; color: #64748b; font-size: 0.8rem; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; transition: color 0.2s;">
+                            <a href="/" class="btn-decline-home">
                                 I do not want to log in. Take me back to the home page.
                             </a>
                         </form>
@@ -4730,10 +4822,10 @@ const singleGiftTemplate = (gift) => {
                     <button type="submit" class="btn-unlock-orange" style="background: #ff5722; color: #ffffff; width: 100%; padding: 14px 20px; font-size: 1rem; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; transition: background 0.2s, transform 0.15s; box-shadow: 0 8px 20px rgba(255, 87, 34, 0.35);">
                         Log In &amp; Access All Free Gifts &rarr;
                     </button>
-                    <p class="unlock-security-disclaimer" style="margin: 12px 0 0 0; font-size: clamp(0.62rem, 2.4vw, 0.82rem); color: #64748b; display: flex; align-items: center; justify-content: center; gap: 5px; line-height: 1.2; white-space: nowrap; letter-spacing: -0.015em;">
-                        <span>🔒</span> <span>“No spam. Secure, passwordless email login verified against ClickFunnels.”</span>
+                    <p class="unlock-security-disclaimer">
+                        <span class="lock-icon">🔒</span>“No spam. Secure, passwordless email login verified against ClickFunnels.”
                     </p>
-                    <a href="/" class="btn-decline-home" style="display: block; text-align: center; margin-top: 14px; color: #64748b; font-size: 0.78rem; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; transition: color 0.2s;">
+                    <a href="/" class="btn-decline-home">
                         I do not want to log in. Take me back to the home page.
                     </a>
                 </form>
