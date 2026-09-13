@@ -11,6 +11,10 @@ function getAllImageFiles(dir, fileList = []) {
         if (entry.isDirectory()) {
             getAllImageFiles(fullPath, fileList);
         } else if (/\.(png|jpe?g)$/i.test(entry.name)) {
+            // Skip downloadable asset files (do not resize full-resolution downloads)
+            if (entry.name.endsWith('_Image.png') || entry.name.endsWith('_Image.jpg')) {
+                continue;
+            }
             fileList.push(fullPath);
         }
     }

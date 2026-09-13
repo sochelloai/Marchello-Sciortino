@@ -1,5 +1,23 @@
 [
   {
+    "id": "your-pace-still-moves-forward",
+    "slug": "your-pace-still-moves-forward",
+    "title": "Your Pace Still Moves Forward",
+    "type": "Inspirational Artwork",
+    "badge": "Available Now",
+    "meta_title": "Your Pace Still Moves Forward | Free Inspirational Artwork by Marchello Sciortino",
+    "meta_desc": "Even when progress feels slow, your pace still moves forward. Download the high-resolution inspirational artwork and wallpaper by Marchello Sciortino.",
+    "bullets": [
+      "High-resolution digital artwork and wallpaper reminding you that any pace is progress.",
+      "A visual anchor for endurance, creative resilience, and daily momentum.",
+      "Free high-resolution download for desktop, mobile lock screens, or personal printing."
+    ],
+    "cover_image": "/assets/free-gifts/your_pace_still_moves_forward_cover.png",
+    "file_url": "/assets/free-gifts/Your_Pace_Still_Moves_Forward_Image.png",
+    "button_label": "Download Artwork",
+    "category": "collections"
+  },
+  {
     "id": "i-need-help-with-this",
     "slug": "i-need-help-with-this",
     "aliases": [

@@ -2779,6 +2779,25 @@ Router.register('/contact', () => {
 // 14. Free Gifts Data Registry & Template System
 const FREE_GIFTS_DATA = [
     {
+        id: "your-pace-still-moves-forward",
+        slug: "your-pace-still-moves-forward",
+        title: "Your Pace Still Moves Forward",
+        type: "Inspirational Artwork",
+        category: "collections",
+        badge: "Available Now",
+        meta_title: "Your Pace Still Moves Forward | Free Inspirational Artwork by Marchello Sciortino",
+        meta_desc: "Even when progress feels slow, your pace still moves forward. Download the high-resolution inspirational artwork and wallpaper by Marchello Sciortino.",
+        bullets: [
+            "High-resolution digital artwork and wallpaper reminding you that any pace is progress.",
+            "A visual anchor for endurance, creative resilience, and daily momentum.",
+            "Free high-resolution download for desktop, mobile lock screens, or personal printing."
+        ],
+        cover_image: "/assets/free-gifts/your_pace_still_moves_forward_cover.png",
+        file_url: "/assets/free-gifts/Your_Pace_Still_Moves_Forward_Image.png",
+        download_filename: "Your_Pace_Still_Moves_Forward_Marchello_Sciortino.png",
+        button_label: "Download Artwork"
+    },
+    {
         id: "i-need-help-with-this",
         slug: "i-need-help-with-this",
         aliases: ["i-need-help-with-this-prompt-pack"],
@@ -3107,7 +3126,7 @@ const freeGiftsTemplate = () => {
     };
 
     const cardsHtml = FREE_GIFTS_DATA.map((gift, index) => {
-        const isDirectPage = gift.direct_page_only || (gift.file_url && gift.file_url.startsWith('/') && !gift.file_url.endsWith('.pdf'));
+        const isDirectPage = gift.direct_page_only || (gift.file_url && gift.file_url.startsWith('/') && !gift.file_url.includes('/assets/'));
         const category = gift.category || 'worksheets';
         return `
         <!-- Item ${index + 1}: ${gift.title} -->

@@ -1,4 +1,6 @@
 # 301 Redirects from duplicate /free-gifts/:slug paths to single canonical root paths
+/free-gifts/your-pace-still-moves-forward /your-pace-still-moves-forward 301
+/free-gifts/your-pace-still-moves-forward/ /your-pace-still-moves-forward 301
 /free-gifts/from-idea-to-free-product /from-idea-to-free-product 301
 /free-gifts/from-idea-to-free-product/ /from-idea-to-free-product 301
 /free-gifts/10-ways-to-win /10-ways-to-win 301
