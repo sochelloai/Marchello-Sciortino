@@ -235,6 +235,50 @@ console.log(`Month Theme: ${currentMonthTheme}`);
 console.log(`Month Art Style Theme: ${currentMonthArtStyle.name}`);
 console.log(`Article ID: ${articleId}`);
 
+// Affiliate link configurations for Higgsfield AI
+const HIGGSFIELD_AFFILIATE_URL = "https://higgsfield.ai?fpr=marchello-73dbdc";
+
+// Diverse anchor text variations for Higgsfield
+const HIGGSFIELD_ANCHOR_VARIATIONS = [
+    "Higgsfield",
+    "Try Higgsfield today",
+    "Higgsfield AI",
+    "explore Higgsfield",
+    "create with Higgsfield",
+    "try out Higgsfield",
+    "Higgsfield creative suite",
+    "Higgsfield's AI tools",
+    "test Higgsfield for yourself",
+    "give Higgsfield a try",
+    "explore Higgsfield AI",
+    "design with Higgsfield",
+    "try Higgsfield",
+    "Higgsfield platform",
+    "Higgsfield's creative platform"
+];
+
+// Determine if today should feature Higgsfield (at least 3 times a week)
+function shouldFeatureHiggsfield(date, articlesList = []) {
+    const dayOfWeek = date.getDay(); // 0 = Sunday, 1 = Monday, 2 = Tuesday, 3 = Wednesday, 4 = Thursday, 5 = Friday, 6 = Saturday
+    // Designated core days: Tuesday (2), Thursday (4), Sunday (0) = 3 days/week
+    const isDesignatedDay = [0, 2, 4].includes(dayOfWeek);
+    if (isDesignatedDay) return true;
+
+    // Rolling 7-day safety check: if fewer than 3 posts in the trailing 7 days mentioned Higgsfield, trigger on Friday/Saturday/Wednesday
+    const trailing7 = articlesList.slice(-7);
+    const count = trailing7.filter(p => p.body && p.body.includes(HIGGSFIELD_AFFILIATE_URL)).length;
+    if (count < 3 && (dayOfWeek === 5 || dayOfWeek === 6 || dayOfWeek === 3)) {
+        return true;
+    }
+    return false;
+}
+
+// Select varied anchor text based on date seed
+function getHiggsfieldAnchorText(seedNumber) {
+    const idx = Math.abs(seedNumber) % HIGGSFIELD_ANCHOR_VARIATIONS.length;
+    return HIGGSFIELD_ANCHOR_VARIATIONS[idx];
+}
+
 // Helper to make HTTPS POST requests with promise and Google API header injection
 function postJson(url, headers = {}, body = {}) {
     return new Promise((resolve, reject) => {
@@ -545,7 +589,7 @@ function generateBrandedThemeSvg(monthArtStyle, monthIndex, title, tag) {
 }
 
 // High-fidelity fallback article generator ensuring daily publishing continuity even if external APIs encounter outages
-function generateFallbackArticle(dateStr, monthIdx, dayNum, monthTheme, recentPostsContext) {
+function generateFallbackArticle(dateStr, monthIdx, dayNum, monthTheme, recentPostsContext, isHiggsfieldDay = false, selectedAnchorText = "Higgsfield") {
     const holidayInfo = getHolidayHighlight(monthIdx, dayNum);
     const artStyle = MONTHLY_ART_STYLES[monthIdx] || MONTHLY_ART_STYLES[8];
 
@@ -610,6 +654,17 @@ function generateFallbackArticle(dateStr, monthIdx, dayNum, monthTheme, recentPo
 <h3>Frequently Asked Questions</h3>
 <h3>How do I reframe a difficult limitation?</h3>
 <p>Ask yourself: "What does this constraint force me to simplify?" That answer is your strategic advantage.</p>`;
+    }
+
+    if (isHiggsfieldDay) {
+        const higgsfieldFallbackSnippet = `<h2>AI Amplification with Higgsfield</h2>
+<p>In my own daily creative work, adapting to physical constraints means leveraging tools that expand creative capacity without requiring repetitive physical strain. For all my image generation, video creation, workflow integration, and design projects, I frequently rely on <a href="${HIGGSFIELD_AFFILIATE_URL}" target="_blank" rel="noopener noreferrer">${selectedAnchorText}</a>. Having an expansive variety of AI creative tools at your fingertips allows you to turn concepts into reality with speed and precision.</p>`;
+
+        if (bodyContent.includes('<h3>Frequently Asked Questions</h3>')) {
+            bodyContent = bodyContent.replace('<h3>Frequently Asked Questions</h3>', `${higgsfieldFallbackSnippet}\n<h3>Frequently Asked Questions</h3>`);
+        } else {
+            bodyContent = `${bodyContent}\n${higgsfieldFallbackSnippet}`;
+        }
     }
 
     const imagePrompt = `An abstract cinematic 3D sculptural render representing "${title}", featuring precision interlocking brass and copper elements, warm harvest lighting, deep amber tones, and geometric arcs inspired by ${artStyle.colorPalette}. No people, no human silhouettes, no faces, no hands, strictly no text or letters, 16:9 widescreen composition.`;
@@ -741,6 +796,14 @@ async function run() {
             recentPostsContext = "None (this is the first post)";
         }
 
+        // Evaluate Higgsfield affiliate feature for today (at least 3 times a week)
+        const isHiggsfieldDay = shouldFeatureHiggsfield(centralDate, articles);
+        const selectedAnchorText = getHiggsfieldAnchorText(dayOfMonth + centralDate.getDay() + (monthIndex * 7));
+        console.log(`Higgsfield Affiliate Feature Scheduled Today: ${isHiggsfieldDay ? 'YES' : 'NO'}`);
+        if (isHiggsfieldDay) {
+            console.log(`Selected Higgsfield Anchor Text: "${selectedAnchorText}"`);
+        }
+
         // Step 1: Query Gemini API to write the post
         const promptSystem = `You are Marchello Sciortino, a resilient entrepreneur, ClickFunnels Certified Funnel Builder, keynote speaker, and faith-driven innovator who lives with Friedrich's ataxia (a progressive neuromuscular condition affecting coordination, balance, speech, and the heart).
 Your writing must strictly adhere to the Marchello Sciortino Brand Voice Guide:
@@ -774,7 +837,12 @@ CONTENT FORMULA, STORYTELLING & DIVERSITY:
 3. Weave this external idea/study/history/metaphor into Marchello's voice and worldview (resilience, faith in God, counting what's left in your hands rather than what was lost).
    - Ensure Marchello's direct voice and presence remain front and center.
    - Weave in Marchello's direct "warning" or real-talk—a strong, loving warning against the traps of self-pity, complacency, relying solely on human tools/AI instead of God, or letting parameters become prisons. At least 2 to 3 times a week throughout the generated posts, this warning should be explicit.
-   - Dynamically reference lessons, concepts, or chapters from Marchello's book "Limitations to Liberation" (or "Limitation to Liberation") as a guide for breaking through. Format it as an external link: <a href="https://www.limitationstoliberation.com/" target="_blank">"Limitations to Liberation"</a>.
+   - Dynamically reference lessons, concepts, or chapters from Marchello's book "Limitations to Liberation" (or "Limitation to Liberation") as a guide for breaking through. Format it as an external link: <a href="https://www.limitationstoliberation.com/" target="_blank">"Limitations to Liberation"</a>.${isHiggsfieldDay ? `
+   - FEATURE HIGGSFIELD AI (AFFILIATE PARTNER):
+     * Today's post MUST organically discuss Marchello's go-to AI creative platform: Higgsfield.
+     * Real-World Use & Endorsement: Marchello frequently uses Higgsfield for AI image generation, video creation, workflow integration, and design work. It provides an expansive variety of creative tools that act as an empowering creative amplifier and cognitive prosthetic. Share this genuine recommendation ("I use it all the time and it is very great. With a larger variety of AI creative tools, I recommend this.").
+     * Exact Required Link & Anchor: You MUST include this exact link with the designated anchor text: <a href="${HIGGSFIELD_AFFILIATE_URL}" target="_blank" rel="noopener noreferrer">${selectedAnchorText}</a>.
+     * Organic Placement: Weave this link naturally into the lesson or action steps where creative systems, visual workflows, or assistive AI tools are discussed.` : ''}
 4. Introduce an opportunity (AI as an accessibility/creative bridge, system automation, funnel building, or creative adapting) that connects to the theme.
 5. Offer practical guidance.
 6. Point back toward hope and end with encouragement (rather than hype).
@@ -834,8 +902,8 @@ Every blog post must be optimized for search engine discoverability (Google, AI-
      - "/chelloai" (ChelloAI helper)
      - Specific article IDs from the recent posts list above (e.g. "/hub" or linking to previous article IDs like "acceptance", "skydiving", "avatar", "win-matrix").
      Format links as: <a href="/services">services</a>. Do NOT include domain names in internal links.
-   - External Links: Include natural links to authoritative resources when relevant (e.g., <a href="https://www.limitationstoliberation.com/" target="_blank">"Limitations to Liberation" book</a> or <a href="/accessible-aim">Accessible AIM</a>).
-   - Strong Conclusion: Conclude with a clear call-to-action (CTA) and contextual links.
+    - External Links: Include natural links to authoritative resources when relevant (e.g., <a href="https://www.limitationstoliberation.com/" target="_blank">"Limitations to Liberation" book</a>${isHiggsfieldDay ? `, <a href="${HIGGSFIELD_AFFILIATE_URL}" target="_blank" rel="noopener noreferrer">${selectedAnchorText}</a>` : ''}, or <a href="/accessible-aim">Accessible AIM</a>).
+    - Strong Conclusion: Conclude with a clear call-to-action (CTA) and contextual links.
 
 Your writing must strictly follow these instructions:
 1. Tone: Follow the brand voice tone guidelines (Honest, encouraging, conversational, direct).
@@ -912,8 +980,20 @@ You must return a raw JSON object containing exactly these fields (no markdown w
         // Guaranteed fallback generator if Gemini API is unavailable or returns an error
         if (!generatedArticle) {
             console.log(`Activating intelligent on-theme daily post generator for ${todayDateStr}...`);
-            generatedArticle = generateFallbackArticle(todayDateStr, monthIndex, dayOfMonth, currentMonthTheme, recentPostsContext);
+            generatedArticle = generateFallbackArticle(todayDateStr, monthIndex, dayOfMonth, currentMonthTheme, recentPostsContext, isHiggsfieldDay, selectedAnchorText);
             console.log(`✓ Daily article generated: "${generatedArticle.title}"`);
+        }
+
+        // Programmatic enforcement of Higgsfield affiliate feature on scheduled days
+        if (isHiggsfieldDay && generatedArticle.body && !generatedArticle.body.includes(HIGGSFIELD_AFFILIATE_URL)) {
+            console.log(`Notice: Post body omitted Higgsfield link. Programmatically integrating affiliate link with anchor "${selectedAnchorText}"...`);
+            const endorsementParagraph = `<p>When it comes to visual storytelling, image creation, video workflows, and design integration, I rely heavily on <a href="${HIGGSFIELD_AFFILIATE_URL}" target="_blank" rel="noopener noreferrer">${selectedAnchorText}</a>. With its wide variety of creative AI tools, it has become an essential part of my daily creative stack.</p>`;
+
+            if (generatedArticle.body.includes('<h3>Frequently Asked Questions</h3>')) {
+                generatedArticle.body = generatedArticle.body.replace('<h3>Frequently Asked Questions</h3>', `${endorsementParagraph}\n<h3>Frequently Asked Questions</h3>`);
+            } else {
+                generatedArticle.body = `${generatedArticle.body}\n${endorsementParagraph}`;
+            }
         }
 
         // Programmatic enforcement of closing signature (bold, italicized, in quotes)
@@ -1004,16 +1084,14 @@ STRICT VISUAL DIRECTION & CONSTRAINTS:
 
         // =========================================================================
         // Step 2: Image Generation Pipeline
-        // Tier 1 (Initial Tier): Highest-Quality Google Gemini API (Multimodal Image Generation via generateContent)
-        // Tier 2 (Fallback Tier): Google Imagen 3 (imagen-3.0-generate-002 / imagen-3.0-generate-001)
-        // Optional Local Tier: Higgsfield (if USE_HIGGSFIELD=true and valid local creds exist)
-        // Tier 3 (Zero-Auth Fallback): Pollinations AI (Flux / SDXL high-res)
-        // Tier 4 (Offline Fallback): Bespoke Branded Geometric Vector SVG
+        // Primary Tier: Highest-Quality Google Gemini API Image Generation (generateContent with responseModalities)
+        // Fallback Tier 1: Pollinations AI (Flux / SDXL high-res)
+        // Fallback Tier 2: Bespoke Branded Geometric Vector SVG
         // =========================================================================
 
-        // --- Tier 1: Highest-Quality Google Gemini API (Native Multimodal Image Generation) ---
+        // --- Primary Tier: Highest-Quality Google Gemini API Image Generation ---
         if (!imageBuffer && GEMINI_API_KEY) {
-            console.log("Tier 1: Attempting highest-quality Google Gemini API image generation...");
+            console.log("Primary Tier: Attempting highest-quality Google Gemini API image generation...");
 
             // Fetch available models from Google AI Studio to detect active models dynamically
             let availableModels = [];
@@ -1033,7 +1111,6 @@ STRICT VISUAL DIRECTION & CONSTRAINTS:
                 "gemini-2.0-flash-exp",
                 "gemini-2.0-flash",
                 "gemini-2.5-flash-image",
-                "gemini-3.0-flash-image",
                 "gemini-exp-1206",
                 "gemini-flash-latest"
             ];
@@ -1051,96 +1128,41 @@ STRICT VISUAL DIRECTION & CONSTRAINTS:
             const allGeminiModels = [...new Set([...geminiCandidates, ...detectedGemini])];
 
             for (const modelName of allGeminiModels) {
-                try {
-                    console.log(`Tier 1: Trying Google Gemini API with model "${modelName}"...`);
-                    const genUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent`;
-                    const payload = {
-                        contents: [{
-                            parts: [{
-                                text: `Generate a high-resolution 16:9 widescreen artwork image matching this prompt exactly: ${imagePromptText}`
-                            }]
-                        }],
-                        generationConfig: {
-                            responseMimeType: "image/png"
-                        }
-                    };
-
-                    const responseData = await postJson(genUrl, {}, payload);
-                    const candidates = responseData?.candidates || [];
-                    for (const cand of candidates) {
-                        const parts = cand?.content?.parts || [];
-                        for (const part of parts) {
-                            if (part?.inlineData?.data) {
-                                imageBuffer = Buffer.from(part.inlineData.data, 'base64');
-                                console.log(`✓ Image generated successfully via Google Gemini API ("${modelName}").`);
-                                break;
+                for (const modalities of [["IMAGE"], ["IMAGE", "TEXT"]]) {
+                    try {
+                        console.log(`Primary Tier: Trying Google Gemini API with model "${modelName}" (modalities: [${modalities.join(', ')}])...`);
+                        const genUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent`;
+                        const payload = {
+                            contents: [{
+                                parts: [{
+                                    text: `Generate a high-resolution 16:9 widescreen artwork image matching this prompt exactly: ${imagePromptText}`
+                                }]
+                            }],
+                            generationConfig: {
+                                responseModalities: modalities
                             }
+                        };
+
+                        const responseData = await postJson(genUrl, {}, payload);
+                        const candidates = responseData?.candidates || [];
+                        for (const cand of candidates) {
+                            const parts = cand?.content?.parts || [];
+                            for (const part of parts) {
+                                if (part?.inlineData?.data) {
+                                    imageBuffer = Buffer.from(part.inlineData.data, 'base64');
+                                    console.log(`✓ Image generated successfully via Google Gemini API ("${modelName}").`);
+                                    break;
+                                }
+                            }
+                            if (imageBuffer) break;
                         }
+
                         if (imageBuffer) break;
+                    } catch (geminiErr) {
+                        console.warn(`Primary Tier: Google Gemini API (${modelName}, modalities: ${modalities.join(',')}) attempt: ${geminiErr.message}`);
                     }
-
-                    if (imageBuffer) break;
-                } catch (geminiErr) {
-                    console.warn(`Tier 1: Google Gemini API (${modelName}) failed or does not support native direct image generation: ${geminiErr.message}`);
                 }
-            }
-        }
-
-        // --- Tier 2: Google Imagen 3 (Fallback) ---
-        if (!imageBuffer && GEMINI_API_KEY) {
-            console.log("Tier 2: Attempting Google Imagen 3 image generation fallback...");
-
-            const imagenModels = [
-                "imagen-3.0-generate-002",
-                "imagen-3.0-generate-001",
-                "imagen-3.0-capability-001"
-            ];
-
-            for (const modelName of imagenModels) {
-                console.log(`Tier 2: Trying Imagen 3 model "${modelName}"...`);
-
-                // 1. Try :generateImages endpoint
-                try {
-                    const genImagesUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateImages`;
-                    const genBody = {
-                        prompt: imagePromptText,
-                        numberOfImages: 1,
-                        outputMimeType: "image/png",
-                        aspectRatio: "16:9",
-                        personGeneration: "allow_adult"
-                    };
-                    const res = await postJson(genImagesUrl, {}, genBody);
-                    const b64 = res?.generatedImages?.[0]?.image?.imageBytes;
-                    if (b64) {
-                        imageBuffer = Buffer.from(b64, 'base64');
-                        console.log(`✓ Image generated successfully via Google Imagen 3 ("${modelName}" :generateImages).`);
-                        break;
-                    }
-                } catch (genErr) {
-                    console.warn(`Tier 2: Imagen 3 (:generateImages) failed for "${modelName}": ${genErr.message}`);
-                }
-
-                // 2. Try :predict endpoint
-                try {
-                    const predictUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:predict`;
-                    const predBody = {
-                        instances: [{ prompt: imagePromptText }],
-                        parameters: {
-                            sampleCount: 1,
-                            outputMimeType: "image/png",
-                            aspectRatio: "16:9"
-                        }
-                    };
-                    const resPred = await postJson(predictUrl, {}, predBody);
-                    const b64Pred = resPred?.predictions?.[0]?.bytesBase64Encoded || resPred?.predictions?.[0]?.image?.imageBytes;
-                    if (b64Pred) {
-                        imageBuffer = Buffer.from(b64Pred, 'base64');
-                        console.log(`✓ Image generated successfully via Google Imagen 3 ("${modelName}" :predict).`);
-                        break;
-                    }
-                } catch (predErr) {
-                    console.warn(`Tier 2: Imagen 3 (:predict) failed for "${modelName}": ${predErr.message}`);
-                }
+                if (imageBuffer) break;
             }
         }
 

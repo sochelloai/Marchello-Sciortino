@@ -33,7 +33,31 @@
   - **Prompt Rewriting**: Before generation, every image prompt is dynamically rewritten to resonate directly with the specific post title, core metaphor, and body contents.
   - **Style**: Abstract, cinematic, artistic, illustrated, 3D render (rotating through distinct architectural/sculptural daily sub-styles).
   - **Color Palette & Themes**: Grounded in the designated monthly color palette and geometry, branching off into seasonal/holiday highlights depending on the date.
+  - **Model Engine (Gemini API Strictly Enforced)**: All blog post artwork must ALWAYS be generated using high-quality Google Gemini API image generation (multimodal `generateContent` with `responseModalities: ["IMAGE"]`). NEVER use Imagen 3 or generic models.
   - **Strict Negative Constraints**: NEVER include actual people, human silhouettes, faces, bodies, or hands. NEVER include text, letters, slogans, titles, captions, watermarks, or logos.
 - **Frontend Performance**: All blog post images in `js/hub.js` must use `<picture>` with WebP `<source>`, JPEG `<img>`, and enforce `loading="lazy"` and `decoding="async"`.
 
-
+## Affiliate & Partner Endorsement Rules (Higgsfield AI)
+- **Affiliate Link**: `https://higgsfield.ai?fpr=marchello-73dbdc`
+- **Target AI Platform**: Higgsfield AI (expansive creative suite for AI image generation, video creation, workflow integration, and design work).
+- **Publishing Frequency**: Must be featured in automated daily blog posts **at least 3 times a week** (regularly scheduled on Tuesdays, Thursdays, and Sundays, plus dynamic catch-up when rolling 7-day mentions are under 3).
+- **Diverse Anchor Text Variations**: Must dynamically rotate across diverse, natural anchor text variations. Never repeat the exact same anchor consecutively. Approved variations include:
+  - `"Higgsfield"`
+  - `"Try Higgsfield today"`
+  - `"Higgsfield AI"`
+  - `"explore Higgsfield"`
+  - `"create with Higgsfield"`
+  - `"try out Higgsfield"`
+  - `"Higgsfield creative suite"`
+  - `"Higgsfield's AI tools"`
+  - `"test Higgsfield for yourself"`
+  - `"give Higgsfield a try"`
+  - `"explore Higgsfield AI"`
+  - `"design with Higgsfield"`
+  - `"try Higgsfield"`
+  - `"Higgsfield platform"`
+  - `"Higgsfield's creative platform"`
+- **Brand Framing & Tone**:
+  - Always position Higgsfield from Marchello's authentic personal perspective: an AI creative platform he actively uses for images, video, design, and integration work.
+  - Frame it as a creative amplifier and cognitive prosthetic that removes friction and multiplies creative capacity under real-world constraints.
+  - Standard HTML format: `<a href="https://higgsfield.ai?fpr=marchello-73dbdc" target="_blank" rel="noopener noreferrer">Anchor Text</a>`.
