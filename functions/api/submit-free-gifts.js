@@ -75,7 +75,16 @@ export async function onRequestPost(context) {
                            "free-gifts";
 
     // Configuration Validation (Friendly visitor error without leaking internal secret names)
-    if (!apiKey || !subdomain || !workspaceId) {
+    if (!apiKey || !subdomain || !workspaceId || apiKey.includes("YOUR_")) {
+        const isLocal = request.url.includes("127.0.0.1") || request.url.includes("localhost");
+        if (isLocal) {
+            console.log("[Dev Mode] Local development environment: returning mock unlock success.");
+            return createSuccessResponse({
+                message: "Access granted! (Dev Mode)",
+                unlocked: true,
+                isReturning: false
+            }, request);
+        }
         console.error("[Configuration Error] Missing ClickFunnels credentials in environment.");
         return createErrorResponse(500, "The download unlock service is temporarily unavailable. Please try again later.", true, request);
     }

@@ -6850,4 +6850,86 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     outline: 2px solid #991b1b;
     outline-offset: 2px;
 }
+
+/* Unlocked Direct Free Gift Action Buttons */
+.single-gift-unlocked-btn-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+@media (max-width: 480px) {
+    .single-gift-unlocked-btn-group {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+}
+
+.btn-view-direct {
+    background: #081b29;
+    color: #0ad8ad !important;
+    border: 2px solid #0ad8ad;
+    border-radius: 12px;
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 1.02rem;
+    padding: 14px 16px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: 0 4px 15px rgba(10, 216, 173, 0.2);
+    transition: all 0.2s ease;
+}
+
+.btn-view-direct:hover {
+    background: #0ad8ad;
+    color: #081b29 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(10, 216, 173, 0.4);
+}
+
+.btn-view-direct:active {
+    transform: scale(0.98);
+}
+
+.btn-download-direct {
+    background: linear-gradient(135deg, #ff5722 0%, #e64a19 100%);
+    color: #ffffff !important;
+    border: none;
+    border-radius: 12px;
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 1.02rem;
+    padding: 14px 16px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: 0 4px 15px rgba(255, 87, 34, 0.35);
+    transition: all 0.2s ease;
+}
+
+.btn-download-direct:hover {
+    background: linear-gradient(135deg, #f4511e 0%, #d84315 100%);
+    color: #ffffff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 87, 34, 0.55);
+}
+
+.btn-download-direct:active {
+    transform: scale(0.98);
+}
 

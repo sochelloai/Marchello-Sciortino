@@ -3944,10 +3944,10 @@ function isFreeGiftsSessionUnlocked() {
     return false;
 }
 
-// Helper to check if the current album/track page is unlocked
+// Helper to check if the current album/track/gift page is unlocked
 function isAlbumPageUnlocked(slug) {
     if (isFreeGiftsSessionUnlocked()) return true;
-    if (typeof sessionStorage !== 'undefined' && slug && sessionStorage.getItem('unlocked_album_' + slug) === 'true') {
+    if (typeof sessionStorage !== 'undefined' && slug && (sessionStorage.getItem('unlocked_album_' + slug) === 'true' || sessionStorage.getItem('unlocked_gift_' + slug) === 'true')) {
         return true;
     }
     return false;
@@ -4425,6 +4425,87 @@ const singleGiftTemplate = (gift) => {
             transform: translateY(-2px);
             box-shadow: 0 14px 30px rgba(255, 87, 34, 0.45);
             color: #ffffff !important;
+        }
+
+        .single-gift-unlocked-btn-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        @media (max-width: 480px) {
+            .single-gift-unlocked-btn-group {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+        }
+
+        .btn-view-direct {
+            background: #081b29;
+            color: #0ad8ad !important;
+            border: 2px solid #0ad8ad;
+            border-radius: 12px;
+            font-family: var(--font-heading);
+            font-weight: 800;
+            font-size: 1.02rem;
+            padding: 14px 16px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none !important;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            box-sizing: border-box;
+            box-shadow: 0 4px 15px rgba(10, 216, 173, 0.2);
+            transition: all 0.2s ease;
+        }
+
+        .btn-view-direct:hover {
+            background: #0ad8ad;
+            color: #081b29 !important;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(10, 216, 173, 0.4);
+        }
+
+        .btn-view-direct:active {
+            transform: scale(0.98);
+        }
+
+        .btn-download-direct {
+            background: linear-gradient(135deg, #ff5722 0%, #e64a19 100%);
+            color: #ffffff !important;
+            border: none;
+            border-radius: 12px;
+            font-family: var(--font-heading);
+            font-weight: 800;
+            font-size: 1.02rem;
+            padding: 14px 16px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none !important;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            box-sizing: border-box;
+            box-shadow: 0 4px 15px rgba(255, 87, 34, 0.35);
+            transition: all 0.2s ease;
+        }
+
+        .btn-download-direct:hover {
+            background: linear-gradient(135deg, #f4511e 0%, #d84315 100%);
+            color: #ffffff !important;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 87, 34, 0.55);
+        }
+
+        .btn-download-direct:active {
+            transform: scale(0.98);
         }
 
         .btn-share-secondary {
@@ -4978,9 +5059,34 @@ const singleGiftTemplate = (gift) => {
                             </div>
                         </div>
 
-                        <!-- Action Buttons: Download Button right under image & above Direct Share Link -->
+                        <!-- Action Buttons: When unlocked, Two Buttons (View & Download) appear in place of the single download button -->
                         <div class="single-gift-actions" style="margin-top: 18px; display: flex; flex-direction: column; gap: 12px; width: 100%;">
-                            ${gift.tracks && gift.tracks.length > 1 ? `
+                            ${isUnlocked ? `
+                                <div class="single-gift-unlocked-btn-group">
+                                    ${gift.tracks && gift.tracks.length > 1 ? `
+                                        <a href="#gift-album-player-wrap" class="btn-view-direct js-scroll-to-player">
+                                            👁 View &amp; Stream
+                                        </a>
+                                        <button type="button" class="btn-download-direct js-full-album-btn" data-title="${gift.title} - Complete Album">
+                                            ⬇ Download Album
+                                        </button>
+                                    ` : (gift.tracks && gift.tracks.length === 1 ? `
+                                        <a href="${gift.tracks[0].src}" target="_blank" rel="noopener noreferrer" class="btn-view-direct">
+                                            👁 Stream in Browser
+                                        </a>
+                                        <button type="button" class="btn-download-direct js-download-track-btn" data-src="${gift.tracks[0].src}" data-title="${gift.tracks[0].title}" data-filename="${gift.download_filename || `${gift.tracks[0].title}.mp3`}">
+                                            ⬇ Download MP3
+                                        </button>
+                                    ` : `
+                                        <a href="${gift.file_url}" target="_blank" rel="noopener noreferrer" class="btn-view-direct">
+                                            👁 View in Browser
+                                        </a>
+                                        <button type="button" class="btn-download-direct js-spa-download-btn" data-title="${gift.title}" data-file="${gift.file_url}" data-filename="${gift.download_filename || ''}">
+                                            ⬇ Download File
+                                        </button>
+                                    `)}
+                                </div>
+                            ` : (gift.tracks && gift.tracks.length > 1 ? `
                                 <button type="button" class="btn-download-primary js-full-album-btn" data-title="${gift.title} - Complete Album">
                                     Download Full Album (ZIP) &darr;
                                 </button>
@@ -4992,7 +5098,7 @@ const singleGiftTemplate = (gift) => {
                                 <a href="${gift.file_url}" class="btn-download-primary js-spa-download-btn" data-title="${gift.title}" data-file="${gift.file_url}" data-filename="${gift.download_filename || ''}">
                                     ${gift.button_label} &darr;
                                 </a>
-                            `)}
+                            `))}
                             <button type="button" class="btn-share-secondary js-copy-share-btn" data-share-url="${shareUrl}">
                                 &#128279; Copy Direct Share Link
                             </button>
@@ -5638,6 +5744,17 @@ document.addEventListener('click', (e) => {
         return;
     }
 
+    // Scroll to player for full album View button
+    const scrollToPlayerBtn = e.target.closest('.js-scroll-to-player');
+    if (scrollToPlayerBtn) {
+        e.preventDefault();
+        const player = document.getElementById('gift-album-player-wrap');
+        if (player) {
+            player.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        return;
+    }
+
     // 0. Album Locked Overlay & Unlock Modal Trigger
     const albumUnlockTrigger = e.target.closest('.js-trigger-album-unlock, .btn-unlock-album-modal, .album-locked-overlay');
     if (albumUnlockTrigger) {
@@ -5688,10 +5805,10 @@ document.addEventListener('click', (e) => {
     }
 
     // 3. Document & PDF Download Buttons on Free Gifts Page and Direct Pages
-    const docDownloadBtn = e.target.closest('.js-spa-download-btn, .btn-download-primary');
+    const docDownloadBtn = e.target.closest('.js-spa-download-btn, .btn-download-primary, .btn-download-direct');
     if (docDownloadBtn) {
-        // Exclude detail links, copy share buttons, and MP3 media buttons
-        if (docDownloadBtn.closest('.btn-card-details, .js-copy-share-btn, .btn-track-download, .btn-download-full-album')) {
+        // Exclude detail links, copy share buttons, MP3 media buttons, and View buttons
+        if (docDownloadBtn.closest('.btn-card-details, .js-copy-share-btn, .btn-track-download, .btn-download-full-album, .btn-view-direct')) {
             return;
         }
 
@@ -5802,6 +5919,7 @@ document.addEventListener('submit', async (e) => {
                 sessionStorage.setItem('free_gifts_session_unlocked', 'true');
                 if (currentSlug) {
                     sessionStorage.setItem('unlocked_album_' + currentSlug, 'true');
+                    sessionStorage.setItem('unlocked_gift_' + currentSlug, 'true');
                 }
             }
 
@@ -5827,7 +5945,31 @@ document.addEventListener('submit', async (e) => {
                 window.resetTurnstileForForm(turnstileContainer);
             }
 
-            // If unlocked from the modal, transition to the robust success view and trigger the download
+            const isDirectGiftPage = Boolean(
+                document.querySelector('.single-gift-container, .single-gift-page-wrapper, .song-gate-wrapper') ||
+                (typeof FREE_GIFTS_DATA !== 'undefined' && FREE_GIFTS_DATA.some(g => g.slug === currentSlug || (g.aliases && g.aliases.includes(currentSlug))))
+            );
+
+            // On a direct page, close modal immediately and reveal the two buttons (View & Download) in place of the download button
+            if (isDirectGiftPage) {
+                if (modal) {
+                    modal.classList.remove('active');
+                    const formView = document.getElementById('spa-form-view');
+                    const successView = document.getElementById('spa-success-view');
+                    if (formView) formView.style.display = 'block';
+                    if (successView) successView.style.display = 'none';
+                }
+                const savedScroll = window.scrollY;
+                Router.handleRouting();
+                if (savedScroll > 0) {
+                    requestAnimationFrame(() => {
+                        window.scrollTo({ top: savedScroll, behavior: 'instant' });
+                    });
+                }
+                return;
+            }
+
+            // If unlocked from the modal on catalog page, transition to the robust success view and trigger the download
             if (isModalForm && modal) {
                 const targetFilename = modal.getAttribute('data-target-filename');
                 const formView = document.getElementById('spa-form-view');
