@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "dev": "wrangler pages dev . --ip 127.0.0.1 --port 8788",
     "compress:free-gifts": "node scripts/compress-free-gifts.js"
   },
   "dependencies": {

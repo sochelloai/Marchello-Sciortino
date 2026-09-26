@@ -104,6 +104,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         videoObserver.observe(document.body, { childList: true, subtree: true });
     }
+
+    // 6. Ensure mobile viewport changes immediately unblock any scroll reveal states
+    window.addEventListener('resize', () => {
+        if (window.innerWidth <= 768) {
+            const sections = document.querySelectorAll('.reveal-on-scroll');
+            sections.forEach(sec => {
+                sec.classList.remove('reveal-on-scroll');
+                sec.classList.add('revealed');
+            });
+        }
+    });
 });
 
 /**
@@ -342,10 +353,13 @@ function bindFormHandlers() {
     if (aimDedicatedTurnstile) window.renderTurnstileForForm(aimDedicatedTurnstile, 'auto');
 
     const accessTurnstile = document.getElementById('access-turnstile');
-    if (accessTurnstile) window.renderTurnstileForForm(accessTurnstile, 'light');
+    if (accessTurnstile) window.renderTurnstileForForm(accessTurnstile, 'dark');
 
     const albumInlineTurnstile = document.getElementById('album-inline-turnstile');
-    if (albumInlineTurnstile) window.renderTurnstileForForm(albumInlineTurnstile, 'light');
+    if (albumInlineTurnstile) window.renderTurnstileForForm(albumInlineTurnstile, 'dark');
+
+    const songGateTurnstile = document.getElementById('song-gate-turnstile');
+    if (songGateTurnstile) window.renderTurnstileForForm(songGateTurnstile, 'dark');
 
     // 1. Speaking Inquiry Form
     const speakingForm = document.getElementById('speaking-inquiry-form');
@@ -1072,8 +1086,25 @@ function initPerspectiveConsole() {
 
 /**
  * initScrollReveal - Fades in rows and sections smoothly as they enter the screen.
+ * On mobile devices, scroll animations are disabled so pages automatically load without scrolling.
  */
 function initScrollReveal() {
+    // Check if device is mobile
+    const isMobile = (typeof window !== 'undefined') && (
+        (window.matchMedia && window.matchMedia('(max-width: 768px)').matches) || 
+        (window.innerWidth <= 768)
+    );
+
+    if (isMobile) {
+        // Automatically ensure all sections are revealed and displayed immediately
+        const allSections = document.querySelectorAll('section, .section, .timeline-row, .reveal-on-scroll');
+        allSections.forEach(sec => {
+            sec.classList.remove('reveal-on-scroll');
+            sec.classList.add('revealed');
+        });
+        return;
+    }
+
     // Automatically select all sections and timeline rows across the entire site
     const sections = document.querySelectorAll('section, .section, .timeline-row');
 

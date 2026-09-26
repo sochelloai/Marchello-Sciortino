@@ -207,15 +207,23 @@ const Router = {
     },
 
     resetFocus() {
-        // Reset scroll position to top instantly
-        window.scrollTo(0, 0);
+        // Reset scroll position to top instantly without smooth scrolling animation
+        try {
+            window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+        } catch (_) {
+            window.scrollTo(0, 0);
+        }
         document.documentElement.scrollTop = 0;
         document.body.scrollTop = 0;
 
-        // Shift screen-reader focus to the main focus helper
+        // Shift screen-reader focus to the main focus helper without browser scrolling
         const mainFocus = document.getElementById('main-focus');
         if (mainFocus) {
-            mainFocus.focus();
+            try {
+                mainFocus.focus({ preventScroll: true });
+            } catch (_) {
+                mainFocus.focus();
+            }
         }
     }
 };
@@ -3791,10 +3799,10 @@ const freeGiftsTemplate = () => {
             <div class="session-profile-status-bar" id="session-profile-status-bar" style="max-width: 900px; margin: 0 auto 30px; background: rgba(10, 216, 173, 0.08); border: 1px solid rgba(10, 216, 173, 0.35); border-radius: 12px; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; box-sizing: border-box;">
                 <div style="display: flex; align-items: center; gap: 10px; color: #0f172a; font-size: 0.95rem; font-weight: 600;">
                     <span style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: #0ad8ad; color: #081b29; border-radius: 50%; font-size: 0.8rem; font-weight: 800;">✓</span>
-                    <span>Free Gifts Profile Active &bull; All Downloads Unlocked for this Session</span>
+                    <span>Free Gifts Unlocked &bull; All Downloads Active for Your Visit</span>
                 </div>
                 <button type="button" class="btn-session-logout js-session-logout" style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 6px 14px; font-size: 0.84rem; font-weight: 600; color: #475569; cursor: pointer; transition: all 0.2s ease;">
-                    Log Out of Session
+                    Reset Unlocked Access
                 </button>
             </div>
             ` : ''}
@@ -3864,41 +3872,46 @@ const freeGiftsTemplate = () => {
         </div>
     </section>
 
-    <!-- Login / Unlock Modal -->
+    <!-- Free Gifts Unlock Modal -->
     <div class="spa-modal-overlay" id="spa-download-modal">
         <div class="spa-modal-card">
             <button class="spa-modal-close" id="spa-modal-close" aria-label="Close modal">&times;</button>
             <div id="spa-form-view">
-                <div style="width: 48px; height: 48px; background: rgba(10, 216, 173, 0.12); border: 2px solid #0ad8ad; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #0ad8ad; margin: 0 auto 14px;">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <div class="brand-lock-icon-wrap" style="width: 86px; height: 86px; margin: 0 auto 16px; border-radius: 20px; overflow: hidden; box-shadow: 0 14px 35px rgba(0, 0, 0, 0.6), 0 0 30px rgba(10, 216, 173, 0.4); border: 2.5px solid #0ad8ad; background: #081b29;">
+                    <picture>
+                        <source srcset="/assets/brand-lock-icon.webp" type="image/webp">
+                        <img src="/assets/brand-lock-icon.png" alt="Unlock Free Gifts" style="width: 100%; height: 100%; object-fit: cover; display: block;" loading="eager" decoding="async">
+                    </picture>
                 </div>
-                <h3 style="color: #0f172a; margin-bottom: 8px; font-family: var(--font-heading); font-size: 1.45rem; font-weight: 800;">Member Access &amp; Free Gifts Profile</h3>
-                <p id="spa-copy-text" style="color: #475569; font-size: 0.95rem; margin-bottom: 20px; line-height: 1.5;">
-                    Enter your email to log into your Free Gifts profile or unlock all downloads across the site for your session.
+                <h3 id="spa-modal-heading" style="color: #ffffff; margin-bottom: 10px; font-family: var(--font-heading); font-size: 1.65rem; font-weight: 800;">Unlock Free Gifts &amp; Downloads</h3>
+                <p id="spa-copy-text" style="color: #cbd5e1; font-size: 0.96rem; margin-bottom: 22px; line-height: 1.55;">
+                    Enter your email to unlock all downloads and resources across the site for your visit.
                 </p>
                 <form id="spa-modal-login-form">
-                    <input type="email" class="spa-modal-input" id="spa-modal-email" placeholder="Enter your email address to log in..." required style="width: 100%; padding: 14px; border: 1px solid #e2e8f0; border-radius: 10px; margin-bottom: 12px; font-size: 1rem; box-sizing: border-box;">
-                    <div class="turnstile-container" id="spa-modal-turnstile"></div>
-                    <button type="submit" class="btn-unlock-orange" style="background: #ff5722; color: #ffffff; width: 100%; padding: 14px 20px; font-size: 1rem; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; transition: background 0.2s, transform 0.15s; box-shadow: 0 8px 20px rgba(255, 87, 34, 0.35);">
-                        Log In &amp; Access All Free Gifts &rarr;
+                    <div class="unlock-field-wrapper" style="text-align: left; margin-bottom: 16px; width: 100%; box-sizing: border-box;">
+                        <input type="email" class="spa-modal-input highlighted-email-input" id="spa-modal-email" placeholder="Enter your email address here..." aria-label="Enter your email address to unlock" required autocomplete="email">
+                    </div>
+                    <div class="turnstile-container" id="spa-modal-turnstile" style="margin: 14px auto 18px;"></div>
+                    <button type="submit" class="btn-unlock-orange song-gate-submit-btn">
+                        Mandatory Unlock
                     </button>
-                    <p class="unlock-security-disclaimer">
-                        <span class="lock-icon">🔒</span>“No spam. Secure, passwordless email login verified against ClickFunnels.”
+                    <p class="unlock-security-disclaimer" style="color: #94a3b8; font-size: 0.78rem; margin: 16px auto 0; text-align: center; line-height: 1.4;">
+                        <span class="lock-icon">&#128274;</span> “No spam. Instant verification to unlock your downloads for this visit.”
                     </p>
-                    <a href="/" class="btn-decline-home">
-                        I do not want to log in. Take me back to the home page.
+                    <a href="/" class="btn-decline-home" style="color: #94a3b8; font-size: 0.84rem; text-decoration: underline; text-underline-offset: 3px; margin-top: 14px; display: inline-block;">
+                        No thanks, take me back to the home page.
                     </a>
                 </form>
             </div>
             <div id="spa-success-view" style="display: none; text-align: center; padding: 10px 0;">
-                <div style="width: 56px; height: 56px; background: rgba(16, 185, 129, 0.12); border: 2px solid #10b981; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #10b981; margin: 0 auto 16px;">
+                <div style="width: 56px; height: 56px; background: rgba(16, 185, 129, 0.15); border: 2px solid #10b981; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #10b981; margin: 0 auto 16px; box-shadow: 0 0 25px rgba(16, 185, 129, 0.35);">
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                 </div>
-                <h3 id="spa-success-title" style="color: #0f172a; font-family: var(--font-heading); font-size: 1.45rem; font-weight: 800; margin: 0 0 8px;">Access Unlocked!</h3>
-                <p id="spa-success-msg" style="color: #475569; font-size: 0.95rem; margin: 0 0 20px; line-height: 1.5;">
+                <h3 id="spa-success-title" style="color: #ffffff; font-family: var(--font-heading); font-size: 1.55rem; font-weight: 800; margin: 0 0 8px;">Access Unlocked!</h3>
+                <p id="spa-success-msg" style="color: #cbd5e1; font-size: 0.95rem; margin: 0 0 20px; line-height: 1.5;">
                     Your download is starting automatically. If it didn't begin, tap the button below:
                 </p>
-                <a id="spa-success-download-btn" href="#" download="" class="btn-unlock-orange" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #ff5722; color: #ffffff; width: 100%; padding: 15px 20px; font-size: 1.05rem; font-weight: 700; border-radius: 10px; text-decoration: none; box-sizing: border-box; box-shadow: 0 8px 20px rgba(255, 87, 34, 0.35); transition: background 0.2s, transform 0.15s;">
+                <a id="spa-success-download-btn" href="#" download="" class="btn-unlock-orange song-gate-submit-btn" style="text-decoration: none;">
                     ⬇ Download File Now
                 </a>
                 <div style="margin-top: 14px; display: flex; flex-direction: column; align-items: center; gap: 8px;">
@@ -3934,11 +3947,261 @@ function isAlbumPageUnlocked(slug) {
     return false;
 }
 
+// Mandatory Unlock Gate Template for Song-Free Gifts (Win Anyway & You Are My Fortress)
+const songGateTemplate = (gift) => {
+    // Schedule immediate Turnstile initialization for the song gate
+    setTimeout(() => {
+        const turnstileEl = document.getElementById('song-gate-turnstile');
+        if (turnstileEl && typeof window.renderTurnstileForForm === 'function') {
+            window.renderTurnstileForForm(turnstileEl, 'dark');
+        }
+    }, 60);
+
+    const displayImg = gift.display_image || gift.cover_image;
+    const webpImg = displayImg.replace(/\.(png|jpe?g)$/i, '.webp');
+
+    return `
+    <style>
+        .song-gate-wrapper {
+            background-color: #05131e;
+            color: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .song-gate-section {
+            padding: 40px 16px 80px;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .song-gate-container {
+            max-width: 580px;
+            width: 100%;
+            margin: 0 auto;
+            box-sizing: border-box;
+        }
+
+        .song-gate-card {
+            background: linear-gradient(180deg, #081b29 0%, #061522 100%);
+            border: 2px solid rgba(10, 216, 173, 0.45);
+            border-radius: 24px;
+            padding: 40px 32px 36px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.55), 0 0 40px rgba(10, 216, 173, 0.2);
+            text-align: center;
+            color: #ffffff;
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .song-gate-thumb-wrap {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 20px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 14px 35px rgba(0, 0, 0, 0.6), 0 0 25px rgba(10, 216, 173, 0.35);
+            border: 2.5px solid #0ad8ad;
+        }
+
+        .song-gate-thumb-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .song-gate-lock-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(8, 27, 41, 0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .song-gate-badge {
+            display: inline-block;
+            background: rgba(10, 216, 173, 0.15);
+            border: 1px solid #0ad8ad;
+            color: #0ad8ad;
+            padding: 5px 14px;
+            border-radius: 9999px;
+            font-size: 0.78rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            margin-bottom: 12px;
+        }
+
+        .song-gate-title {
+            font-family: var(--font-heading);
+            color: #ffffff;
+            font-size: 2rem;
+            font-weight: 800;
+            margin: 0 0 10px;
+            line-height: 1.25;
+        }
+
+        .song-gate-desc {
+            color: #cbd5e1;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin: 0 auto 26px;
+            max-width: 480px;
+        }
+
+        .unlock-field-wrapper {
+            text-align: left;
+            margin-bottom: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .song-gate-submit-btn {
+            background: linear-gradient(135deg, #ff5722 0%, #e64a19 100%);
+            color: #ffffff !important;
+            width: 100%;
+            padding: 18px 24px;
+            font-size: 1.18rem;
+            font-weight: 800;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.2s ease;
+            box-shadow: 0 10px 28px rgba(255, 87, 34, 0.45);
+            letter-spacing: 0.5px;
+            box-sizing: border-box;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-family: var(--font-heading);
+        }
+
+        .song-gate-submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 34px rgba(255, 87, 34, 0.55);
+        }
+
+        .song-gate-submit-btn:active {
+            transform: scale(0.98);
+        }
+
+        @media (max-width: 640px) {
+            .song-gate-section {
+                padding: 24px 12px 60px;
+            }
+            .song-gate-card {
+                padding: 28px 16px 24px;
+                border-radius: 20px;
+            }
+            .song-gate-thumb-wrap {
+                width: 110px;
+                height: 110px;
+                margin-bottom: 16px;
+            }
+            .song-gate-title {
+                font-size: 1.6rem;
+            }
+            .song-gate-desc {
+                font-size: 0.95rem;
+                margin-bottom: 20px;
+            }
+            .song-gate-submit-btn {
+                font-size: 1.1rem;
+                padding: 16px 20px;
+            }
+        }
+    </style>
+
+    <div class="song-gate-wrapper">
+        <div class="page-intro" style="position: relative; overflow: hidden;">
+            <svg style="position: absolute; left: 0; top: 0; height: 100%; width: 220px; pointer-events: none; opacity: 0.25;" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path d="M -10,0 Q 20,40 100,50 M -10,15 Q 20,55 100,65 M -10,30 Q 20,70 100,80 M -10,45 Q 20,85 100,95 M -10,60 Q 20,100 100,110" fill="none" stroke="var(--color-teal)" stroke-width="0.3" />
+            </svg>
+            <svg style="position: absolute; right: 0; top: 0; height: 100%; width: 220px; pointer-events: none; opacity: 0.25;" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path d="M 110,0 Q 80,40 0,50 M 110,15 Q 80,55 0,65 M 110,30 Q 80,70 0,80 M 110,45 Q 80,85 0,95 M 110,60 Q 80,100 0,110" fill="none" stroke="var(--color-teal)" stroke-width="0.3" />
+            </svg>
+
+            <div class="container text-center" style="position: relative; z-index: 2;">
+                <span class="section-tag text-teal">Tools &amp; Resources &bull; Free Music</span>
+                <h1 style="color: white; font-family: var(--font-heading); text-transform: uppercase;">${gift.title}</h1>
+                <p class="section-desc" style="color: var(--color-gray-light); max-width: 680px; margin: 0 auto;">
+                    Free ${gift.type} by Marchello Sciortino &bull; Instant Unlock Required
+                </p>
+            </div>
+        </div>
+
+        <section class="song-gate-section">
+            <div class="song-gate-container">
+                <div class="song-gate-card">
+                    <div class="song-gate-thumb-wrap">
+                        <picture>
+                            <source srcset="${webpImg}" type="image/webp">
+                            <img src="${displayImg}" alt="${gift.title}" class="song-gate-thumb-img" loading="eager" decoding="async">
+                        </picture>
+                        <div class="song-gate-lock-overlay">
+                            <picture>
+                                <source srcset="/assets/brand-lock-icon.webp" type="image/webp">
+                                <img src="/assets/brand-lock-icon.png" alt="Lock" style="width: 52px; height: 52px; border-radius: 12px; filter: drop-shadow(0 4px 14px rgba(0,0,0,0.9));">
+                            </picture>
+                        </div>
+                    </div>
+
+                    <h2 class="song-gate-title">Unlock ${gift.title}</h2>
+                    <p class="song-gate-desc">
+                        Unlock the entire page for ${gift.tracks && gift.tracks.length > 1 ? `all ${gift.tracks.length} tracks` : 'this track'} with full online streaming and studio-quality MP3 downloads.
+                    </p>
+
+                    <form id="song-gate-unlock-form" data-target-title="${gift.title}">
+                        <div class="unlock-field-wrapper">
+                            <input type="email" id="song-gate-email" name="email" class="highlighted-email-input" placeholder="Enter your email address here..." aria-label="Enter your email address to unlock" required autocomplete="email">
+                        </div>
+
+                        <div class="turnstile-container" id="song-gate-turnstile" style="margin: 14px auto 18px;"></div>
+
+                        <button type="submit" class="song-gate-submit-btn">
+                            Mandatory Unlock
+                        </button>
+
+                        <p class="unlock-security-disclaimer" style="color: #94a3b8; font-size: 0.78rem; margin: 16px auto 0; text-align: center; line-height: 1.4;">
+                            <span class="lock-icon">&#128274;</span> “No spam. Instant verification to unlock your downloads for this visit.”
+                        </p>
+
+                        <div style="margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap;">
+                            <a href="/free-gifts" style="color: #0ad8ad; font-size: 0.92rem; text-decoration: underline; text-underline-offset: 4px; font-weight: 600;">
+                                &larr; Return to Free Gifts Library
+                            </a>
+                            <span style="color: rgba(255,255,255,0.2);">&bull;</span>
+                            <a href="/" style="color: #94a3b8; font-size: 0.92rem; text-decoration: underline; text-underline-offset: 4px;">
+                                Home Page
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+    `;
+};
+
 // Dedicated Single Free Gift Landing Page Template
 const singleGiftTemplate = (gift) => {
-    const shareUrl = `https://marchellosciortino.com/${gift.slug}`;
-    // Check if session is already unlocked
+    const isSongGift = gift.category === 'songs' || (gift.tracks && gift.tracks.length > 0);
     const isUnlocked = isAlbumPageUnlocked(gift.slug);
+
+    // Mandatory Unlock Gate for song-free gifts before the direct page loads
+    if (isSongGift && !isUnlocked) {
+        return songGateTemplate(gift);
+    }
+
+    const shareUrl = `https://marchellosciortino.com/${gift.slug}`;
 
     return `
     <style>
@@ -4129,7 +4392,7 @@ const singleGiftTemplate = (gift) => {
             font-family: var(--font-heading);
             font-weight: 700;
             font-size: 1.15rem;
-            padding: 18px 48px;
+            padding: 16px 28px;
             border: none;
             border-radius: 12px;
             cursor: pointer;
@@ -4139,8 +4402,9 @@ const singleGiftTemplate = (gift) => {
             align-items: center;
             justify-content: center;
             gap: 10px;
-            min-width: 280px;
-            max-width: 440px;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
             box-shadow: 0 10px 25px rgba(255, 87, 34, 0.35);
             transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
         }
@@ -4158,13 +4422,16 @@ const singleGiftTemplate = (gift) => {
             font-family: var(--font-heading);
             font-weight: 600;
             font-size: 0.95rem;
-            padding: 15px 22px;
+            padding: 14px 22px;
             border: 1px solid #cbd5e1;
             border-radius: 12px;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
+            width: 100%;
+            box-sizing: border-box;
             transition: all 0.2s;
         }
 
@@ -4682,7 +4949,7 @@ const singleGiftTemplate = (gift) => {
                 </div>
                 ` : ''}
                 <div class="single-gift-container">
-                    <!-- Left: Artwork Card -->
+                    <!-- Left: Artwork Card & Action Buttons -->
                     <div>
                         <div class="single-gift-card">
                             <div class="single-gift-cover-wrap">
@@ -4693,8 +4960,23 @@ const singleGiftTemplate = (gift) => {
                                 <span class="single-gift-badge">&#10004; ${gift.badge}</span>
                             </div>
                         </div>
-                        <div style="margin-top: 16px; text-align: center;">
-                            <button type="button" class="btn-share-secondary js-copy-share-btn" data-share-url="${shareUrl}" style="width: 100%; justify-content: center;">
+
+                        <!-- Action Buttons: Download Button right under image & above Direct Share Link -->
+                        <div class="single-gift-actions" style="margin-top: 18px; display: flex; flex-direction: column; gap: 12px; width: 100%;">
+                            ${gift.tracks && gift.tracks.length > 1 ? `
+                                <button type="button" class="btn-download-primary js-full-album-btn" data-title="${gift.title} - Complete Album">
+                                    Download Full Album (ZIP) &darr;
+                                </button>
+                            ` : (gift.tracks && gift.tracks.length === 1 ? `
+                                <button type="button" class="btn-download-primary js-download-track-btn" data-src="${gift.tracks[0].src}" data-title="${gift.tracks[0].title}" data-filename="${gift.tracks[0].title}.mp3">
+                                    Download MP3 Track &darr;
+                                </button>
+                            ` : `
+                                <a href="${gift.file_url}" class="btn-download-primary js-spa-download-btn" data-title="${gift.title}" data-file="${gift.file_url}" data-filename="${gift.download_filename || ''}">
+                                    ${gift.button_label} &darr;
+                                </a>
+                            `)}
+                            <button type="button" class="btn-share-secondary js-copy-share-btn" data-share-url="${shareUrl}">
                                 &#128279; Copy Direct Share Link
                             </button>
                         </div>
@@ -4722,24 +5004,29 @@ const singleGiftTemplate = (gift) => {
                     ${gift.tracks && gift.tracks.length > 0 ? `
                     <!-- In-Place Unlock Form Card (Gates live streaming & MP3 downloads until unlocked) -->
                     <div class="album-inline-unlock-card" id="album-inline-unlock-card" data-target-title="${gift.title}" style="display: ${isUnlocked ? 'none' : 'block'};">
-                        <div style="width: 52px; height: 52px; background: rgba(10, 216, 173, 0.12); border: 2px solid #0ad8ad; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #0ad8ad; margin: 0 auto 16px;">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        <div class="brand-lock-icon-wrap" style="width: 86px; height: 86px; margin: 0 auto 16px; border-radius: 20px; overflow: hidden; box-shadow: 0 14px 35px rgba(0, 0, 0, 0.6), 0 0 30px rgba(10, 216, 173, 0.4); border: 2.5px solid #0ad8ad; background: #081b29;">
+                            <picture>
+                                <source srcset="/assets/brand-lock-icon.webp" type="image/webp">
+                                <img src="/assets/brand-lock-icon.png" alt="Unlock ${gift.title}" style="width: 100%; height: 100%; object-fit: cover; display: block;" loading="lazy" decoding="async">
+                            </picture>
                         </div>
-                        <h3 style="color: #0f172a; margin: 0 0 8px; font-family: var(--font-heading); font-size: 1.45rem; font-weight: 800;">Member Access &amp; Free Gifts Profile</h3>
-                        <p style="color: #475569; font-size: 0.95rem; margin: 0 0 22px; line-height: 1.5;">
-                            Enter your email to log into your Free Gifts profile or unlock all tracks, live streams, and downloads across the entire website for your session.
+                        <h3 style="color: #ffffff; margin: 0 0 10px; font-family: var(--font-heading); font-size: 1.65rem; font-weight: 800;">Unlock ${gift.title}</h3>
+                        <p style="color: #cbd5e1; font-size: 0.96rem; margin: 0 0 22px; line-height: 1.55;">
+                            Enter your email to unlock all tracks, live streams, and downloads across the entire website for your visit.
                         </p>
                         <form id="album-inline-unlock-form" data-target-title="${gift.title}">
-                            <input type="email" class="spa-modal-input" id="album-inline-email" placeholder="Enter your email address to log in..." required style="width: 100%; padding: 14px; border: 1px solid #e2e8f0; border-radius: 10px; margin-bottom: 14px; font-size: 1rem; box-sizing: border-box;">
-                            <div class="turnstile-container" id="album-inline-turnstile"></div>
-                            <button type="submit" class="btn-unlock-orange" style="background: #ff5722; color: #ffffff; width: 100%; padding: 14px 20px; font-size: 1.05rem; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; transition: background 0.2s, transform 0.15s; box-shadow: 0 8px 20px rgba(255, 87, 34, 0.35);">
-                                Log In &amp; Access All Free Gifts &rarr;
+                            <div class="unlock-field-wrapper" style="text-align: left; margin-bottom: 16px; width: 100%; box-sizing: border-box;">
+                                <input type="email" class="spa-modal-input highlighted-email-input" id="album-inline-email" placeholder="Enter your email address here..." aria-label="Enter your email address to unlock" required autocomplete="email">
+                            </div>
+                            <div class="turnstile-container" id="album-inline-turnstile" style="margin: 14px auto 18px;"></div>
+                            <button type="submit" class="btn-unlock-orange song-gate-submit-btn">
+                                Mandatory Unlock
                             </button>
-                            <p class="unlock-security-disclaimer">
-                                <span class="lock-icon">🔒</span>“No spam. Secure, passwordless email login verified against ClickFunnels.”
+                            <p class="unlock-security-disclaimer" style="color: #94a3b8; font-size: 0.78rem; margin: 16px auto 0; text-align: center; line-height: 1.4;">
+                                <span class="lock-icon">&#128274;</span> “No spam. Instant verification to unlock your downloads for this visit.”
                             </p>
-                            <a href="/" class="btn-decline-home">
-                                I do not want to log in. Take me back to the home page.
+                            <a href="/" class="btn-decline-home" style="color: #94a3b8; font-size: 0.84rem; text-decoration: underline; text-underline-offset: 3px; margin-top: 14px; display: inline-block;">
+                                No thanks, take me back to the home page.
                             </a>
                         </form>
                     </div>
@@ -4818,13 +5105,7 @@ const singleGiftTemplate = (gift) => {
                             ` : ''}
                         </div>
                     </div>
-                    ` : `
-                    <div class="action-row" style="margin-bottom: 24px;">
-                        <a href="${gift.file_url}" class="btn-download-primary js-spa-download-btn" data-title="${gift.title}" data-file="${gift.file_url}" data-filename="${gift.download_filename || ''}">
-                            ${gift.button_label} &darr;
-                        </a>
-                    </div>
-                    `}
+                    ` : ''}
 
                     <!-- Explore All Link coming directly after the card in the same centered one-column row -->
                     <div style="margin-top: 36px; text-align: center; width: 100%;">
@@ -4837,41 +5118,46 @@ const singleGiftTemplate = (gift) => {
         </section>
     </div>
 
-    <!-- Login / Unlock Modal -->
+    <!-- Free Gifts Unlock Modal -->
     <div class="spa-modal-overlay" id="spa-download-modal" data-target-file="${gift.tracks ? '' : (gift.file_url || '')}" data-target-title="${gift.title}" data-target-filename="${gift.download_filename || ''}">
         <div class="spa-modal-card">
             <button class="spa-modal-close" id="spa-modal-close" aria-label="Close modal">&times;</button>
             <div id="spa-form-view">
-                <div style="width: 48px; height: 48px; background: rgba(10, 216, 173, 0.12); border: 2px solid #0ad8ad; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #0ad8ad; margin: 0 auto 14px;">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <div class="brand-lock-icon-wrap" style="width: 86px; height: 86px; margin: 0 auto 16px; border-radius: 20px; overflow: hidden; box-shadow: 0 14px 35px rgba(0, 0, 0, 0.6), 0 0 30px rgba(10, 216, 173, 0.4); border: 2.5px solid #0ad8ad; background: #081b29;">
+                    <picture>
+                        <source srcset="/assets/brand-lock-icon.webp" type="image/webp">
+                        <img src="/assets/brand-lock-icon.png" alt="Unlock Free Gift" style="width: 100%; height: 100%; object-fit: cover; display: block;" loading="eager" decoding="async">
+                    </picture>
                 </div>
-                <h3 style="color: #0f172a; margin-bottom: 8px; font-family: var(--font-heading); font-size: 1.45rem; font-weight: 800;">Member Access &amp; Free Gifts Profile</h3>
-                <p id="spa-copy-text" style="color: #475569; font-size: 0.95rem; margin-bottom: 20px; line-height: 1.5;">
-                    Enter your email to log into your Free Gifts profile or unlock all downloads across the site for your session.
+                <h3 id="spa-modal-heading" style="color: #ffffff; margin-bottom: 10px; font-family: var(--font-heading); font-size: 1.65rem; font-weight: 800;">Unlock Free Gifts &amp; Downloads</h3>
+                <p id="spa-copy-text" style="color: #cbd5e1; font-size: 0.96rem; margin-bottom: 22px; line-height: 1.55;">
+                    Enter your email to unlock all downloads and resources across the site for your visit.
                 </p>
                 <form id="spa-modal-login-form">
-                    <input type="email" class="spa-modal-input" id="spa-modal-email" placeholder="Enter your email address to log in..." required style="width: 100%; padding: 14px; border: 1px solid #e2e8f0; border-radius: 10px; margin-bottom: 12px; font-size: 1rem; box-sizing: border-box;">
-                    <div class="turnstile-container" id="spa-modal-turnstile"></div>
-                    <button type="submit" class="btn-unlock-orange" style="background: #ff5722; color: #ffffff; width: 100%; padding: 14px 20px; font-size: 1rem; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; transition: background 0.2s, transform 0.15s; box-shadow: 0 8px 20px rgba(255, 87, 34, 0.35);">
-                        Log In &amp; Access All Free Gifts &rarr;
+                    <div class="unlock-field-wrapper" style="text-align: left; margin-bottom: 16px; width: 100%; box-sizing: border-box;">
+                        <input type="email" class="spa-modal-input highlighted-email-input" id="spa-modal-email" placeholder="Enter your email address here..." aria-label="Enter your email address to unlock" required autocomplete="email">
+                    </div>
+                    <div class="turnstile-container" id="spa-modal-turnstile" style="margin: 14px auto 18px;"></div>
+                    <button type="submit" class="btn-unlock-orange song-gate-submit-btn">
+                        Mandatory Unlock
                     </button>
-                    <p class="unlock-security-disclaimer">
-                        <span class="lock-icon">🔒</span>“No spam. Secure, passwordless email login verified against ClickFunnels.”
+                    <p class="unlock-security-disclaimer" style="color: #94a3b8; font-size: 0.78rem; margin: 16px auto 0; text-align: center; line-height: 1.4;">
+                        <span class="lock-icon">&#128274;</span> “No spam. Instant verification to unlock your downloads for this visit.”
                     </p>
-                    <a href="/" class="btn-decline-home">
-                        I do not want to log in. Take me back to the home page.
+                    <a href="/" class="btn-decline-home" style="color: #94a3b8; font-size: 0.84rem; text-decoration: underline; text-underline-offset: 3px; margin-top: 14px; display: inline-block;">
+                        No thanks, take me back to the home page.
                     </a>
                 </form>
             </div>
             <div id="spa-success-view" style="display: none; text-align: center; padding: 10px 0;">
-                <div style="width: 56px; height: 56px; background: rgba(16, 185, 129, 0.12); border: 2px solid #10b981; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #10b981; margin: 0 auto 16px;">
+                <div style="width: 56px; height: 56px; background: rgba(16, 185, 129, 0.15); border: 2px solid #10b981; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #10b981; margin: 0 auto 16px; box-shadow: 0 0 25px rgba(16, 185, 129, 0.35);">
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                 </div>
-                <h3 id="spa-success-title" style="color: #0f172a; font-family: var(--font-heading); font-size: 1.45rem; font-weight: 800; margin: 0 0 8px;">Access Unlocked!</h3>
-                <p id="spa-success-msg" style="color: #475569; font-size: 0.95rem; margin: 0 0 20px; line-height: 1.5;">
+                <h3 id="spa-success-title" style="color: #ffffff; font-family: var(--font-heading); font-size: 1.55rem; font-weight: 800; margin: 0 0 8px;">Access Unlocked!</h3>
+                <p id="spa-success-msg" style="color: #cbd5e1; font-size: 0.95rem; margin: 0 0 20px; line-height: 1.5;">
                     Your download is starting automatically. If it didn't begin, tap the button below:
                 </p>
-                <a id="spa-success-download-btn" href="#" download="" class="btn-unlock-orange" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #ff5722; color: #ffffff; width: 100%; padding: 15px 20px; font-size: 1.05rem; font-weight: 700; border-radius: 10px; text-decoration: none; box-sizing: border-box; box-shadow: 0 8px 20px rgba(255, 87, 34, 0.35); transition: background 0.2s, transform 0.15s;">
+                <a id="spa-success-download-btn" href="#" download="" class="btn-unlock-orange song-gate-submit-btn" style="text-decoration: none;">
                     ⬇ Download File Now
                 </a>
                 <div style="margin-top: 14px; display: flex; flex-direction: column; align-items: center; gap: 8px;">
@@ -5183,10 +5469,12 @@ function openUnlockModal(targetFile, targetTitle, targetFilename = '') {
     const emailInput = document.getElementById('spa-modal-email');
 
     if (heading) {
-        heading.textContent = targetTitle ? `Member Access: ${targetTitle}` : 'Member Access & Free Gifts Profile';
+        heading.textContent = targetTitle ? `Unlock: ${targetTitle}` : 'Unlock Free Gifts & Downloads';
     }
     if (copyText) {
-        copyText.textContent = 'Enter your email to log into your Free Gifts profile or unlock all downloads across the site for your session.';
+        copyText.textContent = targetTitle
+            ? `Enter your email to unlock "${targetTitle}" and all other downloads across the site for your visit.`
+            : 'Enter your email to unlock all downloads across the site for your visit.';
     }
     if (formView) formView.style.display = 'block';
     if (successView) successView.style.display = 'none';
@@ -5211,7 +5499,7 @@ function openUnlockModal(targetFile, targetTitle, targetFilename = '') {
     }
     const turnstileContainer = modal.querySelector('.turnstile-container');
     if (turnstileContainer && typeof window.renderTurnstileForForm === 'function') {
-        window.renderTurnstileForForm(turnstileContainer, 'light');
+        window.renderTurnstileForForm(turnstileContainer, 'dark');
     }
 
     modal.classList.add('active');
@@ -5426,7 +5714,7 @@ document.addEventListener('keydown', (e) => {
 // Submit event listener for SPA modal form AND in-place album unlock form
 document.addEventListener('submit', async (e) => {
     const isModalForm = e.target && e.target.id === 'spa-modal-login-form';
-    const isInlineForm = e.target && e.target.id === 'album-inline-unlock-form';
+    const isInlineForm = e.target && (e.target.id === 'album-inline-unlock-form' || e.target.id === 'song-gate-unlock-form');
 
     if (isModalForm || isInlineForm) {
         e.preventDefault();
@@ -5435,7 +5723,7 @@ document.addEventListener('submit', async (e) => {
         const emailInput = form.querySelector('input[type="email"]');
         if (!emailInput) return;
         const email = emailInput.value.trim();
-        const originalText = submitBtn ? submitBtn.textContent : "Unlock Free Access →";
+        const originalText = submitBtn ? submitBtn.textContent.trim() : "Mandatory Unlock";
 
         const modal = document.getElementById('spa-download-modal');
         const targetUrl = isModalForm && modal ? modal.getAttribute('data-target-file') : null;
