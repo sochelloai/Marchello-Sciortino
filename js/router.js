@@ -3594,7 +3594,7 @@ const freeGiftsTemplate = () => {
             bottom: 0;
             background: rgba(15, 23, 42, 0.75);
             backdrop-filter: blur(8px);
-            z-index: 3000;
+            z-index: 99999;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -3602,6 +3602,7 @@ const freeGiftsTemplate = () => {
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.3s ease;
+            cursor: pointer;
         }
 
         .spa-modal-overlay.active {
@@ -3621,6 +3622,11 @@ const freeGiftsTemplate = () => {
             transition: transform 0.3s ease;
             text-align: center;
             box-sizing: border-box;
+            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M3,2 L3,20 L8,15 L13,23 L16,21 L11,13 L17,13 Z' fill='%23ffffff' stroke='%23081b29' stroke-width='1.5' stroke-linejoin='round'/%3E%3Cpath d='M4,4 L4,17 L7.5,13.5 L12,21 L14,19.5 L9.5,12 L14.5,12 Z' fill='none' stroke='%230ad8ad' stroke-width='0.8'/%3E%3C/svg%3E"), default;
+        }
+
+        .spa-modal-card h1, .spa-modal-card h2, .spa-modal-card h3, .spa-modal-card h4, .spa-modal-card p, .spa-modal-card span {
+            cursor: inherit;
         }
 
         .spa-modal-overlay.active .spa-modal-card {
@@ -3996,6 +4002,11 @@ const songGateTemplate = (gift) => {
             box-sizing: border-box;
             position: relative;
             overflow: hidden;
+            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M3,2 L3,20 L8,15 L13,23 L16,21 L11,13 L17,13 Z' fill='%23ffffff' stroke='%23081b29' stroke-width='1.5' stroke-linejoin='round'/%3E%3Cpath d='M4,4 L4,17 L7.5,13.5 L12,21 L14,19.5 L9.5,12 L14.5,12 Z' fill='none' stroke='%230ad8ad' stroke-width='0.8'/%3E%3C/svg%3E"), default;
+        }
+
+        .song-gate-card h1, .song-gate-card h2, .song-gate-card h3, .song-gate-card h4, .song-gate-card p, .song-gate-card span, .song-gate-thumb-wrap {
+            cursor: inherit;
         }
 
         .song-gate-thumb-wrap {
@@ -4492,6 +4503,7 @@ const singleGiftTemplate = (gift) => {
             transition: opacity 0.3s ease;
             padding: 20px;
             box-sizing: border-box;
+            cursor: pointer;
         }
 
         .spa-modal-overlay.active {
@@ -4511,6 +4523,11 @@ const singleGiftTemplate = (gift) => {
             transition: transform 0.3s ease;
             text-align: center;
             box-sizing: border-box;
+            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M3,2 L3,20 L8,15 L13,23 L16,21 L11,13 L17,13 Z' fill='%23ffffff' stroke='%23081b29' stroke-width='1.5' stroke-linejoin='round'/%3E%3Cpath d='M4,4 L4,17 L7.5,13.5 L12,21 L14,19.5 L9.5,12 L14.5,12 Z' fill='none' stroke='%230ad8ad' stroke-width='0.8'/%3E%3C/svg%3E"), default;
+        }
+
+        .spa-modal-card h1, .spa-modal-card h2, .spa-modal-card h3, .spa-modal-card h4, .spa-modal-card p, .spa-modal-card span {
+            cursor: inherit;
         }
 
         .spa-modal-overlay.active .spa-modal-card {
@@ -4525,7 +4542,7 @@ const singleGiftTemplate = (gift) => {
             border: none;
             color: #94a3b8;
             font-size: 1.6rem;
-            cursor: pointer;
+            cursor: pointer !important;
             line-height: 1;
             padding: 4px 8px;
         }

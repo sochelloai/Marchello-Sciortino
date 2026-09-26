@@ -6523,6 +6523,7 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     transition: opacity 0.3s ease;
     padding: 20px;
     box-sizing: border-box;
+    cursor: pointer;
 }
 
 .spa-modal-overlay.active {
@@ -6531,7 +6532,8 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
 }
 
 .spa-modal-card,
-.album-inline-unlock-card {
+.album-inline-unlock-card,
+.song-gate-card {
     background: linear-gradient(180deg, #081b29 0%, #061522 100%) !important;
     border: 2px solid rgba(10, 216, 173, 0.45) !important;
     border-radius: 24px !important;
@@ -6545,6 +6547,31 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     text-align: center;
     box-sizing: border-box;
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M3,2 L3,20 L8,15 L13,23 L16,21 L11,13 L17,13 Z' fill='%23ffffff' stroke='%23081b29' stroke-width='1.5' stroke-linejoin='round'/%3E%3Cpath d='M4,4 L4,17 L7.5,13.5 L12,21 L14,19.5 L9.5,12 L14.5,12 Z' fill='none' stroke='%230ad8ad' stroke-width='0.8'/%3E%3C/svg%3E"), default;
+}
+
+/* Ensure text headings, paragraphs, and disclaimers do not convert into invisible text I-beams */
+.spa-modal-card h1,
+.spa-modal-card h2,
+.spa-modal-card h3,
+.spa-modal-card h4,
+.spa-modal-card p,
+.spa-modal-card span,
+.album-inline-unlock-card h1,
+.album-inline-unlock-card h2,
+.album-inline-unlock-card h3,
+.album-inline-unlock-card h4,
+.album-inline-unlock-card p,
+.album-inline-unlock-card span,
+.song-gate-card h1,
+.song-gate-card h2,
+.song-gate-card h3,
+.song-gate-card h4,
+.song-gate-card p,
+.song-gate-card span,
+.song-gate-thumb-wrap,
+.brand-lock-icon-wrap {
+    cursor: inherit;
 }
 
 .spa-modal-overlay.active .spa-modal-card {
@@ -6559,7 +6586,7 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
     border: none;
     color: #94a3b8;
     font-size: 1.8rem;
-    cursor: pointer;
+    cursor: pointer !important;
     line-height: 1;
     padding: 4px 8px;
     transition: color 0.2s ease, transform 0.2s ease;
@@ -6618,6 +6645,28 @@ html.accessibility-paused-animations .win-card .glare-card-rainbow {
 .btn-unlock-orange:active,
 .song-gate-submit-btn:active {
     transform: scale(0.98) !important;
+}
+
+/* All interactive elements inside the modals get pointer cursor */
+.spa-modal-close,
+.song-gate-submit-btn,
+.btn-unlock-orange,
+.btn-decline-home,
+.single-gift-back-link,
+.spa-modal-card a,
+.spa-modal-card button,
+.album-inline-unlock-card a,
+.album-inline-unlock-card button,
+.song-gate-card a,
+.song-gate-card button {
+    cursor: pointer !important;
+}
+
+/* Explicit text cursor with teal caret inside inputs */
+.spa-modal-input,
+.highlighted-email-input {
+    cursor: text !important;
+    caret-color: #0ad8ad !important;
 }
 
 /* ==========================================================================

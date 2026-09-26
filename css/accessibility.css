@@ -519,10 +519,26 @@ html.accessibility-dyslexic-font h6 {
     font-family: 'Comic Sans MS', 'OpenDyslexic', 'Segoe UI', cursive, sans-serif !important;
 }
 
-/* 7. Large Mouse Pointer */
+/* 7. Large Mouse Pointer (High-visibility dual contrast for light and dark backgrounds) */
 html.accessibility-large-cursor, 
 html.accessibility-large-cursor * {
-    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M0,0 L0,24 L6,18 L13,32 L17,30 L10,16 L18,16 Z' fill='%23081b29' stroke='%230ad8ad' stroke-width='2'/%3E%3C/svg%3E"), auto !important;
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M0,0 L0,24 L6,18 L13,32 L17,30 L10,16 L18,16 Z' fill='%23ffffff' stroke='%23081b29' stroke-width='2.5' stroke-linejoin='round'/%3E%3Cpath d='M2,3 L2,20 L6.5,15.5 L12,27 L14,26 L9,14.5 L15,14.5 Z' fill='%230ad8ad' stroke='none'/%3E%3C/svg%3E"), auto !important;
+}
+
+html.accessibility-large-cursor a,
+html.accessibility-large-cursor button,
+html.accessibility-large-cursor [role="button"],
+html.accessibility-large-cursor input[type="submit"],
+html.accessibility-large-cursor input[type="button"],
+html.accessibility-large-cursor select,
+html.accessibility-large-cursor .spa-modal-close {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M10 2a2.5 2.5 0 0 0-2.5 2.5v10l-1.6-1.1a2.5 2.5 0 0 0-3.5.5 2.5 2.5 0 0 0 .5 3.5l6.5 5.3c1.8 1.4 4 2.3 6.3 2.3h4.4a6.3 6.3 0 0 0 6.3-6.3V12a2.5 2.5 0 0 0-2.5-2.5 2.5 2.5 0 0 0-2.5 2.5v-1.3a2.5 2.5 0 0 0-2.5-2.5 2.5 2.5 0 0 0-2.5 2.5v-1.3a2.5 2.5 0 0 0-2.5-2.5 2.5 2.5 0 0 0-2.5 2.5V4.5A2.5 2.5 0 0 0 10 2z' fill='%23ffffff' stroke='%23081b29' stroke-width='2' stroke-linejoin='round'/%3E%3Cpath d='M10 4.5v10' stroke='%230ad8ad' stroke-width='1.5'/%3E%3C/svg%3E"), pointer !important;
+}
+
+html.accessibility-large-cursor input[type="email"],
+html.accessibility-large-cursor input[type="text"],
+html.accessibility-large-cursor textarea {
+    cursor: text !important;
 }
 
 /* 8. Larger Text Scale */
