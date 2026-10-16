@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" width="1200" height="1200">
+  <defs>
+    <radialGradient id="bgGrad" cx="50%" cy="45%" r="75%">
+      <stop offset="0%" stop-color="#172554" />
+      <stop offset="100%" stop-color="#080d21" />
+    </radialGradient>
+    <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fde047" />
+      <stop offset="50%" stop-color="#f97316" />
+      <stop offset="100%" stop-color="#7c3aed" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7c3aed" />
+      <stop offset="50%" stop-color="#f97316" />
+      <stop offset="100%" stop-color="#fb923c" />
+    </linearGradient>
+    <filter id="glowFilter" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="30" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <rect width="1200" height="1200" fill="url(#bgGrad)" />
+  
+  <!-- Ambient background geometry -->
+  <circle cx="600" cy="550" r="420" fill="none" stroke="#f97316" stroke-width="1.5" opacity="0.18" stroke-dasharray="8 16" />
+  <circle cx="600" cy="550" r="320" fill="none" stroke="#fde047" stroke-width="2.5" opacity="0.3" />
+  
+  <!-- Procedural Feature Elements -->
+  
+            <circle cx="600" cy="550" r="260" fill="none" stroke="url(#primaryGrad)" stroke-width="12" filter="url(#glowFilter)" />
+            <circle cx="600" cy="550" r="190" fill="none" stroke="#fb923c" stroke-width="4" opacity="0.6" stroke-dasharray="16 8" />
+            <polygon points="600,340 760,630 440,630" fill="none" stroke="url(#accentGrad)" stroke-width="8" opacity="0.75" />
+            <circle cx="600" cy="550" r="40" fill="#fb923c" filter="url(#glowFilter)" />
+        
+
+  <!-- Header Badge & Category Tag -->
+  <g transform="translate(600, 1020)" text-anchor="middle">
+    <rect x="-160" y="-35" width="320" height="42" rx="21" fill="rgba(255,255,255,0.06)" stroke="#f97316" stroke-width="1.5" />
+    <text y="-8" fill="#fde047" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" letter-spacing="4">DAILY INSPIRATION</text>
+  </g>
+</svg>
