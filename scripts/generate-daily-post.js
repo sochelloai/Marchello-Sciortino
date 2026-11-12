@@ -1,17 +1,19 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const http = require('http');
-const { execSync, execFileSync } = require('child_process');
 
-// Automated daily post generator - trigger regeneration
+// Automated daily post generator — Strictly powered by Google Gemini API
 const rawApiKey = (process.env.GEMINI_API_KEY || '').trim();
 const GEMINI_API_KEY = rawApiKey.replace(/^["']|["']$/g, '').trim();
 
 if (!GEMINI_API_KEY) {
-    console.warn("Notice: GEMINI_API_KEY is not defined in the environment.");
-    console.warn("-> If running in GitHub Actions, ensure the repository secret GEMINI_API_KEY is configured in Settings -> Secrets and variables -> Actions.");
-    console.warn("-> Activating built-in on-theme daily post generator to guarantee today's post publishes.");
+    console.error("CRITICAL ERROR: GEMINI_API_KEY is not defined in the environment.");
+    console.error("-> Ensure the repository secret GEMINI_API_KEY is configured in GitHub Settings -> Secrets and variables -> Actions with a permanent Google AI Studio key (starts with 'AIza').");
+    process.exit(1);
+}
+
+if (GEMINI_API_KEY.startsWith('ya29.')) {
+    console.warn("WARNING: GEMINI_API_KEY starts with 'ya29.' (a short-lived OAuth2 access token that expires after ~1 hour). Use a permanent Google AI Studio API key ('AIza...') in GitHub Secrets for unattended daily runs.");
 }
 
 // Extract appropriate authentication headers for Google Generative Language API
@@ -36,7 +38,7 @@ const MONTHLY_THEMES = {
     2: "March — Growth & Renewal (focus on spring, renewed thinking, breaking old patterns, courage, and creativity)",
     3: "April — Faith, Reflection & Resurrection (focus on hope after hardship, new life, restoration, and believing again)",
     4: "May — Strength, Family & Legacy (focus on family lessons, honoring sacrifice, leadership, and gratitude)",
-    5: "June — Courage, Midyear Reflection & Momentum (focus on summer energy, consistency, Father's Day, and stays consistent)",
+    5: "June — Courage, Midyear Reflection & Momentum (focus on summer energy, consistency, Father's Day, and staying consistent)",
     6: "July — Freedom & Responsibility (focus on personal freedom, discipline, spiritual freedom, and Independence Day)",
     7: "August — Preparation & Back-to-School Mindset (focus on learning, growth, discipline, mentorship, and preparation)",
     8: "September — Work, Calling & Resilience (focus on Labor Day, service, purpose, consistency, and overcoming burnout)",
@@ -202,9 +204,7 @@ const HOLIDAY_HIGHLIGHTS = {
 function getHolidayHighlight(monthIdx, dayOfMonth) {
     const list = HOLIDAY_HIGHLIGHTS[monthIdx] || [];
     if (list.length === 0) return { name: "Seasonal Reflection", highlight: "luminous seasonal atmospheric light and delicate ambient depth" };
-    // Rotate between available holiday themes depending on the day of the month
-    const item = list[(dayOfMonth - 1) % list.length];
-    return item;
+    return list[(dayOfMonth - 1) % list.length];
 }
 
 // Calculate Date in Central Time (US)
@@ -218,7 +218,6 @@ if (process.env.TARGET_DATE) {
 }
 const monthIndex = centralDate.getMonth(); // 0-11
 const dayOfMonth = centralDate.getDate(); // 1-31
-const currentYear = centralDate.getFullYear();
 const currentMonthTheme = MONTHLY_THEMES[monthIndex];
 const currentMonthArtStyle = MONTHLY_ART_STYLES[monthIndex];
 const currentHolidayHighlight = getHolidayHighlight(monthIndex, dayOfMonth);
@@ -261,10 +260,9 @@ const HIGGSFIELD_ANCHOR_VARIATIONS = [
 function shouldFeatureHiggsfield(date, articlesList = []) {
     const dayOfWeek = date.getDay(); // 0 = Sunday, 1 = Monday, 2 = Tuesday, 3 = Wednesday, 4 = Thursday, 5 = Friday, 6 = Saturday
     // Designated core days: Tuesday (2), Thursday (4), Sunday (0) = 3 days/week
-    const isDesignatedDay = [0, 2, 4].includes(dayOfWeek);
-    if (isDesignatedDay) return true;
+    if ([0, 2, 4].includes(dayOfWeek)) return true;
 
-    // Rolling 7-day safety check: if fewer than 3 posts in the trailing 7 days mentioned Higgsfield, trigger on Friday/Saturday/Wednesday
+    // Rolling 7-day safety check: if fewer than 3 posts in the trailing 7 days mentioned Higgsfield, trigger catch-up
     const trailing7 = articlesList.slice(-7);
     const count = trailing7.filter(p => p.body && p.body.includes(HIGGSFIELD_AFFILIATE_URL)).length;
     if (count < 3 && (dayOfWeek === 5 || dayOfWeek === 6 || dayOfWeek === 3)) {
@@ -273,10 +271,28 @@ function shouldFeatureHiggsfield(date, articlesList = []) {
     return false;
 }
 
-// Select varied anchor text based on date seed
-function getHiggsfieldAnchorText(seedNumber) {
-    const idx = Math.abs(seedNumber) % HIGGSFIELD_ANCHOR_VARIATIONS.length;
-    return HIGGSFIELD_ANCHOR_VARIATIONS[idx];
+// Select varied anchor text based on date seed while guaranteeing no consecutive duplicate anchors
+function getHiggsfieldAnchorText(seedNumber, articlesList = []) {
+    let idx = Math.abs(seedNumber) % HIGGSFIELD_ANCHOR_VARIATIONS.length;
+    let candidate = HIGGSFIELD_ANCHOR_VARIATIONS[idx];
+
+    // Inspect the most recent post featuring Higgsfield to avoid repeating the same anchor consecutively
+    for (let i = articlesList.length - 1; i >= 0; i--) {
+        const body = articlesList[i]?.body || '';
+        if (body.includes('higgsfield.ai')) {
+            const match = body.match(/<a[^>]*href=["'][^"']*higgsfield\.ai[^"']*["'][^>]*>([\s\S]*?)<\/a>/i);
+            if (match && match[1]) {
+                const lastAnchor = match[1].replace(/<[^>]+>/g, '').trim().toLowerCase();
+                if (lastAnchor === candidate.toLowerCase()) {
+                    idx = (idx + 1) % HIGGSFIELD_ANCHOR_VARIATIONS.length;
+                    candidate = HIGGSFIELD_ANCHOR_VARIATIONS[idx];
+                }
+            }
+            break;
+        }
+    }
+
+    return candidate;
 }
 
 // Helper to make HTTPS POST requests with promise and Google API header injection
@@ -291,7 +307,6 @@ function postJson(url, headers = {}, body = {}) {
         if (u.hostname.includes('generativelanguage.googleapis.com')) {
             const googleHeaders = getGoogleAuthHeaders(GEMINI_API_KEY);
             reqHeaders = { ...googleHeaders, ...reqHeaders };
-            // Remove ?key= if we have auth header to prevent ACCESS_TOKEN_TYPE_UNSUPPORTED
             if (googleHeaders['x-goog-api-key'] || googleHeaders['Authorization']) {
                 u.searchParams.delete('key');
             }
@@ -301,7 +316,7 @@ function postJson(url, headers = {}, body = {}) {
             hostname: u.hostname,
             path: u.pathname + u.search,
             method: 'POST',
-            timeout: 180000, // 3 minutes timeout in milliseconds
+            timeout: 180000, // 3 minutes timeout
             headers: reqHeaders
         };
 
@@ -313,10 +328,12 @@ function postJson(url, headers = {}, body = {}) {
                     try {
                         resolve(JSON.parse(data));
                     } catch (parseErr) {
-                        reject(new Error(`HTTP ${res.statusCode}: Failed to parse JSON response. Raw content: ${data}`));
+                        reject(new Error(`HTTP ${res.statusCode}: Failed to parse JSON response.`));
                     }
                 } else {
-                    reject(new Error(`HTTP ${res.statusCode}: ${data}`));
+                    const err = new Error(`HTTP ${res.statusCode}: ${data.slice(0, 600)}`);
+                    err.statusCode = res.statusCode;
+                    reject(err);
                 }
             });
         });
@@ -350,10 +367,11 @@ function getJson(url, headers = {}) {
             hostname: u.hostname,
             path: u.pathname + u.search,
             method: 'GET',
+            timeout: 30000,
             headers: reqHeaders
         };
 
-        https.get(options, (res) => {
+        const req = https.get(options, (res) => {
             let data = '';
             res.on('data', (chunk) => data += chunk);
             res.on('end', () => {
@@ -361,395 +379,159 @@ function getJson(url, headers = {}) {
                     try {
                         resolve(JSON.parse(data));
                     } catch (parseErr) {
-                        reject(new Error(`HTTP ${res.statusCode}: Failed to parse JSON response. Raw content: ${data}`));
+                        reject(new Error(`HTTP ${res.statusCode}: Failed to parse JSON response.`));
                     }
                 } else {
-                    reject(new Error(`HTTP ${res.statusCode}: ${data}`));
+                    const err = new Error(`HTTP ${res.statusCode}: ${data.slice(0, 600)}`);
+                    err.statusCode = res.statusCode;
+                    reject(err);
                 }
             });
-        }).on('error', reject);
-    });
-}
-
-// Helper to download binary files with redirect-following support
-function downloadFile(url, destPath, redirectCount = 0) {
-    if (redirectCount > 5) {
-        return Promise.reject(new Error("Too many redirects (max 5)"));
-    }
-    return new Promise((resolve, reject) => {
-        const u = new URL(url);
-        const client = u.protocol === 'https:' ? https : http;
-        client.get(url, {
-            headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' },
-            timeout: 60000
-        }, (res) => {
-            if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-                const redirectUrl = new URL(res.headers.location, url).toString();
-                resolve(downloadFile(redirectUrl, destPath, redirectCount + 1));
-                return;
-            }
-            if (res.statusCode !== 200) {
-                reject(new Error(`Failed to download: HTTP ${res.statusCode}`));
-                return;
-            }
-            const fileStream = fs.createWriteStream(destPath);
-            res.pipe(fileStream);
-            fileStream.on('finish', () => {
-                fileStream.close();
-                resolve();
-            });
-        }).on('error', reject);
-    });
-}
-
-// Helper to fetch binary buffer over HTTP/HTTPS with redirect and timeout support
-function fetchBuffer(url, redirectCount = 0) {
-    if (redirectCount > 5) {
-        return Promise.reject(new Error("Too many redirects (max 5)"));
-    }
-    return new Promise((resolve, reject) => {
-        const u = new URL(url);
-        const client = u.protocol === 'https:' ? https : http;
-        const req = client.get(url, {
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-            },
-            timeout: 90000 // 90 seconds timeout
-        }, (res) => {
-            if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-                const redirectUrl = new URL(res.headers.location, url).toString();
-                resolve(fetchBuffer(redirectUrl, redirectCount + 1));
-                return;
-            }
-            if (res.statusCode !== 200) {
-                reject(new Error(`HTTP ${res.statusCode}: Failed to fetch image buffer`));
-                return;
-            }
-            const chunks = [];
-            res.on('data', chunk => chunks.push(chunk));
-            res.on('end', () => resolve(Buffer.concat(chunks)));
         });
 
         req.on('timeout', () => {
             req.destroy();
-            reject(new Error("Image fetch timed out after 90 seconds"));
+            reject(new Error("GET request timed out after 30 seconds."));
         });
 
         req.on('error', reject);
     });
 }
 
-// Automatically compress and optimize blog images using sharp
-// Produces .webp (primary for web, <= 120 KB), .jpg (fallback/OG), and compressed .png
-async function processAndSaveBlogImages(imageBuffer, imageSlug, blogAssetsDir) {
-    if (!fs.existsSync(blogAssetsDir)) {
-        fs.mkdirSync(blogAssetsDir, { recursive: true });
-    }
-
-    // Check if buffer is SVG
-    if (imageBuffer.toString('utf8', 0, 100).includes('<svg')) {
-        const svgPath = path.join(blogAssetsDir, `${imageSlug}.svg`);
-        fs.writeFileSync(svgPath, imageBuffer);
-        return `assets/blog/${imageSlug}.svg`;
-    }
-
-    try {
-        let sharp;
-        try {
-            sharp = require('sharp');
-        } catch (e) {
-            console.warn("Notice: sharp module not found, attempting fallback or write raw:", e.message);
+// Fetch all models available to the configured GEMINI_API_KEY (handling pagination)
+async function fetchAllAvailableModels() {
+    const allModels = [];
+    let pageToken = '';
+    for (let page = 0; page < 5; page++) {
+        const tokenParam = pageToken ? `&pageToken=${encodeURIComponent(pageToken)}` : '';
+        const url = `https://generativelanguage.googleapis.com/v1beta/models?pageSize=100${tokenParam}`;
+        const res = await getJson(url);
+        if (res && Array.isArray(res.models)) {
+            allModels.push(...res.models);
         }
-
-        if (sharp) {
-            const base = sharp(imageBuffer).resize(1280, 720, {
-                fit: 'cover',
-                position: 'center'
-            });
-
-            const webpPath = path.join(blogAssetsDir, `${imageSlug}.webp`);
-            const jpgPath = path.join(blogAssetsDir, `${imageSlug}.jpg`);
-            const pngPath = path.join(blogAssetsDir, `${imageSlug}.png`);
-
-            const [webpBuf, jpgBuf, pngBuf] = await Promise.all([
-                base.clone().webp({ quality: 82, effort: 4 }).toBuffer(),
-                base.clone().jpeg({ quality: 82, mozjpeg: true }).toBuffer(),
-                base.clone().png({ quality: 75, palette: true, compressionLevel: 9 }).toBuffer()
-            ]);
-
-            fs.writeFileSync(webpPath, webpBuf);
-            fs.writeFileSync(jpgPath, jpgBuf);
-            fs.writeFileSync(pngPath, pngBuf);
-
-            console.log(`Blog image compressed successfully for "${imageSlug}":`);
-            console.log(`- WebP: ${(webpBuf.length / 1024).toFixed(1)} KB`);
-            console.log(`- JPEG: ${(jpgBuf.length / 1024).toFixed(1)} KB`);
-            console.log(`- PNG:  ${(pngBuf.length / 1024).toFixed(1)} KB`);
-
-            return `assets/blog/${imageSlug}.webp`;
+        if (res && res.nextPageToken) {
+            pageToken = res.nextPageToken;
+        } else {
+            break;
         }
-    } catch (optErr) {
-        console.warn("Optimization with sharp failed, falling back to raw save:", optErr.message);
     }
-
-    // Fallback if sharp unavailable
-    const fallbackPath = path.join(blogAssetsDir, `${imageSlug}.png`);
-    fs.writeFileSync(fallbackPath, imageBuffer);
-    return `assets/blog/${imageSlug}.png`;
+    return allModels;
 }
 
-// Generate luxury bespoke brand geometric vector artwork as an offline/fail-safe fallback
-function generateBrandedThemeSvg(monthArtStyle, monthIndex, title, tag) {
-    const monthPalettes = {
-        0: { bgStart: '#0f172a', bgEnd: '#020617', p1: '#38bdf8', p2: '#94a3b8', accent: '#f8fafc', glow: '#38bdf8' },
-        1: { bgStart: '#4c0519', bgEnd: '#1e0108', p1: '#fb7185', p2: '#e11d48', accent: '#fbcfe8', glow: '#f43f5e' },
-        2: { bgStart: '#064e3b', bgEnd: '#022c22', p1: '#34d399', p2: '#059669', accent: '#fef08a', glow: '#10b981' },
-        3: { bgStart: '#3b0764', bgEnd: '#1e0538', p1: '#c084fc', p2: '#9333ea', accent: '#fbcfe8', glow: '#a855f7' },
-        4: { bgStart: '#451a03', bgEnd: '#200c02', p1: '#d97706', p2: '#b45309', accent: '#fed7aa', glow: '#f59e0b' },
-        5: { bgStart: '#1e1b4b', bgEnd: '#0f0e26', p1: '#eab308', p2: '#f59e0b', accent: '#38bdf8', glow: '#fbbf24' },
-        6: { bgStart: '#0f172a', bgEnd: '#030712', p1: '#ef4444', p2: '#3b82f6', accent: '#ffffff', glow: '#60a5fa' },
-        7: { bgStart: '#134e4a', bgEnd: '#042f2e', p1: '#f59e0b', p2: '#0d9488', accent: '#fed7aa', glow: '#2dd4bf' },
-        8: { bgStart: '#2e1202', bgEnd: '#0d0400', p1: '#f59e0b', p2: '#ea580c', accent: '#d4af37', glow: '#fbbf24' },
-        9: { bgStart: '#172554', bgEnd: '#080d21', p1: '#f97316', p2: '#7c3aed', accent: '#fde047', glow: '#fb923c' },
-        10: { bgStart: '#3f1a07', bgEnd: '#1a0b03', p1: '#d97706', p2: '#84cc16', accent: '#fed7aa', glow: '#f59e0b' },
-        11: { bgStart: '#064e3b', bgEnd: '#022118', p1: '#ef4444', p2: '#eab308', accent: '#ffffff', glow: '#22c55e' }
+// Rank discovered text models (newest Flash / stable models first)
+function buildTextModelCandidates(availableModels) {
+    const getMethods = m => (m.supportedGenerationMethods || m.supportedMethods || []).map(x => x.toLowerCase());
+    const excludedSubstrings = [
+        'image', 'banana', 'tts', 'audio', 'embedding', 'imagen', 'veo',
+        'aqa', 'vision', 'robotics', 'computer-use', 'live', 'gemma', 'learnlm'
+    ];
+
+    const discovered = availableModels
+        .filter(m => {
+            const id = (m.name || '').replace(/^models\//, '').toLowerCase();
+            if (!id.startsWith('gemini-')) return false;
+            if (!getMethods(m).includes('generatecontent')) return false;
+            return !excludedSubstrings.some(ex => id.includes(ex));
+        })
+        .map(m => m.name.replace(/^models\//, ''));
+
+    const scoreTextModel = (id) => {
+        const lower = id.toLowerCase();
+        let score = 0;
+        if (lower.startsWith('gemini-3')) score += 300;
+        else if (lower.startsWith('gemini-2.5')) score += 200;
+        else if (lower === 'gemini-flash-latest') score += 250;
+        else if (lower.startsWith('gemini-2.0')) score += 100;
+
+        if (lower.includes('flash') && !lower.includes('lite')) score += 50;
+        else if (lower.includes('pro')) score += 35;
+        else if (lower.includes('flash-lite')) score += 25;
+
+        if (!lower.includes('exp') && !lower.includes('001')) score += 15;
+        if (!lower.includes('preview')) score += 10;
+        return score;
     };
 
-    const pal = monthPalettes[monthIndex] || monthPalettes[8];
-    const cleanTag = (tag || "Daily Reflection").toUpperCase();
+    discovered.sort((a, b) => scoreTextModel(b) - scoreTextModel(a));
 
-    // Procedural geometric layers
-    let proceduralElements = '';
-    if (monthIndex === 8) { // September: Interlocking brass gears & chevrons
-        let teeth = '';
-        for (let i = 0; i < 16; i++) {
-            const angle = (i * 360) / 16;
-            teeth += `<rect x="575" y="270" width="50" height="70" rx="6" transform="rotate(${angle} 600 550)" fill="url(#primaryGrad)" />`;
-        }
-        let chevrons = '';
-        for (let j = 0; j < 5; j++) {
-            const y = 470 + j * 55;
-            const opacity = (1 - j * 0.16).toFixed(2);
-            chevrons += `<path d="M 460 ${y} L 600 ${y - 55} L 740 ${y}" fill="none" stroke="url(#accentGrad)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" opacity="${opacity}" />`;
-        }
-        proceduralElements = `
-            ${teeth}
-            <circle cx="600" cy="550" r="230" fill="url(#bgGrad)" stroke="url(#primaryGrad)" stroke-width="14" filter="url(#glowFilter)" />
-            <circle cx="600" cy="550" r="160" fill="none" stroke="${pal.glow}" stroke-width="4" opacity="0.6" stroke-dasharray="24 12" />
-            ${chevrons}
-            <circle cx="600" cy="550" r="32" fill="${pal.glow}" filter="url(#glowFilter)" />
-        `;
-    } else {
-        // Universal geometric radial composition for other months
-        proceduralElements = `
-            <circle cx="600" cy="550" r="260" fill="none" stroke="url(#primaryGrad)" stroke-width="12" filter="url(#glowFilter)" />
-            <circle cx="600" cy="550" r="190" fill="none" stroke="${pal.glow}" stroke-width="4" opacity="0.6" stroke-dasharray="16 8" />
-            <polygon points="600,340 760,630 440,630" fill="none" stroke="url(#accentGrad)" stroke-width="8" opacity="0.75" />
-            <circle cx="600" cy="550" r="40" fill="${pal.glow}" filter="url(#glowFilter)" />
-        `;
-    }
+    const fallbackIds = [
+        "gemini-flash-latest",
+        "gemini-3-flash-preview",
+        "gemini-2.5-flash",
+        "gemini-3.5-flash-lite",
+        "gemini-2.0-flash"
+    ];
 
-    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" width="1200" height="1200">
-  <defs>
-    <radialGradient id="bgGrad" cx="50%" cy="45%" r="75%">
-      <stop offset="0%" stop-color="${pal.bgStart}" />
-      <stop offset="100%" stop-color="${pal.bgEnd}" />
-    </radialGradient>
-    <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="${pal.accent}" />
-      <stop offset="50%" stop-color="${pal.p1}" />
-      <stop offset="100%" stop-color="${pal.p2}" />
-    </linearGradient>
-    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="${pal.p2}" />
-      <stop offset="50%" stop-color="${pal.p1}" />
-      <stop offset="100%" stop-color="${pal.glow}" />
-    </linearGradient>
-    <filter id="glowFilter" x="-30%" y="-30%" width="160%" height="160%">
-      <feGaussianBlur stdDeviation="30" result="blur" />
-      <feComposite in="SourceGraphic" in2="blur" operator="over" />
-    </filter>
-  </defs>
-
-  <rect width="1200" height="1200" fill="url(#bgGrad)" />
-  
-  <!-- Ambient background geometry -->
-  <circle cx="600" cy="550" r="420" fill="none" stroke="${pal.p1}" stroke-width="1.5" opacity="0.18" stroke-dasharray="8 16" />
-  <circle cx="600" cy="550" r="320" fill="none" stroke="${pal.accent}" stroke-width="2.5" opacity="0.3" />
-  
-  <!-- Procedural Feature Elements -->
-  ${proceduralElements}
-
-  <!-- Header Badge & Category Tag -->
-  <g transform="translate(600, 1020)" text-anchor="middle">
-    <rect x="-160" y="-35" width="320" height="42" rx="21" fill="rgba(255,255,255,0.06)" stroke="${pal.p1}" stroke-width="1.5" />
-    <text y="-8" fill="${pal.accent}" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" letter-spacing="4">${cleanTag}</text>
-  </g>
-</svg>`;
+    return [...new Set([...discovered, ...fallbackIds])];
 }
 
-// High-fidelity fallback article generator ensuring daily publishing continuity even if external APIs encounter outages
-function generateFallbackArticle(dateStr, monthIdx, dayNum, monthTheme, recentPostsContext, isHiggsfieldDay = false, selectedAnchorText = "Higgsfield") {
-    const holidayInfo = getHolidayHighlight(monthIdx, dayNum);
-    const artStyle = MONTHLY_ART_STYLES[monthIdx] || MONTHLY_ART_STYLES[8];
+// Rank discovered native Gemini image-generation models (strictly Gemini multimodal generateContent, never Imagen)
+function buildImageModelCandidates(availableModels) {
+    const getMethods = m => (m.supportedGenerationMethods || m.supportedMethods || []).map(x => x.toLowerCase());
 
-    let title, desc, tag, primaryKeyword, secondaryKeywords, slug, bodyContent;
+    const discovered = availableModels
+        .filter(m => {
+            const id = (m.name || '').replace(/^models\//, '').toLowerCase();
+            if (!id.startsWith('gemini-')) return false;
+            if (!getMethods(m).includes('generatecontent')) return false;
+            if (id.includes('embedding') || id.includes('tts') || id.includes('audio')) return false;
+            return id.includes('image') || id.includes('banana');
+        })
+        .map(m => m.name.replace(/^models\//, ''));
 
-    if (monthIdx === 8) { // September: Work, Calling & Resilience
-        if (dayNum === 11) {
-            title = "Service Through Limitation: Why Showing Up for Others Heals Work Burnout";
-            desc = "Discover how shifting focus from personal fatigue to serving others breaks the cycle of burnout and restores purpose in your daily craft.";
-            tag = "Lessons From Limitation";
-            primaryKeyword = "service through limitation";
-            secondaryKeywords = ["overcoming work burnout", "purpose in daily work", "resilient mindset"];
-            slug = "service-through-limitation-heals-burnout";
-            bodyContent = `<h2>Shifting Focus from Fatigue to Purpose</h2>
-<p>When work feels exhausting and physical energy runs low, it is tempting to retreat inward. Living with Friedrich's ataxia means my physical reserves are strictly bounded every single day. Some mornings, typing an email or coordinating a project feels like climbing a steep mountain. But I have learned a surprising truth about work resilience: the fastest way to overcome burnout is often to redirect your focus toward serving someone else.</p>
-<p>On this National Day of Service and Remembrance, we are reminded of the profound power of showing up for our neighbors. When you shift your mind from what you lack to what you can give, the mental weight lifts. Empty hands become useful hands.</p>
-<h2>A Warning Against the Complacency Trap</h2>
-<p>I want to give you a strong, loving warning: do not let your daily parameters become an excuse for self-pity or complacency. It is easy to say, "I am too tired," or "I do not have enough resources." But waiting for ideal conditions is a trap. God has placed specific gifts in your hands right now. Technology and artificial intelligence can act as a wonderful cognitive prosthetic to handle repetitive tasks, but they cannot replace your genuine human heart or your calling to serve. As I write in <a href="https://www.limitationstoliberation.com/" target="_blank">"Limitations to Liberation"</a>, limitations are not dead ends—they are boundary markers that point you toward your true contribution.</p>
-<h2>How to Build a Sustainable Service System</h2>
-<p>To protect your energy while continuing to serve your community and clients, build intentional boundaries into your day:</p>
-<ul>
-<li><strong>Honoring Your Energy Windows:</strong> Schedule creative and service-focused work during your peak morning energy window (10:30 AM–12:30 PM), and reserve low-energy afternoons for administrative cleanup.</li>
-<li><strong>Automating the Routine:</strong> Offload administrative friction with smart systems so your mind stays fresh for people. Explore our creative <a href="/services">services</a> to see how we build systems that thrive under constraints.</li>
-<li><strong>The Two-Minute Reset:</strong> Before stepping into a difficult task, pause to dedicate your effort to a higher purpose and count the blessings right in front of you.</li>
-</ul>
-<p>If you want to understand how this perspective developed through my own challenges, read my <a href="/story">story</a>.</p>
-<h3>Frequently Asked Questions</h3>
-<h3>How does serving others help overcome work burnout?</h3>
-<p>Serving others breaks the internal loop of stress and self-focused worry. By directing your attention to meeting someone else's need, you reconnect with meaning and perspective, which naturally replenishes mental energy.</p>
-<h3>What if I lack the physical energy for extra work?</h3>
-<p>Service does not require grand physical gestures. Sending an encouraging message, streamlining a process for a teammate, or sharing an honest lesson from your journey are all powerful forms of service that require minimal physical output.</p>`;
-        } else {
-            title = `Building Resilience in Daily Craft: The Strength of Consistency`;
-            desc = "Discover how faithful, daily consistency inside your constraints builds lasting momentum and protects your energy.";
-            tag = "Lessons From Limitation";
-            primaryKeyword = "building resilience in daily craft";
-            secondaryKeywords = ["workplace consistency", "overcoming burnout", "constraint advantage"];
-            slug = `building-resilience-daily-craft-${dayNum}`;
-            bodyContent = `<h2>The Quiet Power of Showing Up Daily</h2>
-<p>When physical capacity fluctuates, relying on huge bursts of motivation is a recipe for frustration. Living with Friedrich's ataxia taught me that real progress is not built on sudden heroic efforts. It is built on steady, disciplined consistency within whatever boundaries you have today.</p>
-<p>Grandpa Sciortino taught me in his basement practice that our daily work is a craft given by our Creator. When we show up with whatever strength is in our hands, we honor that calling.</p>
-<h2>A Warning Against the Complacency Trap</h2>
-<p>Do not let your limits become an excuse for sitting still. Waiting for ideal conditions or expecting automation to do your thinking is a path to complacency. In my book <a href="https://www.limitationstoliberation.com/" target="_blank">"Limitations to Liberation"</a>, I explain how your constraints force you to build systems that endure. Use tools to remove friction, but bring your own heart to the work. Explore my <a href="/services">services</a> to learn more about building resilient workflows.</p>
-<h3>Frequently Asked Questions</h3>
-<h3>How can I stay consistent when energy is low?</h3>
-<p>Focus on one high-impact micro-task during your peak energy window. Completing one meaningful task creates forward momentum without causing burnout.</p>
-<h3>How do constraints improve my work?</h3>
-<p>Constraints eliminate distractions and force you to focus on the essential core of your craft.</p>`;
-        }
-    } else {
-        title = `Finding Opportunity Within Constraints: Daily Focus for ${dateStr}`;
-        desc = `Practical wisdom for shifting perspective, honoring your boundaries, and building resilient systems today.`;
-        tag = "Daily Inspiration";
-        primaryKeyword = "finding opportunity within constraints";
-        secondaryKeywords = ["daily resilience", "creative problem solving", "purpose in limitation"];
-        slug = `finding-opportunity-within-constraints-${dayNum}`;
-        bodyContent = `<h2>Transforming Boundaries into Building Blocks</h2>
-<p>Every obstacle holds a hidden blueprint for growth. When physical coordination or external circumstances push back against us, we have a choice: focus on what was lost, or count what remains in our hands.</p>
-<p>In my book <a href="https://www.limitationstoliberation.com/" target="_blank">"Limitations to Liberation"</a>, I share how embracing boundaries leads directly to breakthrough. When you stop fighting your design, you discover the freedom to build with intention.</p>
-<h2>A Warning Against the Trap of Complacency</h2>
-<p>Never let a limitation become an excuse to quit. God equips us with unique opportunities to serve, create, and encourage those around us. Check out my <a href="/services">services</a> to see how we help individuals and organizations build resilient systems.</p>
-<h3>Frequently Asked Questions</h3>
-<h3>How do I reframe a difficult limitation?</h3>
-<p>Ask yourself: "What does this constraint force me to simplify?" That answer is your strategic advantage.</p>`;
-    }
+    const scoreImageModel = (id) => {
+        const lower = id.toLowerCase();
+        let score = 0;
+        if (lower.includes('3.1-flash-image') && !lower.includes('lite')) score += 400;
+        else if (lower.includes('nano-banana-2')) score += 390;
+        else if (lower.includes('3-pro-image')) score += 380;
+        else if (lower.includes('3') && lower.includes('image') && !lower.includes('lite')) score += 350;
+        else if (lower.includes('2.5-flash-image')) score += 320;
+        else if (lower.includes('lite-image')) score += 250;
+        else score += 200;
 
-    if (isHiggsfieldDay) {
-        const higgsfieldFallbackSnippet = `<h2>AI Amplification with Higgsfield</h2>
-<p>In my own daily creative work, adapting to physical constraints means leveraging tools that expand creative capacity without requiring repetitive physical strain. For all my image generation, video creation, workflow integration, and design projects, I frequently rely on <a href="${HIGGSFIELD_AFFILIATE_URL}" target="_blank" rel="noopener noreferrer">${selectedAnchorText}</a>. Having an expansive variety of AI creative tools at your fingertips allows you to turn concepts into reality with speed and precision.</p>`;
-
-        if (bodyContent.includes('<h3>Frequently Asked Questions</h3>')) {
-            bodyContent = bodyContent.replace('<h3>Frequently Asked Questions</h3>', `${higgsfieldFallbackSnippet}\n<h3>Frequently Asked Questions</h3>`);
-        } else {
-            bodyContent = `${bodyContent}\n${higgsfieldFallbackSnippet}`;
-        }
-    }
-
-    const imagePrompt = `An abstract cinematic 3D sculptural render representing "${title}", featuring precision interlocking brass and copper elements, warm harvest lighting, deep amber tones, and geometric arcs inspired by ${artStyle.colorPalette}. No people, no human silhouettes, no faces, no hands, strictly no text or letters, 16:9 widescreen composition.`;
-
-    return {
-        title,
-        desc,
-        tag,
-        body: bodyContent,
-        image_prompt: imagePrompt,
-        meta_title: `${title} | Marchello Sciortino`,
-        meta_description: desc.slice(0, 155),
-        url_slug: slug,
-        primary_keyword: primaryKeyword,
-        secondary_keywords: secondaryKeywords,
-        search_intent_classification: "Informational",
-        suggested_internal_links: ["/services", "/story"],
-        image_alt_text: `Abstract 3D geometric render representing ${primaryKeyword} in warm amber and brass tones`,
-        social_sharing_title: title,
-        social_sharing_description: desc
+        if (!lower.includes('exp')) score += 20;
+        if (!lower.includes('preview')) score += 10;
+        return score;
     };
+
+    discovered.sort((a, b) => scoreImageModel(b) - scoreImageModel(a));
+
+    const knownImageModels = [
+        "gemini-3.1-flash-image",
+        "gemini-3.1-flash-image-preview",
+        "gemini-3-pro-image",
+        "gemini-3-pro-image-preview",
+        "gemini-nano-banana-2.1",
+        "gemini-2.5-flash-image",
+        "gemini-2.5-flash-image-preview",
+        "gemini-3.1-flash-lite-image"
+    ];
+
+    return [...new Set([...discovered, ...knownImageModels])];
 }
 
-// Helper to make Gemini API requests with transient error retries (503, 429, 500)
-async function callGeminiWithRetry(geminiUrl, promptSystem, maxRetries = 3) {
-    let delay = 2000;
+// Generic helper to execute a POST to Gemini with transient error retries (429, 500, 503, UNAVAILABLE)
+async function postGeminiWithRetry(geminiUrl, payload, maxRetries = 3) {
+    let delay = 2500;
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
         try {
-            const res = await postJson(geminiUrl, {}, {
-                contents: [
-                    {
-                        parts: [
-                            { text: promptSystem }
-                        ]
-                    }
-                ],
-                generationConfig: {
-                    responseMimeType: "application/json",
-                    responseSchema: {
-                        type: "object",
-                        properties: {
-                            title: { type: "string" },
-                            desc: { type: "string" },
-                            tag: {
-                                type: "string",
-                                enum: ["Story Notes", "AI and Accessibility", "Lessons From Limitation", "Tools I Use", "Daily Inspiration"]
-                            },
-                            body: { type: "string" },
-                            image_prompt: { type: "string" },
-                            meta_title: { type: "string" },
-                            meta_description: { type: "string" },
-                            url_slug: { type: "string" },
-                            primary_keyword: { type: "string" },
-                            secondary_keywords: {
-                                type: "array",
-                                items: { type: "string" }
-                            },
-                            search_intent_classification: { type: "string" },
-                            suggested_internal_links: {
-                                type: "array",
-                                items: { type: "string" }
-                            },
-                            image_alt_text: { type: "string" },
-                            social_sharing_title: { type: "string" },
-                            social_sharing_description: { type: "string" }
-                        },
-                        required: [
-                            "title", "desc", "tag", "body", "image_prompt",
-                            "meta_title", "meta_description", "url_slug", "primary_keyword",
-                            "secondary_keywords", "search_intent_classification", "suggested_internal_links",
-                            "image_alt_text", "social_sharing_title", "social_sharing_description"
-                        ]
-                    }
-                }
-            });
-            return res;
+            return await postJson(geminiUrl, {}, payload);
         } catch (apiErr) {
-            const isTransient = apiErr.message && (
-                apiErr.message.includes("503") ||
-                apiErr.message.includes("429") ||
-                apiErr.message.includes("500") ||
-                apiErr.message.includes("UNAVAILABLE")
+            const msg = apiErr.message || '';
+            const status = apiErr.statusCode || 0;
+            const isTransient = (
+                status === 429 ||
+                status === 500 ||
+                status === 502 ||
+                status === 503 ||
+                status === 504 ||
+                msg.includes("UNAVAILABLE") ||
+                msg.includes("DEADLINE_EXCEEDED") ||
+                msg.includes("timed out")
             );
             if (isTransient && attempt < maxRetries) {
-                console.warn(`Warning: Gemini API call failed with transient error: ${apiErr.message}. Retrying in ${delay}ms (Attempt ${attempt}/${maxRetries})...`);
+                console.warn(`Warning: Transient Gemini API error (status ${status || 'timeout'}). Retrying in ${delay}ms (Attempt ${attempt}/${maxRetries})...`);
                 await new Promise(resolve => setTimeout(resolve, delay));
                 delay *= 2;
             } else {
@@ -759,6 +541,86 @@ async function callGeminiWithRetry(geminiUrl, promptSystem, maxRetries = 3) {
     }
 }
 
+// Extract final non-thought text part from a Gemini candidate
+function extractCandidateText(candidate) {
+    const parts = candidate?.content?.parts || [];
+    const nonThoughtTextParts = parts.filter(p => !p.thought && typeof p.text === 'string' && p.text.trim().length > 0);
+    if (nonThoughtTextParts.length > 0) {
+        return nonThoughtTextParts[nonThoughtTextParts.length - 1].text;
+    }
+    const anyTextPart = parts.find(p => typeof p.text === 'string' && p.text.trim().length > 0);
+    return anyTextPart ? anyTextPart.text : null;
+}
+
+// Extract final non-thought image inlineData buffer from a Gemini candidate
+function extractCandidateImageBuffer(responseData) {
+    const candidates = responseData?.candidates || [];
+    for (const cand of candidates) {
+        const parts = cand?.content?.parts || [];
+        const nonThoughtImages = parts.filter(p => !p.thought && p?.inlineData?.data);
+        if (nonThoughtImages.length > 0) {
+            const chosen = nonThoughtImages[nonThoughtImages.length - 1];
+            return Buffer.from(chosen.inlineData.data, 'base64');
+        }
+        const anyImages = parts.filter(p => p?.inlineData?.data);
+        if (anyImages.length > 0) {
+            const chosen = anyImages[anyImages.length - 1];
+            return Buffer.from(chosen.inlineData.data, 'base64');
+        }
+    }
+    return null;
+}
+
+// Automatically compress and optimize blog images using sharp (16:9 1280x720, .webp + .jpg + .png side-by-side)
+async function processAndSaveBlogImages(imageBuffer, imageSlug, blogAssetsDir) {
+    if (!fs.existsSync(blogAssetsDir)) {
+        fs.mkdirSync(blogAssetsDir, { recursive: true });
+    }
+
+    const sharp = require('sharp');
+    const base = sharp(imageBuffer).resize(1280, 720, {
+        fit: 'cover',
+        position: 'center'
+    });
+
+    // Optimize WebP (target <= 120 KB)
+    let webpQuality = 82;
+    let webpBuf = await base.clone().webp({ quality: webpQuality, effort: 5 }).toBuffer();
+    while (webpBuf.length > 120 * 1024 && webpQuality > 54) {
+        webpQuality -= 8;
+        webpBuf = await base.clone().webp({ quality: webpQuality, effort: 5 }).toBuffer();
+    }
+
+    // Optimize JPEG (target <= 150 KB)
+    let jpgQuality = 82;
+    let jpgBuf = await base.clone().jpeg({ quality: jpgQuality, mozjpeg: true }).toBuffer();
+    while (jpgBuf.length > 150 * 1024 && jpgQuality > 54) {
+        jpgQuality -= 8;
+        jpgBuf = await base.clone().jpeg({ quality: jpgQuality, mozjpeg: true }).toBuffer();
+    }
+
+    // Optimize quantized PNG (target <= 400 KB)
+    let pngBuf = await base.clone().png({ quality: 75, palette: true, compressionLevel: 9 }).toBuffer();
+    if (pngBuf.length > 400 * 1024) {
+        pngBuf = await base.clone().png({ colours: 128, quality: 65, palette: true, compressionLevel: 9 }).toBuffer();
+    }
+
+    const webpPath = path.join(blogAssetsDir, `${imageSlug}.webp`);
+    const jpgPath = path.join(blogAssetsDir, `${imageSlug}.jpg`);
+    const pngPath = path.join(blogAssetsDir, `${imageSlug}.png`);
+
+    fs.writeFileSync(webpPath, webpBuf);
+    fs.writeFileSync(jpgPath, jpgBuf);
+    fs.writeFileSync(pngPath, pngBuf);
+
+    console.log(`Blog image compressed successfully for "${imageSlug}":`);
+    console.log(`- WebP (q=${webpQuality}): ${(webpBuf.length / 1024).toFixed(1)} KB`);
+    console.log(`- JPEG (q=${jpgQuality}): ${(jpgBuf.length / 1024).toFixed(1)} KB`);
+    console.log(`- PNG  (palette): ${(pngBuf.length / 1024).toFixed(1)} KB`);
+
+    return `assets/blog/${imageSlug}.webp`;
+}
+
 async function run() {
     try {
         // Load articles.json first to serve as context for non-repetition
@@ -766,12 +628,8 @@ async function run() {
         let articles = [];
 
         if (fs.existsSync(articlesJsonPath)) {
-            try {
-                const rawJson = fs.readFileSync(articlesJsonPath, 'utf8');
-                articles = JSON.parse(rawJson);
-            } catch (err) {
-                console.error("Failed to parse articles.json, starting with empty array:", err.message);
-            }
+            const rawJson = fs.readFileSync(articlesJsonPath, 'utf8');
+            articles = JSON.parse(rawJson);
         }
 
         // Check if an article with today's ID already exists
@@ -780,6 +638,21 @@ async function run() {
             console.log(`Article with ID '${articleId}' already exists for today (${todayDateStr}). Skipping generation to avoid duplicate runs and content overwrites.`);
             return;
         }
+
+        // Step 0: Verify Gemini API connectivity & discover active models for this API key
+        console.log("Verifying Gemini API key and discovering available models...");
+        let availableModels = [];
+        try {
+            availableModels = await fetchAllAvailableModels();
+            console.log(`Connected to Google Gemini API (${availableModels.length} models listed).`);
+        } catch (authErr) {
+            throw new Error(`Failed to authenticate or list models from Google Gemini API: ${authErr.message}`);
+        }
+
+        const textCandidateModels = buildTextModelCandidates(availableModels);
+        const imageCandidateModels = buildImageModelCandidates(availableModels);
+        console.log(`Top text model candidates: ${textCandidateModels.slice(0, 5).join(', ')}`);
+        console.log(`Top Gemini image model candidates: ${imageCandidateModels.slice(0, 5).join(', ')}`);
 
         // Get the last 5 posts for diversity context (newest first)
         const recentPosts = articles.slice(-5).reverse();
@@ -798,7 +671,7 @@ async function run() {
 
         // Evaluate Higgsfield affiliate feature for today (at least 3 times a week)
         const isHiggsfieldDay = shouldFeatureHiggsfield(centralDate, articles);
-        const selectedAnchorText = getHiggsfieldAnchorText(dayOfMonth + centralDate.getDay() + (monthIndex * 7));
+        const selectedAnchorText = getHiggsfieldAnchorText(dayOfMonth + centralDate.getDay() + (monthIndex * 7), articles);
         console.log(`Higgsfield Affiliate Feature Scheduled Today: ${isHiggsfieldDay ? 'YES' : 'NO'}`);
         if (isHiggsfieldDay) {
             console.log(`Selected Higgsfield Anchor Text: "${selectedAnchorText}"`);
@@ -902,8 +775,8 @@ Every blog post must be optimized for search engine discoverability (Google, AI-
      - "/chelloai" (ChelloAI helper)
      - Specific article IDs from the recent posts list above (e.g. "/hub" or linking to previous article IDs like "acceptance", "skydiving", "avatar", "win-matrix").
      Format links as: <a href="/services">services</a>. Do NOT include domain names in internal links.
-    - External Links: Include natural links to authoritative resources when relevant (e.g., <a href="https://www.limitationstoliberation.com/" target="_blank">"Limitations to Liberation" book</a>${isHiggsfieldDay ? `, <a href="${HIGGSFIELD_AFFILIATE_URL}" target="_blank" rel="noopener noreferrer">${selectedAnchorText}</a>` : ''}, or <a href="/accessible-aim">Accessible AIM</a>).
-    - Strong Conclusion: Conclude with a clear call-to-action (CTA) and contextual links.
+   - External Links: Include natural links to authoritative resources when relevant (e.g., <a href="https://www.limitationstoliberation.com/" target="_blank">"Limitations to Liberation" book</a>${isHiggsfieldDay ? `, <a href="${HIGGSFIELD_AFFILIATE_URL}" target="_blank" rel="noopener noreferrer">${selectedAnchorText}</a>` : ''}, or <a href="/accessible-aim">Accessible AIM</a>).
+   - Strong Conclusion: Conclude with a clear call-to-action (CTA) and contextual links.
 
 Your writing must strictly follow these instructions:
 1. Tone: Follow the brand voice tone guidelines (Honest, encouraging, conversational, direct).
@@ -930,64 +803,86 @@ You must return a raw JSON object containing exactly these fields (no markdown w
   "social_sharing_description": "Engaging summary for social platforms"
 }`;
 
-        let generatedArticle;
-
-        if (GEMINI_API_KEY) {
-            console.log("Calling Gemini API...");
-            let geminiRes;
-            // Tested active models on Google Generative Language API
-            const candidateModels = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash", "gemini-flash-latest"];
-            let lastError = null;
-
-            for (const modelName of candidateModels) {
-                try {
-                    console.log(`Attempting generation with model: "${modelName}"...`);
-                    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent`;
-                    geminiRes = await callGeminiWithRetry(geminiUrl, promptSystem);
-                    console.log(`Successfully generated content using model: "${modelName}"`);
-                    break; // Succeeded, exit loop
-                } catch (err) {
-                    console.warn(`Warning: Model "${modelName}" failed: ${err.message}`);
-                    lastError = err;
+        const articlePayload = {
+            contents: [{ parts: [{ text: promptSystem }] }],
+            generationConfig: {
+                responseMimeType: "application/json",
+                responseSchema: {
+                    type: "object",
+                    properties: {
+                        title: { type: "string" },
+                        desc: { type: "string" },
+                        tag: {
+                            type: "string",
+                            enum: ["Story Notes", "AI and Accessibility", "Lessons From Limitation", "Tools I Use", "Daily Inspiration"]
+                        },
+                        body: { type: "string" },
+                        image_prompt: { type: "string" },
+                        meta_title: { type: "string" },
+                        meta_description: { type: "string" },
+                        url_slug: { type: "string" },
+                        primary_keyword: { type: "string" },
+                        secondary_keywords: { type: "array", items: { type: "string" } },
+                        search_intent_classification: { type: "string" },
+                        suggested_internal_links: { type: "array", items: { type: "string" } },
+                        image_alt_text: { type: "string" },
+                        social_sharing_title: { type: "string" },
+                        social_sharing_description: { type: "string" }
+                    },
+                    required: [
+                        "title", "desc", "tag", "body", "image_prompt",
+                        "meta_title", "meta_description", "url_slug", "primary_keyword",
+                        "secondary_keywords", "search_intent_classification", "suggested_internal_links",
+                        "image_alt_text", "social_sharing_title", "social_sharing_description"
+                    ]
                 }
             }
+        };
 
-            if (geminiRes && geminiRes.candidates && geminiRes.candidates.length > 0) {
-                const candidate = geminiRes.candidates[0];
-                if (candidate.finishReason && candidate.finishReason !== "STOP") {
-                    console.warn(`Warning: Gemini generation finished with status: ${candidate.finishReason}.`);
+        let generatedArticle = null;
+        let activeTextModel = null;
+        let lastTextError = null;
+
+        for (const modelName of textCandidateModels) {
+            try {
+                console.log(`Attempting article generation with Gemini model: "${modelName}"...`);
+                const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent`;
+                const geminiRes = await postGeminiWithRetry(geminiUrl, articlePayload);
+                const candidate = geminiRes?.candidates?.[0];
+                const rawText = extractCandidateText(candidate);
+
+                if (!rawText) {
+                    throw new Error(`Empty text candidate returned (finishReason: ${candidate?.finishReason || 'unknown'}).`);
                 }
 
-                if (candidate.content && candidate.content.parts && candidate.content.parts.length > 0 && candidate.content.parts[0].text) {
-                    const rawText = candidate.content.parts[0].text;
-                    let cleanedText = rawText.trim();
-                    if (cleanedText.startsWith("```")) {
-                        cleanedText = cleanedText.replace(/^```(json)?\s*/i, "");
-                        cleanedText = cleanedText.replace(/\s*```$/, "");
-                        cleanedText = cleanedText.trim();
-                    }
-                    try {
-                        generatedArticle = JSON.parse(cleanedText);
-                    } catch (parseErr) {
-                        console.warn("Notice: Failed to parse Gemini output as JSON:", parseErr.message);
-                    }
+                let cleanedText = rawText.trim();
+                if (cleanedText.startsWith("```")) {
+                    cleanedText = cleanedText.replace(/^```(json)?\s*/i, "").replace(/\s*```$/, "").trim();
                 }
-            } else {
-                console.warn("All Gemini candidate models failed or returned empty response.");
+
+                const parsed = JSON.parse(cleanedText);
+                if (!parsed.title || !parsed.body) {
+                    throw new Error("Parsed JSON missing required title or body.");
+                }
+
+                generatedArticle = parsed;
+                activeTextModel = modelName;
+                console.log(`✓ Successfully generated article using model: "${modelName}"`);
+                break;
+            } catch (err) {
+                console.warn(`Warning: Text model "${modelName}" failed: ${err.message}`);
+                lastTextError = err;
             }
         }
 
-        // Guaranteed fallback generator if Gemini API is unavailable or returns an error
         if (!generatedArticle) {
-            console.log(`Activating intelligent on-theme daily post generator for ${todayDateStr}...`);
-            generatedArticle = generateFallbackArticle(todayDateStr, monthIndex, dayOfMonth, currentMonthTheme, recentPostsContext, isHiggsfieldDay, selectedAnchorText);
-            console.log(`✓ Daily article generated: "${generatedArticle.title}"`);
+            throw new Error(`CRITICAL: All Gemini text models failed to generate today's article. Last error: ${lastTextError ? lastTextError.message : 'Unknown error'}`);
         }
 
         // Programmatic enforcement of Higgsfield affiliate feature on scheduled days
         if (isHiggsfieldDay && generatedArticle.body && !generatedArticle.body.includes(HIGGSFIELD_AFFILIATE_URL)) {
             console.log(`Notice: Post body omitted Higgsfield link. Programmatically integrating affiliate link with anchor "${selectedAnchorText}"...`);
-            const endorsementParagraph = `<p>When it comes to visual storytelling, image creation, video workflows, and design integration, I rely heavily on <a href="${HIGGSFIELD_AFFILIATE_URL}" target="_blank" rel="noopener noreferrer">${selectedAnchorText}</a>. With its wide variety of creative AI tools, it has become an essential part of my daily creative stack.</p>`;
+            const endorsementParagraph = `<p>When it comes to visual storytelling, image creation, video workflows, and design integration, I rely heavily on <a href="${HIGGSFIELD_AFFILIATE_URL}" target="_blank" rel="noopener noreferrer">${selectedAnchorText}</a>. With its wide variety of creative AI tools, it acts as a practical creative amplifier in my daily stack.</p>`;
 
             if (generatedArticle.body.includes('<h3>Frequently Asked Questions</h3>')) {
                 generatedArticle.body = generatedArticle.body.replace('<h3>Frequently Asked Questions</h3>', `${endorsementParagraph}\n<h3>Frequently Asked Questions</h3>`);
@@ -998,26 +893,34 @@ You must return a raw JSON object containing exactly these fields (no markdown w
 
         // Programmatic enforcement of closing signature (bold, italicized, in quotes)
         if (generatedArticle.body) {
-            // Clean any existing signatures or forms of it in the body to avoid double signatures
             const signatureCleanRegex = /<p[^>]*>\s*(<strong>|<em>|"|'|“|”)*\s*Much\s*love,?\s*party\s*people!.*?(<\/strong>|<\/em>|"|'|“|”)*\s*<\/p>/gi;
             generatedArticle.body = generatedArticle.body.replace(signatureCleanRegex, "");
 
-            // Also replace naked references if any
             const nakedRegex = /"??Much\s*love,?\s*party\s*people!.*?better!"??/gi;
             generatedArticle.body = generatedArticle.body.replace(nakedRegex, "");
 
             generatedArticle.body = generatedArticle.body.trim();
-            // Append the exact signature formatted as bold, italicized, and in quotation marks
             generatedArticle.body += `\n<p style="margin-top: 20px; color: var(--color-teal);"><strong><em>"Much love, party people! That was awesome, the next one will only be better!"</em></strong></p>`;
         }
 
+        // Ensure globally unique URL slug and image filename (preventing overwrites or URL collisions)
+        const blogAssetsDir = path.join(__dirname, '..', 'assets', 'blog');
+        let baseSlug = sanitizeId(generatedArticle.url_slug || generatedArticle.title || articleId);
+        if (!baseSlug) baseSlug = articleId;
+
+        const slugAlreadyUsed = articles.some(a => a.id !== articleId && sanitizeId(a.url_slug || '') === baseSlug);
+        const imageAlreadyExists = fs.existsSync(path.join(blogAssetsDir, `${baseSlug}.webp`));
+        if (slugAlreadyUsed || imageAlreadyExists) {
+            baseSlug = `${baseSlug}-${sanitizeId(todayDateStr)}`;
+        }
+        generatedArticle.url_slug = baseSlug;
+
         console.log(`Generated Article Title: "${generatedArticle.title}"`);
         console.log(`Tag: ${generatedArticle.tag}`);
-        console.log(`Image Prompt: "${generatedArticle.image_prompt}"`);
+        console.log(`Unique URL Slug: ${generatedArticle.url_slug}`);
 
         // Step 2: Dedicated Image Prompt Rewriter
-        // Rewrites the prompt before generation to cover exact contents, title, month style, and holiday highlights
-        console.log("Rewriting image prompt to cover exact title, content, month palette, and holiday highlight...");
+        console.log("Rewriting image prompt to resonate directly with title, metaphor, month palette, and seasonal highlight...");
 
         const dailyStyleVariations = [
             "3D sculptural minimalism with refractive glass and warm metals",
@@ -1053,203 +956,105 @@ STRICT VISUAL DIRECTION & CONSTRAINTS:
 8. Output Format: Return ONLY the final prompt string (no markdown, no quotes, no conversational intro). Keep it between 60 and 120 words.`;
 
         let tailoredImagePrompt = generatedArticle.image_prompt || "";
-        if (GEMINI_API_KEY) {
+        const rewriterModels = activeTextModel
+            ? [activeTextModel, ...textCandidateModels.filter(m => m !== activeTextModel)]
+            : textCandidateModels;
+
+        for (const rwModel of rewriterModels.slice(0, 3)) {
             try {
-                const rewriterUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent`;
-            const rewriterRes = await postJson(rewriterUrl, {}, {
-                contents: [{ parts: [{ text: promptRewriterSystem }] }],
-                generationConfig: {
-                    temperature: 0.7,
-                    maxOutputTokens: 300
+                const rewriterUrl = `https://generativelanguage.googleapis.com/v1beta/models/${rwModel}:generateContent`;
+                const rewriterRes = await postGeminiWithRetry(rewriterUrl, {
+                    contents: [{ parts: [{ text: promptRewriterSystem }] }],
+                    generationConfig: {
+                        temperature: 0.7,
+                        maxOutputTokens: 400
+                    }
+                });
+                const candText = extractCandidateText(rewriterRes?.candidates?.[0]);
+                if (candText && candText.trim().length > 25) {
+                    tailoredImagePrompt = candText.trim().replace(/^["']|["']$/g, '');
+                    console.log(`✓ Image prompt rewritten successfully via "${rwModel}".`);
+                    break;
                 }
-            });
-            const candText = rewriterRes?.candidates?.[0]?.content?.parts?.[0]?.text;
-            if (candText && candText.trim().length > 20) {
-                tailoredImagePrompt = candText.trim().replace(/^["']|["']$/g, '');
-                console.log(`✓ Image prompt rewritten successfully:`);
-                console.log(`"${tailoredImagePrompt}"`);
-            }
             } catch (rewriteErr) {
-                console.warn(`Prompt rewriter fallback to rule-based prompt: ${rewriteErr.message}`);
+                console.warn(`Prompt rewriter attempt with "${rwModel}" failed: ${rewriteErr.message}`);
             }
         }
 
-        // Final consolidated prompt text passed to generation models
-        const imagePromptText = `${tailoredImagePrompt}. 16:9 widescreen cinematic composition, premium abstract 3D illustrated conceptual artwork, ${selectedDailyStyle}, ${currentMonthArtStyle.colorPalette}, ${currentHolidayHighlight.highlight}, no people, no faces, no humans, no text, no words, no letters, no logos, no watermark, 8k render, masterpiece.`;
+        const imagePromptText = `${tailoredImagePrompt}. 16:9 widescreen cinematic composition, premium abstract 3D illustrated conceptual artwork, ${selectedDailyStyle}, ${currentMonthArtStyle.colorPalette}, ${currentHolidayHighlight.highlight}, strictly no people, no human silhouettes, no faces, no hands, strictly no text, no words, no letters, no logos, no watermark, 8k render, masterpiece.`;
+        console.log(`Final image prompt: "${imagePromptText}"`);
 
-        console.log(`Final image prompt sent to model: "${imagePromptText}"`);
-
+        // Step 3: Strictly Enforced Google Gemini API Multimodal Image Generation
+        console.log("Generating featured artwork via Google Gemini API multimodal generateContent...");
         let imageBuffer = null;
-        let relativeImageSrc = "";
+        let lastImageError = null;
 
-        // =========================================================================
-        // Step 2: Image Generation Pipeline
-        // Primary Tier: Highest-Quality Google Gemini API Image Generation (generateContent with responseModalities)
-        // Fallback Tier 1: Pollinations AI (Flux / SDXL high-res)
-        // Fallback Tier 2: Bespoke Branded Geometric Vector SVG
-        // =========================================================================
-
-        // --- Primary Tier: Highest-Quality Google Gemini API Image Generation ---
-        if (!imageBuffer && GEMINI_API_KEY) {
-            console.log("Primary Tier: Attempting highest-quality Google Gemini API image generation...");
-
-            // Fetch available models from Google AI Studio to detect active models dynamically
-            let availableModels = [];
-            try {
-                const modelsList = await getJson(`https://generativelanguage.googleapis.com/v1beta/models`);
-                if (modelsList && Array.isArray(modelsList.models)) {
-                    availableModels = modelsList.models;
+        const generationConfigs = [
+            {
+                label: "TEXT+IMAGE (16:9)",
+                config: {
+                    responseModalities: ["TEXT", "IMAGE"],
+                    imageConfig: { aspectRatio: "16:9" }
                 }
-            } catch (err) {
-                console.warn("Could not retrieve models list for auto-detection:", err.message);
+            },
+            {
+                label: "TEXT+IMAGE",
+                config: {
+                    responseModalities: ["TEXT", "IMAGE"]
+                }
+            },
+            {
+                label: "IMAGE",
+                config: {
+                    responseModalities: ["IMAGE"]
+                }
             }
+        ];
 
-            const getMethods = m => m.supportedGenerationMethods || m.supportedMethods || [];
+        for (const modelName of imageCandidateModels) {
+            for (const variant of generationConfigs) {
+                try {
+                    console.log(`Attempting Gemini image generation with "${modelName}" [${variant.label}]...`);
+                    const genUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent`;
+                    const payload = {
+                        contents: [{
+                            parts: [{
+                                text: `Generate a high-resolution 16:9 widescreen abstract 3D conceptual artwork matching this art direction (strictly no people, no faces, no hands, no text, no letters, no logos, no watermarks): ${imagePromptText}`
+                            }]
+                        }],
+                        generationConfig: variant.config
+                    };
 
-            // Primary Gemini multimodal image generation candidate models (ordered by quality)
-            const geminiCandidates = [
-                "gemini-2.0-flash-exp",
-                "gemini-2.0-flash",
-                "gemini-2.5-flash-image",
-                "gemini-exp-1206",
-                "gemini-flash-latest"
-            ];
+                    const responseData = await postGeminiWithRetry(genUrl, payload);
+                    imageBuffer = extractCandidateImageBuffer(responseData);
 
-            // Add any auto-detected Gemini models supporting generateContent with image capabilities
-            const detectedGemini = availableModels
-                .filter(m => {
-                    const name = m.name.toLowerCase();
-                    const methods = getMethods(m).map(x => x.toLowerCase());
-                    return name.includes("gemini") && methods.some(met => met.includes("generatecontent")) &&
-                           (name.includes("image") || name.includes("flash") || name.includes("exp"));
-                })
-                .map(m => m.name.replace(/^models\//, ''));
-
-            const allGeminiModels = [...new Set([...geminiCandidates, ...detectedGemini])];
-
-            for (const modelName of allGeminiModels) {
-                for (const modalities of [["IMAGE"], ["IMAGE", "TEXT"]]) {
-                    try {
-                        console.log(`Primary Tier: Trying Google Gemini API with model "${modelName}" (modalities: [${modalities.join(', ')}])...`);
-                        const genUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent`;
-                        const payload = {
-                            contents: [{
-                                parts: [{
-                                    text: `Generate a high-resolution 16:9 widescreen artwork image matching this prompt exactly: ${imagePromptText}`
-                                }]
-                            }],
-                            generationConfig: {
-                                responseModalities: modalities
-                            }
-                        };
-
-                        const responseData = await postJson(genUrl, {}, payload);
-                        const candidates = responseData?.candidates || [];
-                        for (const cand of candidates) {
-                            const parts = cand?.content?.parts || [];
-                            for (const part of parts) {
-                                if (part?.inlineData?.data) {
-                                    imageBuffer = Buffer.from(part.inlineData.data, 'base64');
-                                    console.log(`✓ Image generated successfully via Google Gemini API ("${modelName}").`);
-                                    break;
-                                }
-                            }
-                            if (imageBuffer) break;
-                        }
-
-                        if (imageBuffer) break;
-                    } catch (geminiErr) {
-                        console.warn(`Primary Tier: Google Gemini API (${modelName}, modalities: ${modalities.join(',')}) attempt: ${geminiErr.message}`);
+                    if (imageBuffer && imageBuffer.length > 5000) {
+                        console.log(`✓ Image generated successfully via Google Gemini API ("${modelName}" [${variant.label}], ${(imageBuffer.length / 1024).toFixed(1)} KB raw).`);
+                        break;
+                    } else {
+                        imageBuffer = null;
+                        console.warn(`Notice: "${modelName}" [${variant.label}] returned no inline image data.`);
+                    }
+                } catch (geminiErr) {
+                    lastImageError = geminiErr;
+                    console.warn(`Gemini image attempt ("${modelName}" [${variant.label}]) failed: ${geminiErr.message}`);
+                    // Skip remaining config variants if the model itself is 404 Not Found or 403 Forbidden
+                    if (geminiErr.statusCode === 404 || geminiErr.statusCode === 403) {
+                        break;
                     }
                 }
-                if (imageBuffer) break;
             }
+            if (imageBuffer) break;
         }
 
-        // --- Optional Local Higgsfield Generation (Only if explicitly enabled with USE_HIGGSFIELD=true) ---
-        if (!imageBuffer && process.env.USE_HIGGSFIELD === 'true') {
-            console.log("Attempting local Higgsfield generation (USE_HIGGSFIELD=true)...");
-            try {
-                const isWindows = process.platform === 'win32';
-                const hfCmd = isWindows ? 'higgsfield.cmd' : 'higgsfield';
-                const blogAssetsDir = path.join(__dirname, '..', 'assets', 'blog');
-                if (!fs.existsSync(blogAssetsDir)) {
-                    fs.mkdirSync(blogAssetsDir, { recursive: true });
-                }
-                const imageSlug = sanitizeId(generatedArticle.url_slug || articleId);
-                const cleanedPrompt = imagePromptText.replace(/[\r\n]+/g, ' ').trim();
-
-                const hfOutput = execFileSync(hfCmd, [
-                    'generate', 'create', 'gpt_image_2',
-                    '--prompt', cleanedPrompt,
-                    '--aspect_ratio', '16:9',
-                    '--wait'
-                ], {
-                    encoding: 'utf8',
-                    stdio: ['pipe', 'pipe', 'pipe'],
-                    timeout: 300000
-                });
-
-                const urlMatch = hfOutput.match(/https:\/\/[^\s"'<>]+\.(png|jpg|jpeg|webp)/i);
-                if (urlMatch) {
-                    const imageUrl = urlMatch[0];
-                    const tempDownloadPath = path.join(blogAssetsDir, `${imageSlug}_temp_raw.png`);
-                    await downloadFile(imageUrl, tempDownloadPath);
-                    const rawBuffer = fs.readFileSync(tempDownloadPath);
-                    try { fs.unlinkSync(tempDownloadPath); } catch (_) {}
-                    imageBuffer = rawBuffer;
-                    relativeImageSrc = await processAndSaveBlogImages(rawBuffer, imageSlug, blogAssetsDir);
-                    console.log("✓ Image generated successfully via local Higgsfield.");
-                }
-            } catch (hfErr) {
-                console.warn(`Local Higgsfield attempt failed: ${hfErr.message}`);
-            }
-        }
-
-        // Attempt 3: Pollinations AI (Flux / SDXL high-resolution image generation - zero-key, zero-auth fallback)
         if (!imageBuffer) {
-            console.log("Attempting image generation via Pollinations AI (Flux / SDXL)...");
-            try {
-                const cleanPrompt = imagePromptText.replace(/[\r\n]+/g, ' ').trim();
-                const seed = Math.floor(Math.random() * 10000000);
-                const pollinationsUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(cleanPrompt.slice(0, 1500))}?width=1280&height=720&nologo=true&seed=${seed}`;
-                console.log("Querying Pollinations AI generation endpoint...");
-                const fetchedBuf = await fetchBuffer(pollinationsUrl);
-                if (fetchedBuf && fetchedBuf.length > 5000) {
-                    imageBuffer = fetchedBuf;
-                    console.log(`Image generated successfully via Pollinations AI (${fetchedBuf.length} bytes).`);
-                } else {
-                    console.warn("Pollinations AI response was empty or too small.");
-                }
-            } catch (pollErr) {
-                console.warn(`Pollinations AI generation failed: ${pollErr.message}`);
-            }
+            throw new Error(`CRITICAL: Failed to generate featured image via Google Gemini API across all candidate models. Last error: ${lastImageError ? lastImageError.message : 'No image buffer returned'}`);
         }
 
-        // Attempt 4: Bespoke Algorithmic Geometric SVG Generation (Guaranteed offline/network-outage fallback)
-        if (!imageBuffer) {
-            console.log("Generating bespoke brand geometric vector artwork...");
-            try {
-                const svgContent = generateBrandedThemeSvg(currentMonthArtStyle, monthIndex, generatedArticle.title, generatedArticle.tag);
-                imageBuffer = Buffer.from(svgContent, 'utf8');
-                console.log("Bespoke brand geometric artwork generated successfully.");
-            } catch (svgErr) {
-                console.warn(`Bespoke SVG generation failed: ${svgErr.message}`);
-            }
-        }
+        // Step 4: Compress and save side-by-side .webp, .jpg, and .png
+        const relativeImageSrc = await processAndSaveBlogImages(imageBuffer, generatedArticle.url_slug, blogAssetsDir);
 
-        if (imageBuffer) {
-            if (!relativeImageSrc) {
-                // Step 3: Write and compress image locally if not already processed
-                const blogAssetsDir = path.join(__dirname, '..', 'assets', 'blog');
-                const imageSlug = sanitizeId(generatedArticle.url_slug || articleId);
-                relativeImageSrc = await processAndSaveBlogImages(imageBuffer, imageSlug, blogAssetsDir);
-            }
-        } else {
-            throw new Error("CRITICAL: Failed to generate featured image via Higgsfield, Google Gemini/Imagen, Pollinations AI, or SVG. Aborting post generation.");
-        }
-
-        // Step 4: Append new post and write back
+        // Step 5: Append new post and write back
         const newPost = {
             id: articleId,
             title: generatedArticle.title,
@@ -1258,7 +1063,6 @@ STRICT VISUAL DIRECTION & CONSTRAINTS:
             date: todayDateStr,
             image: relativeImageSrc,
             body: generatedArticle.body,
-            // SEO and Discovery Assets
             meta_title: generatedArticle.meta_title,
             meta_description: generatedArticle.meta_description,
             url_slug: generatedArticle.url_slug,
@@ -1271,16 +1075,15 @@ STRICT VISUAL DIRECTION & CONSTRAINTS:
             social_sharing_description: generatedArticle.social_sharing_description
         };
 
-        // Remove any existing post with the same ID (safeguard for multiple runs on same day)
         articles = articles.filter(a => a.id !== articleId);
         articles.push(newPost);
 
         console.log(`Writing article back to: ${articlesJsonPath}`);
-        fs.writeFileSync(articlesJsonPath, JSON.stringify(articles, null, 4), 'utf8');
+        fs.writeFileSync(articlesJsonPath, JSON.stringify(articles, null, 4) + '\n', 'utf8');
         console.log("Database updated successfully. Daily generation complete.");
 
     } catch (e) {
-        console.error("Daily Generation Process Failed:", e);
+        console.error("Daily Generation Process Failed:", e.message || e);
         process.exit(1);
     }
 }

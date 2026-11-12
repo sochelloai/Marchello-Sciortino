@@ -5,7 +5,7 @@ const Hub = {
     articles: [],
     tags: ["All", "Story Notes", "AI and Accessibility", "Lessons From Limitation", "Tools I Use", "Daily Inspiration"],
     activeTag: "All",
-    version: "20260910-v17",
+    version: "20261112-v18",
 
     async init() {
         this.tagFilters = document.getElementById('hub-tag-filters');

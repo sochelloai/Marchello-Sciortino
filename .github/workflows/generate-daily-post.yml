@@ -2,10 +2,10 @@ name: Automated Daily Blog Post
 
 on:
   schedule:
-    # Run every day at 12:00 PM UTC (equivalent to 7:00 AM Central Time)
-    - cron: '0 12 * * *'
-    # Backup run every day at 3:00 PM UTC (equivalent to 10:00 AM Central Time)
-    - cron: '0 15 * * *'
+    # Run every day at 12:17 PM UTC (6:17 AM CST / 7:17 AM CDT — off-minute avoids top-of-hour GitHub queue delays)
+    - cron: '17 12 * * *'
+    # Backup run every day at 3:17 PM UTC (9:17 AM CST / 10:17 AM CDT)
+    - cron: '17 15 * * *'
   workflow_dispatch: # Allows manual trigger on demand
   push:
     branches:
@@ -13,6 +13,10 @@ on:
     paths:
       - '.github/workflows/generate-daily-post.yml'
       - 'scripts/generate-daily-post.js'
+
+concurrency:
+  group: automated-daily-blog-post
+  cancel-in-progress: false
 
 permissions:
   contents: read
@@ -56,6 +60,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes generated today. Skipping commit."
           else
-            git commit -m "chore: automated daily blog post for $(date +'%Y-%m-%d')"
+            git commit -m "chore: automated daily blog post for $(TZ=America/Chicago date +'%Y-%m-%d')"
+            git pull --rebase origin main
             git push origin main
           fi
