@@ -600,9 +600,11 @@ async function processAndSaveBlogImages(imageBuffer, imageSlug, blogAssetsDir) {
     }
 
     // Optimize quantized PNG (target <= 400 KB)
-    let pngBuf = await base.clone().png({ quality: 75, palette: true, compressionLevel: 9 }).toBuffer();
-    if (pngBuf.length > 400 * 1024) {
-        pngBuf = await base.clone().png({ colours: 128, quality: 65, palette: true, compressionLevel: 9 }).toBuffer();
+    let pngColours = 256;
+    let pngBuf = await base.clone().png({ colours: pngColours, quality: 75, palette: true, compressionLevel: 9, dither: 0.5 }).toBuffer();
+    while (pngBuf.length > 395 * 1024 && pngColours > 48) {
+        pngColours = Math.max(48, Math.floor(pngColours * 0.7));
+        pngBuf = await base.clone().png({ colours: pngColours, quality: 70, palette: true, compressionLevel: 9, dither: 0.35 }).toBuffer();
     }
 
     const webpPath = path.join(blogAssetsDir, `${imageSlug}.webp`);
