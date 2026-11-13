@@ -147,7 +147,7 @@ function classifyMetaError(metaErr, status) {
     return "upstream_error";
 }
 
-async function maybeRefreshAndPersistToken(env, workingToken, sourceHost, discoveredPageToken, discoveredIgBusinessId) {
+async function maybeRefreshAndPersistToken(env, workingToken, envSeedToken, sourceHost, discoveredPageToken, discoveredIgBusinessId) {
     const now = Date.now();
     const existing = await readR2Json(env, R2_TOKEN_KEY);
 
@@ -155,6 +155,7 @@ async function maybeRefreshAndPersistToken(env, workingToken, sourceHost, discov
     if (discoveredPageToken) {
         await writeR2Json(env, R2_TOKEN_KEY, {
             token: discoveredPageToken,
+            seed_env_token: envSeedToken || "",
             token_type: "page_permanent",
             ig_business_id: discoveredIgBusinessId || DEFAULT_INSTAGRAM_BUSINESS_ID,
             updated_at: now
@@ -175,6 +176,7 @@ async function maybeRefreshAndPersistToken(env, workingToken, sourceHost, discov
                 if (j && j.access_token) {
                     await writeR2Json(env, R2_TOKEN_KEY, {
                         token: cleanEnvVar(j.access_token),
+                        seed_env_token: envSeedToken || "",
                         token_type: "ig_long_lived",
                         expires_in: j.expires_in || 5184000,
                         refreshed_at: now,
@@ -186,9 +188,10 @@ async function maybeRefreshAndPersistToken(env, workingToken, sourceHost, discov
         } catch (_) {}
     }
 
-    if (!existing || existing.token !== workingToken) {
+    if (!existing || existing.token !== workingToken || existing.seed_env_token !== (envSeedToken || "")) {
         await writeR2Json(env, R2_TOKEN_KEY, {
             token: workingToken,
+            seed_env_token: envSeedToken || "",
             token_type: isIgToken ? "ig_long_lived" : "meta_graph",
             ig_business_id: discoveredIgBusinessId || DEFAULT_INSTAGRAM_BUSINESS_ID,
             refreshed_at: lastRefreshed || now,
@@ -219,8 +222,11 @@ export async function onRequestGet(context) {
     const r2Token = r2TokenState && r2TokenState.token ? cleanEnvVar(r2TokenState.token) : "";
     const r2BusinessId = (r2TokenState && r2TokenState.ig_business_id) ? cleanEnvVar(r2TokenState.ig_business_id) : "";
 
-    // Build prioritized list of distinct tokens to try (newest R2 refreshed token + Cloudflare env secret)
-    const tokensToTry = [...new Set([r2Token, envToken].filter(Boolean))];
+    // Prefer newly rotated Cloudflare secret if it changed; otherwise prefer R2 auto-refreshed token
+    const envChanged = Boolean(envToken && (!r2TokenState || r2TokenState.seed_env_token !== envToken));
+    const tokensToTry = envChanged
+        ? [...new Set([envToken, r2Token].filter(Boolean))]
+        : [...new Set([r2Token, envToken].filter(Boolean))];
 
     const corsHeaders = {
         "Content-Type": "application/json; charset=utf-8",
@@ -412,7 +418,7 @@ export async function onRequestGet(context) {
         // Background: refresh token if needed + save last-known-good live feed snapshot to R2
         if (context.waitUntil) {
             context.waitUntil((async () => {
-                await maybeRefreshAndPersistToken(env, winningToken, winningHost, discoveredPageToken, discoveredIgId);
+                await maybeRefreshAndPersistToken(env, winningToken, envToken, winningHost, discoveredPageToken, discoveredIgId);
                 await writeR2Json(env, R2_FEED_CACHE_KEY, {
                     updated_at: Date.now(),
                     posts
