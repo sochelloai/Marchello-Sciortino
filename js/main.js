@@ -1549,11 +1549,17 @@ function cleanupImmersiveMission() {
  */
 async function initInstagramMarquee() {
     try {
-        const response = await fetch('/api/instagram?v=20260907-live-feed');
+        const halfHourBucket = Math.floor(Date.now() / 1800000);
+        const response = await fetch(`/api/instagram?v=${halfHourBucket}`);
         if (!response.ok) return;
 
         const result = await response.json();
-        if (!result || !result.data || !Array.isArray(result.data) || result.data.length === 0) {
+        if (!result || !Array.isArray(result.data) || result.data.length === 0) {
+            return;
+        }
+
+        // Only replace the curated static marquee when live Instagram media is returned
+        if (result.source !== 'live' && result.source !== 'live_cached') {
             return;
         }
 
@@ -1562,7 +1568,7 @@ async function initInstagramMarquee() {
         // Split posts into Row 1 (RTL) and Row 2 (LTR)
         const half = Math.ceil(posts.length / 2);
         const row1Posts = posts.slice(0, half);
-        const row2Posts = posts.slice(half);
+        const row2Posts = posts.slice(half).length > 0 ? posts.slice(half) : row1Posts;
 
         const trackRTL = document.querySelector('.marquee-rtl .instagram-marquee-track');
         const trackLTR = document.querySelector('.marquee-ltr .instagram-marquee-track');
@@ -1577,18 +1583,31 @@ async function initInstagramMarquee() {
                 .replace(/'/g, '&#039;');
         };
 
-        const renderTrackPosts = (postList, defaultFallbackPrefix) => {
-            // Repeat posts if needed for smooth continuous loop
-            const listToRepeat = postList.length < 8 ? [...postList, ...postList, ...postList] : [...postList, ...postList];
+        const validFallbacks = [
+            '/assets/headshot_1.jpg',
+            '/assets/timeline-1.png',
+            '/assets/ai-content-creation.jpg',
+            '/assets/headshot_2.jpg',
+            '/assets/timeline-2.png',
+            '/assets/headshot_3.jpg'
+        ];
+
+        const renderTrackPosts = (postList, offset = 0) => {
+            // Ensure enough tiles per half-track for seamless 50% CSS marquee loop
+            let baseList = [...postList];
+            while (baseList.length > 0 && baseList.length < 8) {
+                baseList = [...baseList, ...postList];
+            }
+            const listToRepeat = [...baseList, ...baseList];
             return listToRepeat.map((post, idx) => {
-                const fallback = `assets/${defaultFallbackPrefix}-${(idx % 5) + 1}.png`;
+                const fallback = validFallbacks[(idx + offset) % validFallbacks.length];
                 const permalink = post.permalink || 'https://www.instagram.com/marchellosciortino/';
                 const caption = escapeHtml(post.caption || 'Follow Marchello on Instagram');
                 const isVideo = post.media_type === 'VIDEO';
                 return `
                     <div class="instagram-post" title="${caption}">
                         <a href="${permalink}" target="_blank" rel="noopener noreferrer" class="instagram-post-link" aria-label="View on Instagram: ${caption}">
-                            <img src="${post.media_url}" alt="${caption}" loading="eager" decoding="async" data-fallback="${fallback}">
+                            <img src="${post.media_url}" alt="${caption}" loading="eager" decoding="async" referrerpolicy="no-referrer" data-fallback="${fallback}">
                             ${isVideo ? '<span class="instagram-video-badge" aria-hidden="true">▶</span>' : ''}
                             <div class="instagram-post-overlay">
                                 <span class="instagram-post-view-action">
@@ -1615,12 +1634,12 @@ async function initInstagramMarquee() {
         };
 
         if (trackRTL && row1Posts.length > 0) {
-            trackRTL.innerHTML = renderTrackPosts(row1Posts, 'timeline');
+            trackRTL.innerHTML = renderTrackPosts(row1Posts, 0);
             trackRTL.addEventListener('error', handleImgError, true);
         }
 
         if (trackLTR && row2Posts.length > 0) {
-            trackLTR.innerHTML = renderTrackPosts(row2Posts, 'headshot');
+            trackLTR.innerHTML = renderTrackPosts(row2Posts, 3);
             trackLTR.addEventListener('error', handleImgError, true);
         }
     } catch (e) {
