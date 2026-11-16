@@ -5,6 +5,7 @@ pages_build_output_dir = "."
 
 [vars]
 INSTAGRAM_BUSINESS_ACCOUNT_ID = "17841400436172857"
+INSTAGRAM_APP_ID = "1659476176183321"
 
 [[r2_buckets]]
 binding = "CONTACT_ATTACHMENTS"

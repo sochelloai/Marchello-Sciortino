@@ -27,6 +27,7 @@ const FALLBACK_POSTS = [
 ];
 
 const DEFAULT_INSTAGRAM_BUSINESS_ID = "17841400436172857";
+const DEFAULT_INSTAGRAM_APP_ID = "1659476176183321";
 const R2_TOKEN_KEY = "_system/instagram-token-state.json";
 const R2_FEED_CACHE_KEY = "_system/instagram-feed-cache.json";
 
@@ -151,7 +152,7 @@ async function maybeRefreshAndPersistToken(env, workingToken, envSeedToken, sour
     const now = Date.now();
     const existing = await readR2Json(env, R2_TOKEN_KEY);
 
-    // If we discovered a permanent Page Access Token via /me/accounts, store it so it never expires
+    // If we already discovered a permanent Page Access Token via /me/accounts, store it so it never expires
     if (discoveredPageToken) {
         await writeR2Json(env, R2_TOKEN_KEY, {
             token: discoveredPageToken,
@@ -167,6 +168,7 @@ async function maybeRefreshAndPersistToken(env, workingToken, envSeedToken, sour
     const lastRefreshed = existing && existing.refreshed_at ? Number(existing.refreshed_at) : 0;
     const sevenDaysMs = 7 * 24 * 60 * 60 * 1000;
 
+    // 1. Instagram Login API (IG...): refresh 60-day token every 7 days
     if (isIgToken && (now - lastRefreshed > sevenDaysMs)) {
         try {
             const refreshUrl = `https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token=${encodeURIComponent(workingToken)}`;
@@ -186,6 +188,60 @@ async function maybeRefreshAndPersistToken(env, workingToken, envSeedToken, sour
                 }
             }
         } catch (_) {}
+    }
+
+    // 2. Meta Graph API (EAA...): exchange short-lived user token for 60-day token, then derive a never-expiring Page Access Token
+    if (!isIgToken && (!existing || existing.seed_env_token !== (envSeedToken || "") || existing.token_type !== "page_permanent")) {
+        const appId = getEnvVal(env, "INSTAGRAM_APP_ID", "META_APP_ID", "FB_APP_ID") || DEFAULT_INSTAGRAM_APP_ID;
+        const appSecret = getEnvVal(env, "INSTAGRAM_APP_SECRET", "META_APP_SECRET", "FB_APP_SECRET");
+        let upgradedUserToken = workingToken;
+        let upgradedType = "meta_graph";
+
+        if (appId && appSecret) {
+            try {
+                const exchangeUrl = `https://graph.facebook.com/v22.0/oauth/access_token?grant_type=fb_exchange_token&client_id=${encodeURIComponent(appId)}&client_secret=${encodeURIComponent(appSecret)}&fb_exchange_token=${encodeURIComponent(workingToken)}`;
+                const exRes = await fetch(exchangeUrl);
+                if (exRes.ok) {
+                    const exJson = await exRes.json();
+                    if (exJson && exJson.access_token) {
+                        upgradedUserToken = cleanEnvVar(exJson.access_token);
+                        upgradedType = "meta_long_lived";
+                    }
+                }
+            } catch (_) {}
+        }
+
+        // Attempt to derive a permanent Page Access Token from the (ideally long-lived) User Token
+        try {
+            const accUrl = `https://graph.facebook.com/v22.0/me/accounts?fields=id,name,access_token,instagram_business_account{id}&limit=25&access_token=${encodeURIComponent(upgradedUserToken)}`;
+            const accRes = await fetch(accUrl);
+            if (accRes.ok) {
+                const accData = await accRes.json();
+                const pages = (accData && Array.isArray(accData.data)) ? accData.data : [];
+                const matchedPage = pages.find(p => p?.instagram_business_account?.id && p?.access_token);
+                if (matchedPage) {
+                    await writeR2Json(env, R2_TOKEN_KEY, {
+                        token: cleanEnvVar(matchedPage.access_token),
+                        seed_env_token: envSeedToken || "",
+                        token_type: upgradedType === "meta_long_lived" ? "page_permanent" : "page_derived",
+                        ig_business_id: matchedPage.instagram_business_account.id,
+                        refreshed_at: now,
+                        updated_at: now
+                    });
+                    return;
+                }
+            }
+        } catch (_) {}
+
+        await writeR2Json(env, R2_TOKEN_KEY, {
+            token: upgradedUserToken,
+            seed_env_token: envSeedToken || "",
+            token_type: upgradedType,
+            ig_business_id: discoveredIgBusinessId || DEFAULT_INSTAGRAM_BUSINESS_ID,
+            refreshed_at: now,
+            updated_at: now
+        });
+        return;
     }
 
     if (!existing || existing.token !== workingToken || existing.seed_env_token !== (envSeedToken || "")) {
