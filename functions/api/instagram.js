@@ -372,12 +372,7 @@ export async function onRequestGet(context) {
                 });
             }
 
-            if (!isInstagramToken) {
-                candidates.push({
-                    host: "graph.instagram.com",
-                    url: `https://graph.instagram.com/me/media?fields=${basicFields}&limit=24&access_token=${encodedToken}`
-                });
-            }
+            // Only query graph.instagram.com for IG... tokens; graph.facebook.com handles EAA... Meta Graph tokens
 
             for (const candidate of candidates) {
                 try {
