@@ -154,14 +154,15 @@ async function maybeRefreshAndPersistToken(env, workingToken, envSeedToken, sour
 
     // If we already discovered a permanent Page Access Token via /me/accounts, store it so it never expires
     if (discoveredPageToken) {
-        await writeR2Json(env, R2_TOKEN_KEY, {
+        const state = {
             token: discoveredPageToken,
             seed_env_token: envSeedToken || "",
             token_type: "page_permanent",
             ig_business_id: discoveredIgBusinessId || DEFAULT_INSTAGRAM_BUSINESS_ID,
             updated_at: now
-        });
-        return;
+        };
+        await writeR2Json(env, R2_TOKEN_KEY, state);
+        return state;
     }
 
     const isIgToken = workingToken.startsWith("IG") || workingToken.startsWith("ig") || sourceHost === "graph.instagram.com";
@@ -176,15 +177,16 @@ async function maybeRefreshAndPersistToken(env, workingToken, envSeedToken, sour
             if (res.ok) {
                 const j = await res.json();
                 if (j && j.access_token) {
-                    await writeR2Json(env, R2_TOKEN_KEY, {
+                    const state = {
                         token: cleanEnvVar(j.access_token),
                         seed_env_token: envSeedToken || "",
                         token_type: "ig_long_lived",
                         expires_in: j.expires_in || 5184000,
                         refreshed_at: now,
                         updated_at: now
-                    });
-                    return;
+                    };
+                    await writeR2Json(env, R2_TOKEN_KEY, state);
+                    return state;
                 }
             }
         } catch (_) {}
@@ -227,7 +229,7 @@ async function maybeRefreshAndPersistToken(env, workingToken, envSeedToken, sour
                 const pages = (accData && Array.isArray(accData.data)) ? accData.data : [];
                 const matchedPage = pages.find(p => p?.instagram_business_account?.id && p?.access_token);
                 if (matchedPage) {
-                    await writeR2Json(env, R2_TOKEN_KEY, {
+                    const state = {
                         token: cleanEnvVar(matchedPage.access_token),
                         seed_env_token: envSeedToken || "",
                         token_type: upgradedType === "meta_long_lived" ? "page_permanent" : "page_derived",
@@ -235,13 +237,14 @@ async function maybeRefreshAndPersistToken(env, workingToken, envSeedToken, sour
                         exchange_error: exchangeError || undefined,
                         refreshed_at: now,
                         updated_at: now
-                    });
-                    return;
+                    };
+                    await writeR2Json(env, R2_TOKEN_KEY, state);
+                    return state;
                 }
             }
         } catch (_) {}
 
-        await writeR2Json(env, R2_TOKEN_KEY, {
+        const state = {
             token: upgradedUserToken,
             seed_env_token: envSeedToken || "",
             token_type: upgradedType,
@@ -249,20 +252,24 @@ async function maybeRefreshAndPersistToken(env, workingToken, envSeedToken, sour
             exchange_error: exchangeError || undefined,
             refreshed_at: now,
             updated_at: now
-        });
-        return;
+        };
+        await writeR2Json(env, R2_TOKEN_KEY, state);
+        return state;
     }
 
     if (!existing || existing.token !== workingToken || existing.seed_env_token !== (envSeedToken || "")) {
-        await writeR2Json(env, R2_TOKEN_KEY, {
+        const state = {
             token: workingToken,
             seed_env_token: envSeedToken || "",
             token_type: isIgToken ? "ig_long_lived" : "meta_graph",
             ig_business_id: discoveredIgBusinessId || DEFAULT_INSTAGRAM_BUSINESS_ID,
             refreshed_at: lastRefreshed || now,
             updated_at: now
-        });
+        };
+        await writeR2Json(env, R2_TOKEN_KEY, state);
+        return state;
     }
+    return existing;
 }
 
 export async function onRequestGet(context) {
@@ -475,20 +482,23 @@ export async function onRequestGet(context) {
             throw new Error("No renderable media URLs found in Instagram payload");
         }
 
-        // Background: refresh token if needed + save last-known-good live feed snapshot to R2
+        // Run token upgrade/persistence in foreground (or waitUntil) and expose safe token_type
+        let persistedState = null;
+        try {
+            persistedState = await maybeRefreshAndPersistToken(env, winningToken, envToken, winningHost, discoveredPageToken, discoveredIgId);
+        } catch (_) {}
+
         if (context.waitUntil) {
-            context.waitUntil((async () => {
-                await maybeRefreshAndPersistToken(env, winningToken, envToken, winningHost, discoveredPageToken, discoveredIgId);
-                await writeR2Json(env, R2_FEED_CACHE_KEY, {
-                    updated_at: Date.now(),
-                    posts
-                });
-            })());
+            context.waitUntil(writeR2Json(env, R2_FEED_CACHE_KEY, {
+                updated_at: Date.now(),
+                posts
+            }));
         }
 
         const successRes = new Response(JSON.stringify({
             source: "live",
             status: "active",
+            token_type: (persistedState && persistedState.token_type) || (r2TokenState && r2TokenState.token_type) || "active",
             count: posts.length,
             data: posts
         }), { status: 200, headers: corsHeaders });
