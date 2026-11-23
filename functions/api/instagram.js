@@ -196,19 +196,26 @@ async function maybeRefreshAndPersistToken(env, workingToken, envSeedToken, sour
         const appSecret = getEnvVal(env, "INSTAGRAM_APP_SECRET", "META_APP_SECRET", "FB_APP_SECRET");
         let upgradedUserToken = workingToken;
         let upgradedType = "meta_graph";
+        let exchangeError = "";
 
         if (appId && appSecret) {
             try {
                 const exchangeUrl = `https://graph.facebook.com/v22.0/oauth/access_token?grant_type=fb_exchange_token&client_id=${encodeURIComponent(appId)}&client_secret=${encodeURIComponent(appSecret)}&fb_exchange_token=${encodeURIComponent(workingToken)}`;
                 const exRes = await fetch(exchangeUrl);
-                if (exRes.ok) {
-                    const exJson = await exRes.json();
-                    if (exJson && exJson.access_token) {
-                        upgradedUserToken = cleanEnvVar(exJson.access_token);
-                        upgradedType = "meta_long_lived";
-                    }
+                const exJson = await exRes.json().catch(() => null);
+                if (exRes.ok && exJson && exJson.access_token) {
+                    upgradedUserToken = cleanEnvVar(exJson.access_token);
+                    upgradedType = "meta_long_lived";
+                } else if (exJson && exJson.error) {
+                    exchangeError = `${exJson.error.code || exRes.status}: ${exJson.error.message || "exchange failed"}`;
+                } else {
+                    exchangeError = `HTTP ${exRes.status}`;
                 }
-            } catch (_) {}
+            } catch (exErr) {
+                exchangeError = exErr && exErr.message ? exErr.message : "exchange network error";
+            }
+        } else {
+            exchangeError = "missing_app_secret";
         }
 
         // Attempt to derive a permanent Page Access Token from the (ideally long-lived) User Token
@@ -225,6 +232,7 @@ async function maybeRefreshAndPersistToken(env, workingToken, envSeedToken, sour
                         seed_env_token: envSeedToken || "",
                         token_type: upgradedType === "meta_long_lived" ? "page_permanent" : "page_derived",
                         ig_business_id: matchedPage.instagram_business_account.id,
+                        exchange_error: exchangeError || undefined,
                         refreshed_at: now,
                         updated_at: now
                     });
@@ -238,6 +246,7 @@ async function maybeRefreshAndPersistToken(env, workingToken, envSeedToken, sour
             seed_env_token: envSeedToken || "",
             token_type: upgradedType,
             ig_business_id: discoveredIgBusinessId || DEFAULT_INSTAGRAM_BUSINESS_ID,
+            exchange_error: exchangeError || undefined,
             refreshed_at: now,
             updated_at: now
         });
@@ -510,12 +519,26 @@ export async function onRequestGet(context) {
         }
 
         const reason = classifyMetaError(lastMetaError, lastErrorStatus);
+        const primaryToken = tokensToTry[0] || "";
+        const appSecretPresent = Boolean(getEnvVal(env, "INSTAGRAM_APP_SECRET", "META_APP_SECRET", "FB_APP_SECRET"));
+        const safeMetaMessage = lastMetaError && lastMetaError.message
+            ? String(lastMetaError.message).replace(/\b(EAA|IGAA|IGQ)[A-Za-z0-9_-]{10,}/g, "[REDACTED]").slice(0, 220)
+            : null;
         return new Response(JSON.stringify({
             source: "fallback_on_error",
             status: "api_error",
             reason,
             meta_code: lastMetaError ? lastMetaError.code : null,
             meta_subcode: lastMetaError ? lastMetaError.subcode : null,
+            meta_message: safeMetaMessage,
+            diagnostics: {
+                token_prefix: primaryToken ? primaryToken.slice(0, 4) : null,
+                token_type: r2TokenState && r2TokenState.token_type ? r2TokenState.token_type : "env_only",
+                exchange_error: r2TokenState && r2TokenState.exchange_error ? r2TokenState.exchange_error : null,
+                r2_bound: Boolean(env && env.CONTACT_ATTACHMENTS),
+                has_app_secret: appSecretPresent,
+                app_id: getEnvVal(env, "INSTAGRAM_APP_ID", "META_APP_ID", "FB_APP_ID") || DEFAULT_INSTAGRAM_APP_ID
+            },
             message: "Could not load live feed. Displaying featured posts.",
             data: FALLBACK_POSTS
         }), { status: 200, headers: noCacheHeaders });
